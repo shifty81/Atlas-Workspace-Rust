@@ -103,20 +103,136 @@ usage() {
     echo ""
 }
 
-# ── Argument parsing ──────────────────────────────────────────────
-if [[ $# -eq 0 ]]; then
-    usage
-    exit 0
-fi
-
-SUBCOMMAND="$1"; shift
-
+# ── Shared state (set by argument parsing or interactive menu) ────
+SUBCOMMAND=""
 BUILD_TYPE="debug"
 TARGET_BIN=""
 RUN_TESTS=false
 RUN_CLIPPY=false
 FMT_CHECK=false
 RUN_DOC=false
+
+# ── Interactive menu ──────────────────────────────────────────────
+show_menu() {
+    while true; do
+        clear
+        echo -e "${BOLD}${CYAN}╔══════════════════════════════════════════════════════════╗${RESET}"
+        echo -e "${BOLD}${CYAN}║${RESET}  ${BOLD}Atlas Workspace — Interactive Menu${RESET}                    ${BOLD}${CYAN}║${RESET}"
+        echo -e "${BOLD}${CYAN}╚══════════════════════════════════════════════════════════╝${RESET}"
+        echo ""
+        echo -e "  ${BOLD}── Build ──────────────────────────────────────────────────${RESET}"
+        echo -e "   1)  Build ${YELLOW}debug${RESET}    — workspace (all crates)"
+        echo -e "   2)  Build ${YELLOW}release${RESET}  — workspace (all crates)"
+        echo -e "   3)  Build ${YELLOW}debug${RESET}    — game binary only"
+        echo -e "   4)  Build ${YELLOW}release${RESET}  — game binary only"
+        echo -e "   5)  Build ${YELLOW}debug${RESET}    — editor binary only"
+        echo -e "   6)  Build ${YELLOW}release${RESET}  — editor binary only"
+        echo ""
+        echo -e "  ${BOLD}── Rebuild (clean → build) ─────────────────────────────────${RESET}"
+        echo -e "   7)  Rebuild ${YELLOW}debug${RESET}   — workspace"
+        echo -e "   8)  Rebuild ${YELLOW}release${RESET} — workspace"
+        echo ""
+        echo -e "  ${BOLD}── Extras (toggle on/off before running) ──────────────────${RESET}"
+        local t_tests;  $RUN_TESTS  && t_tests="${GREEN}on${RESET}"  || t_tests="${DIM}off${RESET}"
+        local t_clippy; $RUN_CLIPPY && t_clippy="${GREEN}on${RESET}" || t_clippy="${DIM}off${RESET}"
+        local t_fmt;    $FMT_CHECK  && t_fmt="${GREEN}on${RESET}"    || t_fmt="${DIM}off${RESET}"
+        local t_doc;    $RUN_DOC    && t_doc="${GREEN}on${RESET}"    || t_doc="${DIM}off${RESET}"
+        echo -e "   t)  Run tests after build      [ $(echo -e $t_tests) ]"
+        echo -e "   c)  Run clippy before build    [ $(echo -e $t_clippy) ]"
+        echo -e "   f)  Fmt-check before build     [ $(echo -e $t_fmt) ]"
+        echo -e "   d)  Build docs after build     [ $(echo -e $t_doc) ]"
+        echo ""
+        echo -e "  ${BOLD}── Other ───────────────────────────────────────────────────${RESET}"
+        echo -e "   9)  Clean build artefacts"
+        echo -e "   h)  Show command-line usage / help"
+        echo -e "   0)  Quit"
+        echo ""
+        echo -ne "  ${BOLD}Select option:${RESET} "
+        local choice
+        read -r choice
+
+        case "$choice" in
+            1) SUBCOMMAND=build;   BUILD_TYPE=debug;   TARGET_BIN="" ;;
+            2) SUBCOMMAND=build;   BUILD_TYPE=release; TARGET_BIN="" ;;
+            3) SUBCOMMAND=build;   BUILD_TYPE=debug;   TARGET_BIN="atlas-game" ;;
+            4) SUBCOMMAND=build;   BUILD_TYPE=release; TARGET_BIN="atlas-game" ;;
+            5) SUBCOMMAND=build;   BUILD_TYPE=debug;   TARGET_BIN="atlas-workspace" ;;
+            6) SUBCOMMAND=build;   BUILD_TYPE=release; TARGET_BIN="atlas-workspace" ;;
+            7) SUBCOMMAND=rebuild; BUILD_TYPE=debug;   TARGET_BIN="" ;;
+            8) SUBCOMMAND=rebuild; BUILD_TYPE=release; TARGET_BIN="" ;;
+            9) SUBCOMMAND=clean ;;
+            t|T) $RUN_TESTS  && RUN_TESTS=false  || RUN_TESTS=true;  continue ;;
+            c|C) $RUN_CLIPPY && RUN_CLIPPY=false || RUN_CLIPPY=true; continue ;;
+            f|F) $FMT_CHECK  && FMT_CHECK=false  || FMT_CHECK=true;  continue ;;
+            d|D) $RUN_DOC    && RUN_DOC=false    || RUN_DOC=true;    continue ;;
+            h|H) usage; echo -ne "  Press Enter to return to menu..."; read -r; continue ;;
+            0|q|Q) echo ""; echo -e "  ${DIM}Bye!${RESET}"; echo ""; exit 0 ;;
+            *) echo -e "  ${RED}Unknown option '$choice' — try again.${RESET}"; sleep 1; continue ;;
+        esac
+
+        # Run the selected command
+        RELEASE_FLAG=""
+        [[ "$BUILD_TYPE" == "release" ]] && RELEASE_FLAG="--release"
+        mkdir -p "$LOG_DIR"
+        {
+            echo "=== Atlas Workspace Build Log ==="
+            echo "Started: $(timestamp)"
+            echo "Command: $SUBCOMMAND  build_type=$BUILD_TYPE"
+            [[ -n "$TARGET_BIN" ]] && echo "Target: $TARGET_BIN"
+            echo ""
+        } > "$LOG_FILE"
+
+        for tool in rustup rustc cargo; do
+            if ! command -v "$tool" &>/dev/null; then
+                echo -e "${RED}ERROR: '$tool' not found — install rustup from https://rustup.rs${RESET}"
+                echo -ne "  Press Enter to return to menu..."; read -r; continue 2
+            fi
+        done
+
+        assert_assets_safe
+        print_banner
+        TESTS_PASSED=0; TESTS_FAILED=0
+        START=$(date +%s)
+
+        case "$SUBCOMMAND" in
+            clean)
+                do_clean
+                ;;
+            build)
+                $FMT_CHECK  && do_fmt_check
+                $RUN_CLIPPY && do_clippy
+                do_build
+                $RUN_TESTS && do_tests
+                $RUN_DOC   && do_doc
+                ;;
+            rebuild)
+                do_clean
+                $FMT_CHECK  && do_fmt_check
+                $RUN_CLIPPY && do_clippy
+                do_build
+                $RUN_TESTS && do_tests
+                $RUN_DOC   && do_doc
+                ;;
+        esac
+
+        END=$(date +%s)
+        ELAPSED=$((END - START))
+        print_summary "$ELAPSED"
+
+        echo -ne "  ${BOLD}Press Enter to return to menu...${RESET} "
+        read -r
+    done
+}
+
+# ── Argument parsing ──────────────────────────────────────────────
+_MENU_MODE=false
+if [[ $# -eq 0 ]]; then
+    _MENU_MODE=true
+fi
+
+if ! $_MENU_MODE; then
+
+SUBCOMMAND="$1"; shift
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
@@ -140,6 +256,10 @@ case "$SUBCOMMAND" in
     *) die "Unknown subcommand: '$SUBCOMMAND'  (expected: build | clean | rebuild)" ;;
 esac
 
+fi  # end: if ! $_MENU_MODE
+
+if ! $_MENU_MODE; then
+
 RELEASE_FLAG=""
 [[ "$BUILD_TYPE" == "release" ]] && RELEASE_FLAG="--release"
 
@@ -159,6 +279,8 @@ for tool in rustup rustc cargo; do
         die "'$tool' not found — install rustup from https://rustup.rs"
     fi
 done
+
+fi  # end: if ! $_MENU_MODE (log + prereq checks)
 
 # ── Assets guard ──────────────────────────────────────────────────
 # Verify novaforge-assets/ will not be touched by any operation.
@@ -231,9 +353,6 @@ do_clippy() {
 }
 
 # ── Step: build ───────────────────────────────────────────────────
-TESTS_PASSED=0
-TESTS_FAILED=0
-
 do_build() {
     separator
     cd "$ROOT_DIR"
@@ -335,9 +454,16 @@ print_summary() {
 }
 
 # ── Main dispatcher ───────────────────────────────────────────────
+if $_MENU_MODE; then
+    show_menu
+    exit 0
+fi
+
 assert_assets_safe
 print_banner
 
+TESTS_PASSED=0
+TESTS_FAILED=0
 START=$(date +%s)
 
 case "$SUBCOMMAND" in
