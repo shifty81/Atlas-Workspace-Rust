@@ -21,6 +21,7 @@
 pub mod asset_registry;
 pub mod asteroid;
 pub mod galaxy;
+pub mod mod_loader;
 pub mod planet;
 pub mod star_system;
 pub mod universe;
@@ -29,6 +30,7 @@ pub mod world_state;
 pub use asset_registry::{AssetEntry, AssetRegistry, AssetType};
 pub use asteroid::{Asteroid, AsteroidBelt, AsteroidConfig};
 pub use galaxy::{Galaxy, GalaxyConfig, StarCluster};
+pub use mod_loader::{ModDescriptor, ModLoadResult, ModLoader};
 pub use planet::{Atmosphere, Biome, Planet, PlanetConfig, PlanetType};
 pub use star_system::{StarSystem, StarSystemConfig, StarType};
 pub use universe::{Universe, UniverseConfig};

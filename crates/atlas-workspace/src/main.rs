@@ -32,6 +32,9 @@ fn main() -> anyhow::Result<()> {
     // Demo: full universe generation
     run_universe_demo();
 
+    // Demo: new systems
+    run_new_systems_demo();
+
     Logger::shutdown();
     Ok(())
 }
@@ -115,3 +118,123 @@ fn run_universe_demo() {
         log::info!("    Total planets: {}  Total asteroids: {}", total_planets, total_asteroids);
     }
 }
+
+/// Demo the new systems added in this iteration.
+fn run_new_systems_demo() {
+    log::info!("── New Systems Demo ────────────────────────────────────────");
+
+    // EventBus
+    {
+        use atlas_core::{EventBus, Event};
+        let mut bus = EventBus::new();
+        bus.subscribe("test", |e| log::info!("EventBus received: {}", e.event_type));
+        bus.publish(Event::new("test"));
+        log::info!("EventBus: {} published", bus.total_published());
+    }
+
+    // InputManager
+    {
+        use atlas_input::{InputManager, InputAction, InputDevice};
+        let mut input = InputManager::new();
+        input.init();
+        input.bind_action(InputAction::Jump, InputDevice::Keyboard, 32, "Jump");
+        input.inject_press(InputAction::Jump);
+        log::info!("InputManager: jump held={}", input.is_held(InputAction::Jump));
+        input.shutdown();
+    }
+
+    // PhysicsWorld
+    {
+        use atlas_physics::PhysicsWorld;
+        let mut world = PhysicsWorld::new();
+        world.init();
+        let b = world.create_body(1.0, false);
+        world.step(0.016);
+        log::info!("PhysicsWorld: body_count={}, body={:?}", world.body_count(), world.get_body(b).map(|b| b.position));
+        world.shutdown();
+    }
+
+    // TickScheduler
+    {
+        use atlas_sim::TickScheduler;
+        let mut sched = TickScheduler::new();
+        sched.set_tick_rate(60);
+        sched.tick(|dt| log::info!("TickScheduler: tick dt={:.4}", dt));
+        log::info!("TickScheduler: tick={}", sched.current_tick());
+    }
+
+    // ScriptVM
+    {
+        use atlas_script::{ScriptVM, CompiledScript};
+        let mut vm = ScriptVM::new();
+        let script = CompiledScript::new("demo");
+        let _ = vm.execute(&script);
+        log::info!("ScriptVM: steps={}", vm.step_count());
+    }
+
+    // AnimationGraph
+    {
+        use atlas_animation::AnimationGraph;
+        let mut graph = AnimationGraph::new();
+        graph.compile();
+        log::info!("AnimationGraph: nodes={}, compiled={}", graph.node_count(), graph.is_compiled());
+    }
+
+    // BehaviorGraph / AIMemory
+    {
+        use atlas_ai::{BehaviorGraph, AIMemory};
+        let mut graph = BehaviorGraph::new();
+        graph.compile();
+        let mut mem = AIMemory::new();
+        mem.store("target", "enemy_01", 1.0, 0.01, 0);
+        log::info!("BehaviorGraph: compiled={}, AIMemory count={}", graph.is_compiled(), mem.count());
+    }
+
+    // SoundGraph
+    {
+        use atlas_sound::SoundGraph;
+        let mut graph = SoundGraph::new();
+        graph.compile();
+        log::info!("SoundGraph: compiled={}", graph.is_compiled());
+    }
+
+    // GraphVM
+    {
+        use atlas_graphvm::{GraphVM, Bytecode, VmContext};
+        let mut vm = GraphVM::new();
+        let bytecode = Bytecode::default();
+        let mut ctx = VmContext::default();
+        let _ = vm.execute(&bytecode, &mut ctx);
+        log::info!("GraphVM: emitted_events={}", vm.emitted_events().len());
+    }
+
+    // JitterBuffer / ReplicationManager
+    {
+        use atlas_net::{JitterBuffer, ReplicationManager};
+        let mut jb = JitterBuffer::new(0.05, 64, true);
+        jb.push(1, 0.0, vec![1, 2, 3]);
+        log::info!("JitterBuffer: buffered={}", jb.buffered_count());
+        let rep = ReplicationManager::new();
+        log::info!("ReplicationManager: rules={}", rep.rule_count());
+    }
+
+    // ModLoader
+    {
+        use atlas_world::{ModLoader, ModDescriptor, ModLoadResult};
+        let mut loader = ModLoader::new();
+        let result = loader.register_mod(ModDescriptor {
+            id: "core-mod".into(),
+            name: "Core Mod".into(),
+            version: "1.0.0".into(),
+            author: "Atlas".into(),
+            description: "Demo mod".into(),
+            dependencies: Vec::new(),
+            entry_path: "mods/core/main.lua".into(),
+            enabled: false,
+        });
+        assert_eq!(result, ModLoadResult::Success);
+        loader.load_mod("core-mod");
+        log::info!("ModLoader: mods={}, loaded={}", loader.mod_count(), loader.loaded_mod_count());
+    }
+}
+
