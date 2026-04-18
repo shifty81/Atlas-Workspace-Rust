@@ -1,0 +1,56 @@
+[workspace]
+members = [
+    "crates/atlas-core",
+    "crates/atlas-math",
+    "crates/atlas-ecs",
+    "crates/atlas-pcg",
+    "crates/atlas-renderer",
+    "crates/atlas-world",
+    "crates/atlas-workspace",
+]
+resolver = "2"
+
+[workspace.package]
+version      = "0.1.0"
+edition      = "2021"
+authors      = ["Atlas Workspace Contributors"]
+license      = "MIT OR Apache-2.0"
+repository   = "https://github.com/shifty81/Atlas-Workspace-Rust"
+
+[workspace.dependencies]
+# Intra-workspace
+atlas-core       = { path = "crates/atlas-core" }
+atlas-math       = { path = "crates/atlas-math" }
+atlas-ecs        = { path = "crates/atlas-ecs" }
+atlas-pcg        = { path = "crates/atlas-pcg" }
+atlas-renderer   = { path = "crates/atlas-renderer" }
+atlas-world      = { path = "crates/atlas-world" }
+
+# Logging
+log              = "0.4"
+env_logger       = "0.11"
+
+# Serialization
+serde            = { version = "1", features = ["derive"] }
+serde_json       = "1"
+
+# Windowing / input
+winit            = { version = "0.29", features = ["rwh_05"] }
+
+# Vulkan
+ash              = "0.37"
+gpu-allocator    = "0.25"
+
+# Math / noise
+glam             = { version = "0.27", features = ["serde"] }
+noise            = "0.9"
+
+# Concurrency
+rayon            = "1"
+parking_lot      = "0.12"
+
+# Misc
+thiserror        = "1"
+anyhow           = "1"
+uuid             = { version = "1", features = ["v4", "serde"] }
+bitflags         = "2"

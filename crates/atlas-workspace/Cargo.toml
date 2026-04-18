@@ -1,0 +1,24 @@
+[package]
+name        = "atlas-workspace"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+
+[[bin]]
+name = "atlas-workspace"
+path = "src/main.rs"
+
+[dependencies]
+atlas-core.workspace     = true
+atlas-math.workspace     = true
+atlas-ecs.workspace      = true
+atlas-pcg.workspace      = true
+atlas-renderer.workspace = true
+atlas-world.workspace    = true
+log.workspace            = true
+env_logger.workspace     = true
+thiserror.workspace      = true
+anyhow.workspace         = true
+serde.workspace          = true
+serde_json.workspace     = true
