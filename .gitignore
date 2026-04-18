@@ -101,3 +101,8 @@ Release/
 *.tar.bz2
 *.7z
 NovaForge/Docs/Architecture.zip
+
+# ── Rust ─────────────────────────────────────────────────────────
+target/
+Cargo.lock
+*.rlib

@@ -1,0 +1,13 @@
+[package]
+name        = "atlas-math"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+
+[dependencies]
+glam.workspace  = true
+serde.workspace = true
+
+[dev-dependencies]
+atlas-core = { path = "../atlas-core" }
