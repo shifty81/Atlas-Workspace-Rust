@@ -81,4 +81,57 @@ mod tests {
         ws.discover(id);
         assert!(ws.is_discovered(&id));
     }
+
+    #[test]
+    fn advance_accumulates_time() {
+        let mut ws = WorldState::new(0);
+        ws.advance(0.5);
+        ws.advance(0.5);
+        assert!((ws.time_elapsed - 1.0).abs() < 1e-10);
+        assert_eq!(ws.tick, 2);
+    }
+
+    #[test]
+    fn discovered_count() {
+        let mut ws = WorldState::new(0);
+        assert_eq!(ws.discovered_count(), 0);
+        ws.discover(Uuid::new_v4());
+        ws.discover(Uuid::new_v4());
+        assert_eq!(ws.discovered_count(), 2);
+    }
+
+    #[test]
+    fn discover_same_id_twice_does_not_duplicate() {
+        let mut ws = WorldState::new(0);
+        let id = Uuid::new_v4();
+        ws.discover(id);
+        ws.discover(id);
+        assert_eq!(ws.discovered_count(), 1);
+    }
+
+    #[test]
+    fn edits_for_creates_store_on_demand() {
+        let mut ws = WorldState::new(7);
+        let id = Uuid::new_v4();
+        let store = ws.edits_for(id);
+        // Just verify we got a store back without panicking.
+        drop(store);
+        assert_eq!(ws.delta_edits.len(), 1);
+    }
+
+    #[test]
+    fn edits_for_same_id_returns_same_store() {
+        let mut ws = WorldState::new(7);
+        let id = Uuid::new_v4();
+        ws.edits_for(id);
+        ws.edits_for(id);
+        // Should still be exactly one entry.
+        assert_eq!(ws.delta_edits.len(), 1);
+    }
+
+    #[test]
+    fn universe_seed_stored() {
+        let ws = WorldState::new(0xDEAD_BEEF);
+        assert_eq!(ws.universe_seed, 0xDEAD_BEEF);
+    }
 }
