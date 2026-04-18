@@ -61,8 +61,8 @@ pub trait GameProjectAdapter: Send + Sync {
     /// (the editor will show it in the console).
     ///
     /// The default implementation is a no-op (always succeeds).
+    #[allow(unused_variables)]
     fn initialize_project(&mut self, manifest: &AtlasManifest) -> Result<(), String> {
-        let _ = manifest;
         Ok(())
     }
 
