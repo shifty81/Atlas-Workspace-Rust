@@ -60,9 +60,9 @@ echo ""
 
 # ── Required files ────────────────────────────────────
 echo "▸ Required files"
-check "CMakeLists.txt"                   "$(file_exists CMakeLists.txt)"
-check "CMakePresets.json"                "$(file_exists CMakePresets.json)"
-check "vcpkg.json"                       "$(file_exists vcpkg.json)"
+check "legacy-cpp/CMakeLists.txt"        "$(file_exists legacy-cpp/CMakeLists.txt)"
+check "legacy-cpp/CMakePresets.json"     "$(file_exists legacy-cpp/CMakePresets.json)"
+check "legacy-cpp/vcpkg.json"            "$(file_exists legacy-cpp/vcpkg.json)"
 check "README.md"                        "$(file_exists README.md)"
 check "LICENSE"                          "$(file_exists LICENSE)"
 check ".gitignore"                       "$(file_exists .gitignore)"

@@ -24,7 +24,7 @@ setlocal enabledelayedexpansion
 :: ---------------------------------------------------------------------------
 
 :: Ensure we are in the repo root.
-cd /d "%~dp0"
+cd /d "%~dp0\.."
 
 :: Create log directory if needed -------------------------------------------
 if not exist "Saved\Logs" mkdir "Saved\Logs"

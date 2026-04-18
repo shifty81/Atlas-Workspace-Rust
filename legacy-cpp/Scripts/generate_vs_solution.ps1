@@ -20,7 +20,7 @@ Write-Host "  AtlasWorkspace — Generating VS $VSVersion Solution" -ForegroundC
 Write-Host "══════════════════════════════════════════════════════════" -ForegroundColor Cyan
 Write-Host ""
 
-Push-Location (Split-Path $PSScriptRoot)
+Push-Location (Split-Path (Split-Path $PSScriptRoot))
 
 try {
     cmake --preset $preset
