@@ -35,7 +35,9 @@ fn main() -> anyhow::Result<()> {
     let config = GameRunConfig {
         tick_rate:       60,
         max_ticks_frame: 8,
-        max_ticks_total: if pie_mode { 300 } else { 0 }, // PIE auto-stops after 5 s in demo
+        // In PIE mode the standalone binary auto-stops after 5 s (300 ticks at 60 Hz)
+        // so the editor subprocess doesn't run indefinitely if the stop signal is missed.
+        max_ticks_total: if pie_mode { 300 } else { 0 },
         pie_mode,
         ..Default::default()
     };

@@ -67,7 +67,7 @@ impl ViewportPanel {
                         egui::Color32::GRAY,
                     );
 
-                    // Orbit (left-drag or alt+drag)
+                    // Orbit (left-drag), pan (middle-drag), or alt+drag = orbit
                     if response.drag_started() {
                         self.drag_active = true;
                         if let Some(pos) = response.interact_pointer_pos() {
@@ -81,9 +81,8 @@ impl ViewportPanel {
                         let delta = response.drag_delta();
                         if self.middle_held {
                             renderer.orbit.pan(delta.x, delta.y);
-                        } else if self.alt_held {
-                            renderer.orbit.orbit(delta.x, delta.y);
                         } else {
+                            // left-drag or alt+left-drag both orbit
                             renderer.orbit.orbit(delta.x, delta.y);
                         }
                         if let Some(pos) = response.interact_pointer_pos() {

@@ -72,7 +72,8 @@ impl EditorCommand for DeleteEntityCommand {
 
     fn revert(&mut self, world: &mut World) {
         if !self.was_alive { return; }
-        // Spawn a fresh entity (IDs are not guaranteed to match after undo)
+        // Spawn a fresh entity. Note: the new ID will differ from the original,
+        // so callers should clear selection state after undo.
         let id = world.spawn();
         if let Some(t) = self.saved_transform {
             world.components.add(id, t);

@@ -54,14 +54,13 @@ impl GameBuildSystem {
         let workspace_root = std::env::current_dir()
             .unwrap_or_else(|_| std::path::PathBuf::from("."));
 
-        let status     = Arc::clone(&self.status);
+        let status_shared = Arc::clone(&self.status);
         let log_output = Arc::clone(&self.log_output);
 
-        *status.lock().unwrap()     = BuildStatus::Building;
-        *log_output.lock().unwrap() = String::new();
+        *status_shared.lock().unwrap() = BuildStatus::Building;
+        *log_output.lock().unwrap()    = String::new();
         self.building = true;
 
-        let status_flag = Arc::clone(&self.status);
         thread::spawn(move || {
             log::info!("[BuildSystem] Starting {} build of atlas-game …",
                 if release { "release" } else { "debug" });
@@ -83,16 +82,16 @@ impl GameBuildSystem {
                     *log_output.lock().unwrap() = combined.clone();
                     if out.status.success() {
                         log::info!("[BuildSystem] Build succeeded");
-                        *status.lock().unwrap() = BuildStatus::Success;
+                        *status_shared.lock().unwrap() = BuildStatus::Success;
                     } else {
                         log::error!("[BuildSystem] Build failed:\n{combined}");
-                        *status_flag.lock().unwrap() = BuildStatus::Failed(combined);
+                        *status_shared.lock().unwrap() = BuildStatus::Failed(combined);
                     }
                 }
                 Err(e) => {
                     let msg = format!("Failed to invoke cargo: {e}");
                     log::error!("[BuildSystem] {msg}");
-                    *status_flag.lock().unwrap() = BuildStatus::Failed(msg);
+                    *status_shared.lock().unwrap() = BuildStatus::Failed(msg);
                 }
             }
         });
