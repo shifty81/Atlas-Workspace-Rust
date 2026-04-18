@@ -126,8 +126,14 @@ impl GameRunner {
                 }
             }
 
-            // Yield to avoid burning 100% CPU in headless mode
-            std::thread::sleep(tick_dt.saturating_sub(accumulator));
+            // Yield to avoid burning 100% CPU. Only sleep if there is a
+            // meaningful amount of time remaining to avoid excessive wake-ups.
+            let remaining = tick_dt.saturating_sub(accumulator);
+            if remaining > std::time::Duration::from_millis(1) {
+                std::thread::sleep(remaining);
+            } else {
+                std::thread::yield_now();
+            }
         }
     }
 

@@ -484,8 +484,8 @@ impl EditorApp {
 
     fn handle_key(&mut self, event: &winit::event::KeyEvent, _window: &Window) {
         use winit::keyboard::{Key, NamedKey};
-        let ctrl = event.state == winit::event::ElementState::Pressed;
-        if !ctrl { return; }
+        let pressed = event.state == winit::event::ElementState::Pressed;
+        if !pressed { return; }
         match &event.logical_key {
             Key::Named(NamedKey::F5) => {
                 if self.session.is_playing() {
@@ -497,7 +497,14 @@ impl EditorApp {
             Key::Character(c) => match c.as_str() {
                 "z" | "Z" => { self.commands.undo(&mut self.world); }
                 "y" | "Y" => { self.commands.redo(&mut self.world); }
-                "s" | "S" => { self.save_scene_dialog(); }
+                // Ctrl+S — save to last path, or use save-as dialog if no path yet
+                "s" | "S" => {
+                    if self.last_scene_path.is_some() {
+                        self.save_scene_to_last_path();
+                    } else {
+                        self.save_scene_dialog();
+                    }
+                }
                 _ => {}
             }
             _ => {}

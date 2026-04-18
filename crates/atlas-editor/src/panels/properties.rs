@@ -12,13 +12,15 @@ pub enum PropertiesEvent {
 }
 
 pub struct PropertiesPanel {
-    pub open:        bool,
+    pub open:          bool,
     /// Buffer for the in-progress name edit.
-    name_edit:       String,
+    name_edit:         String,
+    /// The entity whose name is currently in the edit buffer.
+    name_edit_entity:  Option<atlas_ecs::EntityId>,
 }
 
 impl PropertiesPanel {
-    pub fn new() -> Self { Self { open: true, name_edit: String::new() } }
+    pub fn new() -> Self { Self { open: true, name_edit: String::new(), name_edit_entity: None } }
 
     pub fn show(
         &mut self,
@@ -46,9 +48,10 @@ impl PropertiesPanel {
                             .map(|n| n.0.clone())
                             .unwrap_or_else(|| format!("Entity #{entity}"));
 
-                        // Sync edit buffer when selection changes
-                        if self.name_edit.is_empty() || !self.name_edit.starts_with(&current_name[..current_name.len().min(3)]) {
-                            self.name_edit = current_name.clone();
+                        // Sync edit buffer when the selected entity changes
+                        if self.name_edit_entity != Some(entity) {
+                            self.name_edit        = current_name.clone();
+                            self.name_edit_entity = Some(entity);
                         }
 
                         ui.horizontal(|ui| {
