@@ -89,3 +89,19 @@ Owns:
 - No game-specific logic in Core, UI, or Editor
 - No workspace-core assumptions in NovaForge
 - Projects interact through adapter contracts only
+
+---
+
+## Game Hosting in the Editor
+
+`atlas-game` runs in two modes:
+
+1. **Standalone** (`cargo run --bin atlas-game`) — boots `GameRunner`, loads `NovaForgeGameModule`, runs game loop
+2. **Play-In-Editor (PIE)** — `atlas-editor` boots `PIEService` which instantiates `atlas-game` `GameRunner` inside the editor process, sharing `atlas-renderer` Vulkan surface
+
+The boundary:
+
+- `atlas-editor` owns: `WorkspaceShell`, `ToolRegistry`, `PanelRegistry`, `EditorViewport`, `PIEService`
+- `atlas-game` owns: `GameRunner`, `GameModule`, all NovaForge game systems
+- Shared: `atlas-renderer` (one `VkDevice`, two surfaces), `atlas-ecs` (separate `World` instances), `atlas-pcg` (shared `PcgManager`)
+- `atlas-editor` **NEVER** imports game logic directly — all communication through `IGameProjectAdapter` trait
