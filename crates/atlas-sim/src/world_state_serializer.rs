@@ -6,7 +6,13 @@ pub struct SchemaVersion {
 
 impl PartialOrd for SchemaVersion {
     fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
-        Some(self.major.cmp(&other.major).then(self.minor.cmp(&other.minor)))
+        Some(self.cmp(other))
+    }
+}
+
+impl Ord for SchemaVersion {
+    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+        self.major.cmp(&other.major).then(self.minor.cmp(&other.minor))
     }
 }
 
