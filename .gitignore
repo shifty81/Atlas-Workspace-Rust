@@ -106,3 +106,28 @@ NovaForge/Docs/Architecture.zip
 target/
 Cargo.lock
 *.rlib
+
+# ── NovaForge local assets (binary files — fetched via fetch_novaforge_assets.sh) ──
+# The directory structure and README.md are tracked; actual asset blobs are not.
+novaforge-assets/**/*.png
+novaforge-assets/**/*.jpg
+novaforge-assets/**/*.jpeg
+novaforge-assets/**/*.vox
+novaforge-assets/**/*.ttf
+novaforge-assets/**/*.otf
+novaforge-assets/**/*.wav
+novaforge-assets/**/*.ogg
+novaforge-assets/**/*.ico
+novaforge-assets/**/*.tar
+novaforge-assets/**/*.tar.gz
+novaforge-assets/**/*.tar.bz2
+novaforge-assets/**/*.zip
+novaforge-assets/**/*.7z
+novaforge-assets/**/*.obj
+novaforge-assets/**/*.blend
+novaforge-assets/**/*.bin
+novaforge-assets/**/*.canary
+novaforge-assets/**/*.ron
+# Keep the directory skeleton and documentation
+!novaforge-assets/README.md
+!novaforge-assets/**/.gitkeep

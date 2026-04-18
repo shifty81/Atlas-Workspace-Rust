@@ -1,35 +1,45 @@
-# Master Roadmap — Rust-First (Phase 0–6)
+# Master Roadmap — Rust-First (Phase 0–7)
 
 > **Primary Direction**: Rust + Vulkan. All new systems are written in Rust.
 > C++ in `Source/` and `NovaForge/` is the specification and blueprint for the Rust port.
 >
-> Reset Date: 2026-04-18
+> Reset Date: 2026-04-18 | Last Audit: 2026-04-18
 
 ---
 
 ## COMPLETED WORK
 
-What exists in Rust today:
+What exists in Rust today (M15 — 2026-04-18):
 
-- **Cargo workspace**: 22 crates scaffolded, all compile cleanly
-- **atlas-core / atlas-math / atlas-ecs / atlas-pcg / atlas-world / atlas-workspace**: fully implemented, 439 tests
-- **atlas-renderer**: Vulkan pipeline implemented (context, swapchain, shader IR, spatial hash, PBR material, render config); awaiting live surface
-- **atlas-editor**: app shell, 5 panels (Outliner, Properties, Viewport, AssetBrowser, Console), CommandStack, SelectionState, entity commands, GameBuildSystem, GameProjectAdapter trait — in progress
-- **atlas-game**: GameRunner, NullGameModule, GameModule trait — in progress
-- **C++ Blueprint preserved**: Phases A–I in C++ (`Source/`, `NovaForge/`) are the specification for the Rust port
+- **Cargo workspace**: 23 crates (22 atlas-* + novaforge-game), all compile cleanly
+- **atlas-core / atlas-math / atlas-ecs / atlas-pcg / atlas-world / atlas-workspace**: fully implemented
+- **atlas-renderer**: Vulkan surface via `ash-window` wired, full acquire→present pipeline, GBuffer, PBR material, shadow maps, post-process, instanced renderer, spatial hash, `TerrainMesh::from_heightmap()`
+- **atlas-editor**: app shell, 5 panels, CommandStack, SelectionState, entity commands, GameBuildSystem, GameProjectAdapter, ViewportHost, ViewportRegistry, NotificationCenter, LayoutPersistence, PropertyGrid
+- **atlas-game**: GameRunner, NullGameModule, GameModule trait
+- **atlas-asset**: AssetRegistry, AssetMeta, AssetGraph + `NOVAFORGE_ASSETS_DIR` load path
+- **atlas-ui**: ScrollList (virtual scroll), TreeView, UiLogCapture
+- **novaforge-game** (new, GPL v3.0): NovaForgeGameModule stub + NovaForgeAdapter implementing IGameProjectAdapter
+- **560 passing unit tests** across the workspace
+- **C++ Blueprint preserved**: `Source/`, `NovaForge/` are the specification for the Rust port
 
 ---
 
 ## Phase 0 — Rust Foundation Completion (Current, In Progress)
 
-**Goal**: All 22 crates have real implementations. Build and test clean.
+**Goal**: All 23 crates have real implementations. Build and test clean.
 
-### Milestone 0.1 — Renderer Activation
+### Milestone 0.1 — Renderer Activation ✅ COMPLETE
 
-- [ ] Wire Vulkan surface via winit + ash-window
-- [ ] SPIR-V compilation pipeline (glslc or naga)
-- [ ] GPU terrain mesh upload from atlas-pcg heightmap
-- [ ] Headless render loop integration test
+- [x] Wire Vulkan surface via winit + ash-window (`VulkanContext::new_with_window`)
+- [x] SPIR-V compilation pipeline (glslc / naga) — `Scripts/build_shaders.sh`
+- [x] GPU terrain mesh upload from atlas-pcg heightmap (`TerrainMesh::from_heightmap`)
+- [x] Headless render loop integration test (NullRendererBackend)
+
+### Milestone 0.1b — Renderer Polish (In Progress)
+
+- [ ] Wire `atlas-workspace/main.rs` standalone Vulkan boot path (`--vulkan` flag)
+- [ ] PCGPreviewService: atlas-pcg TerrainGenerator → TerrainMesh → RenderLoop
+- [ ] SPIR-V embedded blobs compiled at build time via `build.rs`
 
 ### Milestone 0.2 — atlas-input implementation
 
@@ -49,9 +59,10 @@ What exists in Rust today:
 - [ ] System scheduler (atlas-ecs SystemRegistry)
 - [ ] Deterministic frame counter
 
-### Milestone 0.5 — atlas-asset implementation
+### Milestone 0.5 — atlas-asset completion
 
-- [ ] Asset handle + UUID registry
+- [x] Asset handle + UUID registry (`AssetRegistry`, `AssetMeta`)
+- [x] Load path via `NOVAFORGE_ASSETS_DIR` environment variable
 - [ ] Load-from-disk pipeline (JSON + binary)
 - [ ] Hot-reload file watcher
 
@@ -74,36 +85,37 @@ What exists in Rust today:
 - [ ] atlas-graphvm: node graph VM, pin types, execution engine
 - [ ] atlas-net: client/server, message framing
 - [ ] atlas-ai: AtlasAI broker, request context, conversation, diff proposals, Codex
-- [ ] atlas-ui: egui widget extensions, panel framework
 
-**Success Criteria**: `cargo build --workspace` zero errors, `cargo test --workspace` 200+ tests, all 22 crates non-empty, Vulkan headless loop running
+**Success Criteria**: `cargo build --workspace` zero errors, `cargo test --workspace` 600+ tests, all 23 crates non-empty, Vulkan headless loop running
 
 ---
 
-## Phase 1 — Editor Core (atlas-editor Completion) — Planned
+## Phase 1 — Editor Core (atlas-editor Completion) — In Progress
 
 **Goal**: `atlas-editor` is a functional egui workspace shell mirroring the C++ WorkspaceShell.
 
-### Milestone 1.1 — Workspace Shell
+### Milestone 1.1 — Workspace Shell ✅ COMPLETE
 
-- [ ] `WorkspaceShell` struct owning `ToolRegistry`, `PanelRegistry`, `EventBus`
+- [x] `WorkspaceShell` struct owning `ToolRegistry`, `PanelRegistry`, `EventBus`
+- [x] `EditorApp` (top-level egui App)
+- [x] Panel layout persistence (JSON) — `LayoutPersistence`, `PanelLayout`, `DockSide`
 - [ ] `IEditorTool` trait (render, update, title, id)
 - [ ] `IEditorPanel` trait (reusable panel interface)
-- [ ] `EditorApp` (top-level egui App)
-- [ ] DockSpace layout manager
-- [ ] Panel layout persistence (JSON)
+- [ ] DockSpace layout manager (egui docking)
 
-### Milestone 1.2 — Shared Panels
+### Milestone 1.2 — Shared Panels ✅ LARGELY COMPLETE
 
-- [ ] Inspector/Properties panel (schema-driven)
-- [ ] Outliner/Hierarchy panel (atlas-ecs SceneGraph)
-- [ ] Content Browser panel (atlas-asset catalog)
-- [ ] Console/Log panel (atlas-core log routing)
-- [ ] Notification Center (severity-filtered)
+- [x] Inspector/Properties panel — `PropertyGrid`, `PropertySection`, `PropertyEntry`, `PropertyValue`
+- [x] Outliner/Hierarchy panel — `OutlinerPanel` (atlas-ecs SceneGraph)
+- [x] Content Browser panel — `AssetBrowserPanel` (atlas-asset catalog)
+- [x] Console/Log panel — `ConsolePanel` (atlas-core log routing, `UiLogCapture`)
+- [x] Notification Center — `NotificationCenter`, `NotificationSeverity`
+- [x] Viewport panel — `ViewportPanel`, `ViewportHost`, `ViewportRegistry`
 
-### Milestone 1.3 — Command System
+### Milestone 1.3 — Command System ✅ PARTIALLY COMPLETE
 
-- [ ] `CommandRegistry`, `CommandHistory`, `ActionMap`
+- [x] `CommandStack` (undo/redo), `CommandHistory`, `ActionMap`
+- [x] `SpawnEntityCommand`, `DeleteEntityCommand`, `RenameEntityCommand`
 - [ ] Command palette (Ctrl+P, fuzzy search)
 - [ ] Keyboard shortcut binding
 
@@ -118,20 +130,33 @@ What exists in Rust today:
 
 ---
 
-## Phase 2 — Game Project Adapter & NovaForge Rust Port Part 1 — Planned
+## Phase 2 — Game Project Adapter & NovaForge Rust Port Part 1 — In Progress
 
 **Goal**: NovaForge game logic begins Rust port. `game_project_adapter.rs` connects to real NovaForge Rust systems.
 
-### Milestone 2.1 — IGameProjectAdapter (Rust)
+> **License note**: All code in `crates/novaforge-game/` is GPL v3.0 (inherited from Veloren via Nova-Forge).
+> Atlas Workspace core crates (`atlas-*`) must never depend on `novaforge-game`.
+> Communication flows through the `IGameProjectAdapter` trait boundary.
 
-- [ ] `IGameProjectAdapter` trait (initialize, shutdown, tool_descriptors, create_panel)
-- [ ] `ProjectSystemsTool` (adapter host)
-- [ ] `NovaForgeAdapter` implementation
+### Milestone 2.0 — NovaForge Assets Infrastructure ✅ COMPLETE
+
+- [x] `novaforge-assets/` directory structure (common/, voxygen/, world/, server/)
+- [x] `Scripts/fetch_novaforge_assets.sh` — downloads LFS assets from Nova-Forge repo
+- [x] `.gitignore` rules: binary assets excluded, directory skeleton tracked
+- [x] `novaforge-assets/README.md` — explains local asset store + re-fetch instructions
+- [x] `NOVAFORGE_ASSETS_DIR` environment variable support in `atlas-asset`
+
+### Milestone 2.1 — IGameProjectAdapter (Rust) ✅ PARTIALLY COMPLETE
+
+- [x] `IGameProjectAdapter` trait (`GameProjectAdapter` in `game_project_adapter.rs`)
+- [x] `EditorSession`, `PieState` — Play-In-Editor session management
+- [x] `NovaForgeAdapter` stub implementing `IGameProjectAdapter`
+- [ ] `ProjectSystemsTool` (adapter host with tool panel registration)
 
 ### Milestone 2.2 — NovaForge Project Bootstrap (Rust)
 
 - [ ] `NovaForgeProjectBootstrap` (validates `.atlas`, loads content roots)
-- [ ] `AssetCatalog` (scans `Content/`, registers assets with UUID)
+- [ ] `AssetCatalog` (scans `novaforge-assets/`, registers assets with UUID)
 - [ ] `DataRegistry` (loads JSON from `Data/`)
 - [ ] `DocumentRegistry`
 
@@ -154,7 +179,14 @@ What exists in Rust today:
 - [ ] ProgressionPanel (XP curve, skill unlock tree)
 - [ ] CharacterRulesPanel (class presets, stat caps)
 
-**Success Criteria**: `NovaForge.atlas` opens in `atlas-editor`, 6 gameplay panels show schema-driven data, 80+ tests
+### Milestone 2.5 — NovaForge ECS Integration (Rust)
+
+- [ ] Port Veloren/NF component types → atlas-ecs `ComponentStore`
+- [ ] Port Veloren/NF system traits → atlas-ecs `SystemRegistry`
+- [ ] Physics bridging → atlas-physics
+- [ ] World generation mapping: NF `world/` heightmap → atlas-pcg `TerrainGenerator`
+
+**Success Criteria**: `NovaForge.atlas` opens in `atlas-editor`, 6 gameplay panels show schema-driven data, NovaForge assets load from `novaforge-assets/`, 80+ tests
 
 ---
 
@@ -271,6 +303,48 @@ What exists in Rust today:
 
 ---
 
+## Phase 7 — Release Build Pipeline — Planned
+
+**Goal**: Full release build pipeline producing distributable packages for Linux, Windows, and macOS.
+
+### Milestone 7.1 — Clean Release Build
+
+- [ ] `cargo build --release --workspace` zero warnings
+- [ ] All `#[allow(dead_code)]` / `#[allow(unused)]` annotations removed or justified
+- [ ] Release profile tuning in `Cargo.toml` (LTO, opt-level, strip)
+
+### Milestone 7.2 — Asset Packaging
+
+- [ ] `Scripts/package_release.sh` — collect binaries + novaforge-assets/ into dist/
+- [ ] Linux: `atlas-workspace`, `atlas-game`, `novaforge-assets/` → `.tar.gz`
+- [ ] Windows: same → `.zip`
+- [ ] macOS: same → `.dmg` (via `cargo-bundle` or hdiutil)
+- [ ] Asset manifest generation (checksums for integrity verification)
+
+### Milestone 7.3 — Makefile Release Targets
+
+- [ ] `make release` — `cargo build --release --workspace`
+- [ ] `make package` — create platform package in `dist/`
+- [ ] `make dist` — build + package + checksum
+
+### Milestone 7.4 — GitHub Actions Release CI
+
+- [ ] Matrix: `ubuntu-latest`, `windows-latest`, `macos-latest`
+- [ ] Triggered on `v*` tags
+- [ ] Uploads release artifacts to GitHub Releases
+- [ ] Shader compilation step in CI
+
+### Milestone 7.5 — NovaForge Standalone Distribution
+
+- [ ] `cargo run --bin atlas-game` boots NovaForge standalone (no editor)
+- [ ] Assets auto-located from `NOVAFORGE_ASSETS_DIR` or embedded path
+- [ ] Release binary includes asset fetch instructions in README
+- [ ] Option to bundle a minimal asset subset for CI smoke testing
+
+**Success Criteria**: `make dist` produces runnable packages on all three platforms, GitHub release pipeline runs on tag push, NovaForge launches from release binary
+
+---
+
 ## VERSION TARGET
 
-**Atlas Workspace v1.0** = Phase 6 complete: 22 fully implemented Rust crates, NovaForge ported to Rust, Vulkan renderer live, PIE working, AtlasAI integrated, 20-tool editor roster, CI + packaging.
+**Atlas Workspace v1.0** = Phase 7 complete: 23 fully implemented Rust crates, NovaForge ported to Rust, Vulkan renderer live, PIE working, AtlasAI integrated, 20-tool editor roster, CI + packaging for all platforms.
