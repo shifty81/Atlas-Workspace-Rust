@@ -97,16 +97,20 @@ impl StarSystem {
     }
 
     fn roll_star_type(rng: &mut atlas_pcg::DeterministicRng) -> StarType {
+        // NOTE: This distribution is intentionally skewed for gameplay variety.
+        // Real stellar populations are ~76% M, ~12% K, ~8% G, etc.; that would
+        // make most systems uninteresting.  Here we weight all types roughly
+        // equally to ensure every encounter has a chance of a dramatic star.
         match rng.next_u32(100) {
-            0..=3   => StarType::M,     // 4%  (bias towards common types last for match ordering)
-            4..=7   => StarType::K,
-            8..=17  => StarType::G,
-            18..=32 => StarType::F,
-            33..=52 => StarType::A,
-            53..=72 => StarType::B,
-            73..=92 => StarType::O,
-            93..=95 => StarType::WhiteDwarf,
-            96..=98 => StarType::NeutronStar,
+            0..=14  => StarType::M,
+            15..=29 => StarType::K,
+            30..=44 => StarType::G,
+            45..=59 => StarType::F,
+            60..=72 => StarType::A,
+            73..=82 => StarType::B,
+            83..=89 => StarType::O,
+            90..=94 => StarType::WhiteDwarf,
+            95..=97 => StarType::NeutronStar,
             _       => StarType::BlackHole,
         }
     }

@@ -139,29 +139,32 @@ impl MeshGraph {
         if self.has_cycle() {
             return false;
         }
-        // Topological sort (Kahn's algorithm)
+        // Topological sort (Kahn's algorithm) — O(V + E)
+        use std::collections::VecDeque;
         let mut in_degree: HashMap<u32, usize> = self.nodes.keys().map(|&id| (id, 0)).collect();
         for edge in &self.edges {
             *in_degree.entry(edge.to_node).or_insert(0) += 1;
         }
-        let mut queue: Vec<u32> = in_degree.iter()
+        // Collect zero-in-degree nodes into a sorted deque for determinism.
+        let mut ready: Vec<u32> = in_degree.iter()
             .filter_map(|(&id, &deg)| if deg == 0 { Some(id) } else { None })
             .collect();
-        queue.sort_unstable(); // deterministic order
+        ready.sort_unstable();
+        let mut queue: VecDeque<u32> = ready.into();
+
         let mut order = Vec::new();
-        while let Some(id) = queue.first().copied() {
-            queue.remove(0);
+        while let Some(id) = queue.pop_front() {
             order.push(id);
-            let successors: Vec<u32> = self.edges.iter()
+            let mut successors: Vec<u32> = self.edges.iter()
                 .filter(|e| e.from_node == id)
                 .map(|e| e.to_node)
                 .collect();
+            successors.sort_unstable(); // deterministic successor ordering
             for succ in successors {
                 let deg = in_degree.get_mut(&succ).unwrap();
                 *deg -= 1;
                 if *deg == 0 {
-                    queue.push(succ);
-                    queue.sort_unstable();
+                    queue.push_back(succ);
                 }
             }
         }

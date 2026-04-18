@@ -108,7 +108,10 @@ fn run_universe_demo() {
             galaxy.clusters.len(),
         );
         let total_planets: usize = galaxy.systems.iter().map(|s| s.planets.len()).sum();
-        let total_asteroids: usize = galaxy.systems.iter().map(|s| s.asteroid_belts.iter().map(|b| b.count()).sum::<usize>()).sum();
+        let total_asteroids: usize = galaxy.systems.iter()
+            .flat_map(|s| s.asteroid_belts.iter())
+            .map(|b| b.count())
+            .sum();
         log::info!("    Total planets: {}  Total asteroids: {}", total_planets, total_asteroids);
     }
 }

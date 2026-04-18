@@ -126,7 +126,7 @@ impl TerrainGenerator {
                     let nx = (x as f64 / w as f64) * cfg.frequency + offset_x;
                     let nz = (z as f64 / h as f64) * cfg.frequency + offset_z;
                     let raw = fbm(nx, nz, 0.0, cfg.octaves, 1.0, cfg.persistence, cfg.lacunarity);
-                    // Map [-1, 1] → [0, max_height]
+        // Map [-1, 1] -> [0, max_height]
                     let normalised = (raw as f32 + 1.0) * 0.5;
                     normalised * cfg.max_height
                 }).collect::<Vec<f32>>()

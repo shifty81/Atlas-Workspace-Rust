@@ -61,19 +61,35 @@ impl PcgManager {
     ///
     /// The `location_salt` further differentiates contexts within the same
     /// level (e.g. a planet index or entity ID).
+    ///
+    /// Each level is mixed with a unique level-specific prime so that
+    /// `(location_salt=10, level=0)` and `(location_salt=9, level=1)` always
+    /// produce different seeds.
     pub fn create_context(
         &self,
         domain: PcgDomain,
         level:  SeedLevel,
         location_salt: u64,
     ) -> PcgContext {
-        let base_seed = self.domain_seed(domain);
+        // Level-specific mixing primes (one per SeedLevel variant).
+        const LEVEL_PRIMES: [u64; 5] = [
+            0x9e37_79b9_7f4a_7c15, // Universe
+            0x6c62_272e_07bb_0142, // Galaxy
+            0x94d0_49bb_1331_11eb, // System
+            0xbf58_476d_1ce4_e5b9, // Sector
+            0xe655_01ae_d3c3_3c41, // Object
+        ];
 
-        // Walk down from Universe to the requested level.
+        let base_seed = self.domain_seed(domain);
         let mut ctx = PcgContext::new(domain, SeedLevel::Universe, base_seed);
-        let target = level as u8;
+        let target = level as usize;
         for l in 0..target {
-            ctx = ctx.child(location_salt + l as u64);
+            // Mix the location salt with a level-unique prime to prevent
+            // seed collisions across different hierarchy depths.
+            let level_salt = location_salt
+                .wrapping_mul(LEVEL_PRIMES[l])
+                .wrapping_add(l as u64 + 1);
+            ctx = ctx.child(level_salt);
         }
         ctx
     }

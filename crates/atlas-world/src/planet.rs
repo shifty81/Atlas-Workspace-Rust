@@ -93,8 +93,9 @@ impl Planet {
 
         let planet_type = Self::roll_planet_type(&mut ctx.rng, config.orbital_radius_au);
         let radius_km   = ctx.rng.next_float_range(1_000.0, 80_000.0);
-        let mass_earth  = (radius_km / 6_371.0).powi(2) * ctx.rng.next_float_range(0.5, 2.0);
-        let gravity_g   = mass_earth / (radius_km / 6_371.0).powi(2);
+        let radius_ratio = radius_km / 6_371.0;
+        let mass_earth  = radius_ratio.powi(2) * ctx.rng.next_float_range(0.5, 2.0);
+        let gravity_g   = mass_earth / radius_ratio.powi(2);
         let biome       = Self::biome_for(planet_type, &mut ctx.rng);
         let atmosphere  = Self::gen_atmosphere(planet_type, &mut ctx.rng);
         let has_rings   = ctx.rng.next_bool(0.1);
