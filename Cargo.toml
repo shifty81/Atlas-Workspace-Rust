@@ -66,7 +66,7 @@ serde            = { version = "1", features = ["derive"] }
 serde_json       = "1"
 
 # Windowing / input
-winit            = { version = "0.29", features = ["rwh_05"] }
+winit            = { version = "0.29", features = ["rwh_05", "rwh_06"] }
 
 # Vulkan
 ash              = "0.37"
@@ -89,6 +89,9 @@ bitflags         = "2"
 # GUI / UI
 egui             = { version = "0.27", default-features = false, features = ["default_fonts"] }
 egui-winit       = { version = "0.27", default-features = false }
+egui-wgpu        = { version = "0.27", default-features = false }
+wgpu             = "0.19"
+pollster         = "0.3"
 
 # Vulkan surface creation helpers
 ash-window       = "0.12"
