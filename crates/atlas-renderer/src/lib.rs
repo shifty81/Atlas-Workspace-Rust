@@ -37,6 +37,7 @@ pub mod pbr_material;
 pub mod post_process;
 pub mod shadow_map;
 pub mod spatial_hash;
+pub mod terrain_mesh;
 
 pub use context::{VulkanContext, QueueFamilyIndices};
 pub use types::{RenderConfig, RendererError, RendererResult};
@@ -52,3 +53,4 @@ pub use spatial_hash::{SpatialEntity, SpatialHash};
 pub use swapchain::{Swapchain, SwapchainConfig, PresentMode};
 pub use frame::{FrameCommands, FrameSync};
 pub use render_loop::{RenderLoop, ClearColor, UiPaintData};
+pub use terrain_mesh::{TerrainVertex, TerrainMesh};
