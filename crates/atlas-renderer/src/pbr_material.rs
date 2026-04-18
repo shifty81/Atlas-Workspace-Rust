@@ -97,3 +97,81 @@ impl PbrMaterial {
 impl Default for PbrMaterial {
     fn default() -> Self { Self::new() }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn default_params_not_emissive() {
+        let p = PbrMaterialParams::default();
+        assert!(!p.is_emissive());
+        assert_eq!(p.metallic, 0.0);
+        assert_eq!(p.roughness, 0.5);
+        assert_eq!(p.ao, 1.0);
+    }
+
+    #[test]
+    fn emissive_intensity_makes_material_emissive() {
+        let mut p = PbrMaterialParams::default();
+        p.emissive_intensity = 1.0;
+        assert!(p.is_emissive());
+    }
+
+    #[test]
+    fn material_id_is_unique() {
+        let m1 = PbrMaterial::new();
+        let m2 = PbrMaterial::new();
+        assert_ne!(m1.id(), m2.id());
+    }
+
+    #[test]
+    fn set_and_get_name() {
+        let mut m = PbrMaterial::new();
+        m.set_name("Stone");
+        assert_eq!(m.name(), "Stone");
+    }
+
+    #[test]
+    fn set_params_stored_correctly() {
+        let mut m = PbrMaterial::new();
+        let mut p = PbrMaterialParams::default();
+        p.metallic = 0.8;
+        m.set_params(p.clone());
+        assert_eq!(m.params().metallic, 0.8);
+    }
+
+    #[test]
+    fn bind_and_get_texture() {
+        let mut m = PbrMaterial::new();
+        m.bind_texture(PbrTextureSlot::Albedo, 100, 1);
+        assert!(m.has_texture(&PbrTextureSlot::Albedo));
+        let binding = m.get_texture_binding(&PbrTextureSlot::Albedo).unwrap();
+        assert_eq!(binding.texture_id, 100);
+        assert_eq!(binding.sampler_id, 1);
+    }
+
+    #[test]
+    fn unbind_texture() {
+        let mut m = PbrMaterial::new();
+        m.bind_texture(PbrTextureSlot::Normal, 5, 1);
+        m.unbind_texture(&PbrTextureSlot::Normal);
+        assert!(!m.has_texture(&PbrTextureSlot::Normal));
+        assert_eq!(m.texture_binding_count(), 0);
+    }
+
+    #[test]
+    fn validate_default_material() {
+        let m = PbrMaterial::new();
+        assert!(m.validate());
+    }
+
+    #[test]
+    fn validate_fails_out_of_range_metallic() {
+        let mut m = PbrMaterial::new();
+        let mut p = PbrMaterialParams::default();
+        p.metallic = 1.5;
+        m.set_params(p);
+        assert!(!m.validate());
+    }
+}

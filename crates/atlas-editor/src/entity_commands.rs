@@ -122,3 +122,106 @@ impl EditorCommand for DeleteEntityCommand {
         self.was_alive = false;
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use atlas_ecs::{World, Name};
+
+    #[test]
+    fn spawn_apply_creates_entity() {
+        let mut w = World::new();
+        let mut cmd = SpawnEntityCommand::new();
+        cmd.apply(&mut w);
+        let id = cmd.spawned_id.unwrap();
+        assert!(w.entities.is_alive(id));
+        assert!(w.components.get::<Name>(id).is_some());
+    }
+
+    #[test]
+    fn spawn_with_name_applies_label() {
+        let mut w = World::new();
+        let mut cmd = SpawnEntityCommand::with_name("Rock");
+        cmd.apply(&mut w);
+        let id = cmd.spawned_id.unwrap();
+        assert_eq!(w.components.get::<Name>(id).unwrap().0, "Rock");
+    }
+
+    #[test]
+    fn spawn_revert_removes_entity() {
+        let mut w = World::new();
+        let mut cmd = SpawnEntityCommand::new();
+        cmd.apply(&mut w);
+        let id = cmd.spawned_id.unwrap();
+        cmd.revert(&mut w);
+        assert!(!w.entities.is_alive(id));
+    }
+
+    #[test]
+    fn rename_apply_changes_name() {
+        let mut w = World::new();
+        let e = w.spawn();
+        w.components.add(e, Name::new("Old"));
+        let mut cmd = RenameEntityCommand::new(e, "New");
+        cmd.apply(&mut w);
+        assert_eq!(w.components.get::<Name>(e).unwrap().0, "New");
+    }
+
+    #[test]
+    fn rename_revert_restores_old_name() {
+        let mut w = World::new();
+        let e = w.spawn();
+        w.components.add(e, Name::new("Original"));
+        let mut cmd = RenameEntityCommand::new(e, "Changed");
+        cmd.apply(&mut w);
+        cmd.revert(&mut w);
+        assert_eq!(w.components.get::<Name>(e).unwrap().0, "Original");
+    }
+
+    #[test]
+    fn delete_apply_removes_entity() {
+        let mut w = World::new();
+        let e = w.spawn();
+        w.components.add(e, Name::new("Target"));
+        let mut cmd = DeleteEntityCommand::new(e);
+        cmd.apply(&mut w);
+        assert!(!w.entities.is_alive(e));
+    }
+
+    #[test]
+    fn delete_revert_restores_entity_with_name() {
+        let mut w = World::new();
+        let e = w.spawn();
+        w.components.add(e, Name::new("Crate"));
+        let mut cmd = DeleteEntityCommand::new(e);
+        cmd.apply(&mut w);
+        assert_eq!(w.entities.count(), 0);
+        cmd.revert(&mut w);
+        // A new entity should exist with the saved name
+        assert_eq!(w.entities.count(), 1);
+        let new_id = w.entities.alive()[0];
+        assert_eq!(w.components.get::<Name>(new_id).unwrap().0, "Crate");
+    }
+
+    #[test]
+    fn delete_apply_on_dead_entity_is_noop() {
+        let mut w = World::new();
+        let e = w.spawn();
+        w.despawn(e);
+        let mut cmd = DeleteEntityCommand::new(e);
+        cmd.apply(&mut w); // should not panic
+        assert!(!cmd.was_alive);
+    }
+
+    #[test]
+    fn spawn_description() {
+        let cmd = SpawnEntityCommand::new();
+        assert_eq!(cmd.description(), "Spawn Entity");
+    }
+
+    #[test]
+    fn rename_description() {
+        let cmd = RenameEntityCommand::new(1, "X");
+        assert_eq!(cmd.description(), "Rename Entity");
+    }
+}

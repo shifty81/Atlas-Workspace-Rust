@@ -54,3 +54,88 @@ impl SelectionState {
         self.selected.iter().copied()
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn default_is_empty() {
+        let s = SelectionState::new();
+        assert!(s.is_empty());
+        assert_eq!(s.count(), 0);
+        assert!(s.primary().is_none());
+    }
+
+    #[test]
+    fn select_one_clears_previous() {
+        let mut s = SelectionState::new();
+        s.select_one(1);
+        s.select_one(2);
+        assert_eq!(s.count(), 1);
+        assert!(s.is_selected(2));
+        assert!(!s.is_selected(1));
+        assert_eq!(s.primary(), Some(2));
+    }
+
+    #[test]
+    fn add_multiple() {
+        let mut s = SelectionState::new();
+        s.add(1);
+        s.add(2);
+        s.add(3);
+        assert_eq!(s.count(), 3);
+        assert!(s.is_selected(1) && s.is_selected(2) && s.is_selected(3));
+    }
+
+    #[test]
+    fn add_sets_primary_on_first() {
+        let mut s = SelectionState::new();
+        s.add(5);
+        assert_eq!(s.primary(), Some(5));
+        s.add(6);
+        assert_eq!(s.primary(), Some(5)); // doesn't change
+    }
+
+    #[test]
+    fn toggle_adds_and_removes() {
+        let mut s = SelectionState::new();
+        s.toggle(10);
+        assert!(s.is_selected(10));
+        s.toggle(10);
+        assert!(!s.is_selected(10));
+    }
+
+    #[test]
+    fn toggle_primary_cleared_when_removed() {
+        let mut s = SelectionState::new();
+        s.toggle(1);
+        s.toggle(2);
+        assert_eq!(s.primary(), Some(1));
+        s.toggle(1); // remove primary
+        // primary should now be the other selected entity
+        assert!(s.primary().is_some());
+        assert!(s.is_selected(2));
+    }
+
+    #[test]
+    fn clear_empties_selection() {
+        let mut s = SelectionState::new();
+        s.add(1);
+        s.add(2);
+        s.clear();
+        assert!(s.is_empty());
+        assert!(s.primary().is_none());
+    }
+
+    #[test]
+    fn iter_yields_all_selected() {
+        let mut s = SelectionState::new();
+        s.add(10);
+        s.add(20);
+        s.add(30);
+        let mut collected: Vec<_> = s.iter().collect();
+        collected.sort();
+        assert_eq!(collected, vec![10, 20, 30]);
+    }
+}

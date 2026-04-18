@@ -132,3 +132,66 @@ impl ShaderIrCompiler {
         m
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn default_module_is_valid() {
+        let m = ShaderIrModule::default();
+        assert!(m.validate());
+        assert_eq!(m.stage, IrShaderStage::Vertex);
+    }
+
+    #[test]
+    fn hash_is_deterministic() {
+        let m = ShaderIrModule::default();
+        assert_eq!(m.hash(), m.hash());
+    }
+
+    #[test]
+    fn hash_changes_with_instructions() {
+        let m1 = ShaderIrModule::default();
+        let mut m2 = ShaderIrModule::default();
+        m2.instructions.push(ShaderInstruction { op: ShaderOp::Nop, operand0: 1, ..Default::default() });
+        assert_ne!(m1.hash(), m2.hash());
+    }
+
+    #[test]
+    fn compile_valid_module_succeeds() {
+        let mut compiler = ShaderIrCompiler::new();
+        let mut m = ShaderIrModule::default();
+        assert!(compiler.compile(&mut m));
+        assert!(compiler.errors().is_empty());
+    }
+
+    #[test]
+    fn create_passthrough_vertex_is_valid() {
+        let compiler = ShaderIrCompiler::new();
+        let m = compiler.create_passthrough_vertex();
+        assert_eq!(m.stage, IrShaderStage::Vertex);
+        assert!(!m.instructions.is_empty());
+        assert!(m.validate());
+    }
+
+    #[test]
+    fn create_solid_color_fragment_has_four_load_consts() {
+        let compiler = ShaderIrCompiler::new();
+        let m = compiler.create_solid_color_fragment(1.0, 0.0, 0.5, 1.0);
+        assert_eq!(m.stage, IrShaderStage::Fragment);
+        let load_const_count = m.instructions.iter().filter(|i| i.op == ShaderOp::LoadConst).count();
+        assert_eq!(load_const_count, 4);
+        assert!(m.validate());
+    }
+
+    #[test]
+    fn stage_default() {
+        assert_eq!(IrShaderStage::default(), IrShaderStage::Vertex);
+    }
+
+    #[test]
+    fn shader_op_default() {
+        assert_eq!(ShaderOp::default(), ShaderOp::Nop);
+    }
+}

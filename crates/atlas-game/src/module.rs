@@ -48,3 +48,35 @@ impl GameModule for NullGameModule {
 
     fn name(&self) -> &str { "NullGame" }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use atlas_ecs::World;
+
+    #[test]
+    fn null_module_name() {
+        let m = NullGameModule;
+        assert_eq!(m.name(), "NullGame");
+    }
+
+    #[test]
+    fn null_module_init_does_not_panic() {
+        let mut m = NullGameModule;
+        let mut w = World::new();
+        m.init(GameInitContext { world: &mut w });
+    }
+
+    #[test]
+    fn null_module_tick_does_not_panic() {
+        let mut m = NullGameModule;
+        let mut w = World::new();
+        m.tick(GameTickContext { world: &mut w, delta_s: 0.016, elapsed_s: 0.0 });
+    }
+
+    #[test]
+    fn null_module_shutdown_does_not_panic() {
+        let mut m = NullGameModule;
+        m.shutdown();
+    }
+}

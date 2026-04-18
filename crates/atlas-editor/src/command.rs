@@ -69,3 +69,115 @@ impl CommandStack {
 impl Default for CommandStack {
     fn default() -> Self { Self::new(64) }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use atlas_ecs::World;
+
+    // A simple counter command that increments/decrements a shared value
+    struct IncrCmd { amount: i32 }
+
+    impl EditorCommand for IncrCmd {
+        fn description(&self) -> &str { "Increment" }
+        fn apply(&mut self, _world: &mut World) { /* we track externally */ }
+        fn revert(&mut self, _world: &mut World) {}
+    }
+
+    struct TagCmd { tag: &'static str }
+    impl EditorCommand for TagCmd {
+        fn description(&self) -> &str { self.tag }
+        fn apply(&mut self, _world: &mut World) {}
+        fn revert(&mut self, _world: &mut World) {}
+    }
+
+    fn world() -> World { World::new() }
+
+    #[test]
+    fn empty_stack_cannot_undo_or_redo() {
+        let mut stack = CommandStack::new(10);
+        assert!(!stack.can_undo());
+        assert!(!stack.can_redo());
+        assert!(stack.undo_description().is_none());
+        assert!(stack.redo_description().is_none());
+    }
+
+    #[test]
+    fn execute_pushes_to_undo_stack() {
+        let mut stack = CommandStack::new(10);
+        let mut w = world();
+        stack.execute(Box::new(TagCmd { tag: "First" }), &mut w);
+        assert!(stack.can_undo());
+        assert!(!stack.can_redo());
+        assert_eq!(stack.undo_description(), Some("First"));
+    }
+
+    #[test]
+    fn undo_moves_to_redo_stack() {
+        let mut stack = CommandStack::new(10);
+        let mut w = world();
+        stack.execute(Box::new(TagCmd { tag: "A" }), &mut w);
+        stack.undo(&mut w);
+        assert!(!stack.can_undo());
+        assert!(stack.can_redo());
+        assert_eq!(stack.redo_description(), Some("A"));
+    }
+
+    #[test]
+    fn redo_moves_back_to_undo() {
+        let mut stack = CommandStack::new(10);
+        let mut w = world();
+        stack.execute(Box::new(TagCmd { tag: "B" }), &mut w);
+        stack.undo(&mut w);
+        stack.redo(&mut w);
+        assert!(stack.can_undo());
+        assert!(!stack.can_redo());
+    }
+
+    #[test]
+    fn execute_clears_redo_stack() {
+        let mut stack = CommandStack::new(10);
+        let mut w = world();
+        stack.execute(Box::new(TagCmd { tag: "A" }), &mut w);
+        stack.undo(&mut w);
+        assert!(stack.can_redo());
+        stack.execute(Box::new(TagCmd { tag: "B" }), &mut w);
+        assert!(!stack.can_redo());
+    }
+
+    #[test]
+    fn capacity_is_enforced() {
+        let mut stack = CommandStack::new(3);
+        let mut w = world();
+        for t in ["A", "B", "C", "D", "E"] {
+            stack.execute(Box::new(TagCmd { tag: t }), &mut w);
+        }
+        // Only last 3 should be on the undo stack
+        let mut descriptions = vec![];
+        while stack.can_undo() {
+            descriptions.push(stack.undo_description().unwrap().to_string());
+            stack.undo(&mut w);
+        }
+        assert!(descriptions.len() <= 3);
+    }
+
+    #[test]
+    fn clear_empties_both_stacks() {
+        let mut stack = CommandStack::new(10);
+        let mut w = world();
+        stack.execute(Box::new(TagCmd { tag: "X" }), &mut w);
+        stack.undo(&mut w);
+        stack.clear();
+        assert!(!stack.can_undo());
+        assert!(!stack.can_redo());
+    }
+
+    #[test]
+    fn undo_description_reflects_top_of_stack() {
+        let mut stack = CommandStack::new(10);
+        let mut w = world();
+        stack.execute(Box::new(TagCmd { tag: "first" }), &mut w);
+        stack.execute(Box::new(TagCmd { tag: "second" }), &mut w);
+        assert_eq!(stack.undo_description(), Some("second"));
+    }
+}

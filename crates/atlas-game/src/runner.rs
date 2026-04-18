@@ -140,3 +140,64 @@ impl GameRunner {
     pub fn tick_count(&self) -> u64 { self.tick_count }
     pub fn elapsed_s(&self)  -> f32  { self.elapsed_s }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::module::{GameModule, GameInitContext, GameTickContext, NullGameModule};
+
+    #[test]
+    fn new_runner_starts_at_zero() {
+        let runner = GameRunner::new(GameRunConfig::default());
+        assert_eq!(runner.tick_count(), 0);
+        assert_eq!(runner.elapsed_s(), 0.0);
+    }
+
+    #[test]
+    fn run_exits_after_max_ticks() {
+        let cfg = GameRunConfig {
+            tick_rate: 60,
+            max_ticks_frame: 60,
+            max_ticks_total: 10,
+            pie_mode: false,
+        };
+        let mut runner = GameRunner::new(cfg);
+        let mut module = NullGameModule;
+        let result = runner.run(&mut module);
+        assert_eq!(result, RunResult::Ok);
+        assert_eq!(runner.tick_count(), 10);
+    }
+
+    #[test]
+    fn elapsed_increases_proportional_to_ticks() {
+        let tick_rate = 60u32;
+        let ticks = 60u64;
+        let cfg = GameRunConfig {
+            tick_rate,
+            max_ticks_frame: 120,
+            max_ticks_total: ticks,
+            pie_mode: false,
+        };
+        let mut runner = GameRunner::new(cfg);
+        let mut module = NullGameModule;
+        runner.run(&mut module);
+        let expected_s = ticks as f32 / tick_rate as f32;
+        assert!((runner.elapsed_s() - expected_s).abs() < 1e-4);
+    }
+
+    #[test]
+    fn world_mut_returns_world() {
+        let mut runner = GameRunner::new(GameRunConfig::default());
+        let e = runner.world_mut().spawn();
+        assert!(runner.world_mut().entities.is_alive(e));
+    }
+
+    #[test]
+    fn default_config_tick_rate_60() {
+        let cfg = GameRunConfig::default();
+        assert_eq!(cfg.tick_rate, 60);
+        assert_eq!(cfg.max_ticks_frame, 8);
+        assert_eq!(cfg.max_ticks_total, 0);
+        assert!(!cfg.pie_mode);
+    }
+}
