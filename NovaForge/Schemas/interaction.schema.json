@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://novaforge.dev/schemas/interaction.schema.json",
+  "title": "Interaction Contract",
+  "description": "Defines interaction requirements for a target entity or system.",
+  "type": "object",
+  "required": ["interaction_type"],
+  "properties": {
+    "interaction_type": {
+      "type": "string",
+      "enum": ["passive", "physical", "linked", "secured"],
+      "description": "Interaction tier: passive (no requirements), physical (tool), linked (interface port), secured (port + breach)."
+    },
+    "requires_port": {
+      "type": "boolean",
+      "default": false,
+      "description": "If true, interface port module must be installed."
+    },
+    "requires_helmet": {
+      "type": "boolean",
+      "default": false,
+      "description": "If true, helmet must be deployed for HUD feedback."
+    },
+    "requires_module": {
+      "type": "string",
+      "description": "Module ID that must be installed for this interaction."
+    },
+    "required_rig_tier": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Minimum R.I.G. tier for this interaction."
+    },
+    "breach_difficulty": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 10,
+      "default": 0,
+      "description": "Breach minigame difficulty. 0 = no breach needed."
+    },
+    "power_cost": {
+      "type": "number",
+      "minimum": 0,
+      "default": 0,
+      "description": "Continuous power draw during interaction (kW)."
+    },
+    "animation_id": {
+      "type": "string",
+      "description": "Animation to play during interaction."
+    }
+  },
+  "additionalProperties": false
+}

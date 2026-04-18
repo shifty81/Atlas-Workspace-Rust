@@ -1,0 +1,28 @@
+[plugin]
+id = "atlas-sample"
+name = "Atlas Sample"
+version = "0.1.0"
+type = "game"
+
+[engine]
+required_version = ">=0.1.0"
+determinism = true
+rollback = false
+server_authoritative = false
+
+[capabilities]
+uses_graphs = true
+uses_schemas = false
+uses_assetgraph = false
+uses_networking = false
+uses_ai_assist = false
+
+[content]
+graphs_path = "worlds"
+assets_path = "assets"
+data_path = "data"
+config_path = "config"
+
+[editor]
+show_in_launcher = true
+default_project = false

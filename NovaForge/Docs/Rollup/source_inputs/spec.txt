@@ -1,0 +1,3325 @@
+
+
+
+readutit the story and game systems please
+
+You have a strong core loop and a coherent system stack. The issue is not ideas. It is structure, prioritization, and enforceability. Here is a clean audit.
+
+1. CORE GAME IDENTITY (LOCK THIS)
+Game type
+
+3D FPS survival sandbox
+
+Modular ship + base construction
+
+Voxel-backed destruction + low-poly presentation
+
+Mid/late-game fleet command layer
+
+Non-negotiables already aligned
+
+Voxel = truth layer (damage, structure, mining)
+
+Low-poly = visual wrapper
+
+R.I.G. = player progression platform
+
+Ships = modular + PCG-capable
+
+Editor = same pipeline as runtime
+
+This is solid. Do not expand scope here.
+
+2. CORE GAME LOOP (CURRENT STATE)
+Early Game Loop (WORKS)
+Input:
+
+Player spawns with minimal R.I.G.
+
+Limited life support
+
+No ship or basic craft
+
+Loop:
+
+Gather resources (voxel interaction)
+
+Maintain survival (oxygen, power)
+
+Craft basic modules
+
+Expand R.I.G.
+
+Output:
+
+Player reaches mobility + basic construction capability
+
+✔ This is clear and viable.
+
+Mid Game Loop (PARTIAL)
+Input:
+
+Player has functional R.I.G.
+
+Access to ship modules
+
+Loop:
+
+Build ship modules (32x32x32 voxel units)
+
+Connect via snap/socket system
+
+Install systems (power, hydrogen, solar)
+
+Explore / expand
+
+Output:
+
+Functional ship with internal traversal
+
+⚠ Missing enforcement:
+
+No finalized module schema contract
+
+No strict power / resource simulation spec
+
+No defined failure states
+
+Late Game Loop (DEFINED BUT NOT SYSTEMIZED)
+Input:
+
+Multiple ships
+
+Resource pipeline established
+
+Loop:
+
+Fleet creation (>5 ships)
+
+Assign roles
+
+Command layer unlock
+
+Output:
+
+Strategic gameplay layer
+
+⚠ Critical gap:
+
+Fleet system is conceptual only
+
+No command interface spec
+
+No AI/automation spec
+
+3. SYSTEM STACK AUDIT
+3.1 VOXEL SYSTEM (STRONG)
+You defined:
+
+32x32x32 modular units
+
+Used for:
+
+structure
+
+damage
+
+mining
+
+PCG
+
+✔ This is correct foundation.
+
+Missing
+
+Voxel material definition table
+
+Damage propagation rules
+
+Structural integrity rules
+
+3.2 LOW-POLY WRAP (CLEAR DIRECTION)
+You want:
+
+Borderlands-style shading
+
+Mesh generated from voxel structure
+
+Damage reflected visually
+
+✔ Correct hybrid model.
+
+Missing
+
+Mesh generation pipeline spec
+
+LOD rules
+
+Update frequency (real-time vs baked)
+
+3.3 MODULE SYSTEM (CRITICAL SYSTEM, NOT COMPLETE)
+Defined:
+
+32x32x32 voxel-built modules
+
+Snap together
+
+Internal layouts (stairs, ladders, elevators)
+
+Missing hard specs
+
+Module manifest format
+
+Connection rules (grid, sockets, orientation)
+
+Interior nav graph generation
+
+Airtight / pressurization logic
+
+This is a major gap.
+
+3.4 SHIP SYSTEMS (PARTIAL)
+Mentioned:
+
+Solar
+
+Hydrogen
+
+Engineering / medbay / cockpit
+
+But no system model.
+
+Missing
+
+Power graph (generation → storage → consumption)
+
+Resource simulation (hydrogen flow, oxygen)
+
+System failure behavior
+
+Right now: concept only.
+
+3.5 R.I.G. SYSTEM (STRONG DESIGN, NEEDS IMPLEMENTATION SPEC)
+Defined well:
+
+Modular exosuit
+
+Backpack core
+
+Deployable helmet
+
+Module slots (utility, armor, etc.)
+
+Missing
+
+Stat system
+
+Module API (what a module actually does)
+
+HUD data contract
+
+3.6 BUILDING SYSTEMS (DUAL MODE, GOOD IDEA)
+You have:
+
+Mode 1: Voxel Builder (core)
+32x32x32 construction
+
+Mode 2: Starbase-style detailed builder
+Panel-level editing
+
+Visual polish
+
+✔ This is powerful.
+
+Missing
+
+Transition rules between modes
+
+Authority: which system owns final geometry
+
+Undo/redo + validation rules
+
+3.7 PCG (DIRECTION EXISTS, NOT GROUNDED)
+You want:
+
+Seed-based generation
+
+Ships/modules can be PCG
+
+Missing
+
+Input seed schema
+
+Constraints (valid builds)
+
+Output validation rules
+
+3.8 EDITOR INTEGRATION (VERY STRONG DIRECTION)
+Key idea:
+
+Same system used in editor and runtime
+
+✔ This is high value.
+
+Missing
+
+Asset bundle schema (you started this)
+
+Import/export pipeline
+
+Validation layer
+
+4. BIGGEST GAPS (HIGH PRIORITY)
+These are blocking systems.
+
+GAP 1 — CANONICAL MODULE SCHEMA
+You need:
+
+JSON schema for:
+
+voxels
+
+sockets
+
+systems
+
+zones
+
+metadata
+
+Without this:
+
+nothing connects cleanly
+
+PCG breaks
+
+editor/runtime diverge
+
+GAP 2 — POWER + RESOURCE SIMULATION
+Define:
+
+Power graph
+
+Resource flow (oxygen, hydrogen)
+
+Consumption rules
+
+Failure states
+
+This drives gameplay.
+
+GAP 3 — DAMAGE + STRUCTURAL INTEGRITY
+You need:
+
+Voxel damage rules
+
+Structural collapse conditions
+
+Leak/pressure system
+
+This makes voxels meaningful.
+
+GAP 4 — NAVIGATION + INTERIOR LOGIC
+Ships have:
+
+ladders
+
+elevators
+
+rooms
+
+You need:
+
+auto-generated nav graph
+
+zone system (rooms, pressurization)
+
+GAP 5 — BUILD VALIDATION SYSTEM
+Before placement:
+
+Is module valid?
+
+Is connection valid?
+
+Is system supported?
+
+Right now: undefined.
+
+5. WHAT IS ALREADY EXCELLENT
+These are high-quality decisions:
+
+Voxel + low-poly hybrid → correct
+
+R.I.G. as progression → strong identity
+
+Modular ships → scalable system
+
+Editor = runtime parity → very high leverage
+
+Fleet as late-game unlock → good pacing
+
+Do not change these.
+
+6. WHAT SHOULD BE FROZEN VS EXPANDED
+Freeze (do not expand)
+New gameplay features
+
+New module types
+
+Fleet complexity
+
+Expand immediately
+Module schema
+
+Resource simulation
+
+Damage system
+
+Asset pipeline
+
+7. NEXT BEST ARTIFACTS (ORDERED)
+Execute in this order:
+
+Canonical Asset Bundle Schema Pack v1
+(you already started this, finish it)
+
+Module System Contract v1
+
+sockets
+
+snaps
+
+layout
+
+systems attachment
+
+Power + Resource Graph Spec v1
+
+Voxel Damage + Integrity Spec v1
+
+Nav + Zone System Spec v1
+
+8. HARD TRUTH
+You are not blocked by complexity.
+You are blocked by missing contracts.
+
+Until schemas and rules exist:
+
+PCG cannot stabilize
+
+Editor cannot validate
+
+Systems cannot interact cleanly
+
+If you want highest leverage next step:
+
+Say:
+“generate Module System Contract v1 (strict JSON + rules)”
+
+That is the keystone for everything else.
+
+
+build out the loop to get ovff planet better  like shaft that youopen to escape  freight elevator system fills with sand due to the sand dunes covering hole debris and  materials also base materials  from dirt and sand that can be used to  centrifuge to get basic  building block materials out of all the sand before you can reach surface this sand will have enough to be able to get freight elevator online to leave  bunker and be able to reach surface for finding new materials for research and upgrade 
+
+Build this as a contained early-game progression loop with hard gates and resource conversion. No new systems. Use voxel + resource + module contracts only.
+
+1. LOOP NAME
+Subsurface Escape Loop v1
+
+Purpose:
+
+Teach voxel interaction
+
+Introduce resource processing
+
+Force system repair (power + mechanics)
+
+Gate access to surface
+
+2. START STATE
+Player spawns in:
+
+Buried bunker
+
+Shaft to surface exists but is collapsed
+
+Freight elevator present but non-functional
+
+Initial conditions
+No external access
+
+Limited R.I.G. power
+
+Minimal tools
+
+Sand intrusion active
+
+3. CORE LOOP STRUCTURE
+LOOP CYCLE
+Excavate sand (voxel removal)
+
+Collect raw material (sand + debris)
+
+Process via centrifuge
+
+Extract usable materials
+
+Repair elevator systems
+
+Clear shaft vertically
+
+Stabilize structure
+
+Repeat until surface reached
+
+4. MATERIAL FLOW (CRITICAL)
+Raw Input
+Sand voxels
+
+Debris voxels (metal scraps, broken parts)
+
+Processing Node
+Centrifuge Module
+
+Function:
+
+Converts bulk sand into usable outputs
+
+Output Table (example)
+Input	Output	Use Case
+Sand	Silicates	Basic construction
+Sand	Trace metals	Wiring
+Debris	Scrap metal	Structural repair
+Debris	Components	Elevator parts
+Key Rule
+No direct crafting from raw sand.
+Everything goes through centrifuge.
+
+This forces loop engagement.
+
+5. FREIGHT ELEVATOR SYSTEM
+Initial State
+Buried under sand
+
+Rails partially blocked
+
+Power offline
+
+Control panel damaged
+
+Repair Requirements
+1. Structural Clearance
+Remove sand voxels along shaft
+
+Detect “blocked path” state
+
+2. Power System
+Rebuild:
+
+Basic generator OR battery
+
+Wiring from bunker to elevator
+
+3. Mechanical Repair
+Replace:
+
+Lift motor components
+
+Cable integrity (or rail system)
+
+4. Control System
+Reconstruct panel using:
+
+Basic electronics from centrifuge output
+
+Activation Condition
+Elevator becomes usable only if:
+
+Shaft path is clear (continuous vertical space)
+
+Power graph is valid
+
+Mechanical integrity ≥ threshold
+
+6. SHAFT SYSTEM
+Shaft Behavior
+Filled dynamically with:
+
+Sand
+
+Debris pockets
+
+Voxel Rules
+Sand is:
+
+Loose
+
+Falls if unsupported
+
+Debris is:
+
+Rigid
+
+Requires tool to break
+
+Hazard Layer
+Sand collapse if over-mined
+
+Oxygen drain in deep shaft
+
+Darkness (forces light crafting)
+
+7. PROGRESSION GATES
+Gate 1 — Tool Capability
+Player must:
+
+Build basic excavation tool upgrade
+
+Unlock via:
+
+centrifuge outputs
+
+Gate 2 — Processing
+Player must:
+
+Build centrifuge
+
+Without it:
+
+no usable materials
+
+Gate 3 — Power
+Player must:
+
+Establish stable power loop
+
+Gate 4 — Shaft Integrity
+Player must:
+
+Prevent collapse
+
+Learn structural support placement
+
+Gate 5 — Elevator Activation
+Final gate before surface
+
+8. FAIL STATES
+System needs pressure.
+
+Shaft collapses → re-blocks progress
+
+Power failure → elevator unusable
+
+Resource starvation → forced re-excavation
+
+Oxygen depletion → retreat to bunker
+
+9. PLAYER LEARNING OUTCOMES
+This loop teaches:
+
+Voxel destruction rules
+
+Material processing pipeline
+
+Power system basics
+
+Structural integrity
+
+Module repair workflow
+
+All core systems introduced before open world.
+
+10. TRANSITION TO SURFACE
+When elevator reaches top:
+
+Output State
+Player exits bunker
+
+Gains access to:
+
+New materials
+
+Solar exposure
+
+Exploration loop
+
+System Unlocks
+Ship construction begins
+
+Expanded R.I.G. modules
+
+External base building
+
+11. MINIMAL SYSTEMS REQUIRED (NO SCOPE CREEP)
+You only need:
+
+Voxel grid + physics (falling sand)
+
+Centrifuge processor (conversion table)
+
+Basic power graph
+
+Elevator entity with state machine
+
+Simple structural integrity check
+
+Nothing else.
+
+12. NEXT BEST ARTIFACT
+Highest leverage next step:
+
+“Centrifuge + Resource Conversion Spec v1 (exact tables + code-ready structs)”
+
+That will lock the entire loop into something implementable.
+
+
+rig needs to be made from the first basic back  pack system you make all rig  attachments are determined by back pack base with its own progression loop as well the starter rig will just have pack and helmet for breathing on surface and survive sand storms
+
+Lock this as a parallel progression loop that feeds the escape loop.
+
+1. SYSTEM NAME
+R.I.G. Core Progression Loop v1
+
+Backpack = root node.
+Everything attaches to it.
+No backpack upgrade → no capability expansion.
+
+2. START STATE (SYNC WITH BUNKER LOOP)
+Player begins with:
+
+Starter R.I.G.
+Frame: minimal backpack chassis
+
+Helmet: deployable (oxygen + storm protection)
+
+No arms, no tools, no modules
+
+Capabilities
+Basic survival only
+
+No efficient excavation
+
+No system interaction beyond simple use
+
+This forces dependency on progression.
+
+3. CORE DESIGN RULE
+Backpack defines everything
+
+It controls:
+
+Module slots
+
+Power capacity
+
+Resource storage
+
+System routing
+
+HUD capability
+
+No independent gear system.
+No bypass.
+
+4. R.I.G. LOOP STRUCTURE
+LOOP CYCLE
+Gather raw materials (sand/debris)
+
+Process via centrifuge
+
+Craft backpack upgrades
+
+Unlock new module slots
+
+Attach modules
+
+Increase capability
+
+Access deeper shaft layers
+
+5. BACKPACK TIERS
+Tier 0 — Starter Pack
+Capabilities:
+
+Oxygen support (helmet only)
+
+Minimal battery
+
+1 internal slot (locked)
+
+Limits:
+
+No tool mounting
+
+No external modules
+
+Low storage
+
+Tier 1 — Utility Pack
+Unlock via:
+
+centrifuge outputs
+
+Adds:
+
+Tool mount port (enables mining tool)
+
+Small battery upgrade
+
+Basic inventory expansion
+
+Effect:
+
+Player can now excavate efficiently
+
+Tier 2 — Modular Pack
+Adds:
+
+Multiple module slots:
+
+Utility
+
+Power
+
+Support
+
+Power routing system
+
+Effect:
+
+Enables:
+
+better tools
+
+lighting
+
+mobility aids
+
+Tier 3 — Integrated R.I.G.
+Adds:
+
+Arm mount ports
+
+Wrist terminal
+
+Expanded HUD
+
+Effect:
+
+Full interaction capability
+
+Advanced systems
+
+6. MODULE CATEGORIES
+All modules attach to backpack.
+
+Utility
+Mining tool
+
+Scanner
+
+Light
+
+Power
+Battery packs
+
+Micro generators
+
+Support
+Oxygen tank expansion
+
+Sand filter
+
+Cooling
+
+Armor (later)
+Damage resistance
+
+7. EARLY GAME CRITICAL MODULES
+Tie directly into escape loop.
+
+1. Basic Excavation Tool
+Required for sand removal efficiency
+
+2. Portable Light
+Shaft visibility
+
+3. Sand Filter
+Prevents storm damage / intake issues
+
+4. Oxygen Booster
+Extends time away from bunker
+
+8. RESOURCE DEPENDENCY
+All R.I.G. upgrades require:
+
+Processed materials only
+
+No raw crafting
+
+This ties R.I.G. loop to centrifuge loop.
+
+9. FAILURE STATES (IMPORTANT)
+R.I.G. must matter.
+
+Power depletion → tools disabled
+
+Oxygen depletion → forced retreat
+
+Overload → module shutdown
+
+Sand exposure → filter required
+
+10. INTERLOCK WITH SHAFT LOOP
+Early Phase
+Weak R.I.G. → slow excavation
+
+Mid Phase
+Upgraded R.I.G. → deeper access
+
+Final Phase
+Fully functional R.I.G. → elevator repair possible
+
+R.I.G. progression gates shaft progress.
+
+11. HELMET SYSTEM
+Starter helmet:
+
+Provides:
+
+Oxygen
+
+Sandstorm protection
+
+Limitations:
+
+Low durability
+
+Limited filtering
+
+Upgrades later:
+
+Improved filters
+
+HUD overlays
+
+Environmental resistance
+
+12. SYSTEM CONTRACT (WHAT YOU MUST DEFINE NEXT)
+You need a strict structure.
+
+Backpack Definition (example fields)
+tier
+
+power_capacity
+
+slot_count
+
+allowed_module_types
+
+internal_systems
+
+Module Definition
+type
+
+power_draw
+
+required_tier
+
+function
+
+Without this:
+
+system will fragment
+
+13. WHAT THIS FIXES
+This design:
+
+Prevents feature creep
+
+Forces progression clarity
+
+Links survival → building → mobility
+
+Keeps player grounded early
+
+14. HARD RULES (DO NOT BREAK)
+No module without backpack slot
+
+No slot without backpack tier
+
+No upgrade without processed materials
+
+No bypass tools
+
+15. NEXT BEST ARTIFACT
+Highest leverage next step:
+
+“R.I.G. System Contract v1 (C++ structs + JSON schema + slot rules)”
+
+This will lock:
+
+modules
+
+progression
+
+power system integration
+
+and prevent system drift.
+
+
+the rig once equipped essentially gices access to  equipment menu unlock allowing head shoulders arms  torso back front  arm attachments  shoulder attachments drone ports for small  drone that you can  give orders to 
+
+Integrate this as R.I.G. Equipment Layer v1. Keep backpack as root authority. Equipment is an extension, not a parallel system.
+
+1. ACTIVATION RULE
+Equipment Menu unlocks only when:
+
+Backpack Tier ≥ 2 (Modular Pack)
+
+Before that:
+
+No equipment UI
+
+No limb slots
+
+No drones
+
+2. SLOT HIERARCHY (STRICT)
+Backpack → Slots → Equipment → Function
+
+If backpack cannot support it, slot does not exist.
+
+3. EQUIPMENT SLOT MAP
+Core Slots (always tied to backpack)
+Head
+
+Torso (internal systems)
+
+Back (backpack itself, non-removable)
+
+Front (chest systems)
+
+Unlockable Slots (Tier-based)
+Tier 2 Unlocks
+Shoulders (L/R)
+
+Arms (L/R)
+
+Utility mounts
+
+Tier 3 Unlocks
+Drone ports (1–2 max)
+
+Advanced arm attachments
+
+Expanded torso systems
+
+4. SLOT DEFINITIONS
+Head Slot
+Helmet only
+
+Controls:
+
+oxygen
+
+sand filtering
+
+vision/HUD
+
+Torso Slot
+Internal systems
+
+Examples:
+
+cooling
+
+oxygen buffer
+
+health systems
+
+Front Slot
+External chest modules
+
+Examples:
+
+light
+
+scanner
+
+shield emitter (later)
+
+Shoulder Slots (L/R)
+Medium modules
+
+Examples:
+
+lights
+
+sensor arrays
+
+drone dock (if allowed)
+
+Arm Slots (L/R)
+Two layers:
+
+Arm Base (if installed)
+Unlocks wrist + tool interface
+
+Arm Attachment
+Mining tool
+
+Repair tool
+
+Weapon (later)
+
+No arm = no tool usage beyond basic.
+
+Drone Ports
+Backpack-controlled.
+
+Limits:
+
+Tier 3+
+
+Hard cap (1–2)
+
+5. DRONE SYSTEM (MINIMAL V1)
+Drone Role
+Assistant only
+
+No autonomy beyond commands
+
+Commands
+Follow
+
+Hold position
+
+Gather (basic)
+
+Light area
+
+Deliver items
+
+Constraints
+Requires:
+
+power from backpack
+
+active link
+
+Limited range
+
+Can be disabled
+
+6. POWER + LOAD RULES
+Every slot consumes:
+
+Power
+
+Capacity
+
+Backpack enforces:
+Total power capacity
+
+Max active modules
+
+Thermal/load limits
+
+Failure Behavior
+Overload → modules shut off
+
+Low power → priority system:
+
+Oxygen
+
+Core systems
+
+Tools
+
+Drones
+
+7. UI STRUCTURE (EQUIPMENT MENU)
+Unlock condition triggers:
+
+Equipment Panel
+
+Layout:
+
+Center: player silhouette
+
+Slots mapped visually
+
+Right panel: module stats
+
+Bottom: power + load bars
+
+Required UI Data
+Each slot shows:
+
+occupied / empty
+
+compatible modules
+
+power draw
+
+status
+
+8. PROGRESSION IMPACT
+This system:
+
+Converts player from “survivor” → “operator”
+
+Enables:
+
+efficient excavation
+
+multitasking (drone + tool)
+
+deeper system interaction
+
+9. HARD LIMITS (IMPORTANT)
+No freeform slot creation
+
+No stacking infinite modules
+
+No drone swarm early
+
+Keep it constrained.
+
+10. SYSTEM DEPENDENCIES
+This layer requires:
+
+R.I.G. system (backpack tiers)
+
+Power system
+
+Module definition system
+
+UI framework (AtlasUI)
+
+Do not build before contracts exist.
+
+11. NEXT BEST ARTIFACT
+Highest leverage:
+
+“Equipment + Slot Contract v1 (strict slot map + C++ structs + validation rules)”
+
+This locks:
+
+what fits where
+
+what unlocks when
+
+what breaks if overloaded
+
+and prevents future system chaos.
+
+
+eventually once researched and fully built will come with a port to interface to   whatever system you are piloting be it a hoverbike a rover type vehicle a hovercraft or even a boat or submarine  or space ship even station terminal will require this to  use station services  right arm palm  placed port that "jacks into whatever you are holding or piloting allowing its specific info to be displayed on helmet hud without helmet you have no hud whatsoever
+
+Lock this as R.I.G. Interface Port System v1. It is a hard dependency for vehicles, stations, and advanced interaction.
+
+1. CORE RULE
+No interface port = no system control
+
+No HUD
+
+No vehicle piloting
+
+No station access
+
+Helmet alone ≠ interface capability
+Backpack alone ≠ interface capability
+
+You need:
+
+Helmet (display)
+
+Interface Port (data link)
+
+2. PHYSICAL IMPLEMENTATION
+Right Arm → Palm Port
+Installed as arm attachment
+
+Requires:
+
+Arm module installed
+
+Backpack Tier ≥ 3
+
+States
+Stowed
+
+Active (hand contact)
+
+Linked (data + control)
+
+3. SYSTEM ROLE
+The port is a universal data + control bridge
+
+It enables:
+
+Input transmission (player → system)
+
+Data stream (system → HUD)
+
+Authentication (access rights)
+
+4. DEPENDENCY STACK
+To use any advanced system:
+
+Backpack (power + routing)
+
+Arm module (mount)
+
+Palm port (interface)
+
+Helmet (HUD display)
+
+Break any layer → system unusable
+
+5. SUPPORTED TARGETS
+Vehicles
+Hoverbike
+
+Rover
+
+Hovercraft
+
+Boat / Submarine
+
+Spaceship
+
+Structures
+Station terminals
+
+Elevators (advanced control panels)
+
+Industrial systems
+
+6. INTERACTION FLOW
+Step 1 — Contact
+Player places palm on interface surface
+
+Step 2 — Link
+Port establishes connection
+
+System validates access
+
+Step 3 — Control Mode
+Input switches from player movement → system control
+
+HUD updates to system UI
+
+Step 4 — Exit
+Release or disconnect
+
+7. HUD RULE (CRITICAL)
+No helmet = zero HUD
+
+Even if port is active:
+
+No data visualization
+
+No system feedback
+
+Result:
+
+Blind operation → effectively unusable
+
+8. POWER + DATA RULES
+Power Draw
+Constant drain while linked
+
+Higher for complex systems (ships > bikes)
+
+Data Bandwidth (simple model)
+Low tier port:
+
+limited info
+
+slower updates
+
+High tier port:
+
+full telemetry
+
+responsive control
+
+9. FAILURE STATES
+Power loss → immediate disconnect
+
+Port damage → cannot link
+
+Helmet damage → no HUD (control degraded)
+
+Signal interruption → control lag or drop
+
+10. PROGRESSION
+Unlock Requirements
+Advanced materials (post-surface)
+
+Electronics tier upgrade
+
+R.I.G. Tier 3+
+
+Upgrade Paths
+Port Upgrades
+Faster link speed
+
+Multi-system compatibility
+
+Extended range (remote link later)
+
+Helmet Upgrades
+Better UI layers
+
+Targeting overlays
+
+Diagnostics
+
+11. GAMEPLAY IMPACT
+This system:
+
+Gates all vehicles behind progression
+
+Forces full R.I.G. buildout
+
+Unifies interaction model across game
+
+One mechanic → all systems
+
+12. DESIGN CONSTRAINTS
+No “press E to drive” shortcuts
+
+No UI without helmet
+
+No control without port
+
+No wireless control early
+
+Keep it physical and grounded
+
+13. MINIMAL IMPLEMENTATION (V1)
+You only need:
+
+InterfacePort component
+
+Link state machine
+
+Target interface component
+
+HUD mode switch
+
+Power drain hook
+
+No complexity beyond that
+
+14. NEXT BEST ARTIFACT
+“Interface Port + Link System Spec v1 (state machine + C++ structs + interaction contract)”
+
+This will define:
+
+exact link states
+
+validation rules
+
+data flow between systems
+
+and make all vehicles + stations plug into one unified system.
+
+
+hacking  all functions with minigame snake like to find  way past firewall game
+
+Implement this as a unified interaction override, not a separate system.
+
+1. SYSTEM NAME
+Interface Breach Minigame v1
+
+Purpose:
+
+Bypass locked systems
+
+Replace key/permission gating with skill + risk
+
+2. WHEN IT TRIGGERS
+Available only when:
+
+Interface Port is installed (right arm)
+
+Target system is:
+
+locked
+
+restricted
+
+damaged with security fallback
+
+3. CORE LOOP
+Player connects via palm port
+
+Access denied → “Breach Available”
+
+Launch minigame
+
+Complete objective
+
+On success → temporary or permanent access
+
+4. MINIGAME DESIGN (SNAKE-STYLE)
+Concept
+Player controls a “data worm” moving through a grid
+
+Goal: reach Core Node
+
+Avoid:
+
+Firewalls
+
+Moving security sweeps
+
+Self-collision (classic snake growth)
+
+Mechanics
+Movement: grid-based (up/down/left/right)
+
+Trail grows over time
+
+Speed increases gradually
+
+Grid Elements
+Core Node → win condition
+
+Firewall Blocks → instant fail
+
+Security Sweepers → moving hazards
+
+Data Fragments → optional pickups (extend time / reduce difficulty)
+
+5. DIFFICULTY SCALING
+Based on target system:
+
+Low (elevator, basic door)
+Small grid
+
+Slow speed
+
+Few hazards
+
+Medium (vehicles, mid systems)
+Medium grid
+
+Multiple sweepers
+
+Faster growth
+
+High (stations, ships)
+Large grid
+
+Complex patterns
+
+Limited visibility (fog)
+
+6. SUCCESS OUTPUT
+Depends on system:
+
+Elevator → unlock + power override
+
+Vehicle → temporary control access
+
+Terminal → limited command access
+
+Station → partial services
+
+7. FAILURE STATES
+On fail:
+
+Immediate disconnect
+
+System lockout (cooldown)
+
+Possible penalties:
+
+power drain spike
+
+port damage chance
+
+alarm trigger (later)
+
+8. TIME + POWER CONSTRAINT
+During minigame:
+
+Continuous power drain from R.I.G.
+
+Optional oxygen drain increase (stress state)
+
+This prevents infinite attempts.
+
+9. PROGRESSION HOOKS
+Upgrade Paths
+Interface Port Upgrades
+Slower snake growth
+
+More control precision
+
+Error tolerance (1 hit buffer)
+
+Helmet Upgrades
+Better visibility
+
+Highlight safe paths
+
+Predict hazard movement
+
+10. SYSTEM INTEGRATION
+This plugs into:
+
+Interface Port system (entry point)
+
+Power system (cost)
+
+HUD system (display)
+
+Target system (access control)
+
+No separate pipeline.
+
+11. DESIGN RULES
+No instant hacks
+
+No menu-based bypass
+
+Must physically connect
+
+Must complete minigame
+
+12. MINIMAL IMPLEMENTATION (V1)
+You need:
+
+Grid generator
+
+Snake controller
+
+Hazard system
+
+Win/lose conditions
+
+Hook into interface port link state
+
+No procedural complexity required initially.
+
+13. WHY THIS WORKS
+Reuses one mechanic across all systems
+
+Scales cleanly with difficulty
+
+Reinforces physical interaction loop
+
+Adds tension without new systems
+
+14. NEXT BEST ARTIFACT
+“Breach Minigame Spec v1 (grid rules + state machine + C++ scaffolding)”
+
+This will define:
+
+exact grid format
+
+update loop
+
+input handling
+
+integration hooks
+
+and make it directly implementable without drift.
+
+
+all systems require some form of interaction with  golves port upgrade 
+
+Lock this as a global interaction contract, not a feature.
+
+1. CORE RULE (SYSTEM-WIDE)
+All non-trivial interactions require Interface Port (glove/palm).
+
+No exceptions for:
+
+vehicles
+
+stations
+
+elevators
+
+advanced tools
+
+terminals
+
+2. INTERACTION TIERS
+Define interaction depth.
+
+Tier 0 — Passive (No Port Required)
+Walking
+
+Looking
+
+Picking loose items
+
+Opening simple containers
+
+Tier 1 — Physical (No Port, Limited)
+Pull lever
+
+Push button
+
+Manual crank
+
+No data exchange. No system control.
+
+Tier 2 — Linked (Port Required)
+Elevator control
+
+Vehicle piloting
+
+Terminal access
+
+System configuration
+
+This is your main gameplay tier.
+
+Tier 3 — Secured (Port + Breach)
+Locked systems
+
+Restricted vehicles
+
+Station services
+
+High-level controls
+
+Requires:
+
+Port
+
+Minigame
+
+3. GLOVE / PORT UPGRADE TIERS
+Tier 0 — No Port
+Cannot interface
+
+No system control
+
+Tier 1 — Basic Port
+Simple system access
+
+Low bandwidth
+
+No hacking
+
+Tier 2 — Standard Port
+Full system interaction
+
+Breach minigame enabled
+
+Stable connections
+
+Tier 3 — Advanced Port
+Faster link
+
+Reduced power drain
+
+Multi-system compatibility
+
+4. HARD DEPENDENCY MATRIX
+System	Requires Port	Requires Helmet
+Elevator	Yes	Yes
+Vehicles	Yes	Yes
+Station terminal	Yes	Yes
+Tools (advanced)	Yes	Optional (reduced usability)
+Breach system	Yes	Yes
+5. DESIGN INTENT
+This enforces:
+
+Physical interaction over UI shortcuts
+
+R.I.G. progression relevance
+
+Unified control method
+
+Everything routes through one system.
+
+6. INPUT MODEL
+Without Port
+“Interact” = basic physical action only
+
+With Port
+“Interact” = attempt link
+
+If locked → breach prompt
+
+7. FAILURE BEHAVIOR
+If port is missing or broken:
+
+Cannot pilot
+
+Cannot configure systems
+
+Cannot access terminals
+
+Cannot hack
+
+Player is effectively “disconnected from tech”
+
+8. EDGE CASE HANDLING
+Emergency Systems
+Allow limited fallback:
+
+Emergency elevator recall
+
+Basic door override
+
+Still no full control.
+
+Tool Exception Rule
+Basic tools:
+
+Can function without port (low efficiency)
+
+Advanced tools:
+
+Require port for full operation
+
+9. UI RULE
+When port is absent:
+
+Interaction prompts are limited
+
+No system UI opens
+
+Feedback is minimal
+
+10. IMPLEMENTATION CONTRACT
+Every interactable must declare:
+
+interaction_type:
+
+passive
+
+physical
+
+linked
+
+secured
+
+requires_port: bool
+
+requires_helmet: bool
+
+11. SYSTEM IMPACT
+This simplifies architecture:
+
+One interaction pipeline
+
+One validation path
+
+One upgrade path
+
+Removes special-case logic everywhere.
+
+12. HARD RULES (DO NOT BREAK)
+No vehicle control without port
+
+No system UI without helmet
+
+No bypass shortcuts
+
+No duplicate interaction systems
+
+13. NEXT BEST ARTIFACT
+“Interaction System Contract v1 (enum types + validation + C++ interface layer)”
+
+This will enforce:
+
+what requires port
+
+how interactions resolve
+
+how systems expose interaction types
+
+and prevents interaction chaos across the project.
+
+
+you will have alot of things you can equip to your rig  as in  attachments to rig dictate further attachments and the backpack  its self has modules   starting with  the basic lifesupport and inventory with an internal biomass generator
+
+Lock this as a dependency-driven equipment graph. Backpack is root. Attachments unlock further attachments. No flat inventory.
+
+1. SYSTEM NAME
+R.I.G. Attachment Graph v1
+
+Backpack = root node
+
+Slots = edges
+
+Attachments = nodes
+
+Some nodes unlock new nodes
+
+2. CORE RULES
+No attachment without valid parent slot
+
+Some attachments create new slots
+
+Backpack modules are internal systems, not visible gear
+
+All power and data route through backpack
+
+3. BACKPACK INTERNAL MODULES (BASELINE)
+Starter Backpack Includes
+Life Support Core
+Oxygen handling
+
+Sand filtration (basic)
+
+Inventory Core
+Internal storage grid
+
+Biomass Generator (starter power)
+Function:
+
+Consumes:
+
+organic waste
+
+biomass (plants, debris)
+
+Produces:
+
+low continuous power
+
+Limits:
+
+Low output
+
+Slow conversion rate
+
+4. BACKPACK MODULE LAYER
+Internal modules (no slot required externally):
+
+LifeSupportModule
+
+InventoryModule
+
+BiomassGeneratorModule
+
+Upgradeable over time:
+
+efficiency
+
+capacity
+
+output
+
+5. ATTACHMENT CASCADE SYSTEM
+Key Mechanic
+Some attachments unlock more attachment points.
+
+Example Chain
+Step 1 — Backpack Tier 2
+Unlocks:
+
+Shoulder slots
+
+Arm slots
+
+Step 2 — Install Arm Base
+Unlocks:
+
+Wrist slot
+
+Tool interface
+
+Palm port compatibility
+
+Step 3 — Install Advanced Arm
+Unlocks:
+
+Dual tool mount
+
+Stabilization module slot
+
+Step 4 — Install Shoulder Rig
+Unlocks:
+
+Drone port
+
+Heavy mount slot
+
+This creates progression through structure, not menus.
+
+6. SLOT TYPES (CONTROLLED)
+Root Slots (Backpack-controlled)
+Head
+
+Torso
+
+Front
+
+Shoulders
+
+Arms
+
+Derived Slots (Attachment-created)
+Examples:
+
+Wrist (from arms)
+
+Palm port (from arm + port module)
+
+Drone port (from shoulder rig)
+
+Heavy mount (advanced shoulder)
+
+7. POWER + LOAD PROPAGATION
+All attachments:
+
+draw power from backpack
+
+add load/heat
+
+Derived slots increase:
+
+total draw potential
+
+complexity
+
+Overload Behavior
+non-critical modules shut down first
+
+drones disabled early
+
+tools degrade before life support
+
+8. BIOMASS GENERATOR ROLE
+Early game anchor.
+
+Why it exists
+Player has no solar yet (underground)
+
+No hydrogen system yet
+
+Gameplay Loop
+Input:
+
+organic debris from excavation
+
+Process:
+
+biomass generator
+
+Output:
+
+minimal power to:
+
+run centrifuge (slow)
+
+power basic tools
+
+sustain R.I.G.
+
+Transition
+Later replaced by:
+
+battery systems
+
+solar
+
+fuel systems
+
+9. PROGRESSION MODEL
+Phase 1 (Bunker)
+Biomass power
+
+Minimal attachments
+
+Manual systems
+
+Phase 2 (Pre-Surface)
+Expanded backpack
+
+Tool access
+
+Basic automation
+
+Phase 3 (Surface)
+External power systems
+
+Drone usage
+
+Vehicle interaction (via port)
+
+10. DESIGN CONSTRAINTS
+No infinite slot stacking
+
+No attachment without structural parent
+
+No free-floating upgrades
+
+No independent power sources bypassing backpack
+
+11. IMPLEMENTATION CONTRACT (WHAT YOU NEED)
+Backpack Definition
+tier
+
+internal_modules[]
+
+root_slots[]
+
+power_capacity
+
+Attachment Definition
+required_parent_slot
+
+unlocks_slots[]
+
+power_draw
+
+function_type
+
+Slot Definition
+slot_type
+
+allowed_attachment_types
+
+parent_dependency
+
+12. WHY THIS WORKS
+Natural progression without menus
+
+Physical logic matches visuals
+
+Prevents system sprawl
+
+Scales cleanly into late game
+
+13. HARD TRUTH
+If you do not enforce attachment → slot → dependency:
+
+system becomes arbitrary
+
+balancing fails
+
+UI becomes unmanageable
+
+This must be strict.
+
+14. NEXT BEST ARTIFACT
+“Attachment Graph + Slot Dependency Spec v1 (C++ structs + validation + unlock rules)”
+
+This will:
+
+formalize slot creation
+
+enforce attachment chains
+
+prevent invalid builds
+
+and stabilize the entire R.I.G. system before it grows further.
+
+
+the rig also has ai integrated into it for the drone upgrade and   hud integration for scanning and exploring plotting maps  telling you  your vitals are low late  game it will even have nano healing from  a specific module upgrade  that automatically restores and heals injuries over time once first aid skill is leverled up high enough and other requirementes are met
+
+Lock this as R.I.G. Embedded AI System v1. It is a service layer inside the backpack. Not a separate entity.
+
+1. CORE RULE
+AI lives inside the backpack core.
+
+No backpack → no AI
+
+No power → no AI
+
+No helmet → no visualization
+
+AI = processing + assist layer for:
+
+HUD
+
+drones
+
+diagnostics
+
+automation
+
+2. ACTIVATION TIERS
+Tier 0 — No AI
+Starter state
+
+No guidance
+
+No scanning assistance
+
+Tier 1 — Basic AI Core (early bunker)
+Unlocks:
+
+Vitals monitoring
+
+Basic alerts
+
+Minimal HUD text
+
+Examples:
+
+“oxygen low”
+
+“power critical”
+
+Tier 2 — Assist AI
+Unlocks:
+
+Environmental scanning
+
+Resource hints
+
+Basic mapping
+
+Functions:
+
+detects voxel material types
+
+flags debris vs useful material
+
+Tier 3 — Operational AI
+Unlocks:
+
+Drone command layer
+
+Navigation assistance
+
+System diagnostics
+
+Functions:
+
+path suggestions in shaft
+
+highlights blocked elevator sections
+
+manages drone tasks
+
+Tier 4 — Advanced AI
+Unlocks:
+
+Predictive warnings
+
+Efficiency optimization
+
+Multi-system coordination
+
+Functions:
+
+suggests optimal excavation routes
+
+power balancing recommendations
+
+Tier 5 — Autonomous Support (late game)
+Unlocks:
+
+Nano-healing module control
+
+Advanced automation hooks
+
+3. AI FUNCTION GROUPS
+3.1 HUD Integration
+Requires:
+
+Helmet
+
+Displays:
+
+vitals
+
+power
+
+system status
+
+scan overlays
+
+Without helmet:
+
+AI still runs
+
+but no visual output
+
+3.2 Scanning System
+Uses:
+
+AI + sensor modules
+
+Outputs:
+
+material identification
+
+structural warnings
+
+hidden resource hints
+
+3.3 Mapping System
+builds local map from exploration
+
+marks:
+
+cleared shaft areas
+
+hazards
+
+resource nodes
+
+3.4 Drone Control
+AI acts as:
+
+command interpreter
+
+task manager
+
+Player gives simple commands:
+
+AI handles execution logic
+
+3.5 Vitals + Alerts
+Always active (if powered):
+
+oxygen
+
+health
+
+temperature (later)
+
+load / power
+
+4. NANO-HEALING SYSTEM
+Unlock Conditions
+Requires ALL:
+
+R.I.G. Tier ≥ 4
+
+Nano-Healing Module installed (torso/internal)
+
+AI Tier ≥ 5
+
+First Aid skill threshold met
+
+Behavior
+Passive healing over time
+
+Consumes:
+
+power
+
+medical resources
+
+Limits
+Cannot heal instantly
+
+Cannot revive from critical failure
+
+Slower under low power
+
+5. POWER + RESOURCE DEPENDENCY
+AI consumes:
+
+constant baseline power
+
+additional power for:
+
+scanning
+
+drone coordination
+
+healing
+
+Priority System
+Life support
+
+AI core
+
+Tools
+
+Drones
+
+Healing
+
+6. FAILURE STATES
+Power loss → AI shuts down
+
+Helmet loss → no HUD
+
+Sensor damage → reduced scan accuracy
+
+Overload → AI features degrade
+
+7. DESIGN CONSTRAINTS
+AI does not play the game for the player
+
+AI suggests, not executes (except drones)
+
+No full automation early
+
+8. IMPLEMENTATION MODEL
+AI Core Component
+Inside backpack:
+
+tier
+
+active_features[]
+
+power_draw
+
+Feature Flags
+scanning_enabled
+
+mapping_enabled
+
+drone_control_enabled
+
+healing_control_enabled
+
+Event Hooks
+AI listens to:
+
+vitals changes
+
+environment scan results
+
+system failures
+
+9. SYSTEM DEPENDENCIES
+Requires:
+
+Backpack system
+
+Power system
+
+Helmet/HUD system
+
+Drone system
+
+Module system
+
+10. WHY THIS WORKS
+Centralizes intelligence
+
+Avoids multiple AI systems
+
+Scales with progression
+
+Ties directly to R.I.G.
+
+11. HARD RULES
+No AI without power
+
+No HUD without helmet
+
+No drone control without AI
+
+No healing without full requirement chain
+
+12. NEXT BEST ARTIFACT
+“R.I.G. AI Core Spec v1 (feature flags + event system + C++ component layout)”
+
+This will define:
+
+how AI hooks into systems
+
+how features unlock cleanly
+
+how to avoid logic fragmentation
+
+and keep the AI layer controlled as the system grows.
+
+
+audit all game systems and anything needed to support itagainst what we now have for story and see what gaps and specs are still needed  “R.I.G. AI Core Spec v1 (feature flags + event system + C++ component layout)”
+
+Here is the clean audit against the current story and system direction.
+
+Your story loop now has a much stronger spine:
+
+buried bunker start
+
+blocked shaft to surface
+
+freight elevator recovery
+
+sand and debris excavation
+
+centrifuge material recovery
+
+backpack-first R.I.G. progression
+
+helmet-required HUD
+
+glove/palm interface for all advanced interactions
+
+drone and AI support later
+
+surface unlock leading to larger survival, vehicles, ships, and stations
+
+That is now a real progression path. The remaining problem is still not ideas. It is missing contracts, progression thresholds, and simulation rules.
+
+1. WHAT IS NOW WELL DEFINED
+Story and onboarding
+You now have a usable early-game narrative:
+
+player starts buried underground
+
+survival depends on minimal starter R.I.G.
+
+sand and debris become first resources
+
+centrifuge converts useless bulk into useful material
+
+bunker escape is earned through repair and excavation
+
+surface unlock transitions into exploration and expansion
+
+This works.
+
+R.I.G. direction
+These parts are now solid:
+
+backpack is root authority
+
+helmet is required for HUD
+
+equipment menu unlocks through R.I.G. progression
+
+attachments unlock more attachments
+
+glove/palm interface is required for advanced control
+
+AI is embedded in the R.I.G.
+
+drones are subordinate to the AI/R.I.G.
+
+nano-healing is late game and requirement-gated
+
+This is a coherent architecture.
+
+Interaction philosophy
+This is strong and should not drift:
+
+advanced interactions require physical link
+
+no magical UI without equipment
+
+no vehicle or terminal control without interface hardware
+
+hacking uses same interaction path, not a separate system
+
+Good.
+
+2. WHAT THE STORY NOW DEMANDS FROM THE GAME
+The story now implies these gameplay pillars must exist:
+
+Subsurface survival
+
+Excavation and collapsing material logic
+
+Material recovery and processing
+
+R.I.G. capability progression
+
+Elevator restoration and shaft ascent
+
+Surface adaptation
+
+Scanning, mapping, and exploration
+
+Vehicle and station interfacing
+
+Drone support
+
+Injury, recovery, and medical progression
+
+Research-gated technological expansion
+
+Some of these are only partially specced.
+
+3. SYSTEM AUDIT BY AREA
+A. Early-game bunker and escape loop
+Covered
+bunker start
+
+blocked shaft
+
+buried elevator
+
+sand and debris excavation
+
+centrifuge processing
+
+repair progression
+
+Missing specs
+bunker layout generation rules
+
+elevator shaft dimensions and voxel occupancy rules
+
+collapse rules for sand and debris
+
+support beam / reinforcement mechanic
+
+exact elevator repair checklist
+
+what counts as “surface reached”
+
+Needed spec
+Subsurface Escape Loop Spec v1
+
+Must define:
+
+states
+
+objectives
+
+fail conditions
+
+repair conditions
+
+level generation rules
+
+B. Voxel excavation and material behavior
+Covered
+sand and debris are excavated
+
+sand can refill or collapse
+
+excavation is early progression
+
+Missing specs
+voxel material taxonomy
+
+loose vs rigid material classes
+
+gravity and settling rules
+
+excavation speed per tool tier
+
+support propagation rules
+
+environmental hazard interaction with voxels
+
+Needed spec
+Voxel Material + Collapse Rules Spec v1
+
+Must define:
+
+material ids
+
+gravity behavior
+
+support thresholds
+
+break requirements
+
+hazard reactions
+
+C. Centrifuge and material processing
+Covered
+sand and dirt become source materials
+
+centrifuge extracts useful materials
+
+this powers early progression
+
+Missing specs
+exact inputs and outputs
+
+efficiencies
+
+processing time
+
+contamination/waste outputs
+
+power cost
+
+recipe tiers
+
+what materials unlock research vs construction
+
+Needed spec
+Centrifuge + Resource Conversion Spec v1
+
+This is one of the highest priority missing specs.
+
+D. R.I.G. base architecture
+Covered
+backpack is root
+
+starter pack includes life support, inventory, biomass generator
+
+helmet supplies HUD access
+
+attachments branch from core slots
+
+no independent gear layer
+
+Missing specs
+canonical backpack tier table
+
+slot unlock table
+
+power/load/capacity math
+
+attachment validation rules
+
+internal module class structure
+
+inventory model
+
+durability and damage rules
+
+Needed specs
+R.I.G. System Contract v1
+
+Attachment Graph + Slot Dependency Spec v1
+
+Equipment + Slot Contract v1
+
+These are all still required in strict form.
+
+E. Helmet and HUD
+Covered
+helmet required for HUD
+
+no helmet means no HUD
+
+AI and interface data route into helmet
+
+Missing specs
+HUD layers
+
+damage states
+
+sensor modes
+
+visibility rules in sandstorms and darkness
+
+how helmet upgrades affect data presentation
+
+fallback behavior when partial systems fail
+
+Needed spec
+Helmet + HUD Contract v1
+
+F. Interface glove / palm port
+Covered
+right palm interface port
+
+required for advanced systems
+
+required for piloting, station use, terminals, and hacking
+
+linked with helmet HUD
+
+Missing specs
+interaction handshake states
+
+supported target classes
+
+authentication model
+
+signal bandwidth tiers
+
+disconnection rules
+
+physical animation/contact rules
+
+Needed spec
+Interface Port + Link System Spec v1
+
+Still critical.
+
+G. Hacking / breach gameplay
+Covered
+snake-like firewall bypass minigame
+
+physically linked
+
+used for secured systems
+
+Missing specs
+difficulty generation rules
+
+reward types
+
+failure penalties
+
+retry logic
+
+security classes by device type
+
+how temporary access differs from permanent access
+
+Needed spec
+Breach Minigame Spec v1
+
+H. Embedded AI
+Covered
+AI is in the R.I.G.
+
+supports HUD, vitals, scanning, mapping, drones
+
+late game controls nano-healing
+
+gated by progression and module installation
+
+Missing specs
+feature flags
+
+event hooks
+
+power draw per feature
+
+update cadence
+
+failure degradation
+
+AI tier unlock rules
+
+relation to drones and sensors
+
+telemetry routing to HUD
+
+Needed spec
+R.I.G. AI Core Spec v1
+
+This is absolutely still needed and it is now a major dependency.
+
+I. Drone system
+Covered
+small drones
+
+unlocked through port/attachment chain
+
+receive simple orders
+
+Missing specs
+drone classes
+
+command set
+
+battery/power model
+
+range
+
+storage/tool capability
+
+docking rules
+
+pathfinding limitations
+
+repair and loss states
+
+Needed spec
+Drone Companion System Spec v1
+
+J. Medical and injury systems
+Covered
+vitals warnings
+
+late-game nano-healing
+
+tied to first aid skill and module requirements
+
+Missing specs
+injury types
+
+healing over time rules
+
+first aid skill progression
+
+medical consumables
+
+critical wound logic
+
+AI medical thresholds
+
+what nano-healing can and cannot repair
+
+Needed spec
+Injury + Treatment + Nano-Healing Spec v1
+
+K. Skills and research
+Covered
+first aid skill matters
+
+research unlocks better systems
+
+surface materials drive progression
+
+Missing specs
+skill list
+
+skill XP sources
+
+research tree structure
+
+dependency chains
+
+what is skill-gated vs research-gated vs module-gated
+
+Needed spec
+Skills + Research Progression Spec v1
+
+This is a major gap right now.
+
+L. Power systems
+Covered
+starter biomass generator
+
+later solar, hydrogen, battery systems
+
+all R.I.G. systems and devices need power
+
+Missing specs
+global power graph
+
+generation/storage/consumption model
+
+power priority rules
+
+wiring or local routing rules
+
+elevator and station integration
+
+emergency fallback logic
+
+Needed spec
+Power + Resource Graph Spec v1
+
+Still core.
+
+M. Environmental survival
+Covered
+surface breathing needs helmet
+
+sandstorms matter
+
+underground darkness matters
+
+Missing specs
+oxygen model
+
+pressure model
+
+heat/cold rules
+
+storm severity classes
+
+filter wear
+
+hazard exposure thresholds
+
+indoor/outdoor zone logic
+
+Needed spec
+Environmental Survival Spec v1
+
+N. Mapping and scanning
+Covered
+AI-assisted scanning
+
+exploration map plotting
+
+material and hazard awareness
+
+Missing specs
+fog of war rules
+
+scan types
+
+scan ranges
+
+what information is hidden or uncertain
+
+map storage
+
+local vs global map resolution
+
+Needed spec
+Scan + Mapping System Spec v1
+
+O. Vehicles and piloting
+Covered
+hoverbike
+
+rover
+
+hovercraft
+
+boat
+
+submarine
+
+spaceship
+
+station terminals use same interface philosophy
+
+Missing specs
+pilot interface contract
+
+required modules by vehicle class
+
+vehicle HUD data contract
+
+access/authentication states
+
+docking and entering/exiting flow
+
+remote diagnostics rules
+
+Needed spec
+Vehicle + Station Interface Contract v1
+
+Not full vehicle physics yet. Just the interface contract first.
+
+P. Inventory and logistics
+Covered
+backpack inventory exists
+
+materials recovered and processed
+
+drones may help move items later
+
+Missing specs
+stack rules
+
+volume/weight rules
+
+internal container types
+
+salvage handling
+
+crafting inputs
+
+transfer rules between player, bunker, elevator, stations, vehicles
+
+Needed spec
+Inventory + Transfer System Spec v1
+
+Q. Construction and repair
+Covered
+repairing elevator
+
+later building and expanding systems
+
+voxel and low-poly construction direction already exists
+
+Missing specs
+repair recipe rules
+
+damaged state model
+
+construction tiers
+
+material placement validation
+
+when construction is manual vs assisted
+
+station service interaction
+
+Needed spec
+Construction + Repair Workflow Spec v1
+
+4. BIGGEST REMAINING GAP CLUSTERS
+These are the largest unresolved areas.
+
+Gap cluster 1. Progression math
+You have the fantasy and logic. You do not yet have:
+
+exact unlock thresholds
+
+tier tables
+
+per-upgrade costs
+
+per-skill requirements
+
+balancing rules
+
+Without this, the loop cannot be tested.
+
+Gap cluster 2. Simulation contracts
+You still need hard rules for:
+
+collapse
+
+power
+
+oxygen
+
+healing
+
+hazard exposure
+
+scan certainty
+
+Without these, the story remains descriptive but not executable.
+
+Gap cluster 3. State machines
+These systems need explicit states:
+
+elevator
+
+interface link
+
+hacking
+
+AI feature activation
+
+drone command execution
+
+environmental protection
+
+healing
+
+Without state machines, implementation will drift.
+
+Gap cluster 4. Data schema
+You still need strict data definitions for:
+
+R.I.G. modules
+
+attachments
+
+materials
+
+recipes
+
+injuries
+
+scans
+
+vehicles/interfaces
+
+Without schema, editor/runtime parity breaks.
+
+5. PRIORITY ORDER FOR MISSING SPECS
+This is the correct order now.
+
+Tier 1. Immediate blockers
+Centrifuge + Resource Conversion Spec v1
+
+R.I.G. System Contract v1
+
+Attachment Graph + Slot Dependency Spec v1
+
+Interface Port + Link System Spec v1
+
+R.I.G. AI Core Spec v1
+
+Power + Resource Graph Spec v1
+
+Voxel Material + Collapse Rules Spec v1
+
+Tier 2. Progression stabilizers
+Skills + Research Progression Spec v1
+
+Helmet + HUD Contract v1
+
+Environmental Survival Spec v1
+
+Scan + Mapping System Spec v1
+
+Construction + Repair Workflow Spec v1
+
+Tier 3. Expansion systems
+Drone Companion System Spec v1
+
+Breach Minigame Spec v1
+
+Injury + Treatment + Nano-Healing Spec v1
+
+Vehicle + Station Interface Contract v1
+
+Inventory + Transfer System Spec v1
+
+6. HARD TRUTH
+Your story is now good enough to drive the game.
+
+The remaining weakness is that several major systems are still described as ideas instead of contracts.
+
+Most important unresolved dependencies are:
+
+material conversion rules
+
+backpack/module schema
+
+interface handshake logic
+
+AI event hooks
+
+progression tables
+
+environmental simulation
+
+Those must be locked before adding more content.
+
+7. R.I.G. AI CORE SPEC V1 OUTLINE
+This is the exact shape that spec should take.
+
+Purpose
+Defines the embedded AI service layer inside the R.I.G. backpack that powers alerts, scanning, mapping, drone support, diagnostics, and late-game automation.
+
+Scope
+Covers:
+
+feature flags
+
+event subscriptions
+
+power usage
+
+tier unlocking
+
+HUD output channels
+
+drone command mediation
+
+nano-healing control hooks
+
+Does not cover:
+
+full drone physics
+
+full medical simulation
+
+vehicle UI design
+
+Core feature flags
+vitals_monitoring
+
+alerting
+
+environmental_scan
+
+material_scan
+
+mapping
+
+route_suggestion
+
+drone_command
+
+diagnostics
+
+healing_supervision
+
+Tier model
+Tier 0: none
+
+Tier 1: vitals + alerting
+
+Tier 2: scanning + mapping
+
+Tier 3: drone command + diagnostics
+
+Tier 4: optimization + predictive warnings
+
+Tier 5: healing supervision + advanced coordination
+
+Event inputs
+OnPowerChanged
+
+OnOxygenLow
+
+OnHealthChanged
+
+OnHelmetStateChanged
+
+OnScanResult
+
+OnLinkEstablished
+
+OnDroneCommandIssued
+
+OnInjuryDetected
+
+OnEnvironmentHazardDetected
+
+Outputs
+HUD notifications
+
+HUD overlays
+
+system recommendations
+
+drone task dispatch
+
+healing trigger approval
+
+map updates
+
+Failure behavior
+no power: AI offline
+
+no helmet: no visual output
+
+damaged sensors: degraded scan fidelity
+
+overload: lower-priority features disabled first
+
+C++ component layout
+At minimum:
+
+RigAICoreComponent
+
+RigAIFeatureFlags
+
+RigAIEventBus or equivalent event subscriber interface
+
+RigAIAlertState
+
+RigAIScanState
+
+RigAIMapState
+
+RigAIDroneControlState
+
+RigAIHealingState
+
+Required integration points
+Backpack component
+
+Helmet/HUD component
+
+Sensor/scanning system
+
+Drone manager
+
+Medical system
+
+Power manager
+
+Interface port system
+
+8. RECOMMENDED NEXT MOVE
+The best next artifact is still:
+
+R.I.G. AI Core Spec v1
+
+But to make it truly implementable without drift, it should be created alongside a short dependency appendix covering:
+
+required event names
+
+power priority order
+
+AI tier unlock table
+
+integration hooks to HUD, drones, scans, and healing
+
+After that, the next strongest spec is:
+Centrifuge + Resource Conversion Spec v1
+
+Because your current story loop cannot be balanced until the material economy is locked.
+
+If you want, the next response should be the full repo-ready R.I.G. AI Core Spec v1 in markdown.
+
+lets flesh out  rig and progression a bit more as its an integral gameplay system
+
+

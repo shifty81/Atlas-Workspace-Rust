@@ -1,0 +1,102 @@
+[agent]
+max_iterations = 20
+default_llm_backend = "ollama"
+
+[auth]
+# Set enabled = true and provide username/password to protect all API endpoints
+# with HTTP Basic authentication.
+enabled = false
+username = ""
+password = ""
+
+[llm.ollama]
+base_url = "http://localhost:11434"
+model = "llama3"
+
+[llm.api]
+base_url = "https://api.openai.com"
+key = ""
+model = "gpt-4o"
+
+[llm.openwebui]
+# URL of your running Open WebUI instance (default port is 3000).
+# Install Open WebUI: docker run -d -p 3000:8080 ghcr.io/open-webui/open-webui:main
+base_url = "http://localhost:3000"
+# API key from Open WebUI → Settings → Account → API Keys (leave blank to use no auth)
+key = ""
+# Leave blank to auto-select the first available model
+model = ""
+
+[llm.localai]
+# URL of your running LocalAI instance.
+# docker run -d -p 8080:8080 -v $(pwd)/models:/models ghcr.io/mudler/localai:latest
+base_url = "http://localhost:8080"
+# No API key required for local use — leave blank
+key = ""
+# Model name as listed by LocalAI (e.g. codestral, deepseek-r1, phi-4)
+model = "codestral"
+
+[llm.local]
+model_path = "models/model.gguf"
+
+[llm.lmstudio]
+# LM Studio local server (https://lmstudio.ai). Start server in LM Studio app → Local Server tab.
+base_url = "http://localhost:1234"
+# Leave blank to use whatever model is currently loaded in LM Studio
+model = ""
+
+[llm.llamacpp]
+# llama.cpp HTTP server. Run: ./llama-server -m model.gguf --port 8080
+base_url = "http://localhost:8080"
+model = ""
+
+[llm.tabby]
+# Tabby code-completion server (https://tabby.tabbyml.com).
+# docker run -it --gpus all -p 8080:8080 tabbyml/tabby serve --model TabbyML/StarCoder-1B
+base_url = "http://localhost:8080"
+key = ""
+model = ""
+
+[llm.anthropic]
+# Anthropic Claude API (https://console.anthropic.com → API Keys)
+key = ""
+model = "claude-3-5-sonnet-20241022"
+
+[llm.gemini]
+# Google Gemini API (https://aistudio.google.com → Get API Key)
+key = ""
+model = "gemini-2.0-flash"
+
+[permissions]
+allowed_dirs = ["workspace", "projects", "cache", "logs"]
+blocked_dirs = ["configs", "core", "llm"]
+
+[server]
+host = "127.0.0.1"
+port = 8000
+
+[build]
+default_system = "cmake"
+
+[cache]
+max_size_mb = 512
+
+[ai_persona]
+# Name of the globally active AI persona.  Leave blank to use the default
+# SwissAgent identity.  Activate a persona via the API:
+#   POST /ai/persona/{name}/activate
+# Built-in persona names (hive-mind specialists):
+#   senior_developer    — Full-stack developer, idiomatic code, TDD
+#   software_architect  — System design, ADRs, trade-off analysis
+#   frontend_developer  — HTML/CSS/JS, React/Vue/Svelte, accessibility
+#   backend_developer   — APIs, auth, queues, REST/gRPC/GraphQL
+#   database_engineer   — SQL/NoSQL, schema design, query optimisation
+#   mobile_developer    — React Native, Flutter, Swift, Kotlin
+#   devops_engineer     — Docker, Kubernetes, CI/CD, IaC, observability
+#   security_auditor    — OWASP, CVE analysis, secure code review
+#   test_engineer       — TDD, pytest/jest, coverage, mutation testing
+#   code_reviewer       — Code review with severity ratings and suggestions
+#   performance_engineer — Profiling, benchmarking, algorithmic optimisation
+#   documentation_writer — README, API docs, ADRs, runbooks
+#   ai_ml_engineer      — LLM integration, RAG, fine-tuning, offline inference
+active = ""

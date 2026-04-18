@@ -1,0 +1,16 @@
+{
+  "id": "ship_frigate_sentinel",
+  "name": "Sentinel-class Frigate",
+  "class": "Frigate",
+  "description": "A versatile patrol frigate favoured by system defence forces. The Sentinel balances firepower, protection, and speed, excelling in small-group engagements and convoy escort duties.",
+  "hull_points": 1200,
+  "shield_points": 600,
+  "mass": 85.0,
+  "max_speed": 240.0,
+  "module_slots": 5,
+  "crew_capacity": 8,
+  "cargo_capacity": 60.0,
+  "turn_rate": 45.0,
+  "acceleration": 22.0,
+  "tags": ["combat", "balanced", "escort"]
+}

@@ -1,0 +1,12 @@
+{
+  "name": "Sector Frontier",
+  "description": "A lawless expanse on the edge of mapped space, Sector Frontier is rich in rare minerals but plagued by pirate gangs and unidentified anomalies. Only well-equipped pilots should venture here.",
+  "position": { "x": 1450.0, "y": -320.0, "z": 85.0 },
+  "star_type": "K5V",
+  "planet_count": 3,
+  "faction": "Unaffiliated",
+  "danger_level": 7,
+  "resources": ["titanium", "platinum", "dark_matter", "xenon_crystals"],
+  "stations": ["station_freeport_outpost"],
+  "tags": ["frontier", "dangerous", "resource_rich", "pvp"]
+}

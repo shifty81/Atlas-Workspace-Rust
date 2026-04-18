@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://novaforge.dev/schemas/power.schema.json",
+  "title": "Power System Definition",
+  "description": "Defines a power node (generator or consumer) in the power grid.",
+  "type": "object",
+  "required": ["id", "role"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^pwr_[a-z_]+$",
+      "description": "Unique power node identifier."
+    },
+    "role": {
+      "type": "string",
+      "enum": ["generator", "consumer", "storage"],
+      "description": "Whether this node produces, consumes, or stores power."
+    },
+    "generation": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Power output in kilowatts (generators only)."
+    },
+    "consumption": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Power draw in kilowatts (consumers only)."
+    },
+    "capacity": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Energy storage capacity in kWh (storage only)."
+    },
+    "priority": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 10,
+      "default": 5,
+      "description": "Load-shedding priority. 1 = highest (never shed), 10 = lowest."
+    },
+    "fuel_type": {
+      "type": "string",
+      "description": "Required fuel material ID (generators only)."
+    },
+    "fuel_rate": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Fuel consumption per hour of operation."
+    },
+    "efficiency": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "default": 1.0,
+      "description": "Power conversion efficiency (0.0 to 1.0)."
+    }
+  },
+  "additionalProperties": false
+}

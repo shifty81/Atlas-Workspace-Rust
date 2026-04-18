@@ -1,0 +1,16 @@
+{
+  "id": "ship_mining_prospector",
+  "name": "Prospector Industrial Barge",
+  "class": "Mining",
+  "description": "A sturdy industrial vessel designed for extended mining operations in resource-rich asteroid fields. Its reinforced bow and oversized ore bays make it the workhorse of every frontier refinery.",
+  "hull_points": 1800,
+  "shield_points": 400,
+  "mass": 210.0,
+  "max_speed": 120.0,
+  "module_slots": 6,
+  "crew_capacity": 12,
+  "cargo_capacity": 500.0,
+  "turn_rate": 22.0,
+  "acceleration": 8.0,
+  "tags": ["mining", "industrial", "cargo"]
+}

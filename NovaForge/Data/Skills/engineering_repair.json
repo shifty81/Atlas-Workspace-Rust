@@ -1,0 +1,13 @@
+{
+  "id": "skill_engineering_repair",
+  "name": "Field Repair",
+  "category": "Engineering",
+  "description": "Training in emergency hull patching and system restoration, allowing faster in-combat repairs and reduced material costs.",
+  "max_level": 5,
+  "effects": [
+    { "stat": "repair_speed", "modifier": 0.10, "per_level": true },
+    { "stat": "repair_cost", "modifier": -0.05, "per_level": true }
+  ],
+  "unlock_cost_base": 400,
+  "tags": ["support", "survival"]
+}

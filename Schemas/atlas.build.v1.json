@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Atlas Build Manifest v1",
+  "type": "object",
+  "required": ["schemaVersion", "projectName", "buildType", "platform"],
+  "properties": {
+    "schemaVersion": { "type": "integer", "const": 1 },
+    "projectName": { "type": "string", "minLength": 1 },
+    "buildType": { "type": "string", "enum": ["Debug", "Development", "Release"] },
+    "platform": { "type": "string", "enum": ["Windows", "Linux", "macOS", "Web"] },
+    "engineVersion": { "type": "string" },
+    "buildTimestamp": { "type": "string", "format": "date-time" },
+    "layoutHash": { "type": "integer" },
+    "dslVersion": { "type": "string" },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["path", "type"],
+        "properties": {
+          "path": { "type": "string" },
+          "type": { "type": "string", "enum": ["executable", "library", "asset", "config"] },
+          "hash": { "type": "integer" },
+          "size": { "type": "integer" },
+          "version": { "type": "string" }
+        }
+      }
+    },
+    "metadata": { "type": "object" }
+  }
+}

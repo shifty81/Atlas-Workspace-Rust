@@ -1,0 +1,13 @@
+{
+    "schema": "atlas.config.v1",
+    "tickRate": 30,
+    "maxPlayers": 20,
+    "networkMode": "client_server",
+    "deterministic": true,
+    "serverRules": {
+        "miningYieldMultiplier": { "base": 1.0, "min": 0.1, "max": 5.0, "hotReload": true },
+        "npcSpawnRate": { "base": 1.0, "min": 0.0, "max": 10.0, "hotReload": true },
+        "marketUpdateInterval": { "base": 300, "min": 60, "max": 3600, "hotReload": true },
+        "pirateAggressionLevel": { "base": 0.5, "min": 0.0, "max": 1.0, "hotReload": true }
+    }
+}

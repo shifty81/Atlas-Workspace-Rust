@@ -1,0 +1,11 @@
+{
+  "documents": [
+    { "documentType": "WorldDocument", "path": "Data/Worlds/DefaultWorld.json" },
+    { "documentType": "AssetDocument", "path": "Data/Assets/Structures/mining_rig_core.json" },
+    { "documentType": "AssetDocument", "path": "Data/Assets/Props/storage_crate_small.json" },
+    { "documentType": "CharacterRulesDocument", "path": "Data/Rules/CharacterRules.json" },
+    { "documentType": "EconomyRulesDocument", "path": "Data/Rules/EconomyRules.json" },
+    { "documentType": "ProgressionRulesDocument", "path": "Data/Rules/ProgressionRules.json" },
+    { "documentType": "PCGRuleSetDocument", "path": "Data/PCG/RuleSets/DefaultSurfaceGeneration.json" }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+    "name": "example-ruleset",
+    "version": "0.1.0",
+    "description": "Example Arbiter rule set — replace with project-specific rules",
+    "rules": [
+        {
+            "id": "NF-001",
+            "severity": "warning",
+            "description": "All public API functions must have documentation comments",
+            "match": {
+                "type": "function",
+                "visibility": "public",
+                "has_doc_comment": false
+            }
+        },
+        {
+            "id": "NF-002",
+            "severity": "error",
+            "description": "Namespace must be NF::, not atlas::",
+            "match": {
+                "type": "namespace",
+                "name_pattern": "^atlas::"
+            }
+        }
+    ]
+}

@@ -1,0 +1,35 @@
+{
+    "schema": "atlas.conversation.v1",
+    "nodes": [
+        {
+            "id": "greeting",
+            "type": "Dialogue",
+            "position": [100, 200],
+            "params": {
+                "speaker": "captain",
+                "text": "Welcome aboard, Commander."
+            }
+        },
+        {
+            "id": "choice",
+            "type": "PlayerChoice",
+            "position": [400, 200],
+            "params": {
+                "options": ["Status report", "Set course", "Dismiss"]
+            }
+        },
+        {
+            "id": "status_response",
+            "type": "Dialogue",
+            "position": [700, 100],
+            "params": {
+                "speaker": "captain",
+                "text": "All systems nominal. Fleet is at full readiness."
+            }
+        }
+    ],
+    "links": [
+        { "from": "greeting.next", "to": "choice.dialogue" },
+        { "from": "choice.choice", "to": "status_response.dialogue" }
+    ]
+}

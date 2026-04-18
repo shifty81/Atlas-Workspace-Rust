@@ -1,0 +1,35 @@
+{
+  "profileId": "ClientRelease",
+  "displayName": "Client Release",
+  "description": "Optimized client build for distribution.",
+  "buildProfile": "Release",
+  "targets": ["client"],
+  "outputDir": "Artifacts/ClientRelease",
+  "includeSymbols": false,
+  "includeContentRoot": true,
+  "cmakeArgs": [
+    "-DCMAKE_BUILD_TYPE=Release",
+    "-DNOVAFORGE_ASSERTIONS=OFF"
+  ],
+  "artifacts": [
+    "nova_forge_client",
+    "shaders/"
+  ],
+  "contentDirs": [
+    "Content/Data",
+    "Content/Definitions",
+    "Content/Buildables",
+    "Content/Rig",
+    "Content/Salvage",
+    "Content/Worldgen",
+    "Content/Factions",
+    "Content/Seasons",
+    "Content/Localization"
+  ],
+  "releaseGates": [
+    "compile_succeeds",
+    "validation_succeeds",
+    "smoke_tests_succeed",
+    "packaging_succeeds"
+  ]
+}

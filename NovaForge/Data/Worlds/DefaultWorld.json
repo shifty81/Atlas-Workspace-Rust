@@ -1,0 +1,35 @@
+{
+  "documentType": "WorldDocument",
+  "worldId": "default_world",
+  "displayName": "Default World",
+  "seed": 1337,
+  "environment": {
+    "skyProfile": "default_space",
+    "lightingProfile": "editor_daylight"
+  },
+  "spawn": {
+    "playerStart": { "x": 0, "y": 2, "z": -6 }
+  },
+  "entities": [
+    {
+      "entityId": "preview_structure_001",
+      "templateId": "asset_instance",
+      "assetId": "mining_rig_core",
+      "transform": {
+        "position": { "x": 0, "y": 0, "z": 0 },
+        "rotation": { "x": 0, "y": 0, "z": 0 },
+        "scale": { "x": 1, "y": 1, "z": 1 }
+      }
+    },
+    {
+      "entityId": "preview_prop_001",
+      "templateId": "asset_instance",
+      "assetId": "storage_crate_small",
+      "transform": {
+        "position": { "x": 2, "y": 0, "z": 1 },
+        "rotation": { "x": 0, "y": 15, "z": 0 },
+        "scale": { "x": 1, "y": 1, "z": 1 }
+      }
+    }
+  ]
+}

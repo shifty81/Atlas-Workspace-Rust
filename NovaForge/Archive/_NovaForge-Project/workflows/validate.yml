@@ -1,0 +1,39 @@
+name: Validate
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Project Validation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Validate project structure
+        run: bash Scripts/validate_project.sh
+
+      - name: Validate project manifest
+        run: bash Tests/NovaForge.Tests/test_manifest.sh
+
+      - name: Validate content schemas
+        run: bash Scripts/validate_content.sh
+
+      - name: Bridge roundtrip test
+        run: bash Tests/NovaForge.Tests/test_bridge_roundtrip.sh
+
+      - name: Run full test lane
+        run: bash Tests/NovaForge.Tests/run_tests.sh

@@ -1,0 +1,9 @@
+{
+    "hull_class": "capital",
+    "length": [50, 120],
+    "beam": [14, 30],
+    "height": [10, 25],
+    "segments": 24,
+    "slot_count": 18,
+    "typical_slots": ["weapon", "weapon", "weapon", "weapon", "weapon", "weapon", "engine", "engine", "engine", "engine", "shield", "shield", "shield", "sensor", "sensor", "bay", "bay", "utility"]
+}

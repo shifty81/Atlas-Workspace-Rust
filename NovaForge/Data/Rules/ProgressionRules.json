@@ -1,0 +1,11 @@
+{
+  "documentType": "ProgressionRulesDocument",
+  "milestones": [
+    {
+      "milestoneId": "unlock_rig_terminal",
+      "displayName": "Unlock Wrist Terminal",
+      "requirements": [{ "type": "craft", "target": "rig_terminal_module", "count": 1 }],
+      "rewards": [{ "type": "feature_unlock", "target": "rig_terminal" }]
+    }
+  ]
+}

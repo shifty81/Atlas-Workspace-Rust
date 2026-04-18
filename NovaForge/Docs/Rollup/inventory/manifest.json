@@ -1,0 +1,20 @@
+{
+  "package_name": "atlas_workspace_novaforge_rollup_pack",
+  "generated_from": {
+    "uploaded_spec": "spec.txt",
+    "uploaded_repo_zip": "tempnovaforge.zip",
+    "extracted_repo_root": "/mnt/data/tempnovaforge_unz/tempnovaforge"
+  },
+  "generated_files": [
+    "README_ROLLUP.md",
+    "PROJECT_CHAT_SUMMARY.md",
+    "STORY_GAME_SYSTEMS_AUDIT.md",
+    "PROJECT_DIRECTION_ROLLUP.md",
+    "REPO_SNAPSHOT_SUMMARY.md",
+    "repo_tree_depth3.txt",
+    "inventory/source_repo_top_level.txt",
+    "inventory/file_extension_counts.json",
+    "source_inputs/spec.txt",
+    "source_inputs/tempnovaforge.zip"
+  ]
+}

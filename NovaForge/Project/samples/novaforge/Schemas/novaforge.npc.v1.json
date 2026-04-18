@@ -1,0 +1,52 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "novaforge.npc.v1",
+    "title": "NovaForge NPC Definition",
+    "description": "Schema for NovaForge NPC data files",
+    "type": "object",
+    "required": ["id", "name", "faction", "ship_type"],
+    "properties": {
+        "id": {
+            "type": "string",
+            "description": "Unique NPC identifier"
+        },
+        "name": {
+            "type": "string",
+            "description": "Display name of the NPC"
+        },
+        "faction": {
+            "type": "string",
+            "description": "NPC faction affiliation"
+        },
+        "ship_type": {
+            "type": "string",
+            "description": "Ship template used by this NPC"
+        },
+        "behavior": {
+            "type": "string",
+            "enum": ["patrol", "guard", "trade", "mining", "pirate", "defensive"],
+            "description": "Default AI behavior type"
+        },
+        "behavior_graph": {
+            "type": "string",
+            "description": "Path to the behavior graph file"
+        },
+        "difficulty": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 10,
+            "description": "NPC difficulty rating"
+        },
+        "loot_table": {
+            "type": "string",
+            "description": "Reference to loot table for drops"
+        },
+        "flee_threshold": {
+            "type": "number",
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "description": "HP fraction at which NPC attempts to flee"
+        }
+    },
+    "additionalProperties": true
+}

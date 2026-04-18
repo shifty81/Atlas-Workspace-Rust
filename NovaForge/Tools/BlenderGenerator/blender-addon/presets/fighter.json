@@ -1,0 +1,9 @@
+{
+    "hull_class": "fighter",
+    "length": [3, 6],
+    "beam": [1, 2],
+    "height": [0.5, 1.5],
+    "segments": 8,
+    "slot_count": 3,
+    "typical_slots": ["weapon", "engine", "shield"]
+}

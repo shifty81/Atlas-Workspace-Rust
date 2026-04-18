@@ -1,0 +1,12 @@
+{
+  "documentType": "EconomyRulesDocument",
+  "resources": [
+    { "resourceId": "iron_scrap", "baseValue": 10 },
+    { "resourceId": "copper_scrap", "baseValue": 14 },
+    { "resourceId": "power_cell", "baseValue": 60 }
+  ],
+  "vendorModifiers": {
+    "station_trader": 1.0,
+    "black_market": 1.4
+  }
+}

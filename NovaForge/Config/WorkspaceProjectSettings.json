@@ -1,0 +1,6 @@
+{
+  "defaultLayout": "novaforge_default",
+  "defaultTool": "scene",
+  "defaultWorld": "Data/Worlds/DefaultWorld.json",
+  "assetBrowser": { "showCategories": true }
+}

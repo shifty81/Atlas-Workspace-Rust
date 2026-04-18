@@ -1,0 +1,304 @@
+{
+  "dustite_collection": {
+    "id": "dustite_collection",
+    "name": "Dustite Collection",
+    "level": 1,
+    "type": "mining",
+    "agent": "Mining Foreman Rikka",
+    "faction": "ORE",
+    "description": "Our refinery needs a fresh supply of Dustite to keep production running. Head to the belts and mine what we need.",
+    "briefing": "Pilot, we're running low on Dustite stocks. Head out to the nefleurett asteroid belt and bring back 1000 units. Simple work, but essential for our operations.",
+    "objectives": [
+      {
+        "type": "mine",
+        "target": "dustite",
+        "count": 1000
+      }
+    ],
+    "rewards": {
+      "isk": 25000,
+      "loyalty_points": 100,
+      "standing_gain": 0.005,
+      "items": []
+    },
+    "location": "rimward",
+    "time_limit": 7200,
+    "difficulty": "easy",
+    "recommended_ship_class": "mining_frigate"
+  },
+  "ferrite_run": {
+    "id": "ferrite_run",
+    "name": "Ferrite Mining Run",
+    "level": 1,
+    "type": "mining",
+    "agent": "Mining Foreman Rikka",
+    "faction": "ORE",
+    "description": "We need Ferrite for our mineral processing operations. Mine the required amount and return.",
+    "briefing": "Ferrite is a valuable ore containing both Ferrium and Ignium. We need 800 units delivered to this station. Get to the belts and start mining.",
+    "objectives": [
+      {
+        "type": "mine",
+        "target": "ferrite",
+        "count": 800
+      }
+    ],
+    "rewards": {
+      "isk": 35000,
+      "loyalty_points": 120,
+      "standing_gain": 0.006,
+      "items": []
+    },
+    "location": "rimward",
+    "time_limit": 7200,
+    "difficulty": "easy",
+    "recommended_ship_class": "mining_frigate"
+  },
+  "ignaite_extraction": {
+    "id": "ignaite_extraction",
+    "name": "Ignaite Extraction",
+    "level": 2,
+    "type": "mining",
+    "agent": "Mining Operations Manager Holt",
+    "faction": "ORE",
+    "description": "Our manufacturing division requires Ignaite for advanced production. Extract the ore from designated asteroid fields.",
+    "briefing": "Ignaite contains Noctium, a mineral we desperately need for tech II component production. Mine 1500 units from the asteroid belts and return to station.",
+    "objectives": [
+      {
+        "type": "mine",
+        "target": "ignaite",
+        "count": 1500
+      }
+    ],
+    "rewards": {
+      "isk": 85000,
+      "loyalty_points": 250,
+      "standing_gain": 0.015,
+      "items": []
+    },
+    "location": "rimward",
+    "time_limit": 9000,
+    "difficulty": "medium",
+    "recommended_ship_class": "mining_barge"
+  },
+  "crystite_harvest": {
+    "id": "crystite_harvest",
+    "name": "Crystite Harvest",
+    "level": 2,
+    "type": "mining",
+    "agent": "Mining Operations Manager Holt",
+    "faction": "ORE",
+    "description": "A large order for Crystite has come in. We need experienced miners to fill it.",
+    "briefing": "One of our corporate clients needs a bulk delivery of Crystite. Mine 2000 units and bring them back to this station. A mining barge is recommended for this volume.",
+    "objectives": [
+      {
+        "type": "mine",
+        "target": "crystite",
+        "count": 2000
+      }
+    ],
+    "rewards": {
+      "isk": 100000,
+      "loyalty_points": 300,
+      "standing_gain": 0.018,
+      "items": []
+    },
+    "location": "rimward",
+    "time_limit": 10800,
+    "difficulty": "medium",
+    "recommended_ship_class": "mining_barge"
+  },
+  "corite_survey": {
+    "id": "corite_survey",
+    "name": "Corite Survey",
+    "level": 2,
+    "type": "mining",
+    "agent": "Mining Operations Manager Holt",
+    "faction": "ORE",
+    "description": "We've located Corite deposits in nearby belts. Survey the area and extract the ore.",
+    "briefing": "Corite is a mid-grade ore rich in Allonium and Isodium. We need 1200 units mined and delivered. Survey the asteroid belts to find the richest deposits.",
+    "objectives": [
+      {
+        "type": "mine",
+        "target": "corite",
+        "count": 1200
+      }
+    ],
+    "rewards": {
+      "isk": 120000,
+      "loyalty_points": 350,
+      "standing_gain": 0.02,
+      "items": []
+    },
+    "location": "kelheim",
+    "time_limit": 9000,
+    "difficulty": "medium",
+    "recommended_ship_class": "mining_barge"
+  },
+  "lumine_deep_mining": {
+    "id": "lumine_deep_mining",
+    "name": "Lumine Deep Mining Operation",
+    "level": 3,
+    "type": "mining",
+    "agent": "Senior Mining Director Vasquez",
+    "faction": "ORE",
+    "description": "Lumine deposits have been found in lowsec space. Extract the ore, but be prepared for hostile encounters.",
+    "briefing": "We've identified rich Lumine deposits in a lowsec system. The ore is extremely valuable, but the area is dangerous. Mine 2500 units and return safely. Watch your directional scanner at all times.",
+    "objectives": [
+      {
+        "type": "mine",
+        "target": "lumine",
+        "count": 2500
+      }
+    ],
+    "rewards": {
+      "isk": 350000,
+      "loyalty_points": 800,
+      "standing_gain": 0.035,
+      "items": [
+        "mining_laser_upgrade"
+      ]
+    },
+    "location": "duskfall",
+    "time_limit": 14400,
+    "difficulty": "hard",
+    "recommended_ship_class": "mining_barge"
+  },
+  "sangite_expedition": {
+    "id": "sangite_expedition",
+    "name": "Sangite Expedition",
+    "level": 3,
+    "type": "mining",
+    "agent": "Senior Mining Director Vasquez",
+    "faction": "ORE",
+    "description": "An expedition to mine Sangite from deep asteroid fields. This ore is critical for advanced manufacturing.",
+    "briefing": "Sangite is a rare ore that yields Noctium and Isodium in large quantities. We're sending you on an expedition to mine 3000 units. The asteroid fields are deep in contested space.",
+    "objectives": [
+      {
+        "type": "mine",
+        "target": "sangite",
+        "count": 3000
+      }
+    ],
+    "rewards": {
+      "isk": 420000,
+      "loyalty_points": 950,
+      "standing_gain": 0.04,
+      "items": []
+    },
+    "location": "duskfall",
+    "time_limit": 16200,
+    "difficulty": "hard",
+    "recommended_ship_class": "mining_barge"
+  },
+  "glacite_recovery": {
+    "id": "glacite_recovery",
+    "name": "Glacite Recovery Mission",
+    "level": 3,
+    "type": "mining",
+    "agent": "Senior Mining Director Vasquez",
+    "faction": "ORE",
+    "description": "Recover Glacite from an asteroid field that has attracted pirate attention. Expect NPC defense spawns.",
+    "briefing": "We have a Glacite-rich asteroid field that pirates have been using as a staging area. Mine 2000 units of Glacite while defending yourself from NPC spawns. Bring combat drones or an escort.",
+    "objectives": [
+      {
+        "type": "mine",
+        "target": "glacite",
+        "count": 2000
+      }
+    ],
+    "rewards": {
+      "isk": 500000,
+      "loyalty_points": 1100,
+      "standing_gain": 0.045,
+      "items": []
+    },
+    "location": "duskfall",
+    "time_limit": 14400,
+    "difficulty": "very_hard",
+    "recommended_ship_class": "mining_barge",
+    "npc_presence": {
+      "types": [
+        "venom_syndicate_scout",
+        "venom_syndicate_destroyer"
+      ],
+      "count": 5
+    }
+  },
+  "cosmite_extraction": {
+    "id": "cosmite_extraction",
+    "name": "Cosmite Deep Extraction",
+    "level": 4,
+    "type": "mining",
+    "agent": "Chief Mining Officer Krane",
+    "faction": "ORE",
+    "description": "Extract Cosmite from a nullsec asteroid field. Enemy NPC waves will attempt to disrupt your operation.",
+    "briefing": "Cosmite is one of the most valuable ores in Astralis, found only in nullsec space. We need 5000 units extracted from a field deep in hostile territory. Expect multiple waves of NPC enemies attempting to drive you off. A well-fitted Exhumer with combat support is essential.",
+    "objectives": [
+      {
+        "type": "mine",
+        "target": "cosmite",
+        "count": 5000
+      }
+    ],
+    "rewards": {
+      "isk": 1500000,
+      "loyalty_points": 3000,
+      "standing_gain": 0.08,
+      "items": []
+    },
+    "location": "outer_ring_nullsec",
+    "time_limit": 21600,
+    "difficulty": "extreme",
+    "recommended_ship_class": "exhumer",
+    "npc_presence": {
+      "types": [
+        "angel_frigate",
+        "angel_cruiser",
+        "angel_battlecruiser"
+      ],
+      "count": 8,
+      "waves": 3
+    }
+  },
+  "nexorite_critical": {
+    "id": "nexorite_critical",
+    "name": "Critical Nexorite Acquisition",
+    "level": 4,
+    "type": "mining",
+    "agent": "Chief Mining Officer Krane",
+    "faction": "ORE",
+    "description": "Mine Nexorite using specialized mining crystals. This rare ore is essential for Tech II production and requires expert mining skills.",
+    "briefing": "Nexorite is the rfleurett and most dangerous ore to mine. It requires specialized deep core mining equipment and Nexorite mining crystals. We need 2000 units for a critical Tech II manufacturing contract. The fields are in nullsec and heavily contested. This is the most challenging mining operation we offer.",
+    "objectives": [
+      {
+        "type": "mine",
+        "target": "nexorite",
+        "count": 2000
+      }
+    ],
+    "rewards": {
+      "isk": 2500000,
+      "loyalty_points": 5000,
+      "standing_gain": 0.1,
+      "items": []
+    },
+    "location": "syndicate_nullsec",
+    "time_limit": 25200,
+    "difficulty": "extreme",
+    "recommended_ship_class": "exhumer",
+    "npc_presence": {
+      "types": [
+        "iron_corsairs_frigate",
+        "iron_corsairs_destroyer",
+        "iron_corsairs_battlecruiser",
+        "iron_corsairs_battleship"
+      ],
+      "count": 10,
+      "waves": 4
+    },
+    "requirements": {
+      "skill": "deep_core_mining",
+      "equipment": "nexorite_mining_crystal"
+    }
+  }
+}

@@ -1,0 +1,378 @@
+{
+  "station_types": {
+    "industrial": {
+      "name": "Industrial Station",
+      "description": "Manufacturing and production facilities",
+      "services": [
+        "market",
+        "repair",
+        "fitting",
+        "manufacturing",
+        "research"
+      ],
+      "common_in": [
+        "all"
+      ],
+      "examples": {
+        "aurelian": "Duvolle Laboratories Manufacturing Plant",
+        "veyren": "Veyren Provisions Depot",
+        "keldari": "Boundless Creation Factory",
+        "solari": "Solvane Industries Factory"
+      }
+    },
+    "military": {
+      "name": "Military Station",
+      "description": "Naval and defense installations",
+      "services": [
+        "repair",
+        "fitting",
+        "missions",
+        "cloning",
+        "insurance"
+      ],
+      "common_in": [
+        "all"
+      ],
+      "examples": {
+        "aurelian": "Aurelian Grand Assembly Plant",
+        "veyren": "Veyren Fleet Assembly Yard",
+        "keldari": "Keldari Tribal Assembly Plant",
+        "solari": "Imperial Navy Assembly Plant"
+      }
+    },
+    "commercial": {
+      "name": "Commercial Hub",
+      "description": "Major trade and commerce centers",
+      "services": [
+        "market",
+        "contracts",
+        "courier",
+        "cloning"
+      ],
+      "common_in": [
+        "highsec"
+      ],
+      "examples": {
+        "aurelian": "Material Acquisition Trade Post",
+        "veyren": "Veyren Business Tribunal",
+        "keldari": "Tribal Liberation Distribution Center",
+        "solari": "Emperor Family Academy Station"
+      }
+    },
+    "research": {
+      "name": "Research Facility",
+      "description": "Scientific research and development",
+      "services": [
+        "research",
+        "invention",
+        "manufacturing",
+        "fitting"
+      ],
+      "common_in": [
+        "highsec"
+      ],
+      "examples": {
+        "aurelian": "Novadron Research Center",
+        "veyren": "Thyrkane Corporation R&D Center",
+        "keldari": "Core Synthesis Inc. Research Facility",
+        "solari": "Viziam Research Station"
+      }
+    },
+    "university": {
+      "name": "University Station",
+      "description": "Educational institutions and training facilities",
+      "services": [
+        "missions",
+        "market",
+        "cloning",
+        "repair"
+      ],
+      "common_in": [
+        "highsec"
+      ],
+      "examples": {
+        "aurelian": "University of Caille Campus",
+        "veyren": "State War Academy Station",
+        "keldari": "Republic University Campus",
+        "solari": "Imperial Academy Station"
+      }
+    },
+    "mining": {
+      "name": "Mining Station",
+      "description": "Ore refinement and mining support",
+      "services": [
+        "refining",
+        "reprocessing",
+        "market",
+        "repair"
+      ],
+      "common_in": [
+        "lowsec",
+        "highsec"
+      ],
+      "examples": {
+        "aurelian": "Astral Mining Inc. Refinery",
+        "veyren": "Deep Core Mining Inc. Station",
+        "keldari": "Keldari Mining Corporation Station",
+        "solari": "Imperial Mining Station"
+      }
+    }
+  },
+  "station_layouts": {
+    "aurelian": {
+      "style": "organic_domes",
+      "colors": [
+        "green",
+        "white",
+        "silver"
+      ],
+      "features": [
+        "flowing curves",
+        "eco-friendly design",
+        "luxurious interior",
+        "nature integration"
+      ],
+      "size_scale": 1.2
+    },
+    "veyren": {
+      "style": "utilitarian_blocks",
+      "colors": [
+        "steel_blue",
+        "gray",
+        "white"
+      ],
+      "features": [
+        "angular design",
+        "functional efficiency",
+        "minimalist",
+        "stark lighting"
+      ],
+      "size_scale": 1.0
+    },
+    "keldari": {
+      "style": "rusted_patchwork",
+      "colors": [
+        "rust_brown",
+        "orange",
+        "dark_gray"
+      ],
+      "features": [
+        "asymmetric",
+        "salvaged parts",
+        "industrial",
+        "rough edges"
+      ],
+      "size_scale": 0.9
+    },
+    "solari": {
+      "style": "golden_cathedral",
+      "colors": [
+        "gold",
+        "brass",
+        "bronze",
+        "white"
+      ],
+      "features": [
+        "ornate design",
+        "religious symbolism",
+        "grand scale",
+        "elegant curves"
+      ],
+      "size_scale": 1.4
+    }
+  },
+  "upwell_structures": {
+    "description": "Player-owned Upwell structures introduced 2016-2026",
+    "citadels": {
+      "astrahus": {
+        "name": "Astrahus",
+        "size": "medium",
+        "primary_role": "Command center, market hub",
+        "services": [
+          "market",
+          "repair",
+          "fitting",
+          "cloning",
+          "contracts"
+        ],
+        "docking_capacity": "subcapitals_only",
+        "visual_style": "modular_industrial",
+        "customizable": true
+      },
+      "fortizar": {
+        "name": "Fortizar",
+        "size": "large",
+        "primary_role": "Staging citadel, fleet operations",
+        "services": [
+          "market",
+          "repair",
+          "fitting",
+          "cloning",
+          "contracts"
+        ],
+        "docking_capacity": "up_to_capitals",
+        "visual_style": "military_fortress",
+        "customizable": true
+      },
+      "keepstar": {
+        "name": "Keepstar",
+        "size": "extra_large",
+        "primary_role": "Supercapital staging, alliance headquarters",
+        "services": [
+          "market",
+          "repair",
+          "fitting",
+          "cloning",
+          "contracts",
+          "supercapital_construction"
+        ],
+        "docking_capacity": "all_ships_including_titans",
+        "visual_style": "massive_citadel",
+        "special_features": [
+          "supercapital_docking",
+          "immense_hangar_bays"
+        ],
+        "customizable": true
+      }
+    },
+    "engineering_complexes": {
+      "raitaru": {
+        "name": "Raitaru",
+        "size": "medium",
+        "primary_role": "Manufacturing and invention",
+        "services": [
+          "manufacturing",
+          "research",
+          "invention",
+          "repair",
+          "fitting"
+        ],
+        "bonuses": [
+          "manufacturing_cost_reduction",
+          "manufacturing_time_reduction"
+        ],
+        "visual_style": "industrial_complex"
+      },
+      "azbel": {
+        "name": "Azbel",
+        "size": "large",
+        "primary_role": "Large-scale manufacturing",
+        "services": [
+          "manufacturing",
+          "research",
+          "invention",
+          "repair",
+          "fitting"
+        ],
+        "bonuses": [
+          "significant_manufacturing_bonuses",
+          "capital_construction"
+        ],
+        "visual_style": "large_factory"
+      },
+      "sotiyo": {
+        "name": "Sotiyo",
+        "size": "extra_large",
+        "primary_role": "Supercapital construction",
+        "services": [
+          "manufacturing",
+          "research",
+          "invention",
+          "repair",
+          "fitting",
+          "supercapital_construction"
+        ],
+        "bonuses": [
+          "maximum_manufacturing_bonuses",
+          "titan_construction"
+        ],
+        "visual_style": "mega_shipyard"
+      }
+    },
+    "refineries": {
+      "athanor": {
+        "name": "Athanor",
+        "size": "medium",
+        "primary_role": "Moon mining and refining",
+        "services": [
+          "refining",
+          "reprocessing",
+          "compression",
+          "moon_drilling"
+        ],
+        "bonuses": [
+          "reprocessing_efficiency",
+          "compression_bonuses"
+        ],
+        "visual_style": "mining_refinery",
+        "updates_2026": [
+          "new_ore_support",
+          "faster_cycles",
+          "fitting_system"
+        ]
+      },
+      "tatara": {
+        "name": "Tatara",
+        "size": "large",
+        "primary_role": "Large-scale moon mining",
+        "services": [
+          "refining",
+          "reprocessing",
+          "compression",
+          "moon_drilling",
+          "capital_component_construction"
+        ],
+        "bonuses": [
+          "maximum_reprocessing_efficiency",
+          "enhanced_compression"
+        ],
+        "visual_style": "mega_refinery",
+        "updates_2026": [
+          "new_ore_support",
+          "faster_cycles",
+          "fitting_system",
+          "enhanced_capacity"
+        ]
+      }
+    },
+    "structure_features": {
+      "asset_safety": {
+        "description": "If structure destroyed, assets moved to asset safety",
+        "recovery_location": "nefleurett_lowsec_npc_station",
+        "recovery_cost": "15_percent_of_value",
+        "exceptions": "wormhole_space_c4_c6_no_asset_safety"
+      },
+      "access_control": {
+        "description": "Owner can set access lists",
+        "options": [
+          "public",
+          "alliance_only",
+          "corporation_only",
+          "whitelist",
+          "blacklist"
+        ]
+      },
+      "tax_rates": {
+        "description": "Owner sets service tax rates",
+        "typical_range": "0_to_10_percent",
+        "competition": "often_lower_than_npc_stations"
+      },
+      "fitting_system_2026": {
+        "description": "2026 update - structures can be fitted like ships",
+        "slots": [
+          "high",
+          "mid",
+          "low",
+          "rig"
+        ],
+        "modules": [
+          "offensive",
+          "defensive",
+          "utility",
+          "industrial"
+        ],
+        "customization": "tailor_for_specific_roles"
+      }
+    }
+  }
+}

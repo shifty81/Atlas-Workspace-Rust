@@ -1,0 +1,6 @@
+{
+  "assets": [
+    { "assetId": "mining_rig_core", "documentPath": "Data/Assets/Structures/mining_rig_core.json", "category": "Structures" },
+    { "assetId": "storage_crate_small", "documentPath": "Data/Assets/Props/storage_crate_small.json", "category": "Props" }
+  ]
+}

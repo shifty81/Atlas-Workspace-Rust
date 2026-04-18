@@ -1,0 +1,10 @@
+{
+  "season": {
+    "name": "Default",
+    "version": 1,
+    "startDate": null,
+    "endDate": null,
+    "active": true
+  },
+  "note": "Season configuration placeholder. Populated by NovaForge game systems."
+}

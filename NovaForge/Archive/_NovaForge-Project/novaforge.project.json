@@ -1,0 +1,110 @@
+{
+  "projectId": "novaforge",
+  "displayName": "NovaForge",
+  "projectType": "game",
+  "manifestVersion": 2,
+  "atlasSuiteCompatibility": {
+    "minimumVersion": "0.1.0",
+    "projectContractVersion": 2
+  },
+  "versioning": {
+    "source": "Release/version.json",
+    "semanticVersion": "0.1.0",
+    "channel": "dev"
+  },
+  "targets": {
+    "client": "NovaForge.Client",
+    "server": "NovaForge.Server",
+    "tests": "NovaForge.Tests",
+    "validation": "NovaForge.Validation"
+  },
+  "startup": {
+    "defaultRunProfile": "ClientLocal",
+    "defaultBuildProfile": "Development",
+    "defaultPackageProfile": "ClientDev"
+  },
+  "paths": {
+    "repoRoot": ".",
+    "projectRoot": "NovaForge",
+    "sourceRoot": "NovaForge",
+    "clientRoot": "NovaForge/Client",
+    "serverRoot": "NovaForge/Server",
+    "sharedRoot": "NovaForge/Shared",
+    "contentRoot": "Content",
+    "configRoot": "Config",
+    "scriptsRoot": "Scripts",
+    "testsRoot": "Tests",
+    "packagingRoot": "Packaging",
+    "releaseRoot": "Release",
+    "docsRoot": "Docs",
+    "integrationsRoot": "Integrations",
+    "editorToolsRoot": "NovaForge/EditorTools",
+    "aiAdapterRoot": "AtlasAI/ProjectAdapters/NovaForge"
+  },
+  "buildTargets": [
+    {
+      "id": "client",
+      "displayName": "NovaForge Client",
+      "command": "cmake --build build --target NovaForgeClient"
+    },
+    {
+      "id": "server",
+      "displayName": "NovaForge Server",
+      "command": "cmake --build build --target NovaForgeServer"
+    },
+    {
+      "id": "tests",
+      "displayName": "Project Tests",
+      "command": "ctest --test-dir build --output-on-failure"
+    }
+  ],
+  "profiles": {
+    "build": [
+      "Debug",
+      "Development",
+      "Release"
+    ],
+    "package": [
+      "ClientDev",
+      "ClientRelease",
+      "ServerRelease"
+    ],
+    "run": [
+      "ClientLocal",
+      "DedicatedServerLocal",
+      "SmokeTest"
+    ]
+  },
+  "bridge": {
+    "transport": "http",
+    "baseUrl": "http://127.0.0.1:8005",
+    "timeoutMs": 8000
+  },
+  "capabilities": [
+    "project.info",
+    "build.run",
+    "files.open",
+    "analysis.lint",
+    "editor.selection.query",
+    "editor.tools.list",
+    "editor.tools.run",
+    "assets.generate.request",
+    "logs.stream"
+  ],
+  "safety": {
+    "allowWriteActions": false,
+    "requireReviewForCodegen": true,
+    "whitelistedToolActions": [
+      "validate_data",
+      "run_pcg_preview",
+      "open_scene",
+      "focus_entity",
+      "regenerate_schemas"
+    ]
+  },
+  "validation": {
+    "entryPoint": "Scripts/validate_project.ps1",
+    "contentValidationProfile": "default",
+    "requiresSchemaValidation": true
+  }
+}

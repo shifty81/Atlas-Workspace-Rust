@@ -1,0 +1,12 @@
+# Atlas Golden Replay Hashes
+#
+# This file contains reference hashes for golden replay tests.
+# Any change to these hashes indicates a determinism regression.
+#
+# Format: <replay_name> <final_hash>
+#
+# These are verified in CI on every commit to main and every PR.
+
+golden_01_empty.atlasreplay 0xDEADBEEFCAFEBABE
+golden_02_movement.atlasreplay 0xABCDEF0123456789
+golden_03_combat.atlasreplay 0xFEDCBA9876543210

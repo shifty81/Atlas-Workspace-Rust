@@ -1,0 +1,29 @@
+{
+  "profileId": "ClientDev",
+  "displayName": "Client Development",
+  "description": "Development client build with debug symbols and assertions enabled.",
+  "buildProfile": "Development",
+  "targets": ["client"],
+  "outputDir": "Artifacts/ClientDev",
+  "includeSymbols": true,
+  "includeContentRoot": true,
+  "cmakeArgs": [
+    "-DCMAKE_BUILD_TYPE=RelWithDebInfo",
+    "-DNOVAFORGE_ASSERTIONS=ON"
+  ],
+  "artifacts": [
+    "nova_forge_client",
+    "shaders/"
+  ],
+  "contentDirs": [
+    "Content/Data",
+    "Content/Definitions",
+    "Content/Buildables",
+    "Content/Rig",
+    "Content/Salvage",
+    "Content/Worldgen",
+    "Content/Factions",
+    "Content/Seasons",
+    "Content/Localization"
+  ]
+}

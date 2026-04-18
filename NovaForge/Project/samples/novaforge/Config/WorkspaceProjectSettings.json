@@ -1,0 +1,10 @@
+{
+  "schema": "atlas.workspace_project_settings.v1",
+  "projectId": "novaforge",
+  "displayName": "NovaForge",
+  "defaultLayout": "novaforge_default",
+  "defaultTool": "workspace.asset_editor",
+  "autosaveIntervalSeconds": 300,
+  "buildOnSave": false,
+  "livePreviewEnabled": false
+}

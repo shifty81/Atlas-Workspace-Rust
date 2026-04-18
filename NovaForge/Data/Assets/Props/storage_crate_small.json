@@ -1,0 +1,23 @@
+{
+  "documentType": "AssetDocument",
+  "assetId": "storage_crate_small",
+  "displayName": "Storage Crate Small",
+  "category": "Props",
+  "sourceModel": "Content/Meshes/Props/storage_crate_small.glb",
+  "materials": [],
+  "dimensions": { "x": 1.0, "y": 1.0, "z": 1.0 },
+  "collision": {
+    "profile": "StaticProp",
+    "bounds": { "type": "box", "center": { "x": 0, "y": 0.5, "z": 0 }, "extents": { "x": 0.5, "y": 0.5, "z": 0.5 } }
+  },
+  "anchors": [],
+  "snapPoints": [],
+  "pcg": {
+    "tags": ["loot", "storage", "industrial_prop"],
+    "biomes": ["barren", "rocky", "ash"],
+    "weight": 2.0,
+    "rarity": "common"
+  },
+  "durability": { "maxHealth": 80 },
+  "preview": { "profile": "asset_default" }
+}

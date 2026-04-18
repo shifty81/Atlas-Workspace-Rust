@@ -1,0 +1,42 @@
+{
+    "schema": "atlas.behaviorgraph.v1",
+    "nodes": [
+        {
+            "id": "threat_check",
+            "type": "ThreatAssessment",
+            "position": [100, 200],
+            "params": {}
+        },
+        {
+            "id": "patrol_score",
+            "type": "UtilityScore",
+            "position": [350, 150],
+            "params": {
+                "threatWeight": 0.5,
+                "healthWeight": 0.5
+            }
+        },
+        {
+            "id": "emotion",
+            "type": "EmotionUpdate",
+            "position": [350, 350],
+            "params": {}
+        },
+        {
+            "id": "action",
+            "type": "ActionSelector",
+            "position": [600, 200],
+            "params": {}
+        }
+    ],
+    "links": [
+        { "from": "threat_check.threat", "to": "patrol_score.threat" },
+        { "from": "threat_check.threat", "to": "emotion.perception" },
+        { "from": "patrol_score.utility", "to": "action.score_a" },
+        { "from": "emotion.confidence", "to": "action.score_b" }
+    ],
+    "outputs": {
+        "decision": "action.action",
+        "alert_level": "emotion.fear"
+    }
+}

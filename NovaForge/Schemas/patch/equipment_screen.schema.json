@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EquipmentScreenVM",
+  "type": "object",
+  "required": ["rigTier", "powerBudgetKw", "usedPowerKw", "slots"],
+  "properties": {
+    "rigTier": {"type": "string"},
+    "powerBudgetKw": {"type": "number", "minimum": 0},
+    "usedPowerKw": {"type": "number", "minimum": 0},
+    "slots": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["slotId", "displayName", "category", "unlocked", "occupied", "compatible"],
+        "properties": {
+          "slotId": {"type": "string"},
+          "displayName": {"type": "string"},
+          "category": {"type": "string"},
+          "unlocked": {"type": "boolean"},
+          "occupied": {"type": "boolean"},
+          "compatible": {"type": "boolean"},
+          "damaged": {"type": "boolean"},
+          "powerDrawKw": {"type": "number"},
+          "equippedItemId": {"type": "string"},
+          "unmetDependencies": {"type": "array", "items": {"type": "string"}}
+        }
+      }
+    }
+  }
+}

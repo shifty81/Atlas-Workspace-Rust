@@ -1,0 +1,19 @@
+{
+  "id": "mission_story_first_contact",
+  "name": "First Contact",
+  "type": "Story",
+  "description": "A mysterious signal originating from beyond the Valen Expanse has been detected by relay station Kappa-7. Command has assigned you to investigate the source and establish contact with whatever—or whoever—is transmitting.",
+  "difficulty": 2,
+  "objectives": [
+    { "type": "reach", "target": "waypoint_valen_relay", "count": 1 },
+    { "type": "scan", "target": "anomaly_signal_source", "count": 1 },
+    { "type": "survive", "target": "ambush_wave_1", "count": 1 }
+  ],
+  "rewards": {
+    "credits": 2500,
+    "xp": 800,
+    "items": ["mod_scanner_deep_probe"]
+  },
+  "min_level": 1,
+  "tags": ["story", "intro", "chapter_1"]
+}

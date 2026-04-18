@@ -1,0 +1,11 @@
+{
+  "id": "mod_engine_ion_drive",
+  "name": "Zephyr Ion Drive",
+  "type": "Engine",
+  "description": "An efficient ion propulsion system that trades raw thrust for exceptional fuel economy, ideal for long-haul routes and exploration missions.",
+  "power_cost": 20.0,
+  "mass": 6.0,
+  "speed_boost": 45.0,
+  "tier": 2,
+  "tags": ["propulsion", "efficient", "exploration"]
+}

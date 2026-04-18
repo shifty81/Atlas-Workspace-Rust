@@ -1,0 +1,25 @@
+Read README.md, ARCHITECTURE.md, PROJECT_RULES.md, BUILD_RULES.md, CONTENT_RULES.md, ROADMAP.md, TASKS.md, and all files under Docs/Specs first.
+
+Then work on NovaForge as a game-only project that adheres to those rules.
+
+Do not generate Atlas Suite tooling or generic editor-host code.
+
+The game source lives under NovaForge/ as a C++ CMake project.
+Integration layers live under Integrations/AtlasSuite/ and AtlasAI/ProjectAdapters/.
+
+Key directories:
+- NovaForge/          — C++ game source (Gameplay, World, Client, Server, UI, Save, App, etc.)
+- NovaForge/Tests/    — game-level C++ tests
+- Integrations/       — Atlas Suite runtime bridge, adapter, plugins (C#)
+- AtlasAI/            — AI project adapter (C#)
+- Content/            — game content data
+- Config/             — runtime configuration
+- Tests/              — project-level test lane
+
+For the first pass:
+1. review existing game code in NovaForge/
+2. identify compile-safe next steps
+3. keep dependencies one-directional
+4. add explicit TODO markers
+5. update TASKS.md with unresolved items
+6. stop and summarize created files, unresolved TODOs, dependency graph, and next compile-safe step

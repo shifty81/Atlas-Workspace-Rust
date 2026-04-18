@@ -1,0 +1,37 @@
+{
+  "fleet_norms": {
+    "description": "Default fleet behavioral norms and their effects",
+    "norm_definitions": {
+      "always_salvage": {
+        "description": "Fleet always salvages wrecks after combat",
+        "formation_trigger": "3+ consecutive salvage operations",
+        "violation_effect": "morale -2 for salvager-origin captains",
+        "reinforcement_effect": "morale +1 for all captains"
+      },
+      "never_retreat": {
+        "description": "Fleet stands and fights regardless of odds",
+        "formation_trigger": "3+ successful last-stand engagements",
+        "violation_effect": "morale -5 for military-origin captains",
+        "reinforcement_effect": "morale +3 for aggressive captains"
+      },
+      "avoid_faction_space": {
+        "description": "Fleet avoids specific faction territory",
+        "formation_trigger": "2+ losses in faction space",
+        "violation_effect": "morale -3 for paranoid captains",
+        "reinforcement_effect": "morale +1 for cautious captains"
+      }
+    },
+    "stability_thresholds": {
+      "strong": 0.8,
+      "normal": 0.5,
+      "weak": 0.3,
+      "broken": 0.1
+    },
+    "risk_appetite_adjustments": {
+      "after_victory": 0.05,
+      "after_defeat": -0.08,
+      "after_close_call": -0.03,
+      "lerp_rate": 0.1
+    }
+  }
+}

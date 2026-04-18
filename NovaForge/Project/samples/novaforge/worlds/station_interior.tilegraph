@@ -1,0 +1,30 @@
+{
+    "schema": "atlas.tilegraph.v1",
+    "nodes": [
+        {
+            "id": "base_floor",
+            "type": "BaseTile",
+            "position": [100, 200],
+            "params": { "tileID": 1 }
+        },
+        {
+            "id": "noise",
+            "type": "NoiseField",
+            "position": [100, 400],
+            "params": { "frequency": 0.1, "seed": 42 }
+        },
+        {
+            "id": "selector",
+            "type": "TileSelect",
+            "position": [400, 300],
+            "params": { "threshold": 0.5 }
+        }
+    ],
+    "links": [
+        { "from": "base_floor.tile", "to": "selector.below" },
+        { "from": "noise.field", "to": "selector.field" }
+    ],
+    "outputs": {
+        "tilemap": "selector.tilemap"
+    }
+}

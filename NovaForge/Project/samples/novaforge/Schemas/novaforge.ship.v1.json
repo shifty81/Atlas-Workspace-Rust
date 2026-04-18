@@ -1,0 +1,62 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "novaforge.ship.v1",
+    "title": "NovaForge Ship Definition",
+    "description": "Schema for NovaForge ship data files",
+    "type": "object",
+    "required": ["id", "name", "class", "faction"],
+    "properties": {
+        "id": {
+            "type": "string",
+            "description": "Unique ship identifier"
+        },
+        "name": {
+            "type": "string",
+            "description": "Display name of the ship"
+        },
+        "class": {
+            "type": "string",
+            "enum": ["frigate", "destroyer", "cruiser", "battlecruiser", "battleship", "capital", "industrial", "mining_barge", "exhumer"],
+            "description": "Ship class category"
+        },
+        "faction": {
+            "type": "string",
+            "description": "Faction that manufactures this ship"
+        },
+        "stats": {
+            "type": "object",
+            "properties": {
+                "hull_hp": { "type": "number", "minimum": 0 },
+                "armor_hp": { "type": "number", "minimum": 0 },
+                "shield_hp": { "type": "number", "minimum": 0 },
+                "capacitor": { "type": "number", "minimum": 0 },
+                "max_velocity": { "type": "number", "minimum": 0 },
+                "warp_speed": { "type": "number", "minimum": 0 },
+                "cargo_capacity": { "type": "number", "minimum": 0 }
+            },
+            "additionalProperties": false
+        },
+        "slots": {
+            "type": "object",
+            "properties": {
+                "high": { "type": "integer", "minimum": 0 },
+                "mid": { "type": "integer", "minimum": 0 },
+                "low": { "type": "integer", "minimum": 0 },
+                "rig": { "type": "integer", "minimum": 0 }
+            },
+            "additionalProperties": false
+        },
+        "model_data": {
+            "type": "object",
+            "properties": {
+                "turret_hardpoints": { "type": "integer", "minimum": 0 },
+                "launcher_hardpoints": { "type": "integer", "minimum": 0 },
+                "drone_bays": { "type": "integer", "minimum": 0 },
+                "engine_count": { "type": "integer", "minimum": 1 },
+                "generation_seed": { "type": "integer" }
+            },
+            "additionalProperties": false
+        }
+    },
+    "additionalProperties": true
+}

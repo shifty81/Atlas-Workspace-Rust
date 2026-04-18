@@ -1,0 +1,23 @@
+{
+    "schema": "atlas.entities.v1",
+    "entities": [
+        {
+            "id": "player_spawn",
+            "type": "SpawnPoint",
+            "position": [0.0, 0.0, 0.0],
+            "components": {
+                "Transform": { "x": 0.0, "y": 0.0, "z": 0.0 },
+                "Tag": { "value": "player_spawn" }
+            }
+        },
+        {
+            "id": "terrain_origin",
+            "type": "Terrain",
+            "position": [0.0, 0.0, 0.0],
+            "components": {
+                "Transform": { "x": 0.0, "y": 0.0, "z": 0.0 },
+                "WorldGraph": { "source": "worlds/terrain.worldgraph" }
+            }
+        }
+    ]
+}

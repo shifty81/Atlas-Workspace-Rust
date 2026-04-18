@@ -1,0 +1,12 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "WorldDocument",
+  "type": "object",
+  "required": ["documentType", "worldId", "entities"],
+  "properties": {
+    "documentType": { "const": "WorldDocument" },
+    "worldId": { "type": "string" },
+    "displayName": { "type": "string" },
+    "entities": { "type": "array" }
+  }
+}

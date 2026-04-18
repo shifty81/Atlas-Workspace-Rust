@@ -1,0 +1,16 @@
+{
+  "id": "ship_fighter_viper",
+  "name": "Viper Mk-IV",
+  "class": "Fighter",
+  "description": "A razor-fast interceptor built for dogfighting in asteroid belts. Its lightweight composite hull sacrifices durability for unmatched agility, making it the preferred craft for ace pilots across the outer colonies.",
+  "hull_points": 450,
+  "shield_points": 200,
+  "mass": 18.5,
+  "max_speed": 380.0,
+  "module_slots": 3,
+  "crew_capacity": 1,
+  "cargo_capacity": 12.0,
+  "turn_rate": 95.0,
+  "acceleration": 42.0,
+  "tags": ["combat", "fast", "light", "starter"]
+}

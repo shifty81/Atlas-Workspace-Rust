@@ -1,0 +1,33 @@
+{
+    "schema": "atlas.behaviorgraph.v1",
+    "nodes": [
+        {
+            "id": "threat_check",
+            "type": "ThreatAssessment",
+            "position": [100, 200],
+            "params": {}
+        },
+        {
+            "id": "score",
+            "type": "UtilityScore",
+            "position": [300, 200],
+            "params": {
+                "threatWeight": 0.6,
+                "healthWeight": 0.4
+            }
+        },
+        {
+            "id": "action",
+            "type": "ActionSelector",
+            "position": [500, 200],
+            "params": {}
+        }
+    ],
+    "links": [
+        { "from": "threat_check.threat", "to": "score.threat" },
+        { "from": "score.utility", "to": "action.score_a" }
+    ],
+    "outputs": {
+        "decision": "action.action"
+    }
+}

@@ -1,0 +1,10 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "PCGPreviewDefaults",
+  "type": "object",
+  "properties": {
+    "defaultRuleSet": { "type": "string" },
+    "defaultSeed": { "type": "integer" },
+    "defaultBiome": { "type": "string" }
+  }
+}

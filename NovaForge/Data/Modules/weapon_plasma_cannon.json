@@ -1,0 +1,13 @@
+{
+  "id": "mod_weapon_plasma_cannon",
+  "name": "Helios Plasma Cannon",
+  "type": "Weapon",
+  "description": "A mid-tier directed-energy weapon that fires superheated plasma bolts. Effective against shields but loses coherence at extreme range.",
+  "power_cost": 35.0,
+  "mass": 4.2,
+  "damage": 85.0,
+  "fire_rate": 2.5,
+  "range": 1200.0,
+  "tier": 2,
+  "tags": ["energy", "plasma", "anti_shield"]
+}

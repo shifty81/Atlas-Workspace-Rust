@@ -1,0 +1,28 @@
+<Project>
+  <!--
+    Directory.Build.props — auto-imported by MSBuild for every project in this tree.
+
+    Guard: C++ projects require Visual Studio's MSBuild, not the .NET SDK's MSBuild.
+    If $(VCTargetsPath) is empty the build was launched with 'dotnet build' or
+    'dotnet msbuild' which lacks the C++ workload. Emit a clear error instead of
+    the cryptic MSB4278.
+
+    Binary logging: when /bl is passed to msbuild (via build.cmd), MSBuild writes
+    a structured .binlog next to the solution. Open it with:
+      https://msbuildlog.com/
+  -->
+
+  <PropertyGroup>
+    <!-- Flag if the wrong MSBuild flavour is being used -->
+    <_AWS_VCTargetsMissing Condition="'$(VCTargetsPath)' == '' or !Exists('$(VCTargetsPath)\Microsoft.Cpp.Default.props')">true</_AWS_VCTargetsMissing>
+  </PropertyGroup>
+
+  <Target Name="_AWS_CheckVCTargets" BeforeTargets="Build;Rebuild;Clean"
+          Condition="'$(_AWS_VCTargetsMissing)' == 'true'">
+    <Error Text="AtlasWorkspace requires Visual Studio's MSBuild (not the .NET SDK MSBuild).
+Open a 'Developer Command Prompt for VS 2022' then run build.cmd, or use the VS IDE:
+  File &gt; Open &gt; CMake… &gt; CMakeLists.txt
+Do NOT use 'dotnet build' or 'dotnet msbuild' — the .NET SDK MSBuild lacks C++ targets." />
+  </Target>
+
+</Project>

@@ -1,0 +1,83 @@
+{
+  "pirate_doctrine": {
+    "description": "Pirate coalition doctrine configuration and behavior rules",
+    "doctrine_states": {
+      "Accumulate": {
+        "description": "Quietly hoard resources for titan construction",
+        "aggression_range": [0.05, 0.15],
+        "coordination_range": [0.1, 0.3],
+        "target_priorities": ["industrial_convoys", "mining_ships", "cargo_haulers"],
+        "avoidance": ["military_patrols", "capital_ships", "stations"],
+        "fleet_composition": {
+          "frigates": 0.5,
+          "destroyers": 0.3,
+          "cruisers": 0.2
+        }
+      },
+      "Conceal": {
+        "description": "Reduce exposure when discovery risk is high",
+        "aggression_range": [0.1, 0.25],
+        "coordination_range": [0.4, 0.6],
+        "target_priorities": ["isolated_miners", "exploration_ships"],
+        "avoidance": ["patrol_routes", "scanner_ships", "populated_systems"],
+        "fleet_composition": {
+          "frigates": 0.6,
+          "destroyers": 0.2,
+          "cruisers": 0.15,
+          "battlecruisers": 0.05
+        }
+      },
+      "Disrupt": {
+        "description": "Actively destabilize local economy to create cover",
+        "aggression_range": [0.4, 0.6],
+        "coordination_range": [0.3, 0.5],
+        "target_priorities": ["trade_hubs", "gate_corridors", "industrial_ships"],
+        "avoidance": ["capital_fleets"],
+        "fleet_composition": {
+          "frigates": 0.3,
+          "destroyers": 0.3,
+          "cruisers": 0.3,
+          "battlecruisers": 0.1
+        }
+      },
+      "Defend": {
+        "description": "Protect assembly operations at all costs",
+        "aggression_range": [0.6, 0.8],
+        "coordination_range": [0.6, 0.8],
+        "target_priorities": ["scout_ships", "scanner_probes", "approaching_fleets"],
+        "avoidance": [],
+        "fleet_composition": {
+          "frigates": 0.2,
+          "destroyers": 0.2,
+          "cruisers": 0.3,
+          "battlecruisers": 0.2,
+          "battleships": 0.1
+        }
+      },
+      "PrepareLaunch": {
+        "description": "Final escalation, maximum coordination",
+        "aggression_range": [0.9, 1.0],
+        "coordination_range": [0.9, 1.0],
+        "target_priorities": ["any_hostile", "blockade_runners", "capital_threats"],
+        "avoidance": [],
+        "fleet_composition": {
+          "frigates": 0.1,
+          "destroyers": 0.15,
+          "cruisers": 0.25,
+          "battlecruisers": 0.25,
+          "battleships": 0.2,
+          "capitals": 0.05
+        }
+      }
+    },
+    "transition_rules": {
+      "titan_progress_thresholds": {
+        "accumulate_to_disrupt": 0.2,
+        "disrupt_to_defend": 0.5,
+        "defend_to_launch": 0.8
+      },
+      "discovery_risk_conceal_threshold": 0.5,
+      "hysteresis_margin": 0.05
+    }
+  }
+}

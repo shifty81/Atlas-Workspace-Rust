@@ -1,0 +1,1302 @@
+#ifndef NOVAFORGE_COMPONENTS_COMBAT_COMPONENTS_H
+#define NOVAFORGE_COMPONENTS_COMBAT_COMPONENTS_H
+
+#include "ecs/component.h"
+#include <string>
+#include <vector>
+#include <map>
+#include <algorithm>
+#include <cstdint>
+#include <cmath>
+
+namespace atlas {
+namespace components {
+
+/**
+ * @brief Tactical overlay state
+ */
+class TacticalOverlayState : public ecs::Component {
+public:
+    bool enabled = false;
+    std::vector<float> ring_distances = {5.0f, 10.0f, 20.0f, 30.0f, 50.0f, 100.0f};
+    float tool_range = 0.0f;
+    std::string tool_type;
+
+    // Shared filter support (Phase 10)
+    std::vector<std::string> filter_categories = {"hostile", "friendly", "asteroid", "structure"};
+    bool passive_display_only = true;   // no clickable elements, no dragging
+
+    // Entity priority scaling (Phase 10)
+    float entity_display_priority = 1.0f;  // higher = more visible at distance
+
+    // Fleet extensions (Stage 4)
+    float anchor_ring_radius = 0.0f;       // anchor ring distance (0 = disabled)
+    std::string anchor_entity_id;          // entity at ring center
+    bool  wing_bands_enabled = false;      // show wing-level band arcs
+    std::vector<float> wing_band_offsets;  // per-wing radial offset from anchor
+
+    COMPONENT_TYPE(TacticalOverlayState)
+};
+
+/**
+ * @brief Damage event tracking for visual feedback
+ * 
+ * Records recent damage hits so the client can render appropriate
+ * visual effects: shield ripple (blue), armor flash (yellow/orange),
+ * hull pulse (red + screen shake).
+ */
+class DamageEvent : public ecs::Component {
+public:
+    struct HitRecord {
+        float damage_amount = 0.0f;
+        std::string damage_type;      // em, thermal, kinetic, explosive
+        std::string layer_hit;        // shield, armor, hull
+        float timestamp = 0.0f;
+        bool shield_depleted = false;  // shield reached 0 on this hit
+        bool armor_depleted = false;   // armor reached 0 on this hit
+        bool hull_critical = false;    // hull below 25% after this hit
+    };
+
+    std::vector<HitRecord> recent_hits;
+    float last_hit_time = 0.0f;
+    float total_damage_taken = 0.0f;
+
+    void addHit(float damage, const std::string& type, const std::string& layer,
+                float time, bool shield_dep = false, bool armor_dep = false,
+                bool hull_crit = false) {
+        HitRecord hit;
+        hit.damage_amount = damage;
+        hit.damage_type = type;
+        hit.layer_hit = layer;
+        hit.timestamp = time;
+        hit.shield_depleted = shield_dep;
+        hit.armor_depleted = armor_dep;
+        hit.hull_critical = hull_crit;
+        recent_hits.push_back(hit);
+        last_hit_time = time;
+        total_damage_taken += damage;
+    }
+
+    void clearOldHits(float current_time, float max_age = 5.0f) {
+        recent_hits.erase(
+            std::remove_if(recent_hits.begin(), recent_hits.end(),
+                [current_time, max_age](const HitRecord& h) {
+                    return (current_time - h.timestamp) > max_age;
+                }),
+            recent_hits.end());
+    }
+
+    COMPONENT_TYPE(DamageEvent)
+};
+/**
+ * @brief Server-side LOD priority hint for large battle optimisation
+ *
+ * Attached to entities in crowded scenes so the client can allocate
+ * rendering budget wisely.  Higher priority values get higher LOD.
+ */
+class LODPriority : public ecs::Component {
+public:
+    float priority = 1.0f;        // 0.0 = lowest, 1.0 = normal, 2.0+ = critical
+    bool force_visible = false;   // override culling (e.g. player's own ship)
+    float impostor_distance = 500.0f; // distance at which to switch to impostor/billboard
+
+    COMPONENT_TYPE(LODPriority)
+};
+// ==================== Phase 10: Tactical Overlay Components ====================
+
+class TacticalProjection : public ecs::Component {
+public:
+    float projected_x = 0.0f;          // 2D projected position X
+    float projected_y = 0.0f;          // 2D projected position Y
+    float vertical_offset = 0.0f;      // height above/below tactical plane
+    bool visible = true;                // whether entity appears on overlay
+
+    COMPONENT_TYPE(TacticalProjection)
+};
+// ==================== Phase 15: Turret AI + Firing Arcs ====================
+
+/**
+ * @brief Per-turret state for automated targeting within arc constraints.
+ *
+ * Attached to ship/station entities with turrets. Each TurretAIState
+ * represents one turret's targeting and firing state.
+ */
+class TurretAIState : public ecs::Component {
+public:
+    // Turret configuration (from TurretPlacement/TurretGenerator)
+    uint32_t turret_index = 0;
+    float arc_degrees = 90.0f;         // total firing arc width
+    float direction_deg = 0.0f;        // turret facing direction (ship-relative)
+    float tracking_speed = 1.0f;       // rad/s — how fast turret can track
+    float base_damage = 10.0f;
+    float rate_of_fire = 1.0f;         // shots per second
+    float optimal_range = 100.0f;      // for future range-based damage falloff
+
+    // Runtime state
+    std::string target_entity_id;       // currently targeted entity
+    float cooldown_remaining = 0.0f;   // seconds until next shot
+    float angular_velocity = 0.0f;     // target's angular velocity (rad/s)
+    bool engaged = false;               // currently firing
+    int shots_fired = 0;
+    float total_damage_dealt = 0.0f;
+
+    COMPONENT_TYPE(TurretAIState)
+};
+
+
+// ==================== Combat Log ====================
+
+/**
+ * @brief Combat event recording and engagement analytics
+ *
+ * Records combat events for damage type analysis, DPS calculation,
+ * and engagement outcome tracking. Supports balance tuning by
+ * providing per-engagement statistics and damage breakdowns.
+ */
+class CombatLog : public ecs::Component {
+public:
+    enum class DamageType { EM, Thermal, Kinetic, Explosive };
+    enum class EngagementOutcome { Ongoing, Victory, Defeat, Draw };
+
+    struct CombatEntry {
+        std::string attacker_id;
+        std::string defender_id;
+        DamageType damage_type = DamageType::Kinetic;
+        float damage_amount = 0.0f;
+        std::string weapon_type;
+        bool hit = true;
+        float timestamp = 0.0f;
+    };
+
+    struct EngagementSummary {
+        std::string engagement_id;
+        float start_time = 0.0f;
+        float duration = 0.0f;
+        float total_damage_dealt = 0.0f;
+        float total_damage_received = 0.0f;
+        int kills = 0;
+        int losses = 0;
+        EngagementOutcome outcome = EngagementOutcome::Ongoing;
+    };
+
+    std::vector<CombatEntry> entries;
+    std::vector<EngagementSummary> engagements;
+    int max_entries = 100;
+    int max_engagements = 20;
+    int total_entries_recorded = 0;
+    float total_damage_dealt = 0.0f;
+    float total_damage_received = 0.0f;
+    int total_kills = 0;
+    int total_losses = 0;
+    float elapsed = 0.0f;
+    bool active = true;
+
+    COMPONENT_TYPE(CombatLog)
+};
+
+// ==================== Damage Notification ====================
+
+/**
+ * @brief Tracks and queues damage notifications for HUD display
+ *
+ * Records incoming/outgoing damage events with type, weapon, and crit info.
+ * Entries expire after configurable lifetime. Provides DPS calculations.
+ */
+class DamageNotification : public ecs::Component {
+public:
+    enum DamageType { EM = 0, Thermal = 1, Kinetic = 2, Explosive = 3 };
+
+    struct DamageEntry {
+        std::string source_id;
+        float amount = 0.0f;
+        int damage_type = 0;
+        std::string weapon_name;
+        bool is_critical = false;
+        float timestamp = 0.0f;
+    };
+
+    std::vector<DamageEntry> incoming;
+    std::vector<DamageEntry> outgoing;
+    float total_damage_taken = 0.0f;
+    float total_damage_dealt = 0.0f;
+    int hits_taken = 0;
+    int hits_dealt = 0;
+    int crits_taken = 0;
+    int crits_dealt = 0;
+    int max_entries = 50;
+    float entry_lifetime = 10.0f;
+    float elapsed = 0.0f;
+    bool active = true;
+
+    COMPONENT_TYPE(DamageNotification)
+};
+
+// ==================== Damage Application ====================
+
+/**
+ * @brief Per-entity damage resistance profile and pending damage queue
+ *
+ * Stores EM/Thermal/Kinetic/Explosive resistance values per layer
+ * (shield/armor/hull) and queues incoming damage for application
+ * by DamageApplicationSystem each tick.
+ */
+class DamageApplication : public ecs::Component {
+public:
+    enum class DamageType { EM = 0, Thermal = 1, Kinetic = 2, Explosive = 3 };
+
+    struct PendingDamage {
+        std::string source_id;
+        float raw_amount = 0.0f;
+        DamageType type = DamageType::Kinetic;
+        float timestamp = 0.0f;
+    };
+
+    std::vector<PendingDamage> pending;
+    float total_applied = 0.0f;
+    float total_mitigated = 0.0f;
+    int hits_processed = 0;
+    int max_pending = 50;
+    float elapsed = 0.0f;
+    bool active = true;
+
+    COMPONENT_TYPE(DamageApplication)
+};
+
+// ==================== Combat Engagement ====================
+
+/**
+ * @brief Tracks combat engagement state lifecycle per entity
+ *
+ * Entities transition: Safe -> Engaging -> InCombat -> Disengaging -> Safe
+ * Used to gate warp, docking, and logoff while under fire.
+ */
+class CombatEngagement : public ecs::Component {
+public:
+    enum class State { Safe, Engaging, InCombat, Disengaging };
+
+    State state = State::Safe;
+    std::string primary_target_id;
+    std::vector<std::string> attackers;
+    float time_in_state = 0.0f;
+    float disengage_timer = 0.0f;
+    float disengage_duration = 15.0f;  // seconds before safe after last hit
+    float engage_range = 150000.0f;    // meters; auto-engage within this range
+    int engagement_count = 0;
+    float total_combat_time = 0.0f;
+    bool warp_blocked = false;
+    bool dock_blocked = false;
+    bool active = true;
+
+    COMPONENT_TYPE(CombatEngagement)
+};
+
+/**
+ * @brief Tracks accumulated combat rewards for an entity
+ *
+ * When NPCs are destroyed, reward XP and loot credits accumulate here.
+ * The system periodically flushes pending rewards to the player's wallet
+ * and progression components.
+ */
+class CombatReward : public ecs::Component {
+public:
+    struct KillReward {
+        std::string target_id;
+        std::string target_name;
+        float xp_awarded = 0.0f;
+        double credits_awarded = 0.0;
+        std::string loot_table;
+        float timestamp = 0.0f;
+        bool flushed = false;
+    };
+
+    std::vector<KillReward> pending_rewards;
+    double total_credits_awarded = 0.0;
+    float total_xp_awarded = 0.0f;
+    int total_kills = 0;
+    int pending_count = 0;
+    float flush_interval = 2.0f;    // seconds between flushes
+    float time_since_flush = 0.0f;
+    float elapsed = 0.0f;
+    bool active = true;
+
+    COMPONENT_TYPE(CombatReward)
+};
+
+/**
+ * @brief Tracks bounty collection state for a player entity
+ *
+ * When an NPC with a bounty is destroyed, the kill is recorded here.
+ * The system processes pending kills each tick and awards credits.
+ */
+class BountyCollection : public ecs::Component {
+public:
+    struct BountyKill {
+        std::string target_id;
+        std::string target_type;
+        double bounty_amount = 0.0;
+        float timestamp = 0.0f;
+        bool paid = false;
+    };
+
+    std::vector<BountyKill> pending_kills;
+    double total_bounties_collected = 0.0;
+    int total_kills_claimed = 0;
+    int max_pending = 50;
+    float elapsed = 0.0f;
+    bool active = true;
+
+    COMPONENT_TYPE(BountyCollection)
+};
+
+// ==================== Bounty Payout System ====================
+
+/**
+ * @brief Automatic bounty payout on NPC destruction
+ *
+ * When an NPC is destroyed, a payout entry is queued.  The system
+ * processes the queue each tick, awards ISC to the killer's wallet,
+ * and maintains running totals.  Supports payout multipliers from
+ * security status or faction standing.
+ */
+class BountyPayout : public ecs::Component {
+public:
+    struct PayoutEntry {
+        std::string killer_id;
+        std::string victim_id;
+        std::string victim_type;    // "pirate", "rogue_drone", "sleeper"
+        double base_bounty = 0.0;
+        double final_payout = 0.0;
+        float timestamp = 0.0f;
+        bool processed = false;
+    };
+
+    std::vector<PayoutEntry> pending_payouts;
+    double total_isc_paid = 0.0;
+    int total_payouts_processed = 0;
+    float payout_multiplier = 1.0f;     // from security status, standings, etc.
+    int max_pending = 100;
+    float elapsed = 0.0f;
+    bool active = true;
+
+    COMPONENT_TYPE(BountyPayout)
+};
+
+// ==================== Module Overheat ====================
+
+class ModuleOverheat : public ecs::Component {
+public:
+    struct ModuleSlot {
+        std::string module_id;
+        float heat_level = 0.0f;         // 0..100
+        float heat_per_cycle = 5.0f;     // heat gained per activation cycle
+        float dissipation_rate = 2.0f;   // heat lost per second when not overheating
+        float damage_threshold = 80.0f;  // heat % at which module takes damage
+        float damage_accumulated = 0.0f;
+        bool overheating = false;
+        bool burned_out = false;
+    };
+
+    std::vector<ModuleSlot> modules;
+    int max_modules = 8;
+    int total_burnouts = 0;
+    float elapsed = 0.0f;
+    bool active = true;
+
+    COMPONENT_TYPE(ModuleOverheat)
+};
+
+// ==================== System Security Response ====================
+
+/**
+ * @brief Star-system security force response to criminal activity
+ *
+ * Tracks criminal offences reported within a star system.  Each offence
+ * raises the response level.  When the response level exceeds a
+ * threshold the security force spawns response ships.  Response level
+ * decays over time once offences stop.
+ */
+class SystemSecurityResponse : public ecs::Component {
+public:
+    enum class SecurityLevel { HighSec, LowSec, NullSec };
+    enum class ResponseState { Idle, Alerted, Responding, Engaged };
+
+    struct Offence {
+        std::string offender_id;
+        std::string offence_type;        // "assault", "theft", "smuggling"
+        float severity = 1.0f;           // 0.0–10.0
+        float timestamp = 0.0f;
+    };
+
+    std::string system_id;
+    SecurityLevel security_level = SecurityLevel::HighSec;
+    ResponseState state = ResponseState::Idle;
+    std::vector<Offence> offences;
+    float response_level = 0.0f;          // 0.0–100.0
+    float alert_threshold = 20.0f;        // triggers Alerted state
+    float respond_threshold = 50.0f;      // triggers Responding state
+    float decay_rate = 2.0f;              // per second when no new offences
+    int max_offences = 50;
+    int response_ships_dispatched = 0;
+    int total_responses = 0;
+    float elapsed = 0.0f;
+    bool active = true;
+
+    COMPONENT_TYPE(SystemSecurityResponse)
+};
+
+// ==================== Combat Loot Drop ====================
+
+/**
+ * @brief Loot drop table and pending drop tracking for combat kills
+ *
+ * Each entity with this component has a configurable drop table of items
+ * with drop chances, quantity ranges, and rarity tiers.  When a kill
+ * triggers a drop, a pending entry is created and resolved on the next
+ * tick using a deterministic roll.
+ */
+class CombatLootDrop : public ecs::Component {
+public:
+    struct DropEntry {
+        std::string item_id;
+        float drop_chance = 0.5f;        // 0.0–1.0
+        int min_qty = 1;
+        int max_qty = 1;
+        std::string rarity = "common";   // common, uncommon, rare, epic
+    };
+
+    struct PendingDrop {
+        std::string source_id;           // entity that was destroyed
+        bool resolved = false;
+    };
+
+    std::vector<DropEntry> drop_table;
+    std::vector<PendingDrop> pending_drops;
+    int max_drop_entries = 20;
+    int total_drops_triggered = 0;
+    int total_items_dropped = 0;
+    std::string last_drop_source;
+    float elapsed = 0.0f;
+    bool active = true;
+
+    COMPONENT_TYPE(CombatLootDrop)
+};
+
+/**
+ * @brief Ship damage resistance profile with type-specific mitigation and hardener stacking
+ *
+ * Base resistances per damage type (EM, Thermal, Kinetic, Explosive) are
+ * augmented by active hardener modules that stack with diminishing returns.
+ * Individual resistances are capped at 85%.  Active hardeners consume
+ * charge each tick.
+ */
+class DamageResistanceProfile : public ecs::Component {
+public:
+    struct Hardener {
+        std::string hardener_id;
+        std::string damage_type;  // em, thermal, kinetic, explosive
+        float bonus = 0.0f;      // 0.0–0.5
+        bool is_active = false;
+    };
+
+    float base_em = 0.0f;
+    float base_thermal = 0.0f;
+    float base_kinetic = 0.0f;
+    float base_explosive = 0.0f;
+    std::vector<Hardener> hardeners;
+    int max_hardeners = 8;
+    float total_damage_mitigated = 0.0f;
+    float charge_consumed = 0.0f;
+    float elapsed = 0.0f;
+    bool active = true;
+
+    COMPONENT_TYPE(DamageResistanceProfile)
+};
+
+/**
+ * @brief Turret tracking state for rotation and target acquisition
+ *
+ * Manages turret rotation speed, tracking accuracy, and target
+ * lock state. Small fast targets are harder to track, requiring
+ * higher tracking speed to maintain accuracy.
+ */
+class TurretTrackingState : public ecs::Component {
+public:
+    std::string turret_id;
+    std::string target_id;
+    float tracking_speed = 1.0f;       // rad/s angular tracking speed
+    float optimal_range = 10000.0f;    // meters
+    float falloff_range = 5000.0f;     // meters beyond optimal
+    float current_angle = 0.0f;        // radians, current turret angle
+    float target_angle = 0.0f;         // radians, angle to target
+    float angular_velocity = 0.0f;     // target angular velocity in rad/s
+    float accuracy = 0.0f;             // 0.0-1.0, computed hit probability
+    float damage_multiplier = 0.0f;    // based on tracking vs angular velocity
+    int total_shots_fired = 0;
+    int total_hits = 0;
+    float elapsed = 0.0f;
+    bool active = true;
+    bool locked = false;               // true when turret is locked on target
+
+    float hitRate() const {
+        return total_shots_fired > 0
+            ? static_cast<float>(total_hits) / static_cast<float>(total_shots_fired)
+            : 0.0f;
+    }
+
+    COMPONENT_TYPE(TurretTrackingState)
+};
+
+/**
+ * @brief Dynamic encounter balance state for difficulty and reward scaling
+ *
+ * Tracks player progression metrics and adjusts encounter difficulty multiplier
+ * and reward scaling so the game stays challenging but fair for solo and co-op.
+ * The system recalculates modifiers each tick based on fleet size, average ship
+ * class, and total kill count.
+ */
+class EncounterBalanceState : public ecs::Component {
+public:
+    std::string encounter_id;
+    float difficulty_multiplier = 1.0f;  // 0.5 (easy) – 3.0 (brutal)
+    float reward_multiplier = 1.0f;      // scales ISC/loot payout
+    int player_count = 1;                // fleet size for scaling
+    int avg_ship_class = 1;              // 1=frigate … 5=capital
+    int total_kills = 0;                 // cumulative kills for progression
+    float base_difficulty = 1.0f;        // designer-authored baseline
+    float base_reward = 100.0f;          // baseline ISC reward
+    float elapsed = 0.0f;
+    bool active = true;
+    int recalc_count = 0;               // how many times balance was recalculated
+
+    COMPONENT_TYPE(EncounterBalanceState)
+};
+
+/**
+ * @brief Configurable weighted loot table for encounters, missions, and exploration
+ *
+ * Maintains a list of possible loot entries each with a weight, rarity tier,
+ * and quantity range.  The system selects drops via weighted random and tracks
+ * how many rolls / drops have occurred.
+ */
+class LootTableState : public ecs::Component {
+public:
+    struct LootEntry {
+        std::string item_id;
+        std::string rarity;      // "common","uncommon","rare","epic","legendary"
+        float weight = 1.0f;     // relative drop weight
+        int min_quantity = 1;
+        int max_quantity = 1;
+    };
+
+    std::string table_id;
+    std::vector<LootEntry> entries;
+    int max_entries = 50;
+    int total_rolls = 0;
+    int total_drops = 0;
+    float luck_modifier = 1.0f;  // multiplied into rare weights
+    float elapsed = 0.0f;
+    bool active = true;
+
+    float totalWeight() const {
+        float w = 0.0f;
+        for (const auto& e : entries) w += e.weight;
+        return w;
+    }
+
+    COMPONENT_TYPE(LootTableState)
+};
+
+// ==================== Gate Gun State ====================
+
+/**
+ * @brief Automated sentry gun placed at stargates in high/low-sec systems
+ *
+ * Gate guns automatically engage entities flagged as criminal or hostile
+ * within their engagement range.  They cycle fire at a fixed interval
+ * and deal configurable damage.  Damage falloff applies beyond optimal
+ * range.
+ */
+class GateGunState : public ecs::Component {
+public:
+    struct Target {
+        std::string entity_id;
+        float threat_level = 0.0f;   // 0.0–10.0
+        float time_engaged = 0.0f;
+        bool is_criminal = false;
+    };
+
+    std::string gate_id;
+    float engagement_range = 150.0f;   // km
+    float optimal_range = 100.0f;      // km – full damage
+    float falloff_range = 50.0f;       // km beyond optimal before 0 dmg
+    float damage_per_cycle = 500.0f;
+    float cycle_time = 3.0f;           // seconds per shot
+    float cycle_progress = 0.0f;
+    int max_targets = 3;
+    std::vector<Target> targets;
+    int total_shots_fired = 0;
+    float total_damage_dealt = 0.0f;
+    int total_kills = 0;
+    float elapsed = 0.0f;
+    bool active = true;
+    bool online = true;               // can be disabled (e.g. during incursion)
+
+    COMPONENT_TYPE(GateGunState)
+};
+
+/**
+ * @brief NPC aggression switching state
+ *
+ * Tracks threat values for each attacker and determines which target
+ * the NPC should prioritise.  Threat is accumulated from DPS, EWAR,
+ * and proximity bonuses.  The highest-threat target becomes the
+ * primary, with optional hysteresis to avoid constant switching.
+ */
+class AggressionSwitchingState : public ecs::Component {
+public:
+    struct ThreatEntry {
+        std::string entity_id;
+        float accumulated_threat = 0.0f;   // running total
+        float dps_contribution = 0.0f;     // recent DPS from this source
+        float ewar_contribution = 0.0f;    // electronic warfare threat
+        float proximity_bonus = 0.0f;      // close-range bonus
+        float time_on_list = 0.0f;
+    };
+
+    std::string current_target_id;
+    std::vector<ThreatEntry> threat_table;
+    float switch_threshold = 1.2f;         // new target must exceed current by 20%
+    float threat_decay_rate = 0.1f;        // per-second decay on all entries
+    float evaluation_interval = 2.0f;      // seconds between re-evaluations
+    float evaluation_timer = 0.0f;
+    int total_switches = 0;
+    float elapsed = 0.0f;
+    bool active = true;
+    bool locked = false;                   // if true, ignore re-evaluation
+
+    COMPONENT_TYPE(AggressionSwitchingState)
+};
+
+// ==================== AEGIS NPC Spawn ====================
+
+/**
+ * @brief AEGIS security force spawning state
+ *
+ * Controls the spawning of AEGIS NPC response fleets in high-security
+ * space when criminal activity is detected.  Response time scales with
+ * the system security level: 1.0 is near-instant, 0.5 is ~20 seconds.
+ * AEGIS forces despawn after the threat is neutralised or expires.
+ */
+class AegisSpawnState : public ecs::Component {
+public:
+    enum class SpawnPhase { Idle, Dispatching, Warping, Engaged, Withdrawing };
+
+    struct DispatchedSquad {
+        std::string squad_id;
+        std::string target_id;         // criminal being pursued
+        int ship_count = 3;
+        float dps_per_ship = 200.0f;
+        float warp_eta = 0.0f;         // seconds until arrival
+        float engagement_time = 0.0f;  // time on-grid
+        float max_engagement = 120.0f; // withdraw after this
+        SpawnPhase phase = SpawnPhase::Dispatching;
+    };
+
+    std::string system_id;
+    float security_level = 1.0f;           // 0.0–1.0
+    float base_response_time = 6.0f;       // seconds at sec 1.0
+    float response_time_scale = 30.0f;     // added seconds at sec 0.5
+    float dispatch_timer = 0.0f;
+    float dispatch_interval = 2.0f;        // re-check interval
+    std::vector<DispatchedSquad> squads;
+    int max_squads = 5;
+    int total_dispatched = 0;
+    int total_kills = 0;
+    float elapsed = 0.0f;
+    bool active = true;
+
+    float responseTimeForSecurity() const {
+        float t = base_response_time + response_time_scale * (1.0f - security_level);
+        return (std::max)(t, base_response_time);
+    }
+
+    COMPONENT_TYPE(AegisSpawnState)
+};
+
+// ==================== Drifter AI ====================
+
+/**
+ * @brief Drifter / Triglavian NPC AI state
+ *
+ * Drifters use advanced beam weapons that ramp up damage over time
+ * when attacking the same target.  They can deploy area denial fields
+ * and call reinforcements from a superweapon carrier when provoked
+ * beyond a configurable threshold.
+ */
+class DrifterAIState : public ecs::Component {
+public:
+    enum class DrifterRole { Cruiser, Battleship, Carrier, Response };
+    enum class ThreatLevel { Passive, Aggressive, Berserk };
+
+    struct DrifterUnit {
+        std::string unit_id;
+        DrifterRole role = DrifterRole::Cruiser;
+        float hp = 2000.0f;
+        float max_hp = 2000.0f;
+        float base_dps = 200.0f;
+        float ramp_multiplier = 1.0f;       // grows while firing at same target
+        float ramp_rate = 0.1f;              // multiplier increase per second
+        float max_ramp = 3.0f;              // cap on ramp_multiplier
+        std::string current_target;
+        bool alive = true;
+    };
+
+    std::string site_id;
+    ThreatLevel threat_level = ThreatLevel::Passive;
+    std::vector<DrifterUnit> units;
+    int max_units = 8;
+    float provocation_threshold = 3000.0f;   // total damage to trigger Berserk
+    float damage_taken = 0.0f;
+    float area_denial_radius = 15000.0f;     // meters
+    bool area_denial_active = false;
+    float area_denial_dps = 50.0f;           // damage per second to ships in field
+    float area_denial_timer = 0.0f;
+    float area_denial_duration = 30.0f;      // seconds
+    int reinforcement_wave = 0;
+    int max_reinforcement_waves = 2;
+    float reinforcement_cooldown = 45.0f;
+    float reinforcement_timer = 0.0f;
+    int total_kills = 0;
+    int total_losses = 0;
+    float elapsed = 0.0f;
+    bool active = true;
+
+    COMPONENT_TYPE(DrifterAIState)
+};
+
+// ==================== Incursion State ====================
+
+/**
+ * @brief Dynamic incursion encounter state
+ *
+ * Incursions are constellation-wide invasions with multiple difficulty tiers.
+ * They follow a lifecycle of spawning → active → withdrawn as capsuleers
+ * reduce influence by completing sites.  Fleet coordination is rewarded
+ * with scaled loyalty point payouts.
+ */
+class IncursionState : public ecs::Component {
+public:
+    enum class Tier { Vanguard, Assault, Headquarters };
+    enum class Lifecycle { Spawning, Active, Withdrawn };
+
+    struct IncursionSite {
+        std::string site_id;
+        Tier tier = Tier::Vanguard;
+        int npc_wave = 0;
+        int max_waves = 3;
+        bool completed = false;
+        int lp_reward = 0;
+    };
+
+    struct FleetMember {
+        std::string pilot_id;
+        std::string site_id;
+    };
+
+    std::string constellation_id;
+    Lifecycle lifecycle = Lifecycle::Spawning;
+    float influence = 100.0f;                   // 0–100 %
+    float influence_decay_rate = 0.1f;          // per second
+    std::vector<IncursionSite> sites;
+    int max_sites = 10;
+    std::vector<FleetMember> fleet_members;
+    int completed_sites = 0;
+    float total_lp_paid = 0.0f;
+    float elapsed = 0.0f;
+    bool active = true;
+
+    // LP payout per tier (base, scaled by fleet size)
+    static int baseLPForTier(Tier t) {
+        switch (t) {
+            case Tier::Vanguard:     return 1000;
+            case Tier::Assault:      return 2500;
+            case Tier::Headquarters: return 7000;
+        }
+        return 0;
+    }
+
+    COMPONENT_TYPE(IncursionState)
+};
+
+// ---------------------------------------------------------------------------
+// Incursion — wave-based incursion encounter with participants and rewards
+// ---------------------------------------------------------------------------
+/**
+ * @brief Wave-based incursion that tracks participants, waves, and rewards.
+ *
+ * Used by the extended IncursionSystem API for wave management, player
+ * participation tracking, and reward pool accumulation.
+ */
+class Incursion : public ecs::Component {
+public:
+    enum class IncursionState { Pending = 0, Active = 1, Withdrawing = 2, Defeated = 3 };
+
+    struct Wave {
+        int wave_number = 0;
+        std::string ship_type;
+        int count = 0;
+        bool spawned = false;
+        bool defeated = false;
+    };
+
+    std::string incursion_id;
+    std::string system_id;
+    float influence = 1.0f;
+    IncursionState state = IncursionState::Pending;
+    int max_waves = 5;
+    int max_participants = 20;
+    float reward_pool = 0.0f;
+    int total_waves_defeated = 0;
+
+    std::vector<Wave> waves;
+    std::vector<std::string> participants;
+
+    COMPONENT_TYPE(Incursion)
+};
+
+// ---------------------------------------------------------------------------
+// KillReport — kill mail generation and loss tracking
+// ---------------------------------------------------------------------------
+/**
+ * @brief Kill mail generation and loss tracking
+ *
+ * Generates kill report entries whenever a ship is destroyed or lost.
+ * Entries are stored up to max_reports (oldest evicted).  Unacknowledged
+ * reports are tracked so the UI can present a notification badge.
+ */
+class KillReport : public ecs::Component {
+public:
+    struct KillEntry {
+        std::string killer_id;
+        std::string victim_id;
+        std::string ship_type;
+        float damage_dealt = 0.0f;
+        float timestamp = 0.0f;
+        std::string system_id;
+        std::string location;
+        bool acknowledged = false;
+    };
+
+    std::vector<KillEntry> kills;      // kills by this entity
+    std::vector<KillEntry> losses;     // losses (this entity died)
+    int max_reports = 50;
+    int total_kills = 0;
+    int total_losses = 0;
+    float total_damage_dealt = 0.0f;
+    float total_damage_received = 0.0f;
+    int pending_kill_reports = 0;      // unacknowledged kills
+    int pending_loss_reports = 0;      // unacknowledged losses
+    float elapsed = 0.0f;
+    bool active = true;
+
+    COMPONENT_TYPE(KillReport)
+};
+
+// ---------------------------------------------------------------------------
+// DamageLog — per-entity hit-by-hit damage event log
+// ---------------------------------------------------------------------------
+/**
+ * @brief Per-entity damage event log
+ *
+ * Records every individual damage hit applied by or to this entity, with
+ * damage type, amount, weapon used, and hit/miss flag.  Entries are capped at
+ * max_entries with oldest-entry eviction.  Separate outgoing/incoming totals
+ * are maintained for quick aggregation queries.
+ */
+class DamageLog : public ecs::Component {
+public:
+    enum class DamageType { EM, Thermal, Kinetic, Explosive };
+
+    struct DamageEntry {
+        std::string attacker_id;
+        std::string defender_id;
+        DamageType  damage_type = DamageType::Kinetic;
+        float       amount      = 0.0f;
+        std::string weapon;
+        bool        hit         = true;
+        float       timestamp   = 0.0f;
+    };
+
+    std::vector<DamageEntry> entries;
+    int   max_entries     = 100;
+    float total_outgoing  = 0.0f;   // damage dealt outward
+    float total_incoming  = 0.0f;   // damage received
+    int   total_misses    = 0;
+    int   total_shots     = 0;
+    float elapsed         = 0.0f;
+    bool  active          = true;
+
+    COMPONENT_TYPE(DamageLog)
+};
+
+// ---------------------------------------------------------------------------
+// LootDistribution — proportional loot/ISK splitting among kill participants
+// ---------------------------------------------------------------------------
+/**
+ * @brief Proportional loot and ISK distribution among kill participants
+ *
+ * Tracks which pilots contributed damage toward a kill (and how much), then
+ * proportionally splits the ISK pool and assigns loot items when distribute()
+ * is called.  The distribution can only be opened once; afterwards the state
+ * moves to Distributed and is immutable.
+ */
+class LootDistribution : public ecs::Component {
+public:
+    enum class State { Idle, Open, Distributed };
+
+    struct Participant {
+        std::string pilot_id;
+        float       damage_dealt = 0.0f;
+        float       isk_share    = 0.0f;  // calculated on distribute()
+    };
+
+    struct LootItem {
+        std::string item_id;
+        std::string item_name;
+        int         quantity    = 0;
+        std::string assigned_to;           // pilot_id; empty = unassigned
+    };
+
+    State                    state            = State::Idle;
+    std::vector<Participant> participants;
+    std::vector<LootItem>    items;
+    float                    isk_pool         = 0.0f;
+    int                      max_participants = 20;
+    int                      max_items        = 50;
+    int                      total_distributions = 0;
+    float                    elapsed          = 0.0f;
+    bool                     active           = true;
+
+    COMPONENT_TYPE(LootDistribution)
+};
+
+// ---------------------------------------------------------------------------
+// CombatTimer — EVE-style aggression/weapon/pod-kill timers
+// ---------------------------------------------------------------------------
+/**
+ * @brief Tracks the three EVE Online combat cooldown timers.
+ *
+ * Aggression timer (default 300 s): set whenever the entity attacks another.
+ * While active the entity cannot safely log off.
+ * Weapon timer (default 60 s): set whenever a weapon is activated.
+ * While active the entity cannot dock at a station or use a jump gate.
+ * Pod-kill timer (default 900 s): set after the entity destroys a capsule.
+ * Each timer counts down to zero on tick.  isInCombat() is true while any
+ * timer is positive.  canSafelyUndock() is false while weapon_timer > 0.
+ */
+class CombatTimer : public ecs::Component {
+public:
+    float aggression_timer      = 0.0f;   // seconds remaining
+    float weapon_timer          = 0.0f;
+    float pod_kill_timer        = 0.0f;
+
+    float aggression_duration   = 300.0f; // configurable default durations
+    float weapon_duration       = 60.0f;
+    float pod_kill_duration     = 900.0f;
+
+    int   total_aggressions     = 0;
+    int   total_weapon_activations = 0;
+    int   total_pod_kills       = 0;
+
+    float elapsed               = 0.0f;
+    bool  active                = true;
+
+    COMPONENT_TYPE(CombatTimer)
+};
+
+// ---------------------------------------------------------------------------
+// PlayerSessionStats — per-session player performance statistics
+// ---------------------------------------------------------------------------
+/**
+ * @brief Tracks aggregate statistics for the current play session.
+ *
+ * Counters accumulate from session start until reset is called.
+ * elapsed_time ticks every update while active.  The component records
+ * combat performance (kills/losses/damage), economy activity (ISK earned/
+ * spent), and travel distance so the end-of-session summary can be shown.
+ */
+class PlayerSessionStats : public ecs::Component {
+public:
+    // Combat
+    int   kills              = 0;
+    int   losses             = 0;
+    float damage_dealt       = 0.0f;
+    float damage_received    = 0.0f;
+    int   assists            = 0;
+
+    // Economy
+    float isk_earned         = 0.0f;
+    float isk_spent          = 0.0f;
+    int   trades_completed   = 0;
+    int   items_looted       = 0;
+
+    // Travel
+    float distance_traveled  = 0.0f;  // in AU
+    int   jumps_made         = 0;
+    int   warps_made         = 0;
+
+    // Session timing
+    float elapsed_time       = 0.0f;  // seconds since session start
+    bool  active             = true;
+
+    // Lifetime totals (not reset by resetSession)
+    int   total_sessions     = 0;
+
+    COMPONENT_TYPE(PlayerSessionStats)
+};
+
+// ---------------------------------------------------------------------------
+// EcmJammingState — ECM electronic-countermeasures jamming
+// ---------------------------------------------------------------------------
+/**
+ * @brief Tracks active ECM jammers applied to this entity.
+ *
+ * ECM jammers attempt to break the target's ability to lock onto any ship.
+ * Each cycle a randomised jam attempt is resolved: jam succeeds when
+ * (jam_strength / sensor_strength) >= random(0,1).  While jammed the entity
+ * cannot start or maintain target locks.  Multiple jammers stack additively
+ * in strength.  Each jammer has an independent cycle timer; completing a
+ * cycle either re-applies (on success) or falls off (on failure).
+ */
+class EcmJammingState : public ecs::Component {
+public:
+    struct Jammer {
+        std::string source_id;
+        float       jam_strength  = 1.0f;  // ECM strength points
+        float       cycle_time    = 5.0f;  // seconds per jam cycle
+        float       cycle_elapsed = 0.0f;
+        bool        currently_jamming = false;
+    };
+
+    float sensor_strength       = 10.0f;  // base sensor strength of this entity
+    bool  is_jammed             = false;  // true while at least one jam succeeded
+    int   max_jammers           = 10;
+
+    std::vector<Jammer> jammers;
+
+    int   total_jams_applied    = 0;  // cumulative successful jam cycles
+    int   total_jam_attempts    = 0;  // cumulative jam cycle attempts
+    int   total_lock_breaks     = 0;  // times jamming cleared active locks
+    float elapsed               = 0.0f;
+    bool  active                = true;
+
+    COMPONENT_TYPE(EcmJammingState)
+};
+
+// ---------------------------------------------------------------------------
+// SensorDampeningState — remote sensor dampening
+// ---------------------------------------------------------------------------
+/**
+ * @brief Tracks active sensor dampeners applied to this entity.
+ *
+ * Sensor dampeners reduce targeting range and scan resolution.  Each
+ * dampener contributes a multiplicative factor (0 < factor <= 1.0).  The
+ * effective_range_factor and effective_scan_res_factor represent the net
+ * product of all active dampeners; the entity's UI caps the displayed lock
+ * range and scan resolution by these factors.  Dampeners have a finite
+ * cycle; they are removed when the source stops cycling.
+ */
+class SensorDampeningState : public ecs::Component {
+public:
+    struct Dampener {
+        std::string source_id;
+        float range_reduction    = 0.25f;  // fraction removed from lock range (0-1)
+        float scan_res_reduction = 0.25f;  // fraction removed from scan resolution (0-1)
+        float cycle_time         = 5.0f;
+        float cycle_elapsed      = 0.0f;
+        bool  active             = true;
+    };
+
+    float base_lock_range        = 100.0f; // km
+    float base_scan_resolution   = 400.0f; // mm
+    float effective_lock_range   = 100.0f; // km (after dampeners)
+    float effective_scan_res     = 400.0f; // mm (after dampeners)
+
+    int   max_dampeners          = 10;
+    std::vector<Dampener> dampeners;
+
+    int   total_dampeners_applied = 0;
+    int   total_dampener_cycles   = 0;
+    float elapsed                 = 0.0f;
+    bool  active_flag             = true;
+
+    COMPONENT_TYPE(SensorDampeningState)
+};
+
+// ---------------------------------------------------------------------------
+// TrackingDisruptionState — turret tracking + missile guidance disruption
+// ---------------------------------------------------------------------------
+/**
+ * @brief Tracks active tracking disruptors and guidance disruptors.
+ *
+ * Tracking disruptors reduce turret tracking speed and optimal range.
+ * Guidance disruptors increase missile explosion radius and reduce explosion
+ * velocity (causing missiles to deal less damage to small/fast targets).
+ * Both module types stack additively in reduction percentage.  Effective
+ * values are recomputed whenever the disruptor list changes.
+ */
+class TrackingDisruptionState : public ecs::Component {
+public:
+    struct TrackingDisruptor {
+        std::string source_id;
+        float tracking_speed_reduction = 0.30f; // fraction removed (0-1)
+        float optimal_range_reduction  = 0.30f; // fraction removed (0-1)
+        float cycle_time               = 5.0f;
+        float cycle_elapsed            = 0.0f;
+        bool  active                   = true;
+    };
+
+    struct GuidanceDisruptor {
+        std::string source_id;
+        float explosion_radius_increase   = 0.30f; // fraction added (0+)
+        float explosion_velocity_reduction = 0.30f; // fraction removed (0-1)
+        float cycle_time                  = 5.0f;
+        float cycle_elapsed               = 0.0f;
+        bool  active                      = true;
+    };
+
+    // Turret base values
+    float base_tracking_speed    = 1.0f;   // radians per second (normalised)
+    float base_optimal_range     = 50.0f;  // km
+
+    float effective_tracking_speed = 1.0f;
+    float effective_optimal_range  = 50.0f;
+
+    // Missile base values
+    float base_explosion_radius    = 40.0f;  // m
+    float base_explosion_velocity  = 200.0f; // m/s
+
+    float effective_explosion_radius   = 40.0f;
+    float effective_explosion_velocity = 200.0f;
+
+    int   max_disruptors          = 10;
+
+    std::vector<TrackingDisruptor>  tracking_disruptors;
+    std::vector<GuidanceDisruptor>  guidance_disruptors;
+
+    int   total_tracking_disruptors_applied  = 0;
+    int   total_guidance_disruptors_applied  = 0;
+    float elapsed                            = 0.0f;
+    bool  active                             = true;
+
+    COMPONENT_TYPE(TrackingDisruptionState)
+};
+
+// ---------------------------------------------------------------------------
+// RepairTimerState — per-ship repair-over-time job tracking
+// ---------------------------------------------------------------------------
+class RepairTimerState : public ecs::Component {
+public:
+    enum class RepairLayer { Hull, Armor, Shield };
+
+    struct RepairJob {
+        std::string  job_id;
+        RepairLayer  layer             = RepairLayer::Hull;
+        float        amount_per_tick   = 0.0f;
+        int          ticks_remaining   = 0;
+        int          ticks_elapsed     = 0;
+        bool         completed         = false;
+    };
+
+    std::vector<RepairJob> jobs;
+    int   max_jobs              = 10;
+    int   total_jobs_started    = 0;
+    int   total_jobs_completed  = 0;
+    float total_repaired        = 0.0f;
+    float elapsed               = 0.0f;
+    bool  active                = true;
+
+    COMPONENT_TYPE(RepairTimerState)
+};
+
+// ---------------------------------------------------------------------------
+// FighterSquadronState — carrier fighter squadron management
+// ---------------------------------------------------------------------------
+/**
+ * Manages fighter squadrons launched from a carrier or supercarrier.
+ * Each squadron has a type (Light / Support / Heavy), health, ammo,
+ * and an active flag.  Launching adds a squadron; recalling removes it.
+ * Per-tick updates can drain ammo on active squadrons.  max_squadrons
+ * caps the number in space simultaneously (default 5).
+ */
+class FighterSquadronState : public ecs::Component {
+public:
+    enum class SquadronType { Light, Support, Heavy };
+
+    struct Squadron {
+        std::string   squadron_id;
+        std::string   name;
+        SquadronType  type          = SquadronType::Light;
+        int           max_health    = 100;
+        int           current_health = 100;
+        int           max_ammo      = 100;
+        int           current_ammo  = 100;
+        bool          launched      = false;
+        int           kills         = 0;
+    };
+
+    std::vector<Squadron> squadrons;
+    int   max_squadrons         = 5;
+    int   total_launched        = 0;
+    int   total_recalled        = 0;
+    int   total_kills           = 0;
+    float elapsed               = 0.0f;
+    bool  active                = true;
+
+    COMPONENT_TYPE(FighterSquadronState)
+};
+
+// OfficerSpawnState — NPC Officer/Commander spawn management
+class OfficerSpawnState : public ecs::Component {
+public:
+    enum class OfficerRank {
+        Lieutenant, Commander, Captain, Admiral, Overlord
+    };
+    enum class OfficerFaction {
+        Pirate, Military, Mercenary, Rogue, Elite
+    };
+    enum class SpawnStatus {
+        Dormant, Spawning, Active, Defeated, Despawned
+    };
+    struct OfficerEntry {
+        std::string   officer_id;
+        OfficerRank   rank          = OfficerRank::Lieutenant;
+        OfficerFaction faction      = OfficerFaction::Pirate;
+        SpawnStatus   status        = SpawnStatus::Dormant;
+        float         bounty_multiplier = 2.0f;
+        float         health        = 1000.0f;
+        float         max_health    = 1000.0f;
+        std::string   loot_table_id;
+        float         spawn_time    = 0.0f;
+        float         time_alive    = 0.0f;
+    };
+
+    std::string sector_id;
+    std::vector<OfficerEntry> officers;
+    float spawn_interval          = 600.0f;
+    float time_since_last_spawn   = 0.0f;
+    int   max_officers            = 5;
+    float base_bounty             = 10000.0f;
+    float difficulty_modifier     = 1.0f;
+    int   total_officers_spawned  = 0;
+    int   total_officers_defeated = 0;
+    float elapsed                 = 0.0f;
+    bool  active                  = true;
+
+    COMPONENT_TYPE(OfficerSpawnState)
+};
+
+} // namespace components
+} // namespace atlas
+
+#endif // NOVAFORGE_COMPONENTS_COMBAT_COMPONENTS_H

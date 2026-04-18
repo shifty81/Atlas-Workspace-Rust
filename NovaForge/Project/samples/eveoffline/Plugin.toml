@@ -1,0 +1,39 @@
+[plugin]
+id = "eveoffline"
+name = "EVE Offline"
+version = "0.12.0"
+type = "game"
+
+[engine]
+required_version = ">=0.1.0"
+determinism = true
+rollback = true
+server_authoritative = true
+
+[capabilities]
+uses_graphs = true
+uses_schemas = true
+uses_assetgraph = true
+uses_networking = true
+uses_ai_assist = false
+
+[content]
+schemas_path = "Schemas"
+graphs_path = "worlds"
+strategy_path = "strategy"
+conversations_path = "conversations"
+assets_path = "assets"
+data_path = "data"
+config_path = "config"
+
+[code]
+adapters_path = "Code/Adapters"
+entry_point = "Code/GameInit.cpp"
+
+[editor]
+show_in_launcher = true
+default_project = true
+
+[testing]
+test_path = "Tests"
+golden_required = true

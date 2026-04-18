@@ -1,0 +1,23 @@
+# Atlas SwissAgent — Runtime Configuration
+# See AtlasAI/Atlas_SwissAgent/README.md for documentation.
+# Full LLM backend options at AtlasAI/Atlas_SwissAgent/usable_snippets/configs/config.toml
+
+[agent]
+max_iterations = 20
+default_llm_backend = "ollama"
+
+[llm.ollama]
+base_url = "http://localhost:11434"
+model = "llama3"
+
+[pipeline]
+# Pipeline directory for ChangeEvent I/O
+pipeline_dir = "../../../.novaforge/pipeline"
+
+[sessions]
+# Session data stored in Atlas/Workspace/Sessions/
+sessions_dir = "../Sessions"
+
+[server]
+host = "127.0.0.1"
+port = 8000

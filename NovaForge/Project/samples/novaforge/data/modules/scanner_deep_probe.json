@@ -1,0 +1,11 @@
+{
+  "id": "mod_scanner_deep_probe",
+  "name": "Argus Deep-Space Probe Array",
+  "type": "Scanner",
+  "description": "A powerful multi-spectral sensor suite capable of detecting objects, anomalies, and resource deposits at extreme distances. Essential equipment for any serious explorer.",
+  "power_cost": 25.0,
+  "mass": 3.2,
+  "scan_range": 50.0,
+  "tier": 3,
+  "tags": ["detection", "exploration", "survey"]
+}

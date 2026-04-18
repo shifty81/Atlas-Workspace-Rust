@@ -1,0 +1,20 @@
+{
+    "schema": "atlas.project.v1",
+    "name": "Arena2D",
+    "version": "0.1.0",
+    "description": "Minimal 2D arena reference project for Atlas Engine",
+    "modules": {
+        "tileGraphs": "worlds/",
+        "behaviorGraphs": "ai/",
+        "ui": true,
+        "content": "data/"
+    },
+    "runtime": {
+        "entryWorld": "worlds/arena.tilegraph",
+        "tickRate": 60,
+        "maxPlayers": 1
+    },
+    "assets": {
+        "root": "assets"
+    }
+}

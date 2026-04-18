@@ -1,0 +1,6 @@
+{
+  "profileId": "debug_editor",
+  "displayName": "Debug Editor",
+  "configuration": "Debug",
+  "target": "workspace_host"
+}

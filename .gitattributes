@@ -1,0 +1,52 @@
+# Auto-detect text files and normalize line endings
+* text=auto
+
+# Windows-specific project files require CRLF
+*.sln      text eol=crlf
+*.vcxproj  text eol=crlf
+*.vcproj   text eol=crlf
+*.props    text eol=crlf
+*.targets  text eol=crlf
+*.filters  text eol=crlf
+*.bat      text eol=crlf
+*.cmd      text eol=crlf
+*.ps1      text eol=crlf
+
+# Source code
+*.c        text
+*.cc       text
+*.cpp      text
+*.cxx      text
+*.h        text
+*.hh       text
+*.hpp      text
+*.hxx      text
+*.inl      text
+*.ipp      text
+
+# Build and config
+*.cmake    text
+CMakeLists.txt text
+*.py       text
+*.json     text
+*.md       text
+*.txt      text
+*.yml      text
+*.yaml     text
+*.patch    text
+*.sh       text eol=lf
+
+# Binary assets
+*.png      binary
+*.jpg      binary
+*.jpeg     binary
+*.bmp      binary
+*.ico      binary
+*.ttf      binary
+*.otf      binary
+*.zip      binary
+*.7z       binary
+*.dll      binary
+*.lib      binary
+*.pdb      binary
+*.exe      binary

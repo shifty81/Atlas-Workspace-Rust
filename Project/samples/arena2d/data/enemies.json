@@ -1,0 +1,20 @@
+{
+    "enemies": [
+        {
+            "id": "slime",
+            "name": "Slime",
+            "hp": 10,
+            "speed": 1.5,
+            "damage": 2,
+            "behavior": "ai/enemy_patrol.behaviorgraph"
+        },
+        {
+            "id": "skeleton",
+            "name": "Skeleton",
+            "hp": 25,
+            "speed": 2.0,
+            "damage": 5,
+            "behavior": "ai/enemy_patrol.behaviorgraph"
+        }
+    ]
+}

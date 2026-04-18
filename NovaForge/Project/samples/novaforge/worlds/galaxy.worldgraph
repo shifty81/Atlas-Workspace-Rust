@@ -1,0 +1,50 @@
+{
+  "schema": "atlas.worldgraph.v1",
+  "nodes": [
+    {
+      "id": "seed_source",
+      "type": "Seed",
+      "position": [100, 300]
+    },
+    {
+      "id": "frequency",
+      "type": "Constant",
+      "position": [100, 400],
+      "params": { "value": 0.005 }
+    },
+    {
+      "id": "galaxy_noise",
+      "type": "Noise",
+      "position": [350, 350],
+      "params": {}
+    },
+    {
+      "id": "clamp_output",
+      "type": "Clamp",
+      "position": [600, 350],
+      "params": {}
+    },
+    {
+      "id": "min_val",
+      "type": "Constant",
+      "position": [450, 450],
+      "params": { "value": 0.0 }
+    },
+    {
+      "id": "max_val",
+      "type": "Constant",
+      "position": [450, 500],
+      "params": { "value": 1.0 }
+    }
+  ],
+  "links": [
+    { "from": "seed_source.Seed", "to": "galaxy_noise.Seed" },
+    { "from": "frequency.Value", "to": "galaxy_noise.Frequency" },
+    { "from": "galaxy_noise.Height", "to": "clamp_output.In" },
+    { "from": "min_val.Value", "to": "clamp_output.Min" },
+    { "from": "max_val.Value", "to": "clamp_output.Max" }
+  ],
+  "outputs": {
+    "galaxy_density": "clamp_output.Out"
+  }
+}

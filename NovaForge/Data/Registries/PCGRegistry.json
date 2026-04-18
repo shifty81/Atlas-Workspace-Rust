@@ -1,0 +1,5 @@
+{
+  "ruleSets": [
+    { "ruleSetId": "default_surface_generation", "path": "Data/PCG/RuleSets/DefaultSurfaceGeneration.json" }
+  ]
+}

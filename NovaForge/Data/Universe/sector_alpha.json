@@ -1,0 +1,12 @@
+{
+  "name": "Sector Alpha",
+  "description": "The cradle of human expansion, Sector Alpha hosts the Sol gateway and the busiest trade corridors in colonised space. Well-patrolled and resource-depleted, it serves as the safe starting zone for new pilots.",
+  "position": { "x": 0.0, "y": 0.0, "z": 0.0 },
+  "star_type": "G2V",
+  "planet_count": 8,
+  "faction": "Terran Commonwealth",
+  "danger_level": 1,
+  "resources": ["iron", "copper", "water", "helium_3"],
+  "stations": ["station_sol_gateway", "station_academy_dock"],
+  "tags": ["starter", "safe", "trade_hub"]
+}

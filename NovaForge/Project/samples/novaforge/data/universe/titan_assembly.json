@@ -1,0 +1,68 @@
+{
+  "titan_assembly": {
+    "description": "Pirate Titan distributed assembly configuration",
+    "nodes": [
+      {
+        "name": "Superstructure Spine",
+        "base_resource_cost": 10000000,
+        "materials": ["tritanium", "pyerite", "megacyte", "morphite"],
+        "min_workforce_skill": 0.3,
+        "base_concealment": 0.9,
+        "notes": "Primary structural frame, must be completed first"
+      },
+      {
+        "name": "Primary Reactor Core",
+        "base_resource_cost": 15000000,
+        "materials": ["mexallon", "isogen", "nocxium", "zydrine"],
+        "min_workforce_skill": 0.6,
+        "base_concealment": 0.7,
+        "notes": "Power generation, emits detectable radiation"
+      },
+      {
+        "name": "Warp Field Projector",
+        "base_resource_cost": 20000000,
+        "materials": ["nocxium", "zydrine", "megacyte", "morphite"],
+        "min_workforce_skill": 0.7,
+        "base_concealment": 0.5,
+        "notes": "Generates warp anomalies during testing"
+      },
+      {
+        "name": "Command Nexus",
+        "base_resource_cost": 8000000,
+        "materials": ["tritanium", "mexallon", "nocxium"],
+        "min_workforce_skill": 0.5,
+        "base_concealment": 0.8,
+        "notes": "Command and control center"
+      },
+      {
+        "name": "Armor Lattice",
+        "base_resource_cost": 12000000,
+        "materials": ["tritanium", "pyerite", "mexallon", "isogen"],
+        "min_workforce_skill": 0.4,
+        "base_concealment": 0.6,
+        "notes": "Defensive plating, extremely heavy"
+      },
+      {
+        "name": "Weapon Mount Superframes",
+        "base_resource_cost": 18000000,
+        "materials": ["pyerite", "megacyte", "morphite", "zydrine"],
+        "min_workforce_skill": 0.6,
+        "base_concealment": 0.4,
+        "notes": "Weapon hardpoint infrastructure"
+      }
+    ],
+    "completion_thresholds": {
+      "rumor_phase": 0.0,
+      "unease_phase": 0.2,
+      "fear_phase": 0.5,
+      "acceptance_phase": 0.8,
+      "launch_ready": 0.99
+    },
+    "progression_rate": {
+      "base_rate_per_hour": 0.001,
+      "logistics_multiplier_range": [0.0, 2.0],
+      "disruption_penalty": 0.5,
+      "workforce_bonus_max": 1.5
+    }
+  }
+}

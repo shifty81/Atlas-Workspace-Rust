@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://novaforge.dev/schemas/mission.schema.json",
+  "title": "Mission Definition",
+  "description": "Defines a mission or quest that can be accepted and completed by the player.",
+  "type": "object",
+  "required": ["id", "name", "type", "difficulty"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^mission_[a-z]+_[a-z_]+$",
+      "description": "Unique mission identifier following the pattern mission_<type>_<name>."
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Human-readable display name."
+    },
+    "type": {
+      "type": "string",
+      "enum": ["Story", "Side", "Bounty", "Delivery", "Exploration", "Mining", "Escort", "Defense"],
+      "description": "Mission category that determines UI presentation and tracking."
+    },
+    "difficulty": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 10,
+      "description": "Difficulty rating from 1 (trivial) to 10 (extreme)."
+    },
+    "description": {
+      "type": "string",
+      "description": "Briefing text shown when the mission is offered."
+    },
+    "objectives": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["type", "target", "count"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Objective verb, e.g. destroy, collect, reach, escort."
+          },
+          "target": {
+            "type": "string",
+            "description": "Target entity or location identifier."
+          },
+          "count": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "How many times the objective must be completed."
+          }
+        },
+        "additionalProperties": false
+      },
+      "description": "Ordered list of objectives the player must complete."
+    },
+    "rewards": {
+      "type": "object",
+      "properties": {
+        "credits": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Currency reward."
+        },
+        "xp": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Experience points reward."
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of item IDs granted on completion."
+        }
+      },
+      "additionalProperties": false,
+      "description": "Rewards granted upon mission completion."
+    },
+    "prerequisites": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Mission IDs that must be completed before this mission is available."
+    },
+    "time_limit_seconds": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Optional countdown timer in seconds; mission fails if exceeded."
+    },
+    "min_level": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Minimum player level required to accept the mission."
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true,
+      "description": "Freeform tags for filtering and scripting."
+    }
+  },
+  "additionalProperties": false
+}

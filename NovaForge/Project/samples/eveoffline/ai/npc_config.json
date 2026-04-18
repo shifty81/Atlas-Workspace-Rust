@@ -1,0 +1,23 @@
+{
+    "schema": "atlas.ai.v1",
+    "description": "EVEOFFLINE NPC AI configuration",
+    "signalNamespaces": [
+        "faction.morale",
+        "faction.hostility",
+        "sector.tension",
+        "sector.resources",
+        "economy.supply",
+        "economy.demand",
+        "pirate.threat",
+        "fleet.cohesion"
+    ],
+    "memoryConfig": {
+        "defaultDecayRate": 0.01,
+        "maxMemories": 100
+    },
+    "behaviorGraphs": {
+        "npcCombat": "ai/combat.behaviorgraph",
+        "npcTrade": "ai/trade.behaviorgraph",
+        "npcPatrol": "ai/patrol.behaviorgraph"
+    }
+}

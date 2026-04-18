@@ -1,0 +1,148 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "atlas.project.v1",
+  "title": "Atlas Project",
+  "description": "Schema for Atlas Engine project files (.atlas)",
+  "type": "object",
+  "required": ["schema", "name", "version"],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "atlas.project.v1",
+      "description": "Schema identifier and version"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Human-readable project name"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+      "description": "Semantic version of the project (e.g. 1.0.0)"
+    },
+    "description": {
+      "type": "string",
+      "description": "Optional project description"
+    },
+    "adapter": {
+      "type": "string",
+      "description": "Identifier of the IGameProjectAdapter implementation to load for this project. Must match a registered factory ID in the workspace ProjectRegistry (e.g. 'novaforge')."
+    },
+    "modules": {
+      "type": "object",
+      "description": "Module references for the project",
+      "properties": {
+        "worldGraph": {
+          "type": "string",
+          "description": "Path to the entry WorldGraph file"
+        },
+        "strategyGraphs": {
+          "type": "string",
+          "description": "Directory path for StrategyGraph files"
+        },
+        "ai": {
+          "type": "boolean",
+          "description": "Whether AI systems are enabled"
+        },
+        "content": {
+          "type": "string",
+          "description": "Path to the content/data directory"
+        }
+      },
+      "additionalProperties": true
+    },
+    "runtime": {
+      "type": "object",
+      "description": "Runtime configuration",
+      "properties": {
+        "entryWorld": {
+          "type": "string",
+          "description": "Path to the initial world to load at startup"
+        },
+        "tickRate": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 120,
+          "default": 30,
+          "description": "Simulation tick rate in Hz"
+        },
+        "maxPlayers": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 64,
+          "default": 20,
+          "description": "Maximum number of connected players"
+        }
+      },
+      "additionalProperties": false
+    },
+    "assets": {
+      "type": "object",
+      "description": "Asset configuration",
+      "properties": {
+        "root": {
+          "type": "string",
+          "default": "assets",
+          "description": "Root directory for project assets"
+        }
+      },
+      "additionalProperties": false
+    },
+    "capabilities": {
+      "type": "array",
+      "description": "Enabled engine capabilities for this project.  Only the listed systems are compiled and loaded, keeping builds fast and binaries small.",
+      "items": {
+        "type": "string",
+        "enum": [
+          "Rendering2D",
+          "Rendering3D",
+          "Physics2D",
+          "Physics3D",
+          "UI",
+          "Networking",
+          "Simulation",
+          "Audio",
+          "AI",
+          "Animation",
+          "TileEditor",
+          "VoxelEditor",
+          "TerrainEditor",
+          "DialogueEditor",
+          "Blueprints"
+        ]
+      },
+      "uniqueItems": true,
+      "default": ["Rendering3D", "Physics3D", "UI", "Networking", "AI"]
+    },
+    "buildProfiles": {
+      "type": "object",
+      "description": "Build profile definitions mapping target names to the set of modules they include.",
+      "additionalProperties": {
+        "type": "array",
+        "items": { "type": "string" }
+      },
+      "examples": [
+        {
+          "Client": ["Render", "UI", "Input"],
+          "Server": ["Sim", "Net"],
+          "Editor": ["All"],
+          "Tool":   ["UI", "Data"]
+        }
+      ]
+    },
+    "uiScale": {
+      "type": "number",
+      "minimum": 0.5,
+      "maximum": 4.0,
+      "default": 1.0,
+      "description": "Default UI scale for this project"
+    },
+    "lastOpened": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp of the last time this project was opened (e.g. 2026-02-15T12:00:00Z)"
+    }
+  },
+  "additionalProperties": false
+}

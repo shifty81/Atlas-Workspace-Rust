@@ -1,0 +1,133 @@
+{
+  "captain_backgrounds": {
+    "description": "Captain origin backgrounds and their behavioral modifiers",
+    "origins": {
+      "miner": {
+        "description": "Former mining crew, prefers resource extraction",
+        "preferred_role": "mining",
+        "personality_modifiers": {
+          "aggression": -0.2,
+          "sociability": 0.1,
+          "optimism": 0.1,
+          "professionalism": 0.0,
+          "loyalty": 0.1,
+          "paranoia": -0.1,
+          "ambition": -0.1,
+          "adaptability": 0.1
+        },
+        "morale_modifiers": {
+          "combat_sensitivity": 1.5,
+          "loss_sensitivity": 1.8,
+          "mining_contentment": 1.5,
+          "idle_tolerance": 1.2
+        },
+        "chatter_themes": ["ore_quality", "yield_comparisons", "equipment_complaints", "home_system_nostalgia"]
+      },
+      "military": {
+        "description": "Ex-navy, disciplined and combat-focused",
+        "preferred_role": "combat",
+        "personality_modifiers": {
+          "aggression": 0.2,
+          "sociability": -0.1,
+          "optimism": 0.0,
+          "professionalism": 0.3,
+          "loyalty": 0.2,
+          "paranoia": 0.1,
+          "ambition": 0.1,
+          "adaptability": -0.1
+        },
+        "morale_modifiers": {
+          "combat_sensitivity": 0.7,
+          "loss_sensitivity": 0.8,
+          "mining_contentment": 0.5,
+          "idle_tolerance": 0.6
+        },
+        "chatter_themes": ["tactical_analysis", "formation_discipline", "old_campaigns", "chain_of_command"]
+      },
+      "corporate": {
+        "description": "Corporate defector, efficiency-minded",
+        "preferred_role": "logistics",
+        "personality_modifiers": {
+          "aggression": -0.1,
+          "sociability": 0.2,
+          "optimism": 0.1,
+          "professionalism": 0.2,
+          "loyalty": -0.1,
+          "paranoia": 0.0,
+          "ambition": 0.3,
+          "adaptability": 0.2
+        },
+        "morale_modifiers": {
+          "combat_sensitivity": 1.2,
+          "loss_sensitivity": 1.3,
+          "mining_contentment": 0.8,
+          "idle_tolerance": 0.7
+        },
+        "chatter_themes": ["profit_margins", "efficiency_metrics", "corporate_gossip", "market_trends"]
+      },
+      "salvager": {
+        "description": "Raised among salvagers, resourceful and practical",
+        "preferred_role": "salvage",
+        "personality_modifiers": {
+          "aggression": -0.1,
+          "sociability": 0.0,
+          "optimism": -0.1,
+          "professionalism": -0.1,
+          "loyalty": 0.0,
+          "paranoia": 0.2,
+          "ambition": 0.0,
+          "adaptability": 0.3
+        },
+        "morale_modifiers": {
+          "combat_sensitivity": 1.0,
+          "loss_sensitivity": 1.0,
+          "mining_contentment": 1.0,
+          "idle_tolerance": 1.0
+        },
+        "chatter_themes": ["wreck_stories", "salvage_techniques", "dead_ships", "space_debris"]
+      },
+      "nomad": {
+        "description": "Wanderer, superstitious and observant",
+        "preferred_role": "exploration",
+        "personality_modifiers": {
+          "aggression": -0.1,
+          "sociability": 0.1,
+          "optimism": 0.0,
+          "professionalism": -0.2,
+          "loyalty": -0.1,
+          "paranoia": 0.1,
+          "ambition": 0.0,
+          "adaptability": 0.3
+        },
+        "morale_modifiers": {
+          "combat_sensitivity": 1.1,
+          "loss_sensitivity": 1.2,
+          "mining_contentment": 0.7,
+          "idle_tolerance": 1.5
+        },
+        "chatter_themes": ["star_patterns", "anomaly_sightings", "old_legends", "space_superstitions"]
+      },
+      "pirate": {
+        "description": "Reformed pirate, aggressive but streetwise",
+        "preferred_role": "combat",
+        "personality_modifiers": {
+          "aggression": 0.3,
+          "sociability": 0.1,
+          "optimism": -0.1,
+          "professionalism": -0.2,
+          "loyalty": -0.2,
+          "paranoia": 0.3,
+          "ambition": 0.2,
+          "adaptability": 0.2
+        },
+        "morale_modifiers": {
+          "combat_sensitivity": 0.5,
+          "loss_sensitivity": 0.6,
+          "mining_contentment": 0.3,
+          "idle_tolerance": 0.4
+        },
+        "chatter_themes": ["pirate_tactics", "loot_value", "escape_stories", "faction_grudges"]
+      }
+    }
+  }
+}

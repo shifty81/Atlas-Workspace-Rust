@@ -1,0 +1,9 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "PCGRegistry",
+  "type": "object",
+  "required": ["ruleSets"],
+  "properties": {
+    "ruleSets": { "type": "array" }
+  }
+}

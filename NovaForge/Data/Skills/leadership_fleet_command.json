@@ -1,0 +1,17 @@
+{
+  "id": "skill_leadership_fleet_command",
+  "name": "Fleet Command",
+  "category": "Leadership",
+  "description": "Inspires and coordinates allied ships in formation, granting passive stat bonuses to every vessel operating under the commander's banner.",
+  "max_level": 3,
+  "prerequisites": [
+    { "skill_id": "skill_leadership_tactics", "level": 3 }
+  ],
+  "effects": [
+    { "stat": "fleet_damage_bonus", "modifier": 0.05, "per_level": true },
+    { "stat": "fleet_shield_bonus", "modifier": 0.04, "per_level": true },
+    { "stat": "max_fleet_size", "modifier": 1.0, "per_level": true }
+  ],
+  "unlock_cost_base": 1200,
+  "tags": ["fleet", "buff", "endgame"]
+}

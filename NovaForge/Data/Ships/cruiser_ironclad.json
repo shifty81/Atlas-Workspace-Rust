@@ -1,0 +1,16 @@
+{
+  "id": "ship_cruiser_ironclad",
+  "name": "Ironclad Heavy Cruiser",
+  "class": "Cruiser",
+  "description": "An imposing warship clad in layered titanium-carbide plating. The Ironclad serves as the backbone of any fleet, absorbing tremendous punishment while delivering devastating broadside volleys.",
+  "hull_points": 3200,
+  "shield_points": 1500,
+  "mass": 320.0,
+  "max_speed": 150.0,
+  "module_slots": 8,
+  "crew_capacity": 45,
+  "cargo_capacity": 200.0,
+  "turn_rate": 18.0,
+  "acceleration": 9.5,
+  "tags": ["combat", "heavy", "tank", "fleet"]
+}

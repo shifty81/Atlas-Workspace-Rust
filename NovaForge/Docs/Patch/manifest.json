@@ -1,0 +1,27 @@
+{
+  "pack_name": "atlas_workspace_repo_patch_missing_info_pack",
+  "files": [
+    "AUDIT_SUMMARY.md",
+    "Docs/Patch/MissingInfo/EQUIPMENT_GUI_SPEC_V1.md",
+    "Docs/Patch/MissingInfo/EQUIPMENT_GUI_VIEWMODEL_ATLASUI_COMPONENT_CONTRACT_V1.md",
+    "Docs/Patch/MissingInfo/EQUIPMENT_SCREEN_CONTROLLER_UI_ADAPTER_SPEC_V1.md",
+    "Docs/Patch/MissingInfo/FULL_PROGRESSION_TREE_PACK_V1.md",
+    "Docs/Patch/MissingInfo/GAME_HUD_CONTRACT_V1.md",
+    "Docs/Patch/MissingInfo/GAME_MENU_SCREEN_FLOW_SPEC_V1.md",
+    "Docs/Patch/MissingInfo/HANGAR_MANAGEMENT_SCREEN_SPEC_V1.md",
+    "Docs/Patch/MissingInfo/INTERACTION_SCREEN_SPEC_PACK_V1.md",
+    "Docs/Patch/MissingInfo/LAUNCH_TO_PLAY_FLOW_SPEC_V1.md",
+    "Docs/Patch/MissingInfo/MECH_EQUIPMENT_EXPANSION_TABLE_V1.md",
+    "Docs/Patch/MissingInfo/RIG_MECH_TRANSFORMATION_SPEC_V1.md",
+    "Docs/Patch/MissingInfo/SHIP_SERVICE_SCREEN_SPEC_V1.md",
+    "Docs/Patch/MissingInfo/STORAGE_SCHEMA_ACCESS_TOPOLOGY_SPEC_V1.md",
+    "Docs/Patch/MissingInfo/UNIFIED_INVENTORY_SEARCH_INTERFACE_SPEC_V1.md",
+    "Docs/Patch/MissingInfo/VEHICLE_SERVICE_SCREEN_SPEC_V1.md",
+    "Docs/Patch/MissingInfo/WORKSPACE_EXTERNAL_INTEGRATIONS_PATCH_V1.md",
+    "README.md",
+    "Schemas/patch/equipment_screen.schema.json",
+    "Schemas/patch/storage_node.schema.json",
+    "Source/Patch/include/NF/Patch/EquipmentScreenContracts.h",
+    "Source/Patch/include/NF/Patch/MechTransformationContracts.h"
+  ]
+}

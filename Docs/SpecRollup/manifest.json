@@ -1,0 +1,20 @@
+{
+  "pack_name": "Atlas Workspace NovaForge Spec Rollup Pack",
+  "generated_on": "2026-04-05T06:52:20.222640Z",
+  "files": [
+    "README.md",
+    "01_LOCKED_PROJECT_DIRECTION.md",
+    "02_ATLASUI_STANDARD.md",
+    "03_PANEL_REWRITE_STANDARD_V1.md",
+    "04_THEME_AND_TOKEN_SYSTEM_V1.md",
+    "05_COMMAND_SHORTCUT_MENU_STANDARD.md",
+    "06_DOCKING_FLOATING_CHROME_TOOLTIP.md",
+    "07_WORKSPACE_AND_AI_INTEGRATION.md",
+    "08_ROADMAP_PRIORITY_RESET.md",
+    "09_REPO_AUDIT_CHECKLIST.md",
+    "10_FEATURE_GAP_MATRIX.md",
+    "11_NEXT_ARTIFACTS_QUEUE.md",
+    "12_RECOMMENDED_REPO_STRUCTURE.md"
+  ],
+  "purpose": "Repo-drop audit/spec pack for missing features and direction drift"
+}

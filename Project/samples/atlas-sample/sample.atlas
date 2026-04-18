@@ -1,0 +1,19 @@
+{
+  "schema": "atlas.project.v1",
+  "name": "Atlas Sample",
+  "version": "0.1.0",
+  "description": "Minimal Atlas Engine sample project",
+  "modules": {
+    "worldGraph": "worlds/terrain.worldgraph",
+    "ai": false,
+    "content": "data/"
+  },
+  "runtime": {
+    "entryWorld": "worlds/terrain.worldgraph",
+    "tickRate": 60,
+    "maxPlayers": 1
+  },
+  "assets": {
+    "root": "assets"
+  }
+}

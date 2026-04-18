@@ -1,0 +1,9 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "DocumentRegistry",
+  "type": "object",
+  "required": ["documents"],
+  "properties": {
+    "documents": { "type": "array" }
+  }
+}

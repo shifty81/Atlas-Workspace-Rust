@@ -1,0 +1,101 @@
+<!-- EVE OFFLINE — Sidebar (RML)
+     Vertical icon sidebar on the left edge with service buttons. -->
+<rml>
+<head>
+    <title>Sidebar</title>
+    <link type="text/rcss" href="../rcss/atlas_ui.rcss"/>
+    <style>
+        body {
+            font-family: Lato;
+            color: #E6EDF3;
+        }
+
+        #sidebar {
+            position: fixed;
+            top: 0dp;
+            left: 0dp;
+            width: 44dp;
+            height: 100%;
+            background-color: #090D13F0;
+            border-right: 1dp #1E2A36;
+        }
+
+        .sidebar-toggle {
+            width: 36dp;
+            height: 22dp;
+            margin: 4dp;
+            font-size: 10dp;
+            background-color: #2A5A6A50;
+            border: 1dp #28384866;
+            border-radius: 2dp;
+            color: #8B949E;
+            text-align: center;
+        }
+
+        .sidebar-toggle:hover {
+            color: #45D0E8;
+            border-color: #45D0E866;
+        }
+
+        .sidebar-separator {
+            height: 1dp;
+            background-color: #1E2A36;
+            margin: 4dp;
+        }
+
+        /* Service buttons */
+        .sb-btn {
+            display: block;
+            width: 36dp;
+            height: 36dp;
+            margin: 2dp 4dp;
+            background-color: #161B2280;
+            border: 1dp #28384866;
+            border-radius: 4dp;
+            color: #8B949E;
+            font-size: 11dp;
+            text-align: center;
+        }
+
+        .sb-btn:hover {
+            background-color: #1A3A4ACC;
+            border-color: #45D0E899;
+            color: #45D0E8;
+        }
+
+        .sb-btn:active {
+            background-color: #45D0E840;
+        }
+
+        .sb-btn .icon {
+            font-size: 14dp;
+            line-height: 36dp;
+        }
+    </style>
+</head>
+<body>
+    <div id="sidebar">
+        <!-- Collapse/Expand toggle -->
+        <button class="sidebar-toggle" id="btn-toggle">&gt;&gt;</button>
+
+        <div class="sidebar-separator"></div>
+
+        <!-- Core service icons -->
+        <button class="sb-btn" id="sb-character"><span class="icon">C</span></button>
+        <button class="sb-btn" id="sb-inventory"><span class="icon">I</span></button>
+        <button class="sb-btn" id="sb-fitting"><span class="icon">F</span></button>
+        <button class="sb-btn" id="sb-market"><span class="icon">M</span></button>
+
+        <div class="sidebar-separator"></div>
+
+        <button class="sb-btn" id="sb-map"><span class="icon">*</span></button>
+        <button class="sb-btn" id="sb-proxscan"><span class="icon">D</span></button>
+        <button class="sb-btn" id="sb-missions"><span class="icon">J</span></button>
+
+        <div class="sidebar-separator"></div>
+
+        <button class="sb-btn" id="sb-corporation"><span class="icon">G</span></button>
+        <button class="sb-btn" id="sb-settings"><span class="icon">S</span></button>
+    </div>
+</body>
+</rml>

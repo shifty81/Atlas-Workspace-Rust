@@ -1,0 +1,273 @@
+{
+  "version": 6,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 22,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "default",
+      "hidden": true,
+      "binaryDir": "${sourceDir}/Builds/${presetName}",
+      "cacheVariables": {
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+      }
+    },
+    {
+      "name": "debug",
+      "displayName": "Debug",
+      "inherits": "default",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "ATLAS_BUILD_TESTS": "ON",
+        "ATLAS_ENABLE_ONLINE_DEPS": "ON",
+        "ATLAS_BUILD_WORKSPACE": "ON"
+      }
+    },
+    {
+      "name": "release",
+      "displayName": "Release",
+      "inherits": "default",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "ATLAS_BUILD_TESTS": "OFF",
+        "ATLAS_BUILD_WORKSPACE": "ON"
+      }
+    },
+    {
+      "name": "relwithdebinfo",
+      "displayName": "Release with Debug Info",
+      "inherits": "default",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+        "ATLAS_BUILD_TESTS": "OFF",
+        "ATLAS_BUILD_WORKSPACE": "ON"
+      }
+    },
+    {
+      "name": "vs2022",
+      "displayName": "Visual Studio 2022",
+      "description": "Generate .sln for Visual Studio 2022 (Windows only)",
+      "generator": "Visual Studio 17 2022",
+      "architecture": {
+        "value": "x64",
+        "strategy": "set"
+      },
+      "binaryDir": "${sourceDir}/Builds/vs2022",
+      "cacheVariables": {
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "ATLAS_BUILD_TESTS": "ON",
+        "ATLAS_ENABLE_ONLINE_DEPS": "ON",
+        "ATLAS_BUILD_WORKSPACE": "ON"
+      }
+    },
+    {
+      "name": "vs2019",
+      "displayName": "Visual Studio 2019",
+      "description": "Generate .sln for Visual Studio 2019 (Windows only)",
+      "generator": "Visual Studio 16 2019",
+      "architecture": {
+        "value": "x64",
+        "strategy": "set"
+      },
+      "binaryDir": "${sourceDir}/Builds/vs2019",
+      "cacheVariables": {
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "ATLAS_BUILD_TESTS": "ON",
+        "ATLAS_ENABLE_ONLINE_DEPS": "ON",
+        "ATLAS_BUILD_WORKSPACE": "ON"
+      }
+    },
+    {
+      "name": "windows-x64",
+      "displayName": "Windows x64 Release (VS 2022)",
+      "description": "Windows 10/11 x64 release build via Visual Studio 2022.",
+      "generator": "Visual Studio 17 2022",
+      "architecture": {
+        "value": "x64",
+        "strategy": "set"
+      },
+      "binaryDir": "${sourceDir}/Builds/windows-x64",
+      "cacheVariables": {
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "ATLAS_BUILD_TESTS": "OFF",
+        "ATLAS_BUILD_WORKSPACE": "ON"
+      }
+    },
+    {
+      "name": "windows-x64-debug",
+      "displayName": "Windows x64 Debug (VS 2022)",
+      "description": "Windows 10/11 x64 debug build — primary local dev preset.",
+      "generator": "Visual Studio 17 2022",
+      "architecture": {
+        "value": "x64",
+        "strategy": "set"
+      },
+      "binaryDir": "${sourceDir}/Builds/windows-x64-debug",
+      "cacheVariables": {
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "ATLAS_BUILD_TESTS": "OFF",
+        "ATLAS_BUILD_WORKSPACE": "ON"
+      }
+    },
+    {
+      "name": "windows-x64-debug-tests",
+      "displayName": "Windows x64 Debug + Tests (VS 2022)",
+      "description": "Windows 10/11 x64 debug build with Catch2 test suite enabled.",
+      "generator": "Visual Studio 17 2022",
+      "architecture": {
+        "value": "x64",
+        "strategy": "set"
+      },
+      "binaryDir": "${sourceDir}/Builds/windows-x64-debug-tests",
+      "cacheVariables": {
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "ATLAS_BUILD_TESTS": "ON",
+        "ATLAS_ENABLE_ONLINE_DEPS": "ON",
+        "ATLAS_BUILD_WORKSPACE": "ON"
+      }
+    },
+    {
+      "name": "ci-debug",
+      "displayName": "CI — Debug (Linux/macOS)",
+      "description": "Ninja-based debug build for CI pipelines (GitHub Actions).",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/Builds/ci-debug",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "ATLAS_BUILD_TESTS": "ON",
+        "ATLAS_ENABLE_ONLINE_DEPS": "ON",
+        "ATLAS_BUILD_WORKSPACE": "ON"
+      }
+    },
+    {
+      "name": "ci-release",
+      "displayName": "CI — Release (Linux/macOS)",
+      "description": "Ninja-based release build for CI pipelines (GitHub Actions).",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/Builds/ci-release",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "ATLAS_BUILD_TESTS": "OFF",
+        "ATLAS_BUILD_WORKSPACE": "ON"
+      }
+    },
+    {
+      "name": "ci-release-tests",
+      "displayName": "CI — Release + Tests (Linux/macOS)",
+      "description": "Ninja-based release build with tests enabled (smoke-test release artifacts on CI).",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/Builds/ci-release-tests",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "ATLAS_BUILD_TESTS": "ON",
+        "ATLAS_ENABLE_ONLINE_DEPS": "ON",
+        "ATLAS_BUILD_WORKSPACE": "ON"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "debug",
+      "configurePreset": "debug"
+    },
+    {
+      "name": "release",
+      "configurePreset": "release"
+    },
+    {
+      "name": "relwithdebinfo",
+      "configurePreset": "relwithdebinfo"
+    },
+    {
+      "name": "vs2022-debug",
+      "configurePreset": "vs2022",
+      "configuration": "Debug"
+    },
+    {
+      "name": "vs2022-release",
+      "configurePreset": "vs2022",
+      "configuration": "Release"
+    },
+    {
+      "name": "vs2019-debug",
+      "configurePreset": "vs2019",
+      "configuration": "Debug"
+    },
+    {
+      "name": "vs2019-release",
+      "configurePreset": "vs2019",
+      "configuration": "Release"
+    },
+    {
+      "name": "windows-x64-release",
+      "configurePreset": "windows-x64",
+      "configuration": "Release"
+    },
+    {
+      "name": "windows-x64-debug",
+      "configurePreset": "windows-x64-debug",
+      "configuration": "Debug"
+    },
+    {
+      "name": "windows-x64-debug-tests",
+      "configurePreset": "windows-x64-debug-tests",
+      "configuration": "Debug"
+    },
+    {
+      "name": "ci-debug",
+      "configurePreset": "ci-debug"
+    },
+    {
+      "name": "ci-release",
+      "configurePreset": "ci-release"
+    },
+    {
+      "name": "ci-release-tests",
+      "configurePreset": "ci-release-tests"
+    }
+  ],
+  "testPresets": [
+    {
+      "name": "debug",
+      "configurePreset": "debug",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "vs2022",
+      "configurePreset": "vs2022",
+      "configuration": "Debug",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "windows-x64-debug-tests",
+      "configurePreset": "windows-x64-debug-tests",
+      "configuration": "Debug",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "ci-debug",
+      "configurePreset": "ci-debug",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "ci-release-tests",
+      "configurePreset": "ci-release-tests",
+      "output": {
+        "outputOnFailure": true
+      }
+    }
+  ]
+}

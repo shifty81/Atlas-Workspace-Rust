@@ -1,0 +1,56 @@
+{
+  "sector_defaults": {
+    "description": "Default sector tension values by security classification",
+    "highsec": {
+      "security_range": [0.5, 1.0],
+      "resource_stress": 0.0,
+      "pirate_pressure": 0.0,
+      "industrial_output": 1.0,
+      "security_confidence": 1.0,
+      "population_stability": 1.0,
+      "military_readiness": 0.7,
+      "faction_influence": 0.8
+    },
+    "lowsec": {
+      "security_range": [0.1, 0.49],
+      "resource_stress": 0.1,
+      "pirate_pressure": 0.2,
+      "industrial_output": 0.7,
+      "security_confidence": 0.5,
+      "population_stability": 0.7,
+      "military_readiness": 0.3,
+      "faction_influence": 0.4
+    },
+    "nullsec": {
+      "security_range": [-1.0, 0.09],
+      "resource_stress": 0.2,
+      "pirate_pressure": 0.4,
+      "industrial_output": 0.4,
+      "security_confidence": 0.2,
+      "population_stability": 0.4,
+      "military_readiness": 0.1,
+      "faction_influence": 0.1
+    },
+    "wormhole": {
+      "security_range": [-1.0, -1.0],
+      "resource_stress": 0.3,
+      "pirate_pressure": 0.1,
+      "industrial_output": 0.2,
+      "security_confidence": 0.1,
+      "population_stability": 0.2,
+      "military_readiness": 0.0,
+      "faction_influence": 0.0
+    }
+  },
+  "tension_decay_rates": {
+    "pirate_pressure_decay": 0.05,
+    "resource_stress_decay": 0.02,
+    "population_recovery_rate": 0.01,
+    "military_buildup_rate": 0.03
+  },
+  "tension_thresholds": {
+    "stressed": 0.5,
+    "critical": 0.75,
+    "collapse": 0.9
+  }
+}

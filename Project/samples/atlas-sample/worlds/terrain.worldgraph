@@ -1,0 +1,28 @@
+{
+  "schema": "atlas.worldgraph.v1",
+  "nodes": [
+    {
+      "id": "seed",
+      "type": "Seed",
+      "position": [100, 200]
+    },
+    {
+      "id": "freq",
+      "type": "Constant",
+      "position": [100, 300],
+      "params": { "value": 0.02 }
+    },
+    {
+      "id": "noise",
+      "type": "Noise",
+      "position": [350, 250]
+    }
+  ],
+  "links": [
+    { "from": "seed.Seed", "to": "noise.Seed" },
+    { "from": "freq.Value", "to": "noise.Frequency" }
+  ],
+  "outputs": {
+    "terrain_height": "noise.Height"
+  }
+}

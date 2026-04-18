@@ -1,0 +1,3154 @@
+Vec3 basic operations 1 0.00528079
+Vec3 normalization and length 1 0.00431405
+Vec3 negation and lerp 1 0.00574267
+Vec2 basic operations 1 0.00484218
+Vec2 length and normalize 1 0.00541178
+Rect contains 1 0.00461884
+Rect overlaps 1 0.00533953
+EventBus publish and subscribe 1 0.00451679
+EventBus clear and subscriber count 1 0.00511568
+Version constants 1 0.00442022
+Quat identity 1 0.00512111
+Quat axis-angle rotation 1 0.00462076
+Quat multiply is composition 1 0.0051171
+Quat slerp interpolation 1 0.00460135
+Mat4 identity 1 0.00516932
+Mat4 translation transforms point 1 0.00463388
+Mat4 scaling transforms point 1 0.00519752
+Mat4 multiply identity 1 0.00464625
+Mat4 perspective produces valid projection 1 0.00528294
+Transform default is identity 1 0.00472799
+Transform toMatrix with translation 1 0.00531437
+StringID hashing 1 0.00463316
+StringID constexpr and runtime agree 1 0.00520767
+Timer measures elapsed time 1 0.0236551
+Timer delta returns frame time 1 0.0450634
+TypeID returns unique IDs per type 1 0.00284781
+Core init and shutdown 1 0.00281016
+LinearAllocator basic allocation 1 0.00285627
+LinearAllocator reset 1 0.00271914
+LinearAllocator overflow returns null 1 0.00282233
+LinearAllocator create constructs object 1 0.00275376
+PoolAllocator basic allocation 1 0.00282777
+PoolAllocator deallocate recycles 1 0.00272039
+PoolAllocator exhaustion returns null 1 0.0028111
+PoolAllocator create and destroy 1 0.00274662
+PoolAllocator reset 1 0.00285253
+TypeDescriptor properties 1 0.00321814
+TypeRegistry registers and finds types 1 0.00422081
+JsonValue primitives 1 0.0040886
+JsonValue object operations 1 0.00328947
+JsonValue array operations 1 0.0041803
+JsonValue serialization 1 0.00396759
+JsonParser parse primitives 1 0.00329559
+JsonParser parse object 1 0.00433283
+JsonParser parse array 1 0.00424289
+JsonParser parse nested 1 0.00342891
+JsonParser parse escape sequences 1 0.0042871
+JSON roundtrip 1 0.00280264
+CommandStack basic undo/redo 1 0.00432691
+CommandStack new command clears redo 1 0.00284751
+CommandStack clear 1 0.00475824
+CommandStack empty undo/redo returns false 1 0.00296086
+CommandStack markClean/isDirty 1 0.00564515
+Color RGBA8 round-trip 1 0.00394757
+Color named constants 1 0.00527935
+Color equality 1 0.00453114
+EntityManager creates unique IDs 1 0.00518193
+EntityManager destroys entities 1 0.00460252
+EntityManager handles empty state 1 0.00292288
+EntityManager isAlive check 1 0.00600717
+EntityManager recycles IDs via free list 1 0.00437791
+EntityManager clear resets state 1 0.0032782
+ComponentStore add and get 1 0.00615146
+ComponentStore has check 1 0.00439982
+ComponentStore remove 1 0.00323531
+ComponentStore removeAll for entity 1 0.00586377
+ComponentStore getAll returns typed map 1 0.00401216
+Level spawn and despawn entities 1 0.00529236
+BTAction returns status from function 1 0.00456039
+BTSequence runs children in order 1 0.00294036
+BTSequence fails on first failure 1 0.00594412
+BTSelector succeeds on first success 1 0.00430355
+BTSelector fails when all children fail 1 0.0031946
+AssetHandle default state 1 0.00587071
+AssetHandle load and access data 1 0.0040451
+SceneGraph parent-child relationships 1 0.00305509
+SceneGraph removeFromParent 1 0.00562355
+SceneGraph reparent 1 0.00400353
+SceneGraph isDescendantOf 1 0.00312091
+SceneGraph removeEntity reparents children 1 0.00563073
+SystemRegistry add and update systems 1 0.00398225
+AABB intersection 1 0.00540023
+AABB touching edges intersect 1 0.00457893
+AABB contains point 1 0.00290903
+AABB center and extents 1 0.0060215
+AABB merge 1 0.00434488
+Ray pointAt 1 0.00320331
+Ray-AABB intersection hit 1 0.00596841
+Ray-AABB intersection miss 1 0.00412899
+Ray-AABB behind ray origin 1 0.00306441
+Sphere contains point 1 0.00549735
+Sphere intersection 1 0.00389363
+RigidBody defaults 1 0.00299518
+RigidBody static has zero inverse mass 1 0.00546922
+RigidBody integrate applies force 1 0.00391473
+PhysicsWorld step with gravity 1 0.00538665
+PhysicsWorld static body doesn't move 1 0.00456939
+BoxShape bounding box 1 0.00297067
+SphereShape bounding box 1 0.00575808
+MeshCollisionShape add triangles and bounding box 1 0.00400746
+AudioClip properties 1 0.00534581
+AudioClip stereo duration 1 0.00458008
+AudioClip empty has zero duration 1 0.00292557
+AudioSource default state 1 0.00572721
+AudioSource play/stop/pause lifecycle 1 0.0040066
+AudioSource looping 1 0.00306817
+AudioSource non-looping stops at end 1 0.00572034
+AudioSource volume and pitch 1 0.00407614
+AudioMixer channels 1 0.00310766
+AudioMixer master volume affects channels 1 0.00567156
+AudioMixer muted channel returns zero 1 0.00400039
+AudioDevice init creates default channels 1 0.00305355
+Skeleton add and find bones 1 0.00584756
+Skeleton empty 1 0.00426057
+AnimationChannel sample single key 1 0.00321118
+AnimationChannel sample interpolation 1 0.00602768
+AnimationChannel sample before first key 1 0.00424453
+AnimationChannel sample after last key 1 0.00314496
+AnimationClip sample fills pose 1 0.00596928
+AnimationStateMachine default state 1 0.00427746
+AnimationStateMachine transitions 1 0.00315866
+AnimationStateMachine time advances 1 0.00609474
+AnimationStateMachine speed multiplier 1 0.00436222
+AnimationStateMachine sample pose 1 0.00324392
+BoneChain validity 1 0.00608235
+TwoJointIK solve updates end bone to target 1 0.00431886
+TwoJointIK invalid chain 1 0.00314766
+TwoJointIK out-of-range bones 1 0.00606275
+FPSHandRig default state 1 0.00437478
+FPSHandRig arm chain setup 1 0.00321678
+FPSHandRig applyIK solves both arms 1 0.00610623
+FPSHandRig sway offset 1 0.00437187
+AnimationBlendGraph add and find nodes 1 0.00321262
+AnimationBlendGraph setWeight clamps 1 0.00601831
+AnimationBlendGraph update advances time 1 0.00422648
+AnimationBlendGraph max nodes 1 0.00316767
+AnimationBlendGraph clear 1 0.00586515
+CharacterGroundingSystem default state 1 0.0040746
+CharacterGroundingSystem apply adjusts feet 1 0.00308267
+CharacterGroundingSystem clamps to maxAdjustment 1 0.00567281
+CharacterGroundingSystem needsGrounding 1 0.00402449
+InputSystem key down and up 1 0.00573879
+InputSystem unknown key is safe 1 0.00479739
+InputSystem mouse position and delta 1 0.00311044
+InputSystem scroll delta 1 0.00562233
+InputSystem gamepad state 1 0.00401502
+InputSystem action pressed event 1 0.00301248
+InputSystem isActionActive 1 0.00557483
+InputSystem modifier key binding 1 0.00393105
+InputSystem clearBindings removes all actions 1 0.00296162
+InputSystem multiple bindings 1 0.00595908
+PacketType enum values 1 0.00443312
+Packet creation and defaults 1 0.00327136
+Packet serialization round-trip 1 0.00595066
+Packet serialization with complex payload 1 0.00408104
+Packet serialization without payload 1 0.00562169
+Connection creation and defaults 1 0.00469457
+Connection state transitions 1 0.00564987
+Connection send/receive queues 1 0.00474495
+Connection reliable buffer and ack 1 0.00575885
+ConnectionManager add/remove/find 1 0.00487506
+ConnectionManager broadcast 1 0.00567596
+ConnectionManager timeout detection 1 0.00475144
+ReplicatedProperty types 1 0.00554083
+ReplicationManager register/unregister 1 0.00468925
+ReplicationManager mark dirty and collect snapshots 1 0.005333
+ReplicationManager apply snapshot 1 0.0045375
+Session add/remove players 1 0.00287077
+Session state transitions 1 0.00576702
+Session host check 1 0.00406179
+Session max players limit 1 0.00554836
+LockstepManager store and retrieve inputs 1 0.00466712
+LockstepManager advance frame 1 0.00301052
+LockstepManager check all inputs for frame 1 0.00590921
+LockstepManager input delay setting 1 0.00404815
+RollbackManager save and load state 1 0.00546879
+RollbackManager rollback depth 1 0.00460611
+RollbackManager confirm frame 1 0.00294333
+RollbackManager rollback to future frame fails 1 0.00587725
+RPCRegistry register and invoke 1 0.00412204
+RPCRegistry has/count 1 0.00572613
+RPCRegistry invoke unknown RPC 1 0.00483789
+RPCTarget enum values 1 0.00556342
+NetworkManager initialization 1 0.0046268
+NetworkManager packet routing — Connect 1 0.00296881
+NetworkManager packet routing — Disconnect 1 0.00587553
+NetworkManager packet routing — Heartbeat 1 0.0040922
+NetworkManager packet routing — AuthRequest 1 0.00560515
+NetworkManager packet routing — RPC 1 0.00478909
+NetworkManager packet routing — PlayerInput 1 0.00565385
+NetworkManager packet routing — Ping sends Pong 1 0.00480562
+NetworkManager packet routing — AckReliable 1 0.00576608
+NetworkManager send and broadcast 1 0.00495879
+NetworkManager tick processes receive queues 1 0.00574453
+NetworkManager statistics 1 0.00485664
+NetworkManager RPC delegation 1 0.00307045
+NetworkManager accessors return correct subsystems 1 0.00580028
+NetRole enum values 1 0.00402799
+ReplicationRule enum values 1 0.00542187
+ConnectionState enum values 1 0.00455039
+SessionState enum values 1 0.00289782
+GraphVM initializes 1 0.00576675
+GraphVM loads and runs empty program 1 0.0040414
+GraphVM steps through program 1 0.00306281
+GraphType enum covers 14 types 1 0.00575548
+GraphVM Add integers 1 0.00426831
+GraphVM Add floats 1 0.00316479
+GraphVM Subtract 1 0.00583843
+GraphVM Multiply 1 0.00401374
+GraphVM Divide 1 0.00301073
+GraphVM Divide by zero returns zero 1 0.00575677
+GraphVM Compare and Branch 1 0.00432583
+GraphVM Compare false branch 1 0.00316286
+GraphVM Store and Load memory 1 0.00596769
+GraphVM Call and Return 1 0.00414455
+GraphVM constant pool loading 1 0.00311067
+GraphNode / GraphPort construction 1 0.00565933
+Graph add/remove nodes and links 1 0.00403963
+GraphCompiler compiles simple add graph 1 0.00308405
+GraphSerializer program round-trip 1 0.00599329
+GraphSerializer graph round-trip 1 0.00436816
+Mesh vertex and index storage 1 0.00327553
+Mesh bounds computation 1 0.00608874
+Mesh constructor with data 1 0.00426534
+Shader compile 1 0.00313808
+Shader empty source fails compile 1 0.00578552
+Shader uniforms 1 0.00400482
+Material properties 1 0.00300077
+RenderQueue submit and sort 1 0.00554514
+Camera view and projection matrices 1 0.00393066
+Camera forward direction 1 0.00298905
+Renderer init and frame lifecycle 1 0.00563695
+LightSource defaults 1 0.00400828
+LightingState add/remove/clear 1 0.00300395
+LightingState MAX_LIGHTS limit 1 0.00571187
+LightingState ambient settings 1 0.00412201
+LightingState compute lighting directional 1 0.00312401
+LightingState compute lighting point light 1 0.00582055
+LightingState compute lighting disabled light 1 0.00411516
+VoxelShader init and setup 1 0.00306482
+FrustumPlane distance to point 1 0.0055586
+Frustum extractFromVP basic 1 0.00398849
+Frustum testAABB inside and outside 1 0.00301179
+Blackboard set and get values 1 0.00546873
+Blackboard remove entry 1 0.00394503
+Blackboard clear 1 0.00299156
+Blackboard get missing key returns nullptr 1 0.00599201
+Blackboard variant types 1 0.00435113
+UtilitySelector evaluate returns highest score 1 0.00320628
+UtilitySelector empty returns nullptr 1 0.00587616
+UtilitySelector clear 1 0.00407739
+evaluateCurve Linear 1 0.00305851
+evaluateCurve Quadratic 1 0.00595476
+evaluateCurve Logistic at midpoint 1 0.00433504
+evaluateCurve Inverse 1 0.00318145
+AIAgent default state 1 0.00603133
+AIAgent set behavior 1 0.00420409
+AIAgent memory access 1 0.00311684
+AIAgent blackboard attachment 1 0.00566734
+AIAgent update decays threat 1 0.00403421
+AISystem register and find agents 1 0.00307135
+AISystem unregister agent 1 0.00584404
+AISystem update ticks all agents 1 0.00429856
+AtlasAIQueryTool lifecycle 1 0.00316493
+AtlasAIRulesTool rules and evaluate 1 0.00578683
+BlenderGeneratorTool generate mesh 1 0.00402508
+ContractScannerTool scan 1 0.00304787
+ReplayMinimizerTool minimize 1 0.00579695
+ReplayMinimizerTool empty input 1 0.00425315
+ToolRegistry register and find tools 1 0.00316998
+ToolRegistry ITool interface 1 0.00608533
+EditorAIAssistant unavailable without registry 1 0.00433262
+EditorAIAssistant with registry 1 0.0033278
+SelectionService single select 1 0.00690228
+SelectionService multi-select 1 0.00726171
+SelectionService deselect 1 0.00771895
+SelectionService clearSelection 1 0.00803179
+SelectionService selectExclusive 1 0.00781807
+SelectionService toggleSelect 1 0.00707179
+SelectionService version increments on changes 1 0.0077365
+SelectionService deselect primary reassigns 1 0.00744186
+EditorCommandRegistry register and execute 1 0.00741819
+EditorCommandRegistry enabled check 1 0.00820838
+EditorCommandRegistry allCommandNames 1 0.00775913
+EditorCommandRegistry findCommand 1 0.00645818
+RecentFilesList add and retrieve 1 0.00797774
+RecentFilesList deduplicates 1 0.00718367
+RecentFilesList max entries 1 0.00725885
+ContentBrowser classifyExtension 1 0.00770696
+ContentBrowser navigates real directory 1 0.00896078
+ContentBrowser navigateUp at root returns false 1 0.00872906
+LaunchService validate nonexistent exe 1 0.00721621
+LaunchService resolve with build directory 1 0.00826091
+EditorTheme dark defaults 1 0.00667265
+EditorTheme light variant 1 0.00645376
+PropertyEditor read bool property 1 0.00766156
+PropertyEditor read/write int property 1 0.00867335
+PropertyEditor read/write float property 1 0.00854278
+PropertyEditor read/write Vec3 property 1 0.00699327
+PropertyEditor read/write Color property 1 0.0075445
+PropertyEditor read/write string property 1 0.00768511
+PropertyEditor write rejects wrong type 1 0.00758187
+PropertyEditor undo-safe float change 1 0.00850948
+PropertyEditor undo-safe Vec3 change 1 0.00716482
+PropertyEditor undo-safe Color change 1 0.0077142
+PropertyEditor undo-safe string change 1 0.00760797
+DockLayout add and find panel 1 0.00722292
+DockLayout remove panel 1 0.00731075
+DockLayout visibility toggle 1 0.00710878
+DockLayout computeLayout positions 1 0.00745143
+DockLayout hidden panels excluded from layout 1 0.00806062
+DockLayout panels accessor 1 0.00786674
+ViewportPanel defaults 1 0.00771391
+ViewportPanel setters 1 0.00770901
+InspectorPanel stores references 1 0.00720554
+HierarchyPanel search filter and entity list 1 0.0073408
+ConsolePanel add messages 1 0.00754743
+ConsolePanel clear messages 1 0.007611
+ConsolePanel max messages cap 1 0.0133168
+ContentBrowserPanel wraps ContentBrowser 1 0.00704149
+EditorToolbar add items and separators 1 0.0062663
+EditorApp creates default panels on init 1 0.0105996
+EditorApp creates default toolbar items 1 0.011476
+EditorApp view toggle commands 1 0.00790973
+EditorApp graph commands registered 1 0.00740759
+EditorApp graphVM accessor 1 0.00787348
+EditorApp addPanel 1 0.00765128
+ProjectIndexer index files 1 0.00804942
+ProjectIndexer add and find symbols 1 0.00704688
+CodeNavigator go to definition 1 0.00815185
+CodeNavigator find references 1 0.00667351
+CodeNavigator search symbols 1 0.00736826
+CodeNavigator find by kind 1 0.00785838
+BreadcrumbTrail push and pop 1 0.00747867
+BreadcrumbTrail max depth 1 0.00793674
+IDEService lifecycle 1 0.00766657
+IDEService navigate and go back 1 0.00778416
+EditorApp IDE commands registered 1 0.00728189
+EditorApp IDE service accessor 1 0.00865218
+ViewportCameraController defaults 1 0.0107758
+ViewportCameraController inactive without right mouse 1 0.00697098
+ViewportCameraController activates on right mouse held 1 0.00837744
+ViewportCameraController deactivates when right mouse released 1 0.00698712
+ViewportCameraController WASD moves camera only when right mouse held 1 0.00721354
+ViewportCameraController mouse look changes yaw and pitch 1 0.00874843
+ViewportCameraController pitch is clamped 1 0.00874531
+ViewportCameraController sprint multiplier increases speed 1 0.00720334
+ViewportCameraController Q/E moves vertically 1 0.00812619
+ViewportPanel updateCamera delegates to controller 1 0.00701755
+ViewportPanel yaw and pitch accessors 1 0.00707808
+EditorApp update with input drives viewport fly-cam 1 0.00823901
+ProjectPathService init resolves paths relative to executable 1 0.00828859
+ProjectPathService resolvePath appends relative segment 1 0.00776802
+EditorApp projectPaths accessor available after init 1 0.0117605
+EditorApp init(width,height) zero-arg overload works 1 0.00734507
+EditorApp contentBrowser rooted to project content path on init 1 0.0077478
+EditorApp ide.index_project indexes Source directory 1 0.00890664
+GraphEditorPanel newGraph creates an empty graph 1 0.00701609
+GraphEditorPanel addNode returns valid id 1 0.00761318
+GraphEditorPanel removeNode removes selected node 1 0.00669314
+GraphEditorPanel addLink connects two nodes 1 0.00931254
+EditorApp graph.new_graph command creates graph in panel 1 0.0119572
+EditorApp graph.add_node command adds node and notifies 1 0.00675477
+PCGTuningPanel default state 1 0.008165
+PCGTuningPanel set noise params marks dirty 1 0.00761156
+PCGTuningPanel presets 1 0.00687091
+PCGTuningPanel seed operations 1 0.00763522
+EntityPlacementTool place and remove 1 0.00846583
+EntityPlacementTool auto-increment IDs 1 0.00706067
+EntityPlacementTool grid snap 1 0.00834296
+EntityPlacementTool clear 1 0.00682468
+VoxelPaintTool default brush 1 0.00633138
+VoxelPaintTool stroke workflow 1 0.00918756
+VoxelPaintTool palette 1 0.00929887
+VoxelPaintTool active palette slot 1 0.007898
+VoxelPaintTool clear 1 0.00926793
+EditorUndoSystem place entity undo/redo 1 0.00694685
+EditorUndoSystem remove entity undo 1 0.0071455
+EditorUndoSystem paint stroke undo 1 0.00765473
+EditorUndoSystem PCG param change undo 1 0.0073457
+EditorUndoSystem multiple operations 1 0.00759625
+WorldPreviewService default state 1 0.00707736
+WorldPreviewService load and unload 1 0.00754219
+WorldPreviewService empty path error 1 0.0076735
+WorldPreviewService view controls 1 0.00746535
+WorldPreviewService dirty flag 1 0.00787735
+Vec3i equality 1 0.00743881
+EditorApp M2 systems accessible 1 0.00736788
+PlayState names 1 0.00753123
+EditorWorldSnapshot capture and invalidate 1 0.00750163
+EditorWorldSession lifecycle: start → pause → resume → stop 1 0.00850486
+EditorWorldSession pause requires Running 1 0.0100088
+EditorWorldSession resume requires Paused 1 0.00651734
+PlayInEditorSystem standalone lifecycle 1 0.00756394
+PlayInEditorSystem togglePlay cycles states 1 0.00781747
+PlayInEditorSystem snapshots and restores entities 1 0.00785768
+PlayInEditorSystem snapshots and restores PCG params 1 0.0100298
+PlayInEditorSystem snapshots and restores camera 1 0.00760729
+EditorApp M3 Play-in-Editor accessible 1 0.008538
+EditorApp Play/Pause/Stop enabled checks 1 0.00957676
+EditorApp panel count includes PCGTuning 1 0.00753407
+AssetGuid null check 1 0.00803582
+AssetGuid fromPath is deterministic 1 0.00810677
+AssetGuid fromPath different paths differ 1 0.00840466
+AssetGuid generate creates unique values 1 0.00827578
+AssetGuid toString format 1 0.00674684
+AssetGuid ordering 1 0.00790426
+AssetType names 1 0.00725425
+classifyAssetExtension 1 0.00733561
+AssetDatabase register and find 1 0.00625813
+AssetDatabase findByPath 1 0.00758271
+AssetDatabase duplicate path updates existing 1 0.00694388
+AssetDatabase remove 1 0.00695114
+AssetDatabase markImported 1 0.00847641
+AssetDatabase assetsOfType 1 0.00670077
+AssetDatabase clear 1 0.00753857
+MeshImporter canImport 1 0.00797747
+MeshImporter import registers and marks imported 1 0.00776577
+MeshImporter rejects non-mesh files 1 0.00679496
+MeshImporter settings 1 0.00888173
+TextureImporter canImport 1 0.0068477
+TextureImporter import registers and marks imported 1 0.00822263
+TextureImporter settings 1 0.00708361
+AssetWatcher dirty tracking 1 0.00815881
+AssetWatcher clearAll 1 0.00722154
+EditorApp M4 asset pipeline accessible 1 0.00814725
+ViewportRenderMode names cover all 5 values 1 0.00895175
+ViewportGizmoMode names cover all 4 values 1 0.00810422
+ViewportCameraMode names cover all 5 values 1 0.00856468
+NFRenderViewport default construction and accessors 1 0.00800804
+NFRenderViewport setters and camera control 1 0.00798902
+NFRenderViewport aspect ratio and resize 1 0.00877262
+NFRenderViewport frame tick counter 1 0.0087784
+MeshDisplayMode names cover all 5 values 1 0.00793027
+MeshViewerPanel inherits NFRenderViewport and defaults to Orbit cam 1 0.00853001
+MeshViewerPanel add/remove/find meshes 1 0.00797332
+MeshViewerPanel aggregate counts 1 0.00807788
+MeshViewerPanel MAX_MESHES limit enforced 1 0.00918114
+MaterialPreviewShape names cover all 5 values 1 0.00871742
+MaterialEditorPanel inherits NFRenderViewport with live preview 1 0.00708602
+MaterialEditorPanel add/remove/find materials 1 0.00830902
+MaterialEditorPanel PBR count and preview shape 1 0.00793972
+BoneDisplayMode names cover all 5 values 1 0.00749247
+WeightPaintMode names cover all 6 values 1 0.00813125
+SkeletalAsset bone management 1 0.0079465
+SkeletalAsset complexity threshold 1 0.00720967
+SkeletalEditorPanel add/remove/find skeletons and weight paint 1 0.00861102
+SkeletalEditorPanel openAsset sets active 1 0.00679557
+AnimPlaybackState names cover all 5 values 1 0.00789386
+AnimBlendTreeType names cover all 5 values 1 0.00797397
+AnimClipAsset defaults and computed properties 1 0.00701736
+AnimationEditorPanel add/remove/find clips 1 0.00752287
+AnimationEditorPanel playback and timeline controls 1 0.00754846
+AnimationEditorPanel openAsset sets active clip 1 0.00762221
+PrefabEditMode names cover all 5 values 1 0.00803207
+PrefabEditorPanel inherits NFRenderViewport and manages instances 1 0.00792931
+PrefabEditorPanel MAX_INSTANCES limit enforced 1 0.0118504
+All M1-C editors inherit NFRenderViewport with gizmo and render mode 1 0.00773479
+ConsoleToolModule Name 1 0.00757302
+ProfilerToolModule Name 1 0.00884103
+ECSInspectorToolModule Name 1 0.00690367
+MaterialEditorToolModule Name 1 0.00683377
+MeshViewerToolModule Name 1 0.00736338
+PrefabEditorToolModule Name 1 0.00763668
+AIDebuggerToolModule Name 1 0.00779037
+WorldGraphToolModule Name 1 0.0074662
+SceneGraphToolModule Name 1 0.00742537
+PhysicsTunerToolModule Name 1 0.00749446
+Tool modules implement IEditorToolModule interface 1 0.00784257
+All 10 tool modules have unique names 1 0.00784473
+All tool modules survive full lifecycle 1 0.00766204
+IHostedTool: descriptor identity 1 0.00775449
+IHostedTool: lifecycle transitions 1 0.00723303
+IHostedTool: project hooks 1 0.00711167
+HostedToolDescriptor: validation 1 0.00724783
+HostedToolCategory: name round-trip 1 0.00733892
+HostedToolState: name round-trip 1 0.00735467
+ToolRegistry: register and find 1 0.00738356
+ToolRegistry: reject invalid and duplicate 1 0.00716303
+ToolRegistry: unregister 1 0.00700569
+ToolRegistry: byCategory 1 0.00742852
+ToolRegistry: primaryTools filter 1 0.00736097
+ToolRegistry: activateTool and suspend previous 1 0.00860277
+ToolRegistry: activateTool fails if unloaded 1 0.00853373
+ToolRegistry: initializeAll and shutdownAll 1 0.0066494
+ToolRegistry: updateActive 1 0.00833539
+ToolRegistry: allDescriptors 1 0.00722498
+ToolRegistry: notifyProject events 1 0.00711151
+PanelRegistry: register and find 1 0.00750296
+PanelRegistry: reject invalid and duplicate 1 0.00716812
+PanelRegistry: unregister 1 0.00823482
+PanelRegistry: byCategory 1 0.00676908
+PanelRegistry: visibility 1 0.00796616
+PanelRegistry: panelsForTool 1 0.00768866
+SharedPanelCategory: name round-trip 1 0.00649832
+WorkspaceShell: default state 1 0.00915535
+WorkspaceShell: initialize registers default panels 1 0.00911186
+WorkspaceShell: double-init fails 1 0.00753106
+WorkspaceShell: shutdown transitions to Destroyed 1 0.0086264
+WorkspaceShell: register tool before init, initialized by init 1 0.00641197
+WorkspaceShell: activate tool through shell 1 0.00646681
+WorkspaceShell: update forwards to active tool 1 0.00711187
+WorkspaceShell: loadProject 1 0.00724792
+WorkspaceShell: unloadProject 1 0.00744154
+WorkspaceShell: loadProject null fails 1 0.0106812
+WorkspaceShell: loadProject before init fails 1 0.00644815
+WorkspaceShell: loadProject notifies tools 1 0.00709952
+WorkspaceShell: shell contract is wired 1 0.00854192
+ShellPhase: name round-trip 1 0.00710729
+WorkspaceShell: accessors return correct registries 1 0.00763241
+WorkspaceShell: multiple tools activate/suspend 1 0.00653721
+WorkspaceShell: update with no active tool does not crash 1 0.00642935
+WorkspaceShell: update before init does nothing 1 0.00694816
+SceneEditorTool: toolId matches constant 1 0.00702674
+SceneEditorTool: descriptor is valid and primary 1 0.00778797
+SceneEditorTool: declares expected shared panels 1 0.00762689
+SceneEditorTool: declares expected commands 1 0.00927063
+SceneEditorTool: initial state is Unloaded 1 0.00900598
+SceneEditorTool: initialize transitions to Ready 1 0.00738922
+SceneEditorTool: double initialize returns false 1 0.00829841
+SceneEditorTool: activate transitions Ready to Active 1 0.00722461
+SceneEditorTool: suspend transitions Active to Suspended 1 0.00781104
+SceneEditorTool: activate from Suspended transitions to Active 1 0.00659653
+SceneEditorTool: shutdown resets to Unloaded 1 0.00771435
+SceneEditorTool: update while Active records frame time 1 0.00713895
+SceneEditorTool: update while Suspended does not change frame time 1 0.00776952
+SceneEditorTool: default edit mode is Select 1 0.00670792
+SceneEditorTool: setEditMode changes mode 1 0.00784306
+SceneEditorTool: SceneEditMode names cover all 6 values 1 0.00787373
+SceneEditorTool: dirty flag 1 0.00759096
+SceneEditorTool: selection count tracking 1 0.00809427
+SceneEditorTool: entity count tracking 1 0.00653591
+SceneEditorTool: shutdown resets dirty and counts 1 0.00775473
+SceneEditorTool: onProjectLoaded clears stats 1 0.00876804
+SceneEditorTool: onProjectUnloaded clears stats 1 0.00702667
+SceneEditorTool: registers with ToolRegistry 1 0.00574769
+SceneEditorTool: full lifecycle through ToolRegistry 1 0.00934808
+SceneEditorTool: in WorkspaceShell via ToolRegistry 1 0.00718376
+SceneEditorTool: byCategory returns it under SceneEditing 1 0.00618633
+SceneEditorTool: primaryTools includes it 1 0.00842933
+SceneEditorTool: project events propagate through WorkspaceShell 1 0.00957397
+PanelRegistry: registerPanelWithFactory creates entry 1 0.00779461
+PanelRegistry: getOrCreatePanel creates instance on demand 1 0.00923707
+PanelRegistry: getOrCreatePanel returns same instance 1 0.00708509
+PanelRegistry: getOrCreatePanel returns nullptr for no factory 1 0.00617451
+PanelRegistry: shutdownAll destroys panel instances 1 0.00692221
+PanelRegistry: notifyToolActivated propagates to instances 1 0.00765467
+PanelRegistry: notifySelectionChanged propagates to instances 1 0.00933956
+ContentBrowserSharedPanel: lifecycle 1 0.00895503
+ComponentInspectorSharedPanel: lifecycle 1 0.00715875
+DiagnosticsSharedPanel: lifecycle 1 0.00807513
+MemoryProfilerSharedPanel: lifecycle 1 0.00700281
+PipelineMonitorSharedPanel: lifecycle 1 0.00688766
+NotificationCenterSharedPanel: lifecycle 1 0.00730233
+WorkspaceShell: factory panels are created on getOrCreatePanel 1 0.00726468
+WorkspaceShell: all 6 factory panels can be created 1 0.00718423
+WorkspaceShell: descriptor-only panels have no factory 1 0.0074534
+assetFilterModeName returns correct strings 1 0.00820444
+AssetEditorTool descriptor is valid at construction 1 0.00821679
+AssetEditorTool toolId matches kToolId 1 0.00798344
+AssetEditorTool declares expected supported panels 1 0.00782364
+AssetEditorTool declares expected commands 1 0.00704707
+AssetEditorTool starts in Unloaded state 1 0.00708983
+AssetEditorTool initial filter mode is All 1 0.00716829
+AssetEditorTool initial search query is empty 1 0.00720485
+AssetEditorTool initial stats are zero/false 1 0.00725565
+AssetEditorTool initialize transitions Unloaded -> Ready 1 0.00780651
+AssetEditorTool initialize returns false if already Ready 1 0.00971291
+AssetEditorTool activate transitions Ready -> Active 1 0.00808337
+AssetEditorTool suspend transitions Active -> Suspended 1 0.00908868
+AssetEditorTool can re-activate from Suspended 1 0.00694971
+AssetEditorTool shutdown resets to Unloaded 1 0.00637836
+AssetEditorTool shutdown resets filter and query 1 0.00698726
+AssetEditorTool shutdown resets stats 1 0.00830964
+AssetEditorTool can reinitialize after shutdown 1 0.00995008
+AssetEditorTool activate when Unloaded has no effect 1 0.00797082
+AssetEditorTool suspend when Ready has no effect 1 0.00886187
+AssetEditorTool update is a no-op (event-driven design) 1 0.00619066
+AssetEditorTool setFilterMode persists mode 1 0.00614688
+AssetEditorTool setSearchQuery persists value 1 0.00803098
+AssetEditorTool setTotalAssetCount persists value 1 0.00823633
+AssetEditorTool setSelectionCount persists value 1 0.00720724
+AssetEditorTool setFilteredAssetCount persists value 1 0.00804618
+AssetEditorTool markDirty and clearDirty work correctly 1 0.00668907
+AssetEditorTool onProjectLoaded resets stats and state 1 0.00985606
+AssetEditorTool onProjectUnloaded resets stats and state 1 0.00671423
+AssetEditorTool is usable through IHostedTool interface 1 0.00710798
+AssetEditorTool category name is ProjectBrowser 1 0.00844016
+materialEditModeName returns correct strings 1 0.00903548
+MaterialEditorTool descriptor is valid at construction 1 0.00754225
+MaterialEditorTool toolId matches kToolId 1 0.00651614
+MaterialEditorTool declares expected shared panels 1 0.00823961
+MaterialEditorTool declares expected commands 1 0.00661707
+MaterialEditorTool initial state is Unloaded 1 0.00721272
+MaterialEditorTool initialize transitions to Ready 1 0.00776
+MaterialEditorTool double initialize returns false 1 0.0079148
+MaterialEditorTool activate from Ready transitions to Active 1 0.0070737
+MaterialEditorTool suspend from Active transitions to Suspended 1 0.0071797
+MaterialEditorTool activate from Suspended transitions to Active 1 0.00720972
+MaterialEditorTool shutdown from Active transitions to Unloaded 1 0.00927615
+MaterialEditorTool update does not change state 1 0.00765249
+MaterialEditorTool default edit mode is Properties 1 0.00861992
+MaterialEditorTool setEditMode roundtrips all modes 1 0.00853986
+MaterialEditorTool initially not dirty 1 0.00690246
+MaterialEditorTool markDirty / clearDirty 1 0.0074507
+MaterialEditorTool shutdown clears dirty flag 1 0.00745284
+MaterialEditorTool stats default to zero 1 0.00734188
+MaterialEditorTool setNodeCount updates stats 1 0.00713657
+MaterialEditorTool setTextureSlotCount updates stats 1 0.00815899
+MaterialEditorTool openAssetPath starts empty 1 0.00801979
+MaterialEditorTool setOpenAssetPath roundtrips 1 0.00809602
+MaterialEditorTool shutdown clears openAssetPath 1 0.0078711
+MaterialEditorTool onProjectLoaded clears stats 1 0.00700909
+MaterialEditorTool onProjectUnloaded clears stats 1 0.00709781
+animationEditModeName returns correct strings 1 0.0070978
+AnimationEditorTool descriptor is valid at construction 1 0.00832969
+AnimationEditorTool toolId matches kToolId 1 0.00685519
+AnimationEditorTool declares expected shared panels 1 0.00794349
+AnimationEditorTool declares expected commands 1 0.0078154
+AnimationEditorTool initial state is Unloaded 1 0.00672879
+AnimationEditorTool initialize transitions to Ready 1 0.00737436
+AnimationEditorTool double initialize returns false 1 0.00755351
+AnimationEditorTool activate from Ready transitions to Active 1 0.00771826
+AnimationEditorTool suspend from Active transitions to Suspended 1 0.00756008
+AnimationEditorTool suspend stops playback and recording 1 0.0097142
+AnimationEditorTool activate from Suspended transitions to Active 1 0.0120485
+AnimationEditorTool shutdown from Active transitions to Unloaded 1 0.00747686
+AnimationEditorTool default edit mode is Timeline 1 0.0122021
+AnimationEditorTool setEditMode roundtrips all modes 1 0.00837045
+AnimationEditorTool initially not playing or recording 1 0.0098659
+AnimationEditorTool play / pause cycle 1 0.00750687
+AnimationEditorTool stop clears playing and recording 1 0.0112561
+AnimationEditorTool record toggle 1 0.00704392
+AnimationEditorTool initially not dirty 1 0.0117534
+AnimationEditorTool markDirty / clearDirty 1 0.0140128
+AnimationEditorTool stats default to zero 1 0.0166008
+AnimationEditorTool setClipDurationMs roundtrips 1 0.00983215
+AnimationEditorTool setFrameCount roundtrips 1 0.0137297
+AnimationEditorTool setSelectedBoneCount roundtrips 1 0.0119377
+AnimationEditorTool onProjectLoaded clears stats 1 0.0100549
+AnimationEditorTool onProjectUnloaded clears stats 1 0.0100191
+dataEditModeName returns correct strings 1 0.0083901
+DataEditorTool descriptor is valid at construction 1 0.00691647
+DataEditorTool toolId matches kToolId 1 0.00737302
+DataEditorTool declares expected shared panels 1 0.00737986
+DataEditorTool declares expected commands 1 0.00909458
+DataEditorTool initial state is Unloaded 1 0.00714321
+DataEditorTool initialize transitions to Ready 1 0.00833884
+DataEditorTool double initialize returns false 1 0.00677784
+DataEditorTool activate from Ready transitions to Active 1 0.00599715
+DataEditorTool suspend from Active transitions to Suspended 1 0.00645765
+DataEditorTool activate from Suspended transitions to Active 1 0.00867602
+DataEditorTool shutdown from Active transitions to Unloaded 1 0.00758063
+DataEditorTool default edit mode is Table 1 0.00870709
+DataEditorTool setEditMode roundtrips all modes 1 0.00938841
+DataEditorTool initially not dirty 1 0.00721537
+DataEditorTool markDirty / clearDirty 1 0.0078004
+DataEditorTool shutdown clears dirty flag 1 0.00785286
+DataEditorTool stats default to zero 1 0.00741029
+DataEditorTool setRowCount roundtrips 1 0.00736348
+DataEditorTool setSelectedRowCount roundtrips 1 0.0086548
+DataEditorTool setColumnCount roundtrips 1 0.00683554
+DataEditorTool openTablePath starts empty 1 0.00922434
+DataEditorTool setOpenTablePath roundtrips 1 0.00926032
+DataEditorTool shutdown clears openTablePath 1 0.00787304
+DataEditorTool onProjectLoaded clears stats 1 0.00689621
+DataEditorTool onProjectUnloaded clears stats 1 0.0068485
+visualLogicModeName returns correct strings 1 0.0079872
+VisualLogicEditorTool descriptor is valid at construction 1 0.00787453
+VisualLogicEditorTool toolId matches kToolId 1 0.00675299
+VisualLogicEditorTool declares expected shared panels 1 0.00858762
+VisualLogicEditorTool declares expected commands 1 0.00777236
+VisualLogicEditorTool initial state is Unloaded 1 0.00845638
+VisualLogicEditorTool initialize transitions to Ready 1 0.00730803
+VisualLogicEditorTool double initialize returns false 1 0.00772251
+VisualLogicEditorTool activate from Ready transitions to Active 1 0.00598428
+VisualLogicEditorTool suspend from Active transitions to Suspended 1 0.00708157
+VisualLogicEditorTool suspend clears isCompiling flag 1 0.0060795
+VisualLogicEditorTool activate from Suspended transitions to Active 1 0.00718
+VisualLogicEditorTool shutdown from Active transitions to Unloaded 1 0.00847057
+VisualLogicEditorTool default edit mode is Graph 1 0.00787425
+VisualLogicEditorTool setEditMode roundtrips all modes 1 0.00675254
+VisualLogicEditorTool initially not dirty 1 0.00821688
+VisualLogicEditorTool markDirty / clearDirty 1 0.00790199
+VisualLogicEditorTool stats default to zero 1 0.00758062
+VisualLogicEditorTool setNodeCount roundtrips 1 0.00778837
+VisualLogicEditorTool setConnectionCount roundtrips 1 0.0080571
+VisualLogicEditorTool setCompiling / isCompiling 1 0.00737243
+VisualLogicEditorTool setErrorCount / errorCount 1 0.00843855
+VisualLogicEditorTool onProjectLoaded clears stats 1 0.00706251
+VisualLogicEditorTool onProjectUnloaded clears stats 1 0.00803687
+buildModeName returns correct strings 1 0.00820728
+BuildTool descriptor is valid at construction 1 0.00957763
+BuildTool toolId matches kToolId 1 0.0063125
+BuildTool declares expected shared panels 1 0.00791669
+BuildTool declares expected commands 1 0.0077751
+BuildTool initial state is Unloaded 1 0.00687213
+BuildTool initialize transitions to Ready 1 0.00684366
+BuildTool double initialize returns false 1 0.00700184
+BuildTool activate from Ready transitions to Active 1 0.00715786
+BuildTool suspend from Active transitions to Suspended 1 0.00764517
+BuildTool activate from Suspended transitions to Active 1 0.00763408
+BuildTool shutdown from Active transitions to Unloaded 1 0.00749078
+BuildTool update does not change state 1 0.00750928
+BuildTool default build mode is Incremental 1 0.0097782
+BuildTool setBuildMode roundtrips all modes 1 0.00822537
+BuildTool stats default to zero 1 0.00652106
+BuildTool setBuilding / isBuilding 1 0.0091997
+BuildTool setLastBuildMs roundtrips 1 0.00667554
+BuildTool setWarningCount / warningCount 1 0.00716352
+BuildTool setErrorCount / errorCount 1 0.00767117
+BuildTool clearStats resets all counters 1 0.00853169
+BuildTool activeTarget starts empty 1 0.00638962
+BuildTool setActiveTarget roundtrips 1 0.00765514
+BuildTool shutdown clears activeTarget 1 0.00860201
+BuildTool onProjectLoaded clears stats and target 1 0.00762622
+BuildTool onProjectUnloaded clears stats and target 1 0.0083367
+aiAssistModeName returns correct strings 1 0.00972734
+AtlasAITool descriptor is valid at construction 1 0.00730604
+AtlasAITool toolId matches kToolId 1 0.00845042
+AtlasAITool declares expected shared panels 1 0.00813175
+AtlasAITool declares expected commands 1 0.0074755
+AtlasAITool initial state is Unloaded 1 0.00795243
+AtlasAITool initialize transitions to Ready 1 0.00781315
+AtlasAITool double initialize returns false 1 0.00624144
+AtlasAITool activate from Ready transitions to Active 1 0.0069123
+AtlasAITool suspend from Active transitions to Suspended 1 0.00697601
+AtlasAITool suspend clears isProcessing flag 1 0.00708962
+AtlasAITool activate from Suspended transitions to Active 1 0.00848705
+AtlasAITool shutdown from Active transitions to Unloaded 1 0.00836828
+AtlasAITool update does not change state 1 0.00816026
+AtlasAITool default assist mode is Chat 1 0.00654286
+AtlasAITool setAssistMode roundtrips all modes 1 0.00708769
+AtlasAITool stats default to zero 1 0.0065749
+AtlasAITool setProcessing / isProcessing 1 0.00665907
+AtlasAITool setMessageCount / messageCount 1 0.00814451
+AtlasAITool setPendingSuggestionCount / pendingSuggestionCount 1 0.00895277
+AtlasAITool setCodexSnippetCount / codexSnippetCount 1 0.0108952
+AtlasAITool clearSession resets all stats 1 0.00568436
+AtlasAITool onProjectLoaded clears session 1 0.00807382
+AtlasAITool onProjectUnloaded clears session 1 0.00762727
+Bootstrap: WorkspaceShell registers 8 core tools on initialize 1 0.00672641
+Bootstrap: SceneEditorTool is registered at bootstrap 1 0.00755029
+Bootstrap: AssetEditorTool is registered at bootstrap 1 0.00758308
+Bootstrap: MaterialEditorTool is registered at bootstrap 1 0.0071577
+Bootstrap: AnimationEditorTool is registered at bootstrap 1 0.00880556
+Bootstrap: DataEditorTool is registered at bootstrap 1 0.007392
+Bootstrap: VisualLogicEditorTool is registered at bootstrap 1 0.00837223
+Bootstrap: BuildTool is registered at bootstrap 1 0.00636474
+Bootstrap: AtlasAITool is registered at bootstrap 1 0.00672391
+Bootstrap: all core tools are in Ready state after initialize 1 0.00720351
+Bootstrap: all core tools are Unloaded after shutdown 1 0.00714934
+Bootstrap: all 8 core tools are marked primary 1 0.0087187
+Bootstrap: each primary category has at least one tool 1 0.00790301
+Bootstrap: no duplicate tool IDs in bootstrap roster 1 0.00785314
+Bootstrap: double initialize does not add extra tools 1 0.00794567
+Bootstrap: project events propagate to all bootstrapped tools 1 0.00681415
+Bootstrap: SceneEditorTool can be activated through shell 1 0.00693553
+Bootstrap: switching active tool suspends the previous one 1 0.00789756
+Bootstrap: update dispatches to active core tool 1 0.00790855
+ChangeEventType names are non-empty for all values 1 0.00636181
+ChangeEventType fromString round-trips all known values 1 0.00468665
+ChangeEvent toJson contains all five fields 1 0.00629814
+ChangeEvent fromJson round-trip 1 0.00461216
+ChangeEvent fromJson with unknown event_type produces Unknown 1 0.00612782
+ChangeEvent writeToFile creates a .change.json file 1 0.00512429
+ChangeEvent readFromFile round-trip 1 0.00593239
+Manifest registerAsset generates unique GUIDs 1 0.00494262
+Manifest findByGuid returns registered record 1 0.00318326
+Manifest findByPath returns registered record 1 0.00602288
+Manifest removeAsset removes by GUID 1 0.00424627
+Manifest save and load round-trip 1 0.00598477
+WatchLog appendLine creates file with expected content 1 0.00496611
+WatchLog concurrent appends are thread-safe 1 0.00607994
+PipelineDirectories fromRoot derives correct sub-paths 1 0.00498527
+PipelineDirectories ensureCreated makes all directories 1 0.00602413
+PipelineWatcher poll detects new .change.json and fires callback 1 0.00494157
+AIAnalysis event type name and fromString 1 0.005944
+BlenderGenAdapter accepts AssetImported only 1 0.00498872
+BlenderGenAdapter handles AssetImported and emits response 1 0.00626655
+BlenderGenAdapter rejects non-AssetImported events 1 0.00521344
+ContractScannerAdapter accepts ScriptUpdated only 1 0.00346684
+ContractScannerAdapter handles ScriptUpdated and emits ContractIssue 1 0.00630546
+ReplayMinimizerAdapter accepts ReplayExported only 1 0.00447082
+ReplayMinimizerAdapter handles ReplayExported 1 0.00590204
+SwissAgentAdapter accepts all non-Unknown event types 1 0.00483682
+SwissAgentAdapter handles event and emits AIAnalysis 1 0.00579884
+AtlasAIAdapter accepts ContractIssue and WorldChanged 1 0.00487433
+AtlasAIAdapter handles WorldChanged and emits AIAnalysis 1 0.00581672
+ToolRegistry registers and queries tools 1 0.0048566
+ToolRegistry dispatch routes events to matching adapters 1 0.00615026
+ToolRegistry dispatch accumulates handledCount per tool 1 0.00522583
+ToolRegistry attach wires watcher to dispatch 1 0.00613466
+ToolRegistry with all five tools handles full event matrix 1 0.00495658
+AssetImportStatus name strings 1 0.00573664
+AssetImportResult default-constructs with Pending status 1 0.00477089
+BlenderBridge constructs with empty state 1 0.00594565
+BlenderBridge imports a mesh asset successfully 1 0.00490163
+BlenderBridge imports a rig asset successfully 1 0.00590198
+BlenderBridge imports an animation clip successfully 1 0.00481269
+BlenderBridge fails when asset file is missing 1 0.00573331
+BlenderBridge fails when asset file is empty 1 0.0047502
+BlenderBridge detects asset type from extension when metadata lacks type 1 0.00579097
+BlenderBridge detects animation type from event type when metadata lacks type 1 0.0047999
+BlenderBridge re-import of same path updates Manifest record 1 0.00591824
+BlenderBridge tracks multiple assets independently 1 0.00487732
+BlenderBridge returns false/empty for unknown paths 1 0.00573688
+BlenderBridge imports persist through Manifest save/load 1 0.00474881
+End-to-end: PipelineWatcher dispatches to BlenderBridge 1 0.00571321
+WorkspaceBroker creates sessions 1 0.00463712
+WorkspaceBroker creates multiple independent sessions 1 0.0058039
+WorkspaceBroker closes and resumes sessions 1 0.00476514
+WorkspaceBroker close/resume returns false for unknown session 1 0.005902
+WorkspaceBroker lists active sessions 1 0.00486379
+WorkspaceBroker session lookup returns nullptr for unknown id 1 0.00592367
+WorkspaceBroker indexes events per session 1 0.00492797
+WorkspaceBroker tracks multiple events on same path 1 0.00590348
+WorkspaceBroker returns tracked paths sorted 1 0.0048727
+WorkspaceBroker ignores index for unknown session 1 0.00596258
+WorkspaceBroker returns Unknown for untracked path 1 0.00490499
+WorkspaceBroker analyzes events and returns results 1 0.00613647
+WorkspaceBroker analyzeEvent fails for unknown session 1 0.00505493
+WorkspaceBroker generates recommendations per event type 1 0.00627297
+WorkspaceBroker analyzeEvent writes response to pipeline 1 0.00510529
+WorkspaceBroker attaches to PipelineWatcher and processes events 1 0.00598851
+WorkspaceBroker skips SwissAgent events to avoid feedback loops 1 0.00474848
+WorkspaceBroker end-to-end with ToolRegistry 1 0.00580479
+RuleSeverity name strings 1 0.00474576
+AtlasAIReasoner constructs with empty state 1 0.00599641
+AtlasAIReasoner adds and finds rules 1 0.00490555
+AtlasAIReasoner loads rules from JSON 1 0.00595806
+AtlasAIReasoner evaluates matching rules 1 0.00489788
+AtlasAIReasoner skips non-matching event types 1 0.00592208
+AtlasAIReasoner skips non-matching paths 1 0.00485005
+AtlasAIReasoner matches wildcard paths 1 0.00598766
+AtlasAIReasoner rule with empty path matches all paths 1 0.00494315
+AtlasAIReasoner evaluates multiple rules simultaneously 1 0.00605433
+AtlasAIReasoner loads default game balance rules 1 0.00501106
+Default rules trigger on matching events 1 0.00614131
+AtlasAIReasoner processEvent tracks violations 1 0.00507348
+AtlasAIReasoner processEvent emits AIAnalysis response 1 0.00606759
+AtlasAIReasoner processEvent with no matching rules produces no violations 1 0.00499568
+AtlasAIReasoner gate passes with no violations 1 0.00589599
+AtlasAIReasoner gate fails with Error violations 1 0.004871
+AtlasAIReasoner gate passes with only Info/Warning violations 1 0.00588681
+AtlasAIReasoner summary includes violation counts 1 0.004829
+AtlasAIReasoner attaches to PipelineWatcher 1 0.00601494
+AtlasAIReasoner skips own events to avoid feedback loops 1 0.00492965
+AtlasAIReasoner end-to-end with ToolRegistry 1 0.00597142
+S5: All tools active — AssetImported propagates correctly 1 0.00499899
+S5: All tools active — ContractIssue propagates correctly 1 0.00614126
+S5: All tools active — ScriptUpdated propagates correctly 1 0.00505517
+S5: All tools active — WorldChanged propagates correctly 1 0.00619621
+S5: All tools active — ReplayExported propagates correctly 1 0.00498336
+S5: Full event matrix — all event types through all tools 1 0.00646672
+S5: No feedback loops — tool-emitted events don't cause infinite chains 1 0.00534267
+S5: Manifest persistence after full suite run 1 0.00643335
+S5: AtlasAIReasoner CI gate summary after full suite 1 0.00533307
+UIRenderer drawRect emits 4 vertices and 6 indices 1 0.00618953
+UIRenderer drawText emits quads per visible char 1 0.00507312
+UIRenderer drawRectOutline emits 4 quads 1 0.00588618
+UIRenderer drawGradientRect emits 4 vertices 1 0.00480105
+UIRenderer drawLine emits quad for line segment 1 0.00586376
+UIRenderer drawCircle emits fan geometry 1 0.00484192
+UIRenderer measureText returns reasonable extents 1 0.00602422
+UIRenderer beginFrame clears previous vertices 1 0.00499826
+NullBackend init and flush are no-ops 1 0.00588375
+UIRenderer delegates flush to backend 1 0.00485019
+UIRenderer works without backend (null backend) 1 0.00599078
+UIBackend measureText fallback 1 0.00493102
+OpenGLBackend stub initializes and tracks stats 1 0.0061312
+OpenGLBackend loadFont stores params 1 0.00500284
+UIContext button renders and detects click 1 0.0059935
+UIContext button not clicked when mouse outside 1 0.00491963
+UIContext checkbox toggles value 1 0.00598344
+UIContext label renders text 1 0.00486063
+UIContext slider changes value on drag 1 0.00599677
+UIContext progressBar renders fill 1 0.00495495
+UIContext colorSwatch renders colored rect 1 0.00584941
+UIContext treeNode toggles expansion 1 0.00482696
+UIContext separator draws line 1 0.00595924
+UIContext scrollArea renders scrollbar when overflow 1 0.00488884
+UIContext tooltip renders on end() 1 0.00593722
+UIContext dropdown cycles selection on click 1 0.00482911
+UIContext menuItem renders and detects click 1 0.00602189
+UIContext horizontal layout stacks items side by side 1 0.00503006
+UITheme dark and light presets 1 0.00625968
+uiHash produces consistent hashes 1 0.00516466
+UIContext textInput renders field 1 0.00601926
+ThemeManager singleton returns same instance 1 0.00488699
+ThemeManager::Current() returns valid theme 1 0.00588552
+ThemeManager::SetTheme() changes current theme 1 0.00482378
+Atlas Dark theme has non-zero color values for key tokens 1 0.00592344
+ThemeSpacing defaults are positive 1 0.00479366
+ThemeSizes defaults are positive 1 0.00596537
+ThemeRadii has expected range values 1 0.00488707
+Button creates with text 1 0.00573374
+Button measure produces non-zero size 1 0.00473655
+Button handleInput detects hover 1 0.00585407
+Panel creates with title 1 0.00479059
+TabBar adds tabs 1 0.00583261
+Splitter default ratio is reasonable 1 0.00469596
+Toolbar adds items 1 0.00579293
+Tooltip creates with text 1 0.00479822
+TextInput creates empty 1 0.00722568
+TextInput accepts character input via setText 1 0.00619834
+Dropdown adds options 1 0.00714059
+PropertyRow creates with label 1 0.0049825
+NotificationCard creates with severity 1 0.00616238
+FocusService sets and clears focus 1 0.00512621
+FocusService reports HasFocus correctly 1 0.00609604
+PopupHost open/close popup 1 0.00493
+TooltipService show/hide tooltip 1 0.00592342
+NotificationHost push/dismiss notification 1 0.00485261
+CommandRegistry register and find 1 0.00602991
+CommandRegistry unregister 1 0.00492799
+CommandManager singleton 1 0.00595494
+ShortcutRouter routes to correct command 1 0.00489418
+CommandTypes KeyChord creation and comparison 1 0.00602446
+PanelHost attach/detach 1 0.00490796
+PanelHost find panel 1 0.00605738
+PanelHost no duplicate attachment 1 0.00497353
+DrawList starts empty 1 0.00595539
+DrawList push commands 1 0.00487161
+DrawList clear 1 0.00594575
+InspectorPanel has correct panel ID 1 0.00486957
+InspectorPanel entity selection 1 0.0060274
+InspectorPanel transform data 1 0.0048915
+InspectorPanel properties 1 0.00604533
+InspectorPanel paint produces draw commands 1 0.00505235
+InspectorPanel paint with no selection 1 0.00609803
+InspectorPanel state save/load 1 0.00497869
+HierarchyPanel has correct panel ID 1 0.00620172
+HierarchyPanel entity management 1 0.00517485
+HierarchyPanel search filter 1 0.00621252
+HierarchyPanel paint produces draw commands 1 0.00506129
+ContentBrowserPanel has correct panel ID 1 0.00587844
+ContentBrowserPanel entry management 1 0.00481092
+ContentBrowserPanel path navigation 1 0.00588606
+ContentBrowserPanel paint produces draw commands 1 0.00490948
+ConsolePanel has correct panel ID 1 0.00598392
+ConsolePanel message management 1 0.00486253
+ConsolePanel enforces max message limit 1 0.00606971
+ConsolePanel paint produces draw commands 1 0.00499606
+IDEPanel has correct panel ID 1 0.00593289
+IDEPanel search and results 1 0.00473655
+IDEPanel paint produces draw commands 1 0.00588889
+GraphEditorPanel has correct panel ID 1 0.00481557
+GraphEditorPanel node management 1 0.00588132
+GraphEditorPanel clear graph 1 0.00475961
+GraphEditorPanel paint with no graph 1 0.0059228
+GraphEditorPanel paint with nodes 1 0.00495286
+ViewportPanel has correct panel ID 1 0.00618817
+ViewportPanel camera and settings 1 0.00509102
+ViewportPanel paint produces draw commands 1 0.00602043
+ViewportPanel paint without grid 1 0.00492737
+PipelineMonitorPanel has correct panel ID 1 0.00593435
+PipelineMonitorPanel event management 1 0.00486115
+PipelineMonitorPanel enforces max event limit 1 0.00613948
+PipelineMonitorPanel paint produces draw commands 1 0.00507452
+AtlasUI panels register with PanelHost 1 0.00599445
+All AtlasUI panels hidden paint produces no commands 1 0.00476814
+GLFWWindowProvider init and shutdown 1 0.00595595
+GLFWWindowProvider config defaults 1 0.0049063
+GLFWWindowProvider custom config 1 0.00608497
+GLFWWindowProvider shouldClose after pollEvents 1 0.0049753
+GLFWWindowProvider frame timing 1 0.00593692
+GLFWWindowProvider setTitle 1 0.00481076
+GLFWWindowProvider nativeHandle is null in stub 1 0.00595847
+OpenGLBackend as UIBackend 1 0.00484012
+OpenGLBackend flush records stats 1 0.00606516
+OpenGLBackend flush with zero vertices is no-op 1 0.00499756
+GLFWInputAdapter event injection 1 0.00619029
+GLFWInputAdapter mouse move 1 0.00520472
+GLFWInputAdapter mouse button 1 0.0064885
+GLFWInputAdapter scroll 1 0.00526721
+GLFWInputAdapter attach requires initialized window 1 0.00612581
+M1 integration: window, OpenGL backend, adapter 1 0.0049972
+ContextMenu default state 1 0.00589514
+ContextMenu construction with items 1 0.00477842
+ContextMenu open/close 1 0.00590742
+ContextMenu addItem and clear 1 0.0048357
+ContextMenu separator 1 0.00572389
+ContextMenu measure calculates width 1 0.00468807
+ContextMenu paint emits draw commands when open 1 0.00597877
+ContextMenu paint does nothing when closed 1 0.00491347
+ContextMenu handleInput invokes action on click 1 0.00610121
+ContextMenu click outside closes 1 0.00502324
+ContextMenu disabled item doesn't trigger 1 0.00583298
+ContextMenu setItems replaces items 1 0.00481617
+ContextMenu shortcut hint renders 1 0.00603732
+MenuItem hasChildren 1 0.00494936
+TreeView default state 1 0.00632418
+TreeView addRoot and setRoots 1 0.00520641
+TreeView clear 1 0.00604703
+TreeView selectNode 1 0.0048204
+TreeView selectNode returns false for invalid id 1 0.00577882
+TreeView toggleNode expand/collapse 1 0.00469533
+TreeView expandAll and collapseAll 1 0.00593896
+TreeView visibleNodeCount with nested hierarchy 1 0.00483868
+TreeView leaf isLeaf 1 0.00599315
+TreeView measure sets bounds 1 0.00489396
+TreeView paint produces draw commands 1 0.00572634
+TreeView handleInput selects node on click 1 0.00469027
+TreeView hidden doesn't handle input 1 0.00584561
+ScrollView default state 1 0.00477359
+ScrollView setContent 1 0.00612121
+ScrollView scrollBy 1 0.00506962
+ScrollView clamps scroll offset 1 0.00608652
+ScrollView scrollToTop and scrollToBottom 1 0.00495664
+ScrollView canScroll 1 0.00603673
+ScrollView scrollFraction 1 0.00492205
+ScrollView thumbHeight 1 0.00600223
+ScrollView maxScrollOffset 1 0.00487791
+ScrollView viewportHeight 1 0.00601882
+ScrollView paint with scrollbar 1 0.00489769
+ScrollView paint without scrollbar 1 0.00577511
+ScrollView hidden doesn't paint 1 0.00468849
+ScrollView scrollBarWidth 1 0.00584158
+PropertyGrid default state 1 0.00480876
+PropertyGrid addItem and setItems 1 0.00597293
+PropertyGrid clear 1 0.00491619
+PropertyGrid setLabelWidth 1 0.00577779
+PropertyValue asString for string 1 0.00474927
+PropertyValue asString for int 1 0.00592533
+PropertyValue asString for float 1 0.00491715
+PropertyValue asString for bool 1 0.00624827
+PropertyItem isGroup 1 0.0051864
+PropertyGrid with groups 1 0.00632629
+PropertyGrid collapsed group hides children 1 0.00526058
+PropertyGrid toggleGroup 1 0.0063954
+PropertyGrid toggleGroup returns false for invalid name 1 0.00526991
+PropertyGrid measure sets height 1 0.00637055
+PropertyGrid paint produces draw commands 1 0.00524318
+PropertyGrid handleInput hover detection 1 0.00643065
+PropertyGrid handleInput outside returns false 1 0.00521223
+PropertyGrid hidden doesn't paint 1 0.00614201
+PropertyGrid readOnly items render differently 1 0.00493181
+TableView default state 1 0.00588924
+TableView setColumns and addColumn 1 0.00481932
+TableView setRows and addRow 1 0.00593048
+TableView clearRows 1 0.00488204
+TableView clear 1 0.00605693
+TableView selectRow 1 0.00499681
+TableView selectRow deselects previous 1 0.00600732
+TableView selectRow invalid index 1 0.00498666
+TableView sort 1 0.00599922
+TableView setHeaderVisible 1 0.00486415
+TableView setRowHeight 1 0.00601456
+TableView measure calculates height 1 0.00488618
+TableView paint with header and rows 1 0.00607525
+TableView paint without header 1 0.0049796
+TableView handleInput selects row on click 1 0.00580039
+TableView handleInput sort on header click 1 0.00475643
+TableView hidden doesn't paint 1 0.00608229
+TableView handleInput outside returns false 1 0.00506319
+TableView selected row paint uses selection color 1 0.00640292
+WidgetKit includes all new widgets 1 0.00530588
+NullBackend satisfies IFrameBackend contract 1 0.00319283
+NullBackend satisfies IGeometryBackend contract (via UIBackend::flush) 1 0.00599206
+IGeometryBackend default setClipRect and clearClipRect are no-ops 1 0.00434753
+NullTextRenderBackend satisfies ITextRenderBackend contract 1 0.00326235
+NullTextureBackend satisfies ITextureBackend contract 1 0.00605094
+uiBackendTypeName returns correct strings 1 0.004138
+selectUIBackend(Null) returns a non-null NullBackend 1 0.00285747
+selectUIBackend(Auto) returns a valid backend on all platforms 1 0.00549264
+selectUIBackend(D3D11) falls back gracefully on non-Windows 1 0.00398687
+queryCapabilities returns correct flags per backend type 1 0.0029907
+DrawListDispatcher noop without renderer 1 0.00594507
+DrawListDispatcher FillRectCmd calls UIRenderer::drawRect 1 0.00443545
+DrawListDispatcher DrawRectCmd emits outline quads 1 0.0032604
+DrawListDispatcher DrawTextCmd routes via backend drawTextNative 1 0.00605424
+DrawListDispatcher color conversion AARRGGBB to RRGGBBAA 1 0.0042171
+DrawListDispatcher PushClip PopClip are silent no-ops 1 0.00316471
+DrawListDispatcher mixed command batch 1 0.00620624
+WorkspaceInputBridge syncs mouse position 1 0.00450708
+WorkspaceInputBridge syncs mouse buttons 1 0.00601234
+WorkspaceInputBridge syncs right mouse button 1 0.00484141
+WorkspaceInputBridge no buttons down 1 0.00315558
+MenuBar default state 1 0.0061386
+MenuBar addCategory 1 0.00446994
+MenuBar multiple categories 1 0.00323131
+MenuBar findCategory 1 0.00605945
+MenuBar measure does not crash 1 0.00417003
+MenuBar paint produces draw commands 1 0.00316475
+MenuBar closeMenu resets open index 1 0.00594399
+MenuBar hidden produces no draw commands 1 0.00427422
+StatusBar default state 1 0.00322896
+StatusBar setText 1 0.0061532
+StatusBar addSection 1 0.00448099
+StatusBar clearSections 1 0.00324904
+StatusBar paint produces draw commands 1 0.00609657
+StatusBar hidden produces no draw commands 1 0.00423498
+StatusBar measure sets bar height 1 0.0031555
+Checkbox default state 1 0.00617577
+Checkbox explicit label and checked state 1 0.00447259
+Checkbox setChecked 1 0.00328233
+Checkbox onChange fires on handleInput click 1 0.00615105
+Checkbox click outside does not fire onChange 1 0.00425854
+Checkbox paint produces draw commands 1 0.00313314
+Checkbox checked paint has more commands than unchecked 1 0.00602428
+Checkbox hidden paints nothing 1 0.00434419
+RadioButton default state 1 0.00321167
+RadioButton label and value 1 0.00597761
+RadioButton setSelected 1 0.00419228
+RadioButton onSelect fires on click 1 0.00310139
+RadioButton does not fire onSelect when already selected 1 0.00604995
+RadioButton paint produces draw commands 1 0.00440845
+RadioButton selected state produces inner fill 1 0.00322869
+Slider default state 1 0.00600436
+Slider custom range and initial value 1 0.00419417
+Slider setValue clamped to range 1 0.0031168
+Slider setRange adjusts value 1 0.0062635
+Slider onChange fires on drag 1 0.00460424
+Slider fraction is 0 when min == max 1 0.00338895
+Slider paint produces draw commands 1 0.0063856
+Slider paint with label includes label commands 1 0.00449142
+Slider hidden paints nothing 1 0.00321702
+ProgressBar default state 1 0.00600782
+ProgressBar explicit initial value 1 0.00415869
+ProgressBar setValue clamped to 0..1 1 0.00583404
+ProgressBar setLabel 1 0.00473567
+ProgressBar paint produces draw commands 1 0.0058587
+ProgressBar at 0 has no fill command 1 0.00476088
+ProgressBar with label has more draw commands 1 0.00311333
+ProgressBar hidden paints nothing 1 0.00583828
+BasicInputContext setters work correctly 1 0.00416087
+BasicPaintContext captures all command types 1 0.0031206
+brokerFlowStageName returns correct strings 1 0.00604528
+BrokerFlowController default state is Idle and unbound 1 0.00430048
+BrokerFlowController processEvent fails if not bound 1 0.00328666
+BrokerFlowController processes event through full flow 1 0.00602755
+BrokerFlowController surfaces violations as actions 1 0.00425693
+BrokerFlowController posts notifications for errors 1 0.00585514
+BrokerFlowController config disables auto-surface 1 0.00474803
+BrokerFlowController feeds insights to AtlasAI 1 0.00588122
+BrokerFlowController sessionId roundtrip 1 0.00482887
+BrokerFlowController multiple events accumulate stats 1 0.00604021
+buildLogClassName returns correct strings 1 0.00494606
+BuildLogRouter classify detects compile error 1 0.00603677
+BuildLogRouter classify detects linker error 1 0.00483739
+BuildLogRouter classify detects test failure 1 0.00596855
+BuildLogRouter classify detects config error 1 0.00484729
+BuildLogRouter classify detects compile warning 1 0.00599007
+BuildLogRouter classify detects linker warning 1 0.00490321
+BuildLogRouter classify detects build success 1 0.0060745
+BuildLogRouter extractFilePath from compiler message 1 0.00492529
+BuildLogRouter extractFilePath returns empty for non-path 1 0.00611267
+BuildLogRouter extractLineNumber from compiler message 1 0.00496238
+BuildLogRouter extractLineNumber returns 0 for non-match 1 0.00326397
+BuildLogRouter default state is not installed 1 0.00627215
+BuildLogRouter install without binding fails 1 0.00455371
+BuildLogRouter install succeeds with bound logger 1 0.00328777
+BuildLogRouter double install fails 1 0.00611854
+BuildLogRouter captures build errors 1 0.00422765
+BuildLogRouter captures build warnings 1 0.00597179
+BuildLogRouter ignores non-build tags 1 0.00490969
+BuildLogRouter routes errors to AtlasAI 1 0.00590891
+BuildLogRouter does not route warnings to AtlasAI by default 1 0.00477991
+BuildLogRouter entries list is accessible 1 0.00585664
+BuildLogRouter errors() filters correctly 1 0.00478853
+BuildLogRouter clearEntries resets all counters 1 0.00591867
+BuildLogRouter uninstall works 1 0.00489614
+BuildLogRouter ring buffer enforces maxEntries 1 0.00601174
+snippetValidationStatusName returns correct strings 1 0.0049161
+SnippetPromotionRules validates a good snippet 1 0.00600492
+SnippetPromotionRules rejects empty body 1 0.00492168
+SnippetPromotionRules rejects body too long 1 0.00597313
+SnippetPromotionRules rejects title too long 1 0.00486414
+SnippetPromotionRules rejects too many tags 1 0.00592288
+fnv1aHash produces consistent results 1 0.0048518
+fnv1aHash empty string has known hash 1 0.00587389
+SnippetPromotionRules tracks and finds duplicates 1 0.00480717
+SnippetPromotionRules untrack removes entry 1 0.00592298
+SnippetPromotionRules validate detects duplicate content 1 0.00486753
+SnippetPromotionRules same id is not a duplicate of itself 1 0.00591119
+promotionTriggerName returns correct strings 1 0.00476864
+SnippetPromotionRules addRule and findRule 1 0.00586199
+SnippetPromotionRules rejects duplicate rule id 1 0.00479885
+SnippetPromotionRules rejects invalid rule 1 0.00586075
+SnippetPromotionRules removeRule 1 0.00482854
+SnippetPromotionRules loadDefaults loads 4 rules 1 0.00596199
+SnippetPromotionRules evaluatePromotion matches Manual trigger 1 0.00487654
+SnippetPromotionRules evaluatePromotion matches AutoOnSave for C++ 1 0.00593118
+SnippetPromotionRules evaluatePromotion AutoOnSave skips non-Cpp 1 0.00485174
+SnippetPromotionRules evaluatePromotion AutoOnUse requires min uses 1 0.00594513
+SnippetPromotionRules evaluatePromotion AutoOnReview requires pinned 1 0.00482594
+SnippetPromotionRules promote transitions Local to Pending 1 0.0059491
+SnippetPromotionRules promote transitions Modified to Pending 1 0.00486821
+SnippetPromotionRules promote fails for Synced snippet 1 0.00589131
+SnippetPromotionRules promote fails for unknown snippet 1 0.00481213
+SnippetPromotionRules promote fails validation for empty body 1 0.00589284
+SnippetPromotionRules promotionLog records entries 1 0.00484123
+Full snippet lifecycle: add, validate, track, promote 1 0.00585743
+Full flow: multiple snippets with dedup tracking 1 0.00481304
+consoleCmdScopeName returns expected strings 1 0.00315017
+consoleCmdArgTypeName returns expected strings 1 0.00651879
+consoleCmdExecResultName returns expected strings 1 0.00459802
+ConsoleCommand attributes 1 0.00326526
+ConsoleCommandBus: register and find 1 0.00622734
+ConsoleCommandBus: execute 1 0.00451957
+ConsoleCommandBus: disabled command returns PermissionDenied 1 0.00345334
+ConsoleCommandBus: unregister 1 0.00634159
+ConsoleCommandBus: countByScope and hiddenCount and enabledCount 1 0.00441684
+SelectionService: starts empty 1 0.00315587
+SelectionService: select and deselect 1 0.00593431
+SelectionService: deselect only item clears primary 1 0.00410416
+SelectionService: selectExclusive replaces selection 1 0.00303013
+SelectionService: toggleSelect 1 0.00592963
+SelectionService: clearSelection 1 0.00432878
+SelectionService: version increments on every mutation 1 0.00313903
+DockSlot values are distinct 1 0.00603212
+DockPanel default construction 1 0.00425457
+editorEventPriorityName returns correct strings 1 0.00307433
+EditorBusEvent: basic properties 1 0.00586046
+EditorEventBus: starts idle with no subscribers 1 0.00420549
+EditorEventBus: post and flush delivers to subscriber 1 0.00314921
+EditorEventBus: wildcard subscriber receives all events 1 0.00595919
+EditorEventBus: subscriber priority filter 1 0.00428792
+EditorEventBus: suspend blocks posts 1 0.00312462
+EditorEventBus: clearQueue empties pending events 1 0.00600748
+EditorEventSubscription: cancel prevents delivery 1 0.00435836
+WorkspaceShell exposes commandBus accessor 1 0.00319536
+WorkspaceShell exposes selectionService accessor 1 0.00602516
+WorkspaceShell exposes eventBus accessor 1 0.0041875
+WorkspaceShell: commandBus, selection, and eventBus survive initialize+shutdown 1 0.00311815
+WorkspaceShell: event posted through shell bus is delivered after flush 1 0.00584651
+ProjectLoadContract: default state is Unloaded 1 0.00417375
+ProjectLoadContract: isLoaded reflects Ready state 1 0.00568706
+ProjectLoadContract: hasFailed reflects Failed state 1 0.00461302
+ProjectLoadContract: isValid with no entries returns true 1 0.00299392
+ProjectLoadContract: isValid with Info/Warning entries returns true 1 0.00601994
+ProjectLoadContract: isValid with Error entry returns false 1 0.00422023
+ProjectLoadContract: isValid with Fatal entry returns false 1 0.00313707
+ProjectLoadContract: isBuildReady requires Ready + isValid 1 0.00626019
+ProjectLoadContract: isBuildReady false when not Ready 1 0.00456148
+ProjectLoadContract: countBySeverity is accurate 1 0.00332563
+ProjectLoadContract: addEntry populates fields correctly 1 0.00611757
+ProjectLoadContract: projectLoadStateName covers all states 1 0.00427647
+ProjectLoadContract: validationSeverityName covers all values 1 0.00318382
+ProjectRegistry: default state is Idle 1 0.00610958
+ProjectRegistry: initialize transitions to Running 1 0.00438893
+ProjectRegistry: shutdown transitions to Stopped 1 0.00320957
+ProjectRegistry: registerProject returns true for new id 1 0.00599946
+ProjectRegistry: registerProject rejects duplicate id 1 0.00422208
+ProjectRegistry: registerProject rejects empty id 1 0.0031178
+ProjectRegistry: registerProject rejects null factory 1 0.00614231
+ProjectRegistry: registeredProjectIds lists all registered ids 1 0.00444284
+ProjectRegistry: loadProject requires Running state 1 0.00323462
+ProjectRegistry: loadProject unknown id returns Failed contract 1 0.00616847
+ProjectRegistry: loadProject success sets contract to Ready 1 0.00435634
+ProjectRegistry: loadProject populates contentRoots and customCommands 1 0.0031878
+ProjectRegistry: loadProject populates panelCount 1 0.00633721
+ProjectRegistry: loadProject with FailAdapter returns Failed contract 1 0.00454858
+ProjectRegistry: loadProject with no content roots adds warning 1 0.00324066
+ProjectRegistry: activeAdapter is accessible after successful load 1 0.00638073
+ProjectRegistry: activeProjectId returns correct id 1 0.00467135
+ProjectRegistry: activeContract is present after successful load 1 0.00332354
+ProjectRegistry: unloadActive clears active project 1 0.00621336
+ProjectRegistry: loading second project unloads first 1 0.00425317
+ProjectRegistry: MultiPanelAdapter loads with correct panel count 1 0.00314431
+ProjectRegistry: loadTimestampMs is set after successful load 1 0.0062458
+ProjectRegistry: shutdown unloads active project 1 0.00461195
+BuildGateController: default has no rules 1 0.00694232
+BuildGateController: Unloaded contract → ClosedNoProject 1 0.0058114
+BuildGateController: Failed contract → ClosedNoProject 1 0.00397107
+BuildGateController: Loading contract → ClosedNoProject 1 0.0061289
+BuildGateController: Ready contract with no errors → Open 1 0.00423521
+BuildGateController: Ready contract with Error entry → ClosedInvalid 1 0.00316955
+BuildGateController: Ready contract with Fatal entry → ClosedInvalid 1 0.00599306
+BuildGateController: Ready contract with only Warnings → Open 1 0.00422876
+BuildGateController: addRule with passing rule → Open 1 0.00313655
+BuildGateController: addRule with failing rule → ClosedByRule 1 0.00614605
+BuildGateController: multiple rules all pass → Open 1 0.00447742
+BuildGateController: rule receives contract data 1 0.00323121
+BuildGateController: rule requiring content roots blocks no-root projects 1 0.00617861
+BuildGateController: clearRules removes all rules 1 0.00430339
+BuildGateController: addRule rejects empty ruleId 1 0.00325555
+BuildGateController: addRule rejects null rule callable 1 0.00591737
+BuildGateController: evaluateOptional with nullptr → ClosedNoProject 1 0.00421295
+BuildGateController: evaluateOptional with valid contract → Open 1 0.00314721
+BuildGateController: buildGateStatusName covers all values 1 0.00604556
+BuildGateController: contract-level error takes priority over rule failure 1 0.0043697
+Phase5 integration: load project via registry and evaluate build gate 1 0.00323068
+Phase5 integration: failed load keeps build gate closed 1 0.00604255
+Phase5 integration: custom build gate rule blocks even a valid project 1 0.00423124
+Phase5 integration: multi-panel project passes two-panel rule 1 0.00316
+Phase5 integration: swap projects and gate updates accordingly 1 0.00615001
+Phase5 integration: unload project and gate closes 1 0.00446138
+Phase5 integration: registry supports multiple registered projects 1 0.00323926
+DependencyPolicy: default is empty 1 0.00605526
+DependencyPolicy: add increases count 1 0.00422333
+DependencyPolicy: find returns descriptor for known name 1 0.00314691
+DependencyPolicy: find returns nullptr for unknown name 1 0.00618992
+DependencyPolicy: isDeclared reflects registration 1 0.00453846
+DependencyPolicy: evaluate passes when all required deps present 1 0.00331151
+DependencyPolicy: evaluate fails when required dep is absent 1 0.00632236
+DependencyPolicy: evaluate fails when Forbidden dep is present 1 0.00441517
+DependencyPolicy: evaluate passes when Forbidden dep is absent 1 0.00320514
+DependencyPolicy: evaluate passes for Optional dep absent 1 0.00621582
+DependencyPolicy: online dep present with online disabled → violation 1 0.00454761
+DependencyPolicy: online dep present with online enabled → no violation 1 0.00332496
+DependencyPolicy: evaluate records onlineEnabled flag 1 0.00624028
+DependencyPolicy: dependencyTierName covers all values 1 0.00441871
+DependencyPolicy: dependencySourceName covers all values 1 0.00576362
+makeCanonicalDependencyPolicy returns non-empty policy 1 0.00476197
+makeCanonicalDependencyPolicy: Catch2 requires online deps 1 0.00303285
+PatchApplier: default has no patches 1 0.00609037
+PatchApplier: registerPatch succeeds for new id 1 0.00422017
+PatchApplier: registerPatch rejects duplicate id 1 0.00314994
+PatchApplier: registerPatch rejects empty id 1 0.0062083
+PatchApplier: stateOf returns Unavailable for unknown patch 1 0.0044605
+PatchApplier: stateOf returns Available after registration 1 0.00329039
+PatchApplier: applyPatch with null callback succeeds 1 0.00638231
+PatchApplier: applyPatch with passing callback succeeds 1 0.00462137
+PatchApplier: applyPatch with failing callback → Failed state 1 0.00333919
+PatchApplier: applyPatch on unknown patch returns error 1 0.00617737
+PatchApplier: applyPatch on already-applied patch returns error 1 0.00431976
+PatchApplier: removePatch after apply succeeds 1 0.00602006
+PatchApplier: removePatch on non-applied patch returns error 1 0.00490121
+PatchApplier: removePatch with failing callback → Failed state 1 0.0059025
+PatchApplier: dependency enforcement prevents apply without dep 1 0.00483816
+PatchApplier: dependency enforcement allows apply after dep applied 1 0.00592077
+PatchApplier: cannot remove dep while dependent is applied 1 0.0047772
+PatchApplier: resetPatch clears Failed state 1 0.00594973
+PatchApplier: resetPatch returns false for non-failed patch 1 0.00479238
+PatchApplier: appliedIds lists applied patches 1 0.00589757
+PatchApplier: availableIds lists unapplied patches 1 0.00480505
+PatchApplier: patchStateName covers all values 1 0.00599017
+PatchApplier: patchFileOpName covers all values 1 0.00490063
+RepoAuditReport: default is empty 1 0.00317756
+RepoAuditReport: pass() adds passing check 1 0.00617739
+RepoAuditReport: fail() adds failing check and fails the report 1 0.00453228
+RepoAuditReport: warn() does not fail the report 1 0.0032423
+RepoAuditReport: skip() counts separately 1 0.00601913
+RepoAuditReport: mixed checks give correct counters 1 0.00417088
+RepoAuditReport: failures() returns only Fail entries 1 0.00586105
+RepoAuditReport: warnings() returns only Warn entries 1 0.00476647
+RepoAuditReport: countByCategory is accurate 1 0.00574527
+RepoAuditReport: auditCheckStatusName covers all values 1 0.00468707
+RepoAuditReport: auditCategoryName covers all values 1 0.00307927
+SemanticVersion: toString basic 1 0.00613621
+SemanticVersion: toString with preRelease 1 0.00425663
+SemanticVersion: toString with buildMeta 1 0.0060192
+SemanticVersion: toString with preRelease and buildMeta 1 0.0049083
+SemanticVersion: isStable for release version 1 0.0060455
+SemanticVersion: isStable false for pre-release 1 0.00492404
+SemanticVersion: equality comparison 1 0.0032363
+ReleaseManifest: default is empty 1 0.00634191
+ReleaseManifest: findTarget returns correct target 1 0.00464218
+ReleaseManifest: totalArtifactCount sums across targets 1 0.00332493
+ReleaseTarget: requiredArtifactCount counts only required 1 0.00615198
+buildConfigurationName covers all values 1 0.00425439
+ReleaseManifestValidator: no gates always passes 1 0.00590748
+ReleaseManifestValidator: passing gate → passed 1 0.00482199
+ReleaseManifestValidator: failing gate → not passed 1 0.00581525
+ReleaseManifestValidator: gate receives manifest data 1 0.0047971
+ReleaseManifestValidator: clearGates removes all gates 1 0.00589303
+ReleaseManifestValidator: rejects empty gateId 1 0.00480573
+ReleaseManifestValidator: rejects null gate function 1 0.0058336
+ReleaseManifestValidator: gate requiring at least one target 1 0.00473328
+Phase6 integration: patch + audit + release gate full flow 1 0.00584409
+Phase6 integration: dependency policy gates online-dep build 1 0.00476756
+Phase6 integration: patch dep chain apply and remove 1 0.00591187
+intakeSourceName returns correct strings 1 0.00481657
+detectIntakeFileType maps extensions correctly 1 0.00593597
+FileIntakePipeline default state 1 0.00488811
+FileIntakePipeline ingest adds to pending 1 0.00568267
+FileIntakePipeline handler can reject items 1 0.00465708
+FileIntakePipeline addHandler rejects duplicates 1 0.00300099
+FileIntakePipeline ingestBatch returns accepted count 1 0.0061101
+FileIntakePipeline findById returns correct item 1 0.00430992
+FileIntakePipeline clearPending empties pending list 1 0.00317477
+IntakeItem filename extracts basename 1 0.00629608
+DropTargetHandler default state is Idle 1 0.0045574
+dropStateName and dropEffectName return correct strings 1 0.00330356
+DropTargetHandler onDragEnter changes state 1 0.00631491
+DropTargetHandler rejects unknown files when acceptUnknown=false 1 0.0044114
+DropTargetHandler onDragLeave clears state 1 0.00609804
+DropTargetHandler onDrop routes to pipeline 1 0.00499938
+DropTargetHandler onDrop with no pipeline returns 0 1 0.00594394
+DropTargetHandler reset returns to Idle 1 0.00483628
+notificationActionName returns correct strings 1 0.00592405
+WorkflowRule matches on severity 1 0.00485816
+NotificationRateLimiter allows up to max and then throttles 1 0.00595235
+NotificationRateLimiter resets after window 1 0.00489509
+NotificationRateLimiter reset clears counters 1 0.00598971
+NotificationPriorityQueue orders by severity 1 0.00490735
+NotificationPriorityQueue dequeue removes top 1 0.00602045
+NotificationWorkflowEngine loadDefaults creates standard rules 1 0.00491133
+NotificationWorkflowEngine processNotification applies rule 1 0.0060289
+NotificationWorkflowEngine processes info as auto-dismiss 1 0.00494865
+NotificationWorkflowEngine suppresses when rate limited 1 0.00605152
+NotificationWorkflowEngine addRule rejects duplicates 1 0.00494549
+NotificationWorkflowEngine removeRule works 1 0.00599976
+DockTree addNode and findNode 1 0.00485057
+DockTree addNode rejects duplicates 1 0.00593571
+DockTree removeNode removes correctly 1 0.00485713
+DockNodeKind names are correct 1 0.00591851
+DockTreeSerializer roundtrip for TabStack 1 0.00488052
+DockTreeSerializer roundtrip for Split node 1 0.0059469
+DockTreeSerializer deserialize fails on empty 1 0.00484904
+PanelStateEntry set and get 1 0.00596501
+PanelStateSerializer roundtrip 1 0.00485359
+PanelStateSerializer skips invalid entries 1 0.00605244
+PanelStateSerializer deserialize empty string fails gracefully 1 0.0049083
+LayoutPreset validity 1 0.00609706
+LayoutPreset markModified and clearModified 1 0.00498219
+LayoutPersistenceManager savePreset and findPreset 1 0.00594162
+LayoutPersistenceManager savePreset overwrites existing 1 0.00484963
+LayoutPersistenceManager loadPreset roundtrip 1 0.00590173
+LayoutPersistenceManager loadPreset returns false for unknown name 1 0.0048335
+LayoutPersistenceManager removePreset removes user presets 1 0.00589815
+LayoutPersistenceManager built-in presets cannot be removed 1 0.00478793
+LayoutPersistenceManager renamePreset works for user presets 1 0.005895
+LayoutPersistenceManager autoSave and lastUsedPreset 1 0.00483759
+ViewportBounds validity and aspect ratio 1 0.00586175
+ViewportBounds contains 1 0.00484201
+viewportStateName and viewportRenderModeName 1 0.00589421
+ViewportCameraDescriptor validity 1 0.00483859
+ViewportHostRegistry requestSlot returns valid handle 1 0.00593221
+ViewportHostRegistry requestSlot fails with invalid bounds 1 0.00485708
+ViewportHostRegistry requestSlot fails with empty toolId 1 0.00601109
+ViewportHostRegistry activateSlot and pauseSlot 1 0.00490872
+ViewportHostRegistry releaseSlot removes slot 1 0.00611677
+ViewportHostRegistry setRenderMode 1 0.00497188
+ViewportHostRegistry setCamera validates input 1 0.00596678
+ViewportHostRegistry onFrameRendered increments frameCount 1 0.00485531
+ViewportHostRegistry updateBounds rejects invalid 1 0.00594578
+textRoleName returns correct strings 1 0.00485337
+fontWeightName returns correct strings 1 0.00597079
+TypefaceDescriptor validity 1 0.00480959
+TypefaceDescriptor effectiveLineHeight 1 0.00592759
+TypographyRegistry loadDefaults creates all roles 1 0.00484439
+TypographyRegistry getRole returns correct descriptor 1 0.00591231
+TypographyRegistry setRole overrides existing 1 0.00484048
+TypographyRegistry applyScale multiplies sizes 1 0.00591716
+TypographyRegistry applyScale ignores non-positive factor 1 0.004808
+TypographyEnforcer passes on valid registry 1 0.00601452
+TypographyEnforcer fails when body size is too small 1 0.00491641
+TypographyEnforcer fails when heading is not larger than body 1 0.00604412
+TypographyEnforcer flags non-monospace code roles 1 0.00491469
+TypographyEnforcementReport addViolation 1 0.00602468
+workspaceStartupModeName returns correct strings 1 0.00491434
+workspaceBackendChoiceName returns correct strings 1 0.00596454
+workspaceBootstrapErrorName returns correct strings 1 0.00485576
+WorkspaceWindowConfig default values are valid 1 0.00584795
+WorkspaceWindowConfig invalid when empty title or zero dimensions 1 0.00474807
+WorkspaceBootstrapConfig valid for headless mode without window 1 0.00586281
+WorkspaceBootstrapConfig invalid when Hosted mode has bad window config 1 0.00482812
+WorkspaceBootstrap: headless run succeeds with no tools 1 0.00605072
+WorkspaceBootstrap: fails with InvalidConfig when window title empty 1 0.00494337
+WorkspaceBootstrap: fails AlreadyInitialized if shell not in Created 1 0.00586025
+WorkspaceBootstrap: tool factories are invoked during run 1 0.00480948
+WorkspaceBootstrap: startup messages are posted to shell 1 0.00586991
+WorkspaceBootstrap: runCount increments on success 1 0.00481649
+WorkspaceBootstrapResult errorName returns string 1 0.0059147
+WorkspaceFrameController default state 1 0.0047974
+WorkspaceFrameController setTargetFPS updates budget 1 0.00601709
+WorkspaceFrameController setTargetFPS ignores non-positive 1 0.00492815
+WorkspaceFrameController setMaxDeltaTime works 1 0.00598086
+WorkspaceFrameController setEMAAlpha clamps to valid range 1 0.0048459
+WorkspaceFrameController beginFrame returns incrementing frame number 1 0.00584569
+WorkspaceFrameController clamps large dt to maxDt 1 0.00477695
+WorkspaceFrameController clamps zero/negative dt 1 0.00591524
+WorkspaceFrameController EMA smoothing reduces spikes 1 0.00483387
+WorkspaceFrameController endFrame updates statistics 1 0.00596705
+WorkspaceFrameController tracks FPS from smoothed dt 1 0.00486014
+WorkspaceFrameController detects over-budget frames 1 0.00600401
+WorkspaceFrameController shouldSleep and sleepMs 1 0.00487934
+WorkspaceFrameController resetStats clears all counters 1 0.00595854
+FrameBudget validity 1 0.0048305
+FrameStatistics budgetUtilization 1 0.00591047
+workspaceAppName returns correct strings 1 0.00479898
+WorkspaceAppDescriptor validity 1 0.00592505
+WorkspaceAppDescriptor displayLabel 1 0.00481747
+WorkspaceAppRegistry registerApp and find 1 0.00589741
+WorkspaceAppRegistry registerApp rejects duplicates 1 0.00481765
+WorkspaceAppRegistry registerApp rejects invalid 1 0.00592201
+WorkspaceAppRegistry unregisterApp works 1 0.00483986
+WorkspaceAppRegistry findByName works 1 0.00593019
+WorkspaceAppRegistry projectScopedApps filtering 1 0.00481122
+workspaceLaunchModeName returns correct strings 1 0.0058997
+workspaceLaunchStatusName returns correct strings 1 0.00477711
+WorkspaceLaunchContext validity 1 0.00588841
+WorkspaceLaunchContext toArgs generates proper CLI args 1 0.00479901
+WorkspaceLaunchContext toArgs omits optional args when empty 1 0.00592235
+WorkspaceLaunchResult succeeded/isRunning 1 0.00484604
+NullLaunchService launches valid app successfully 1 0.00592156
+NullLaunchService returns AppNotFound for invalid descriptor 1 0.00481946
+NullLaunchService returns InvalidContext for bad context 1 0.00597026
+NullLaunchService shutdownApp stops running app 1 0.00486709
+consoleCmdScopeName returns correct strings 1 0.0061045
+consoleCmdArgTypeName returns correct strings 1 0.00501941
+consoleCmdExecResultName returns correct strings 1 0.00610395
+ConsoleCommand accessors 1 0.00497993
+ConsoleCommandBus registerCommand and execute 1 0.00598007
+ConsoleCommandBus rejects duplicate command names 1 0.00488064
+ConsoleCommandBus execute returns NotFound for unknown command 1 0.00597503
+ConsoleCommandBus disabled command returns PermissionDenied 1 0.00486087
+ConsoleCommandBus unregisterCommand works 1 0.00583979
+ConsoleCommandBus countByScope and hiddenCount and enabledCount 1 0.00467212
+SelectionService default state is empty 1 0.00307283
+SelectionService select and deselect 1 0.0062008
+SelectionService toggleSelect works 1 0.00434668
+SelectionService multi-select accumulates 1 0.00603934
+SelectionService clearSelection empties selection 1 0.00487908
+SelectionService selectExclusive replaces all 1 0.00608135
+SelectionService version increments on change 1 0.00495049
+SelectionService primary tracks last selected when deselected 1 0.00616351
+editorEventPriorityName returns correct strings 1 0.00497138
+EditorBusEvent consume and priority helpers 1 0.00595727
+EditorEventBus default state 1 0.00486382
+EditorEventBus subscribe and flush delivers events 1 0.00589236
+EditorEventBus wildcard subscription receives all events 1 0.0048233
+EditorEventBus priority filter skips low priority events 1 0.00591847
+EditorEventBus suspend blocks posting and flush 1 0.00482133
+EditorEventBus resume re-enables posting 1 0.00596449
+EditorEventBus clearQueue empties pending events 1 0.00489155
+EditorEventSubscription tracks callCount and cancel 1 0.00597491
+EditorEventBus non-matching topic not delivered 1 0.00487136
+assetTypeTagName returns correct strings 1 0.00586245
+assetImportStateName returns correct strings 1 0.00477923
+AssetMetadata set/get/has/remove 1 0.00595695
+AssetDescriptor validity checks 1 0.00483393
+AssetDescriptor isImported and needsReimport states 1 0.00606003
+AssetCatalog add and find 1 0.00493156
+AssetCatalog findByPath works 1 0.00319302
+AssetCatalog rejects duplicate catalogPath 1 0.00627069
+AssetCatalog rejects invalid descriptor 1 0.00462872
+AssetCatalog remove works 1 0.00333245
+AssetCatalog setImportState and setImportError 1 0.00617811
+AssetCatalog markDirty 1 0.004311
+AssetCatalog setMetadata via catalog 1 0.00600622
+AssetCatalog countByState 1 0.0049038
+AssetCatalog countByType 1 0.00598767
+AssetCatalog query with predicate 1 0.00487145
+AssetCatalog all() returns all assets 1 0.00600307
+AssetCatalog clear() empties catalog 1 0.00489637
+transformStepStatusName returns correct strings 1 0.00598975
+TransformStepResult factory methods 1 0.004834
+TransformContext validity 1 0.00608885
+TransformContext scratch data set/get 1 0.00497614
+TransformStep validity 1 0.00612273
+TransformChain addStep and hasStep 1 0.00494942
+TransformChain rejects invalid step 1 0.00611367
+TransformChain removeStep works 1 0.00500738
+TransformChain run executes all steps in order 1 0.00600321
+TransformChain skip step does not abort chain 1 0.0048592
+TransformChain aborts on error step 1 0.00681329
+TransformChain disabled step is skipped 1 0.00568371
+AssetTransformer routes by type and tracks stats 1 0.00402936
+AssetTransformer uses default chain when no type-specific chain 1 0.00711828
+AssetTransformer fails when no chain and no default 1 0.00463031
+AssetTransformer fails on invalid context 1 0.00612868
+AssetTransformer hasChainFor 1 0.00496794
+contentRouterPolicyName returns correct strings 1 0.00587772
+RoutingRule validity and matching 1 0.00493305
+RoutingRule wildcard type (Unknown) matches any type 1 0.00721533
+RoutingRule source filter restricts matching 1 0.00621316
+ContentRouter addRule and route basic 1 0.00442724
+ContentRouter miss with Reject policy 1 0.00844636
+ContentRouter miss with UseDefault policy routes to default tool 1 0.00584456
+ContentRouter miss with Prompt policy sets needsPrompt 1 0.00909727
+ContentRouter priority ordering — higher priority wins 1 0.00791201
+ContentRouter removeRule works 1 0.00981066
+ContentRouter enableRule disables matching 1 0.00664687
+ContentRouter hasRule 1 0.00457875
+ContentRouter route by AssetDescriptor 1 0.00697795
+ContentRouter route by IntakeItem maps fileType to typeTag 1 0.00447014
+ContentRouter clearRules empties the routing table 1 0.00581654
+changeTypeName returns correct strings 1 0.00483938
+ChangeEvent validity 1 0.00302718
+AssetWatcher addWatch and isWatching 1 0.00602104
+AssetWatcher addWatch duplicate returns existing id 1 0.00425184
+AssetWatcher addWatch empty path returns 0 1 0.00317631
+AssetWatcher removeWatch works 1 0.0061844
+AssetWatcher removeWatchByPath works 1 0.00430496
+AssetWatcher enableWatch disables event delivery 1 0.00599589
+AssetWatcher notifyChanged queues pending event 1 0.00488789
+AssetWatcher notifyChanged ignores unregistered path 1 0.00592522
+AssetWatcher tick delivers event after debounce window 1 0.00476228
+AssetWatcher deduplicates same path+type in pending queue 1 0.00602826
+AssetWatcher recursive watch matches sub-paths 1 0.00492162
+AssetWatcher non-recursive watch does not match sub-paths 1 0.00606611
+AssetWatcher subscribe multiple callbacks 1 0.0048253
+AssetWatcher clearCallbacks removes all subscribers 1 0.00598453
+AssetWatcher clearPending removes pending events 1 0.0048826
+AssetWatcher WatchEntry tracks eventCount after delivery 1 0.00592988
+Integration: intake → route → catalog add 1 0.00480642
+Integration: transform chain updates catalog metadata 1 0.00594084
+Integration: watcher dirties catalog entry on file change 1 0.00485043
+ProjectFileVersion toString and parse round-trip 1 0.00586707
+ProjectFileVersion parse rejects bad input 1 0.00479167
+ProjectFileVersion isCompatible 1 0.00584564
+ProjectFileVersion current() returns major 1 1 0.00473749
+ProjectFileSection set/get/has/remove 1 0.00589234
+ProjectFileSection clear empties entries 1 0.00477308
+WorkspaceProjectFile identity setters and getters 1 0.00598711
+WorkspaceProjectFile isValid checks 1 0.00479007
+WorkspaceProjectFile section create and find 1 0.00314632
+WorkspaceProjectFile section re-access returns same section 1 0.00604989
+WorkspaceProjectFile removeSection works 1 0.00442937
+WorkspaceProjectFile serialize produces magic header 1 0.00321292
+WorkspaceProjectFile serialize/parse round-trip — identity 1 0.00605135
+WorkspaceProjectFile serialize/parse round-trip — sections 1 0.00424968
+WorkspaceProjectFile parse rejects empty input 1 0.00308892
+WorkspaceProjectFile parse rejects wrong magic 1 0.00611154
+WorkspaceProjectFile parse version into version struct 1 0.00446445
+WorkspaceShellSnapshot isValid 1 0.00321778
+SerializeResult factory methods 1 0.00605327
+ProjectSerializer serialize to project file 1 0.00420463
+ProjectSerializer serialize stores active tool in Core section 1 0.00307092
+ProjectSerializer serialize stores tool count 1 0.00624825
+ProjectSerializer serialize stores panel ids 1 0.00460592
+ProjectSerializer rejects invalid snapshot 1 0.0032725
+ProjectSerializer deserialize restores identity 1 0.00617775
+ProjectSerializer deserialize restores tools and panels 1 0.00426656
+ProjectSerializer deserialize rejects invalid file 1 0.00317241
+ProjectSerializer round-trip preserves all fields 1 0.00619696
+ProjectSerializer round-trip empty tool list 1 0.00450811
+CatalogSerializeResult factory methods 1 0.00325792
+AssetCatalogSerializer serialize empty catalog 1 0.00619339
+AssetCatalogSerializer serialize populates section keys 1 0.00425442
+AssetCatalogSerializer deserialize restores descriptor 1 0.00598215
+AssetCatalogSerializer deserialize fails without section 1 0.00485227
+AssetCatalogSerializer round-trip multiple assets 1 0.00595681
+AssetCatalogSerializer round-trip preserves import state 1 0.00486542
+AssetCatalogSerializer round-trip preserves metadata 1 0.00603571
+AssetCatalogSerializer round-trip: path with pipe in display name 1 0.00488644
+settingsLayerName returns correct strings 1 0.00321821
+SettingsStore basic set/get 1 0.00599514
+SettingsStore getOr returns fallback on miss 1 0.0043207
+SettingsStore typed accessors — bool 1 0.00317414
+SettingsStore typed accessors — int32 1 0.00617571
+SettingsStore typed accessors — float 1 0.00452443
+SettingsStore layer precedence: User > Project > Default 1 0.00320461
+SettingsStore layer precedence: Project > Default when no User override 1 0.00611674
+SettingsStore layer precedence: falls through to Default 1 0.00430382
+SettingsStore getFromLayer reads specific layer only 1 0.003169
+SettingsStore hasInLayer per-layer check 1 0.00595045
+SettingsStore remove from layer 1 0.00423596
+SettingsStore clearLayer empties one layer only 1 0.0031408
+SettingsStore countInLayer and totalCount 1 0.00616207
+SettingsStore observer receives change notifications 1 0.00443211
+SettingsStore clearObservers stops notifications 1 0.00315999
+SettingsStore serializeLayer writes to project file section 1 0.00611569
+SettingsStore deserializeLayer restores from file 1 0.00444405
+SettingsStore serialize/deserialize round-trip all layers 1 0.00325681
+SettingsStore deserializeLayer returns false for missing section 1 0.00630889
+Integration: full serialize cycle — snapshot + catalog + settings 1 0.00449304
+Integration: project file version survives round-trip 1 0.00338605
+Integration: file with newer minor version is NOT compatible with older reader 1 0.00623547
+Integration: settings override precedence preserved through serialization 1 0.00429332
+commandCategoryName returns correct strings 1 0.00592012
+CommandState equality 1 0.00479096
+WorkspaceCommand default-constructed is not valid 1 0.00307012
+WorkspaceCommand constructed with id+label is valid 1 0.00605278
+WorkspaceCommand setters update fields 1 0.00447274
+WorkspaceCommand default state is enabled and visible 1 0.00321391
+WorkspaceCommand setState updates all flags 1 0.00613421
+WorkspaceCommand setEnabled/setVisible/setChecked 1 0.00435473
+WorkspaceCommand execute returns false when disabled 1 0.00323473
+WorkspaceCommand execute returns false with no handler 1 0.00610086
+WorkspaceCommand execute invokes handler and returns result 1 0.00421508
+WorkspaceCommand execute returns handler's false result 1 0.00587617
+WorkspaceCommand isReversible and undo handler 1 0.00478268
+WorkspaceCommand undo returns false when no undo handler 1 0.00599334
+executeStatusName returns correct strings 1 0.00488303
+CommandExecuteResult factory methods 1 0.00574666
+CommandRegistry empty on construction 1 0.00468314
+CommandRegistry registerCommand succeeds for valid command 1 0.0030181
+CommandRegistry registerCommand rejects invalid command 1 0.00610882
+CommandRegistry registerCommand rejects duplicate id 1 0.00437537
+CommandRegistry unregisterCommand removes command 1 0.00330682
+CommandRegistry unregisterCommand returns false for unknown id 1 0.0062199
+CommandRegistry findById returns correct pointer 1 0.00431218
+CommandRegistry findByShortcut resolves enabled+visible command 1 0.00609891
+CommandRegistry findByShortcut returns null for disabled command 1 0.00499693
+CommandRegistry findByCategory returns matching commands 1 0.00328134
+CommandRegistry setEnabled/setVisible/setChecked 1 0.00631881
+CommandRegistry setEnabled returns false for unknown id 1 0.0046013
+CommandRegistry execute success 1 0.00609194
+CommandRegistry execute NotFound 1 0.00479494
+CommandRegistry execute Disabled 1 0.00306146
+CommandRegistry execute NoHandler 1 0.00609055
+CommandRegistry execute HandlerFailed 1 0.00429267
+CommandRegistry pre/post hooks fire on success 1 0.00316662
+CommandRegistry hooks do NOT fire for NotFound 1 0.00630439
+CommandRegistry clearHooks removes hooks 1 0.00460709
+CommandRegistry enableAll/disableAll 1 0.00331491
+CommandRegistry clear removes all commands 1 0.00678099
+UndoRedoResult factory methods 1 0.00496937
+CommandHistory empty on construction 1 0.00846706
+CommandHistory push increases undoDepth 1 0.00737432
+CommandHistory push rejects empty commandId 1 0.0055431
+CommandHistory push rejects null undoFn 1 0.00667297
+CommandHistory undo invokes undoFn and moves to redo 1 0.00467958
+CommandHistory undo returns NothingToUndo when empty 1 0.00343012
+CommandHistory redo moves entry back to undo stack 1 0.00660755
+CommandHistory redo returns NothingToRedo when empty 1 0.00466665
+CommandHistory new push clears redo stack 1 0.00334537
+CommandHistory nextUndoLabel and nextRedoLabel 1 0.00644203
+CommandHistory undoLabels returns newest-first 1 0.00453243
+CommandHistory max depth trims oldest entry 1 0.00619341
+CommandHistory clearHistory empties both stacks 1 0.00506291
+CommandHistory setMaxDepth 1 0.006227
+CommandHistory beginGroup / endGroup commits as single undo step 1 0.00509622
+CommandHistory beginGroup rejects double-open 1 0.0063394
+CommandHistory endGroup returns false when no group open 1 0.00513005
+CommandHistory endGroup returns false for empty group 1 0.00635452
+CommandHistory discardGroup clears without committing 1 0.00518339
+CommandHistory openGroupName and openGroupSize 1 0.00641834
+CommandHistory push to open group does not increment undoDepth 1 0.00519166
+gestureTypeName returns correct strings 1 0.00630854
+ActionBinding isValid 1 0.00508463
+ActionMap empty on construction 1 0.00614531
+ActionMap addKeyboardBinding 1 0.00497904
+ActionMap addMenuBinding 1 0.00626422
+ActionMap addToolbarBinding 1 0.00508876
+ActionMap rejects duplicate binding 1 0.00331201
+ActionMap allows multiple bindings for same command 1 0.00647151
+ActionMap resolveKeyboard returns correct command id 1 0.0046638
+ActionMap resolveGesture general lookup 1 0.00593734
+ActionMap removeBindingsForCommand removes all for that command 1 0.00469761
+ActionMap removeBinding removes exact binding 1 0.0064998
+ActionMap bindingsByType filters correctly 1 0.00533942
+ActionMap serialize and deserialize round-trip 1 0.00381722
+ActionMap deserialize returns false for empty input 1 0.00620346
+ActionMap clear removes all bindings 1 0.00462091
+Integration: register → execute → undo via history 1 0.0063384
+Integration: keyboard shortcut → command lookup → execute 1 0.00510851
+Integration: group undo collapses multiple actions 1 0.00612398
+Integration: execute hook logs command execution with status 1 0.00495704
+Integration: action map serialize → deserialize → resolve → execute 1 0.00605837
+workspaceEventTypeName returns correct strings 1 0.0049022
+workspaceEventPriorityName returns correct strings 1 0.00321834
+WorkspaceEvent default-constructed is not valid 1 0.00616493
+WorkspaceEvent::make creates valid event 1 0.00443094
+WorkspaceEvent isHighPriority and isCritical 1 0.00326407
+WorkspaceEvent with empty source is not valid 1 0.00589908
+WorkspaceEventBus empty on construction 1 0.00424365
+WorkspaceEventBus subscribe returns nonzero id 1 0.00310042
+WorkspaceEventBus publish dispatches to matching subscriber 1 0.00612638
+WorkspaceEventBus does not dispatch to non-matching type 1 0.00445481
+WorkspaceEventBus source filter restricts delivery 1 0.00324844
+WorkspaceEventBus wildcard subscription receives all types 1 0.00625285
+WorkspaceEventBus unsubscribe removes subscription 1 0.00440242
+WorkspaceEventBus unsubscribe unknown id returns false 1 0.00320228
+WorkspaceEventBus publish invalid event returns 0 1 0.00600791
+WorkspaceEventBus multiple subscribers same type 1 0.00426872
+WorkspaceEventBus find by id 1 0.00314537
+WorkspaceEventBus countByType 1 0.00594133
+WorkspaceEventBus deliveryCount tracks per subscription 1 0.00424467
+WorkspaceEventBus clear resets everything 1 0.00312866
+WorkspaceEventQueue empty on construction 1 0.0060974
+WorkspaceEventQueue enqueue adds event 1 0.00444388
+WorkspaceEventQueue enqueue rejects invalid event 1 0.00318524
+WorkspaceEventQueue drain dispatches and clears 1 0.00606237
+WorkspaceEventQueue drain sorts by priority 1 0.00425913
+WorkspaceEventQueue drain empty returns 0 1 0.00312709
+WorkspaceEventQueue tick drains after interval 1 0.00613676
+WorkspaceEventQueue tick does not drain when empty 1 0.00447665
+WorkspaceEventQueue clearQueue removes pending events 1 0.00321953
+WorkspaceEventQueue pending returns read-only view 1 0.00629697
+WorkspaceEventQueue drainInterval defaults and setter 1 0.00455654
+wsNotificationSeverityName returns correct strings 1 0.00333684
+WorkspaceNotificationEntry default is not valid 1 0.006425
+WorkspaceNotificationEntry markRead toggles state 1 0.00441229
+WorkspaceNotificationEntry isError and isCritical 1 0.00318847
+WorkspaceNotificationBus empty on construction 1 0.0064624
+WorkspaceNotificationBus notify stores in history 1 0.00476711
+WorkspaceNotificationBus notify publishes event on bus 1 0.00336807
+WorkspaceNotificationBus convenience helpers 1 0.00626774
+WorkspaceNotificationBus markRead 1 0.00430648
+WorkspaceNotificationBus markAllRead 1 0.00319371
+WorkspaceNotificationBus errorCount 1 0.00602623
+WorkspaceNotificationBus clearHistory 1 0.00428837
+WorkspaceNotificationBus error/critical publish High/Critical priority events 1 0.00323021
+WorkspaceNotificationBus default source is workspace 1 0.00632691
+Integration: event bus dispatches to multiple type-specific subscribers 1 0.00461433
+Integration: queue accumulates and drains through bus 1 0.00332801
+Integration: notification bus fires bus events that queue can defer 1 0.00614647
+Integration: tick-based queue with mixed priorities 1 0.00418415
+Integration: full pipeline — notification + queue + bus 1 0.00310544
+preferenceCategoryName returns correct strings 1 0.00614897
+preferenceTypeName returns correct strings 1 0.00454607
+PreferenceEntry default is not valid 1 0.0032464
+PreferenceEntry::makeString creates valid entry 1 0.00608041
+PreferenceEntry::makeBool creates valid entry 1 0.00420819
+PreferenceEntry::makeInt creates valid entry with range 1 0.00314113
+PreferenceEntry::makeFloat creates valid entry with range 1 0.0060998
+PreferenceEntry::validate Bool type 1 0.00439664
+PreferenceEntry::validate Int with range 1 0.00315184
+PreferenceEntry::validate Float with range 1 0.00607525
+PreferenceEntry::validate String always accepts 1 0.00434795
+PreferenceEntry::validate empty value is always valid 1 0.00308794
+PreferenceRegistry empty on construction 1 0.00626617
+PreferenceRegistry register and find 1 0.00461131
+PreferenceRegistry rejects duplicate key 1 0.00331659
+PreferenceRegistry rejects invalid entry 1 0.00615851
+PreferenceRegistry unregister 1 0.0042637
+PreferenceRegistry findByCategory 1 0.00316396
+PreferenceRegistry countByCategory 1 0.00614853
+PreferenceRegistry validate delegates to entry 1 0.00448294
+PreferenceRegistry populateDefaults fills SettingsStore 1 0.00318484
+PreferenceRegistry loadWorkspaceDefaults adds standard entries 1 0.006066
+PreferenceRegistry clear removes all 1 0.00420005
+PreferenceController set and get 1 0.00317449
+PreferenceController rejects unregistered key 1 0.00591064
+PreferenceController rejects readOnly 1 0.00422598
+PreferenceController validates before setting 1 0.00316482
+PreferenceController typed getters 1 0.00593371
+PreferenceController resetToDefault 1 0.00434105
+PreferenceController resetAll clears user and project layers 1 0.00331385
+PreferenceController fires EventBus events on set 1 0.0062526
+PreferenceController fires EventBus events on reset 1 0.00435243
+PreferenceController getOr returns fallback 1 0.00586226
+PreferenceSerializeResult factories 1 0.00473256
+PreferenceSerializer serialize writes section 1 0.00316693
+PreferenceSerializer deserialize reads entries 1 0.00606588
+PreferenceSerializer deserialize missing section fails 1 0.00437777
+PreferenceSerializer roundTrip preserves entries 1 0.00327871
+PreferenceSerializer roundTrip preserves readOnly 1 0.00626682
+Integration: full preference lifecycle 1 0.00445706
+Integration: preferences survive serialization round-trip 1 0.00594453
+Integration: preferences + event bus + notification bus 1 0.00478899
+pluginStateName returns correct strings 1 0.00308597
+pluginCapabilityName returns correct strings 1 0.00617549
+PluginVersion make and toString 1 0.00427979
+PluginVersion zero is not valid 1 0.00310826
+PluginVersion comparison operators 1 0.00593883
+PluginVersion parse 1 0.00422854
+PluginDescriptor default is not valid 1 0.00310735
+PluginDescriptor with id, name, version is valid 1 0.00624825
+PluginDescriptor dependsOn 1 0.00452793
+PluginDescriptor requiresCapability 1 0.0032379
+PluginInstance starts in Discovered state 1 0.00610826
+PluginInstance lifecycle: load → activate → deactivate → unload 1 0.00417847
+PluginInstance cannot activate without load 1 0.00310631
+PluginInstance activate handler failure sets Error 1 0.00599295
+PluginInstance activate/deactivate handlers called 1 0.00437986
+PluginInstance unload from Activated deactivates first 1 0.00333345
+PluginInstance can reactivate after deactivation 1 0.00609965
+PluginInstance setError transitions to Error 1 0.00416919
+PluginSandbox empty on construction 1 0.00310358
+PluginSandbox grant and check capability 1 0.00585958
+PluginSandbox rejects duplicate grant 1 0.00423465
+PluginSandbox revoke 1 0.00319371
+PluginSandbox grantRequired from descriptor 1 0.00619813
+PluginSandbox revokeAll removes all for plugin 1 0.00452789
+PluginSandbox countFor 1 0.00328178
+PluginSandbox clear 1 0.00619782
+PluginRegistry empty on construction 1 0.00429181
+PluginRegistry register and find 1 0.0031493
+PluginRegistry rejects duplicate 1 0.00616558
+PluginRegistry rejects invalid descriptor 1 0.0044861
+PluginRegistry load and activate 1 0.00321305
+PluginRegistry activate checks dependencies 1 0.00606389
+PluginRegistry deactivate cascades to dependents 1 0.00420351
+PluginRegistry unregister active plugin fails 1 0.00309687
+PluginRegistry unregister inactive plugin succeeds 1 0.00601002
+PluginRegistry findByState 1 0.00429116
+PluginRegistry areDependenciesMet 1 0.00319725
+PluginRegistry clear 1 0.00590646
+Integration: full plugin lifecycle with sandbox 1 0.00417933
+Integration: dependency chain — A → B → C 1 0.00315408
+Integration: plugin with handlers 1 0.00603584
+Integration: version comparison for compatibility check 1 0.00433054
+diagnosticSeverityName returns correct strings 1 0.0032623
+diagnosticCategoryName returns correct strings 1 0.0062357
+telemetryEventTypeName returns correct strings 1 0.00445348
+DiagnosticEntry default is invalid 1 0.00325883
+DiagnosticEntry valid construction 1 0.00593157
+DiagnosticEntry isError for Error and Fatal 1 0.00415144
+DiagnosticEntry equality 1 0.00308664
+DiagnosticEntry requires id, source, and message 1 0.00663505
+DiagnosticCollector starts empty 1 0.00496067
+DiagnosticCollector submit and count 1 0.00631964
+DiagnosticCollector rejects invalid entry 1 0.00515999
+DiagnosticCollector findById 1 0.00300921
+DiagnosticCollector findByCategory 1 0.00632771
+DiagnosticCollector findBySeverity 1 0.00452339
+DiagnosticCollector findBySource 1 0.00348822
+DiagnosticCollector countBySeverity and countByCategory 1 0.0064495
+DiagnosticCollector hasErrors and errorCount 1 0.0045504
+DiagnosticCollector acknowledge 1 0.00339709
+DiagnosticCollector acknowledgeAll 1 0.00639142
+DiagnosticCollector observer notification 1 0.00464713
+DiagnosticCollector clearObservers 1 0.00332082
+DiagnosticCollector clear removes all entries 1 0.00622255
+DiagnosticCollector all returns entries 1 0.0043006
+TelemetryEvent default is invalid 1 0.00323317
+TelemetryEvent valid construction 1 0.00592719
+TelemetryEvent property bag 1 0.00422526
+TelemetryEvent property overwrite 1 0.0031798
+TelemetryEvent rejects empty key 1 0.0059588
+TelemetryEvent properties() returns all 1 0.00423451
+TelemetryCollector starts inactive 1 0.00315779
+TelemetryCollector beginSession/endSession 1 0.00596244
+TelemetryCollector rejects records when inactive 1 0.00430923
+TelemetryCollector rejects invalid events 1 0.0031973
+TelemetryCollector record and count 1 0.00607486
+TelemetryCollector findByType 1 0.00429485
+TelemetryCollector findBySource 1 0.0031748
+TelemetryCollector findByName 1 0.00636069
+TelemetryCollector countByType 1 0.00467407
+TelemetryCollector observer notification 1 0.00331857
+TelemetryCollector clearObservers 1 0.00623532
+TelemetryCollector clear removes events 1 0.00428302
+TelemetryCollector all returns events 1 0.00317305
+TelemetryCollector beginSession clears previous events 1 0.00599597
+TelemetryCollector recordPerformance captures duration 1 0.00431213
+DiagnosticSnapshot captures collector state 1 0.00327935
+DiagnosticSnapshot on empty collector 1 0.00619991
+TelemetrySnapshot captures collector state 1 0.00422493
+TelemetrySnapshot on inactive collector 1 0.00312144
+Integration: diagnostic triggers telemetry error recording 1 0.00581502
+Integration: snapshots reflect current state accurately 1 0.00416601
+Integration: full diagnostic lifecycle with acknowledge 1 0.00311144
+Integration: telemetry session restart clears events 1 0.00617365
+scriptParamTypeName returns correct strings 1 0.00451935
+scriptExecStatusName returns correct strings 1 0.0032881
+automationStepStatusName returns correct strings 1 0.00623837
+automationTaskStateName returns correct strings 1 0.00433416
+ScriptParam default is invalid 1 0.0031605
+ScriptParam valid construction 1 0.00590135
+ScriptParam void type is invalid 1 0.00419989
+ScriptParam equality 1 0.00315511
+ScriptBinding default is invalid 1 0.00618691
+ScriptBinding valid with name and handler 1 0.00449123
+ScriptBinding addParam and findParam 1 0.00324105
+ScriptBinding rejects duplicate param 1 0.00610174
+ScriptBinding rejects invalid param 1 0.00425486
+ScriptBinding invoke calls handler 1 0.00311896
+ScriptBinding invoke returns false without handler 1 0.00631193
+ScriptBinding setReturnType 1 0.00460963
+ScriptBinding params() returns all 1 0.00327881
+ScriptContext starts empty 1 0.00615218
+ScriptContext set/get/has variable 1 0.0042664
+ScriptContext getVariable returns empty for missing 1 0.00317306
+ScriptContext getVariableOr returns fallback 1 0.00624378
+ScriptContext overwrite variable 1 0.0045469
+ScriptContext rejects empty key 1 0.00329567
+ScriptContext removeVariable 1 0.00622466
+ScriptContext clearVariables 1 0.0043543
+ScriptContext output capture 1 0.00321566
+ScriptContext error state 1 0.00634974
+ScriptContext reset clears everything 1 0.00460721
+ScriptExecResult ok factory 1 0.00330354
+ScriptExecResult fail factory 1 0.00623884
+ScriptEngine starts empty 1 0.00446672
+ScriptEngine register and find binding 1 0.00334386
+ScriptEngine rejects duplicate binding 1 0.00631984
+ScriptEngine rejects invalid binding 1 0.00440961
+ScriptEngine unregister binding 1 0.0032332
+ScriptEngine execute success 1 0.00624256
+ScriptEngine execute NotFound 1 0.00455369
+ScriptEngine execute HandlerFailed 1 0.00330495
+ScriptEngine execute InvalidArgs too few 1 0.00621232
+ScriptEngine execute with sufficient args 1 0.00427948
+ScriptEngine allBindings returns all 1 0.00601582
+ScriptEngine clear resets everything 1 0.00484478
+AutomationStep default is invalid 1 0.00599782
+AutomationStep valid construction 1 0.00478453
+AutomationStep reset 1 0.00315627
+AutomationTask default state 1 0.00617348
+AutomationTask addStep and findStep 1 0.00456339
+AutomationTask rejects duplicate step 1 0.00327463
+AutomationTask rejects invalid step 1 0.0061664
+AutomationTask removeStep 1 0.00423848
+AutomationTask enableStep 1 0.00594879
+AutomationTask run all succeed 1 0.00481622
+AutomationTask run with failure aborts 1 0.00597699
+AutomationTask run without abort continues on failure 1 0.00478663
+AutomationTask run skips disabled steps 1 0.00593442
+AutomationTask reset clears state 1 0.00472932
+AutomationTask steps() returns all 1 0.00308341
+AutomationTask run empty returns Idle 1 0.0062482
+Integration: engine executes binding and context captures output 1 0.00463911
+Integration: automation task uses engine bindings through context 1 0.00336711
+Integration: automation task aborts on engine failure 1 0.00631206
+Integration: context variables persist across task steps 1 0.00439178
+searchScopeName returns correct strings 1 0.00324825
+searchResultTypeName returns correct strings 1 0.0062222
+searchMatchKindName returns correct strings 1 0.00439913
+SearchQuery default is invalid 1 0.00318248
+SearchQuery valid construction 1 0.00588858
+SearchQuery case sensitivity 1 0.00417902
+SearchQuery maxResults 1 0.00309754
+SearchQuery type filters 1 0.00612227
+SearchQuery source filter 1 0.00447174
+SearchQuery equality 1 0.00319633
+SearchResult default is invalid 1 0.0060344
+SearchResult valid construction 1 0.00422699
+SearchResult sorting by score descending 1 0.00316005
+SearchResult equality by id and source 1 0.00607722
+SearchIndex default state 1 0.00440171
+SearchIndex unnamed is invalid 1 0.00317459
+SearchIndex addEntry and findEntry 1 0.00638022
+SearchIndex rejects duplicate entry 1 0.00460525
+SearchIndex rejects invalid entry 1 0.00325865
+SearchIndex removeEntry 1 0.00623999
+SearchIndex updateEntry 1 0.00431327
+SearchIndex entries() returns all 1 0.00318009
+SearchIndex query exact title match 1 0.00602879
+SearchIndex query prefix match 1 0.00424484
+SearchIndex query title contains match 1 0.00316587
+SearchIndex query content match 1 0.00596374
+SearchIndex query case insensitive by default 1 0.00427616
+SearchIndex query case sensitive 1 0.00315969
+SearchIndex query no match 1 0.00616222
+SearchIndex query type filter 1 0.00447878
+SearchIndex query invalid returns empty 1 0.00316318
+SearchIndex query maxResults 1 0.00601321
+SearchIndex query results sorted by score 1 0.00420265
+SearchIndex clear 1 0.0030864
+SearchEngine starts empty 1 0.00630207
+SearchEngine register and find index 1 0.00458485
+SearchEngine rejects duplicate index 1 0.00324491
+SearchEngine rejects invalid index 1 0.00632954
+SearchEngine unregister index 1 0.00459756
+SearchEngine search across indices 1 0.00326057
+SearchEngine search with scope filter 1 0.00586452
+SearchEngine search with source filter 1 0.00415432
+SearchEngine search invalid query returns empty 1 0.00304868
+SearchEngine search enforces maxResults across indices 1 0.00623395
+SearchEngine totalEntries across indices 1 0.00458643
+SearchEngine allIndices returns all 1 0.00329235
+SearchEngine clear resets everything 1 0.00628436
+Integration: multi-index search with ranking 1 0.00433833
+Integration: add entries to registered index then search 1 0.00318266
+Integration: scope-filtered search across mixed indices 1 0.005883
+Integration: search statistics accumulate 1 0.00419848
+undoActionTypeName returns correct strings 1 0.00314832
+UndoAction default is invalid 1 0.00620086
+UndoAction valid construction 1 0.00448312
+UndoAction execute and undo 1 0.00320914
+UndoAction without handler fails 1 0.0061075
+UndoAction target id 1 0.00424758
+UndoAction equality 1 0.00315708
+UndoTransaction default state 1 0.00584618
+UndoTransaction valid construction 1 0.00419586
+UndoTransaction addAction 1 0.00311815
+UndoTransaction rejects invalid action 1 0.00615493
+UndoTransaction execute all actions 1 0.00428165
+UndoTransaction undo in reverse 1 0.00320237
+UndoTransaction execute rollback on failure 1 0.00607752
+UndoStack starts empty 1 0.00435686
+UndoStack push and undo 1 0.00337671
+UndoStack redo 1 0.00624704
+UndoStack push clears redo 1 0.00434643
+UndoStack rejects invalid action 1 0.00319674
+UndoStack labels 1 0.0062263
+UndoStack maxDepth trim 1 0.00452345
+UndoStack dirty and markClean 1 0.00323901
+UndoStack transaction grouping 1 0.00618069
+UndoStack transaction undo is atomic 1 0.00425013
+UndoStack rejects double begin 1 0.00312761
+UndoStack discard transaction 1 0.00596035
+UndoStack commit empty transaction fails 1 0.00425069
+UndoStack statistics 1 0.00314681
+UndoStack clear resets everything 1 0.005992
+UndoStack undoDepth and redoDepth 1 0.00424587
+UndoManager starts empty 1 0.00315401
+UndoManager register and find stack 1 0.00585839
+UndoManager rejects duplicate stack 1 0.00418888
+UndoManager rejects empty name 1 0.00309436
+UndoManager unregister stack 1 0.0064162
+UndoManager set active stack 1 0.00471707
+UndoManager push/undo/redo on active stack 1 0.00345066
+UndoManager stackNames 1 0.0064097
+UndoManager observers 1 0.00431062
+UndoManager clear resets all 1 0.00316068
+UndoManager push without stack fails 1 0.00586052
+Integration: multi-step property undo 1 0.00413542
+Integration: transaction atomic undo with manager 1 0.00305637
+Integration: multi-stack manager 1 0.00606768
+Integration: observer notifications across operations 1 0.00443991
+sessionStateName returns correct strings 1 0.00321768
+RecentItem default is invalid 1 0.00614062
+RecentItem valid construction 1 0.00424166
+RecentItem equality by path 1 0.00310092
+SessionRecord default is invalid 1 0.00602853
+SessionRecord valid construction 1 0.00441224
+SessionRecord addTool and hasTool 1 0.0031878
+SessionRecord duration calculation 1 0.00612778
+SessionRecord equality by id 1 0.00423646
+SessionRecord state field 1 0.00305934
+SessionHistory empty state 1 0.00578552
+SessionHistory addItem and findItem 1 0.00417063
+SessionHistory addItem dedup moves to front 1 0.00302546
+SessionHistory addItem invalid rejected 1 0.0061964
+SessionHistory removeItem 1 0.00460438
+SessionHistory addRecord and findRecord 1 0.00330652
+SessionHistory invalid record rejected 1 0.00618989
+SessionHistory MAX_ITEMS enforcement 1 0.0042825
+SessionHistory clear 1 0.00311586
+SessionManager initial state is Idle 1 0.00608731
+SessionManager start success 1 0.00451003
+SessionManager start while running fails 1 0.00320529
+SessionManager stop success 1 0.00616912
+SessionManager stop while idle fails 1 0.00430872
+SessionManager save while running 1 0.00321892
+SessionManager save while idle fails 1 0.00611671
+SessionManager isRunning reflects state 1 0.00438734
+SessionManager currentRecord has correct name 1 0.00307749
+SessionManager addRecentItem and recentItems 1 0.00616276
+SessionManager clearRecent clears items 1 0.00453894
+SessionManager history has record after stop 1 0.00320142
+SessionManager observer notified on start 1 0.00610696
+SessionManager observer notified on stop 1 0.00427656
+SessionManager removeObserver stops notifications 1 0.00315477
+SessionManager clearObservers stops all 1 0.00588775
+Integration: full session lifecycle 1 0.0041775
+Integration: multiple sessions accumulated in history 1 0.00308816
+Integration: recent items dedup across sessions 1 0.00607882
+Integration: observer tracks all state changes 1 0.00446014
+Integration: session name preserved in record 1 0.0031933
+clipboardFormatName returns correct strings 1 0.00610678
+ClipboardEntry default is invalid 1 0.00421057
+ClipboardEntry valid text entry 1 0.00311271
+ClipboardEntry isEmpty for valid but empty data 1 0.00582836
+ClipboardEntry equality 1 0.00416053
+ClipboardBuffer empty state 1 0.00305224
+ClipboardBuffer push and peek 1 0.00597826
+ClipboardBuffer push invalid rejected 1 0.00438666
+ClipboardBuffer pop 1 0.00317708
+ClipboardBuffer peekAt index 1 0.00614498
+ClipboardBuffer count 1 0.00430792
+ClipboardBuffer capacity respected — oldest dropped 1 0.00309369
+ClipboardBuffer clear 1 0.00614744
+ClipboardBuffer push after clear 1 0.00453198
+ClipboardBuffer multiple pushes newest first 1 0.00323524
+ClipboardChannel default is invalid 1 0.00616365
+ClipboardChannel valid construction 1 0.00427161
+ClipboardChannel push and peek 1 0.00310092
+ClipboardChannel pop 1 0.00604062
+ClipboardChannel count 1 0.00437998
+ClipboardManager empty state 1 0.00312564
+ClipboardManager registerChannel 1 0.00607564
+ClipboardManager duplicate registration rejected 1 0.00428873
+ClipboardManager empty name rejected 1 0.00314358
+ClipboardManager unregisterChannel 1 0.00623251
+ClipboardManager isRegistered 1 0.0045238
+ClipboardManager findChannel 1 0.00329509
+ClipboardManager push and peek 1 0.00610766
+ClipboardManager pop 1 0.0042143
+ClipboardManager copyText 1 0.00305403
+ClipboardManager copyPath 1 0.00614749
+ClipboardManager copyEntity 1 0.00454275
+ClipboardManager copyJson 1 0.00325628
+ClipboardManager allChannels 1 0.0062014
+ClipboardManager clear 1 0.00431025
+ClipboardManager push to unknown channel fails 1 0.00311678
+Integration: multi-channel isolation 1 0.00604998
+Integration: copyText + peek + pop lifecycle 1 0.0043947
+Integration: observer notification on push 1 0.00314847
+Integration: observer not called after removeObserver 1 0.00613978
+Integration: copyJson round-trip 1 0.00429957
+Integration: push fills capacity then oldest dropped 1 0.00313377
+Integration: multi-format in same channel 1 0.00627362
+Integration: clearObservers stops all notifications 1 0.00460423
+focusLayerName returns correct strings 1 0.00327742
+FocusTarget default is invalid 1 0.00609807
+FocusTarget valid construction with all fields 1 0.00419657
+FocusTarget equality by id 1 0.00305321
+FocusTarget layer field 1 0.00601421
+FocusRecord default is invalid 1 0.00441708
+FocusRecord valid gained record 1 0.00311435
+FocusRecord valid lost record 1 0.00602859
+FocusStack empty state 1 0.00423742
+FocusStack push and current 1 0.00307741
+FocusStack push invalid rejected 1 0.00604682
+FocusStack pop 1 0.00439912
+FocusStack depth 1 0.00311305
+FocusStack hasTarget 1 0.00614526
+FocusStack push multiple layers 1 0.0043527
+FocusStack pop restores previous 1 0.00324999
+FocusStack clear 1 0.00621133
+FocusStack history grows on push 1 0.00429856
+FocusStack history grows on pop 1 0.00316279
+FocusStack clearHistory 1 0.00628005
+FocusStack MAX_DEPTH enforcement 1 0.00458656
+FocusManager empty state 1 0.00328373
+FocusManager registerTarget 1 0.00615927
+FocusManager duplicate registration rejected 1 0.00425339
+FocusManager invalid registration rejected 1 0.00312748
+FocusManager unregisterTarget 1 0.00611721
+FocusManager isRegistered 1 0.00450221
+FocusManager findTarget 1 0.00316794
+FocusManager requestFocus 1 0.00601788
+FocusManager requestFocus unknown fails 1 0.00420251
+FocusManager releaseFocus 1 0.00310718
+FocusManager releaseFocus non-current fails 1 0.00611558
+FocusManager currentFocus 1 0.00446546
+FocusManager canFocus 1 0.0032003
+FocusManager allTargets 1 0.00604641
+FocusManager clear 1 0.00425197
+FocusManager observer on requestFocus 1 0.00311213
+FocusManager observer on releaseFocus 1 0.0062429
+FocusManager removeObserver stops notifications 1 0.00461601
+Integration: multi-target focus sequence 1 0.00330458
+Integration: requestFocus + releaseFocus lifecycle 1 0.00622371
+Integration: observer tracks focus chain 1 0.00429633
+Integration: modal layer focus isolation 1 0.00320887
+Integration: allTargets after register/unregister 1 0.0061769
+Integration: canFocus false after requestFocus 1 0.00441158
+Integration: history accumulates across manager operations 1 0.0032922
+Integration: clearObservers stops all notifications 1 0.00648848
+dragPayloadTypeName returns correct strings 1 0.0047303
+DragPayload default is invalid 1 0.00343192
+DragPayload valid text payload 1 0.00656662
+DragPayload None type with content is invalid 1 0.00449906
+DragPayload valid type with empty content is invalid 1 0.00329277
+DragPayload equality 1 0.00634262
+dragSessionStateName returns correct strings 1 0.00462541
+DragSession default state is Idle 1 0.00331165
+DragSession begin transitions to Active 1 0.00626069
+DragSession begin fails with invalid payload 1 0.00438985
+DragSession begin fails if already active 1 0.00324426
+DragSession setHovering transitions to Hovering 1 0.00611778
+DragSession drop from Active 1 0.00440228
+DragSession drop from Hovering 1 0.0031738
+DragSession cancel from Active 1 0.00627339
+DragSession cancel from Dropped fails 1 0.00459582
+DragSession reset returns to Idle 1 0.00327381
+DropZone default is invalid 1 0.00619052
+DropZone valid construction 1 0.0043569
+DropZone accepts checks type mask 1 0.00315032
+DropZone tryAccept accepts matching payload 1 0.0062186
+DropZone tryAccept rejects incompatible type 1 0.0046203
+DropZone tryAccept rejects inactive session 1 0.00332086
+DropZone clear resets accept stats 1 0.00619801
+DragDropManager empty state 1 0.00422701
+DragDropManager registerZone 1 0.00309986
+DragDropManager duplicate zone rejected 1 0.00610657
+DragDropManager invalid zone rejected 1 0.00444832
+DragDropManager unregisterZone 1 0.00319393
+DragDropManager unregister unknown fails 1 0.00610952
+DragDropManager beginDrag starts session 1 0.00428503
+DragDropManager beginDrag fails if already active 1 0.00321195
+DragDropManager cancelDrag cancels session 1 0.00632554
+DragDropManager cancelDrag fails with no active session 1 0.00460829
+DragDropManager commitDrop to accepting zone 1 0.00321182
+DragDropManager commitDrop to unknown zone fails 1 0.00604187
+DragDropManager commitDrop rejects incompatible type 1 0.00420949
+DragDropManager observer fires on begin 1 0.00313239
+DragDropManager observer fires on cancel 1 0.00606246
+DragDropManager removeObserver stops notifications 1 0.00432974
+DragDropManager clear resets everything 1 0.00323573
+Full drag-drop pipeline: begin → hover → drop → observer 1 0.00632009
+Multiple zones: only accepting zone gets the drop 1 0.00460667
+Cancel mid-drag does not increment dropCount 1 0.00324767
+Multiple sequential drags 1 0.00616283
+allZoneIds reflects registration state 1 0.00426699
+clearObservers stops all notifications 1 0.00317501
+ModifierFlags None string 1 0.00606595
+ModifierFlags Ctrl string 1 0.00435858
+ModifierFlags Ctrl+Shift string 1 0.00319132
+ModifierFlags hasModifier 1 0.00629444
+ModifierFlags all four bits 1 0.00458884
+HotkeyChord default is invalid 1 0.00325353
+HotkeyChord valid with key only 1 0.00608279
+HotkeyChord toString with modifiers 1 0.00425189
+HotkeyChord toString Ctrl+Shift+Z 1 0.00319081
+HotkeyChord equality 1 0.00598712
+HotkeyBinding default is invalid 1 0.00428715
+HotkeyBinding valid construction 1 0.00320085
+HotkeyBinding invalid without id 1 0.00609539
+HotkeyBinding invalid without commandId 1 0.00430647
+HotkeyBinding equality by id 1 0.0031709
+HotkeyConflict default is invalid 1 0.00592367
+HotkeyConflict valid construction 1 0.00421797
+HotkeyManager empty state 1 0.00311784
+HotkeyManager registerBinding 1 0.00596306
+HotkeyManager duplicate id rejected 1 0.00425079
+HotkeyManager invalid binding rejected 1 0.00317649
+HotkeyManager unregisterBinding 1 0.00620172
+HotkeyManager unregister unknown fails 1 0.00452311
+HotkeyManager findById 1 0.00325666
+HotkeyManager findByChord — global scope 1 0.00621439
+HotkeyManager findByChord — scope-exact match preferred 1 0.00436575
+HotkeyManager findByChord — falls back to global 1 0.00323159
+HotkeyManager findByCommand returns all matches 1 0.00626522
+HotkeyManager detectConflicts finds same chord in same scope 1 0.00439201
+HotkeyManager detectConflicts no conflict different scopes 1 0.00331164
+HotkeyManager enableBinding / disableBinding 1 0.00610148
+HotkeyManager activate notifies observer 1 0.00421167
+HotkeyManager activate returns false for unknown chord 1 0.00306809
+HotkeyManager removeObserver stops notifications 1 0.00608312
+HotkeyManager allBindingIds 1 0.00445054
+HotkeyManager clear removes all bindings 1 0.00320375
+Full hotkey dispatch: register → activate → observer fires command 1 0.00608158
+Scope isolation: scoped binding shadows global in its scope 1 0.00421392
+Conflict detection across multiple pairs 1 0.00313029
+Disabled binding not activated 1 0.00581162
+clearObservers stops all notifications 1 0.00419205
+Multiple observers all fire on activate 1 0.00311136
+tooltipTriggerName returns correct strings 1 0.00621621
+tooltipPositionName returns correct strings 1 0.00451192
+TooltipEntry default is invalid 1 0.00324802
+TooltipEntry valid construction with all fields 1 0.0062253
+TooltipEntry invalid without id 1 0.00429893
+TooltipEntry invalid without body 1 0.00305673
+TooltipEntry equality by id 1 0.00601108
+TooltipState default is invalid 1 0.00444892
+TooltipState valid with entryId 1 0.00318573
+TooltipManager empty state 1 0.00604221
+TooltipManager registerTooltip 1 0.0041901
+TooltipManager duplicate id rejected 1 0.00311313
+TooltipManager invalid entry rejected 1 0.00585923
+TooltipManager unregisterTooltip 1 0.00420881
+TooltipManager unregister unknown fails 1 0.0030966
+TooltipManager findTooltip 1 0.00596
+TooltipManager show makes tooltip visible 1 0.00427985
+TooltipManager show unknown fails 1 0.00318
+TooltipManager show disabled tooltip fails 1 0.00623748
+TooltipManager hide makes tooltip invisible 1 0.00452799
+TooltipManager hide non-visible tooltip fails 1 0.00321214
+TooltipManager showing second tooltip hides first 1 0.00613523
+TooltipManager hideAll clears visibility 1 0.00428212
+TooltipManager enableTooltip / disableTooltip 1 0.00321106
+TooltipManager disableTooltip hides if visible 1 0.00594155
+TooltipManager unregister hides visible tooltip 1 0.00424425
+TooltipManager observer fires on show 1 0.00309043
+TooltipManager observer fires on hide 1 0.00607732
+TooltipManager removeObserver stops notifications 1 0.00443485
+TooltipManager allTooltipIds 1 0.0031635
+TooltipManager clear removes all entries 1 0.0060401
+Full tooltip pipeline: register → show → observer → hide 1 0.0041918
+Multiple tooltips: only one visible at a time 1 0.00312885
+Observer receives show-then-hide for auto-replaced tooltip 1 0.00592673
+hideAll fires hide observer 1 0.00421625
+Disabled tooltip cannot be shown; re-enable restores 1 0.00309343
+clearObservers stops all notifications 1 0.00610722
+showTimestamp increments across show calls 1 0.00443777
+statusBarSideName returns correct strings 1 0.00322361
+StatusBarItem default is invalid 1 0.00621422
+StatusBarItem valid construction 1 0.00436975
+StatusBarItem invalid without id 1 0.00315845
+StatusBarItem equality by id 1 0.00583613
+StatusBarSection empty state 1 0.00420658
+StatusBarSection add item 1 0.00310657
+StatusBarSection duplicate add fails 1 0.00612003
+StatusBarSection invalid item rejected 1 0.0044967
+StatusBarSection remove item 1 0.00327167
+StatusBarSection remove unknown fails 1 0.00604996
+StatusBarSection find item 1 0.00418633
+StatusBarSection items sorted by priority 1 0.00309368
+StatusBarSection update re-sorts 1 0.00579632
+StatusBarSection update unknown fails 1 0.00415109
+StatusBarSection clear 1 0.00307174
+StatusBarManager addItem left section 1 0.0060563
+StatusBarManager addItem center and right 1 0.00441721
+StatusBarManager removeItem 1 0.00313937
+StatusBarManager removeItem unknown fails 1 0.0061137
+StatusBarManager updateItem 1 0.0042496
+StatusBarManager findItem 1 0.00309817
+StatusBarManager enableItem / disableItem 1 0.00606375
+StatusBarManager sectionOf returns correct section 1 0.0044218
+StatusBarManager observer fires on addItem 1 0.00319544
+StatusBarManager observer fires on removeItem 1 0.00603078
+StatusBarManager removeObserver stops notifications 1 0.00414532
+StatusBarManager clear empties all sections 1 0.00305378
+Full status bar pipeline: add items to all three sides 1 0.00579555
+Priority sorting preserved across add/remove 1 0.00419458
+Update item label and priority, observer fires 1 0.00309891
+clearObservers stops all notifications 1 0.00589122
+Multiple observers all fire 1 0.00425757
+menuItemKindName returns correct strings 1 0.00314841
+ContextMenuItem default is invalid 1 0.00597955
+ContextMenuItem valid action construction 1 0.00425299
+ContextMenuItem invalid without id 1 0.00320944
+ContextMenuItem invalid action without label 1 0.00626215
+ContextMenuItem separator valid with id only 1 0.00455608
+ContextMenuItem separator invalid without id 1 0.00326633
+ContextMenuItem equality by id 1 0.0060631
+ContextMenu default is invalid 1 0.00418745
+ContextMenu valid construction 1 0.00310462
+ContextMenu addItem 1 0.0060955
+ContextMenu duplicate addItem fails 1 0.00452697
+ContextMenu invalid item rejected 1 0.00318242
+ContextMenu removeItem 1 0.0060498
+ContextMenu removeItem unknown fails 1 0.00418935
+ContextMenu updateItem 1 0.00308749
+ContextMenu updateItem unknown fails 1 0.00580329
+ContextMenu findItem 1 0.00421865
+ContextMenu separator can be added 1 0.00310236
+ContextMenu attachSubmenu 1 0.0060372
+ContextMenu attachSubmenu fails if parent item not Submenu kind 1 0.00431637
+ContextMenu clear removes all items and submenus 1 0.00316615
+ContextMenuManager empty state 1 0.00612042
+ContextMenuManager registerMenu 1 0.00438609
+ContextMenuManager duplicate register fails 1 0.00307221
+ContextMenuManager invalid menu rejected 1 0.00621551
+ContextMenuManager unregisterMenu 1 0.00454034
+ContextMenuManager unregister unknown fails 1 0.00321177
+ContextMenuManager openMenu 1 0.00606402
+ContextMenuManager openMenu unknown fails 1 0.00422153
+ContextMenuManager openMenu same menu twice fails 1 0.00313461
+ContextMenuManager closeMenu 1 0.00594945
+ContextMenuManager closeMenu with nothing open fails 1 0.00422628
+ContextMenuManager opening second menu closes first 1 0.0031163
+ContextMenuManager unregister closes open menu 1 0.00616845
+ContextMenuManager activateItem fires action observer 1 0.0045946
+ContextMenuManager activateItem disabled item fails 1 0.0033057
+ContextMenuManager activateItem separator fails 1 0.00618107
+ContextMenuManager lifecycle observer fires on open/close 1 0.00424924
+ContextMenuManager removeObserver stops notifications 1 0.00314301
+ContextMenuManager allMenuIds 1 0.00592773
+ContextMenuManager clear removes all menus 1 0.00418558
+Full context menu pipeline: register → open → activate → close 1 0.00308863
+Submenu tree preserved on findMenu 1 0.00622266
+Opening second menu auto-closes first with lifecycle events 1 0.00458194
+clearObservers stops all notifications 1 0.00318358
+badgeKindName returns correct strings 1 0.00626526
+Badge default is invalid 1 0.00444402
+Badge valid construction 1 0.00317543
+Badge invalid without id 1 0.00611328
+Badge invalid without targetId 1 0.004259
+Badge equality by id 1 0.00310879
+Badge Count kind with numeric count 1 0.00598138
+BadgeRegistry empty state 1 0.00431828
+BadgeRegistry attach 1 0.00322475
+BadgeRegistry duplicate attach fails 1 0.00625206
+BadgeRegistry invalid badge rejected 1 0.00452979
+BadgeRegistry detach 1 0.00325731
+BadgeRegistry detach unknown fails 1 0.00613122
+BadgeRegistry update badge 1 0.00423515
+BadgeRegistry update unknown fails 1 0.00311934
+BadgeRegistry findByTarget 1 0.00580654
+BadgeRegistry findByKind 1 0.00417337
+BadgeRegistry setVisible 1 0.0031128
+BadgeRegistry setVisible unknown fails 1 0.00612644
+BadgeRegistry setCount 1 0.00445019
+BadgeRegistry setCount non-Count kind fails 1 0.0031911
+BadgeRegistry observer fires on attach 1 0.00611473
+BadgeRegistry observer fires on detach 1 0.00425468
+BadgeRegistry removeObserver stops notifications 1 0.00313548
+BadgeRegistry clear empties all badges 1 0.00591457
+IconEntry default is invalid 1 0.00421687
+IconEntry valid construction 1 0.00311547
+IconEntry invalid without id 1 0.00601376
+IconEntry invalid without path 1 0.00431779
+IconEntry equality by id 1 0.00317451
+IconRegistry empty state 1 0.00598318
+IconRegistry registerIcon 1 0.00428816
+IconRegistry duplicate register fails 1 0.0031843
+IconRegistry invalid entry rejected 1 0.00613477
+IconRegistry unregisterIcon 1 0.00424564
+IconRegistry unregister unknown fails 1 0.0030939
+IconRegistry findById 1 0.00611106
+IconRegistry findByAlias 1 0.00452399
+IconRegistry find by id or alias 1 0.00315262
+IconRegistry findByCategory 1 0.00604131
+IconRegistry allIds 1 0.0041869
+IconRegistry clear 1 0.0030941
+Full badge pipeline: attach → setCount → detach → observer 1 0.00612698
+Multi-target badge queries 1 0.00455332
+Icon registry: alias lookup enables short names 1 0.0031613
+clearObservers stops all badge notifications 1 0.00606251
+Multiple badge observers all fire 1 0.00426034
+MinimapRect default is invalid 1 0.0031763
+MinimapRect valid with positive size 1 0.00589671
+MinimapRect invalid with zero width 1 0.00417338
+MinimapRect equality 1 0.00304068
+MinimapRegion default is invalid 1 0.00611461
+MinimapRegion valid construction 1 0.00453363
+MinimapRegion invalid without id 1 0.00320706
+MinimapRegion invalid with zero-size rect 1 0.006047
+MinimapRegion equality by id 1 0.00417676
+MinimapViewport default is invalid 1 0.00307624
+MinimapViewport valid with positive rect 1 0.00581963
+MinimapManager empty state 1 0.00414874
+MinimapManager addRegion 1 0.0030373
+MinimapManager duplicate addRegion fails 1 0.00597838
+MinimapManager invalid region rejected 1 0.00436556
+MinimapManager removeRegion 1 0.00311379
+MinimapManager removeRegion unknown fails 1 0.00600044
+MinimapManager updateRegion 1 0.00421236
+MinimapManager updateRegion unknown fails 1 0.00310728
+MinimapManager setVisible 1 0.00636285
+MinimapManager visibleRegions filters by visibility 1 0.00471182
+MinimapManager setViewport 1 0.00327708
+MinimapManager setViewport invalid fails 1 0.00627359
+MinimapManager scrollViewport 1 0.00436653
+MinimapManager scrollViewport clamped at bounds 1 0.00318994
+MinimapManager scrollViewport locked fails 1 0.00603994
+MinimapManager lockViewport / unlockViewport 1 0.00437851
+MinimapManager region observer fires on add 1 0.00312066
+MinimapManager region observer fires on remove 1 0.0060163
+MinimapManager viewport observer fires on setViewport 1 0.00420465
+MinimapManager viewport observer fires on scroll 1 0.00306641
+MinimapManager removeObserver stops notifications 1 0.00604768
+MinimapManager clear empties regions 1 0.0044199
+Full minimap pipeline: add regions, set viewport, scroll, observe 1 0.00319433
+Visible region filter hides invisible 1 0.00610801
+clearObservers stops all notifications 1 0.00422941
+Multiple observers all fire 1 0.00313838
+annotationKindName returns correct strings 1 0.00614439
+AnnotationAnchor default is invalid 1 0.00455945
+AnnotationAnchor valid with targetId 1 0.00321987
+AnnotationAnchor invalid without targetId 1 0.00606256
+Annotation default is invalid 1 0.00417656
+Annotation valid construction 1 0.00309723
+Annotation invalid without id 1 0.00609483
+Annotation invalid without body 1 0.00450336
+Annotation invalid without anchor target 1 0.00319041
+Annotation equality by id 1 0.00613988
+AnnotationManager empty state 1 0.00435473
+AnnotationManager add 1 0.00314377
+AnnotationManager duplicate add fails 1 0.00580939
+AnnotationManager invalid annotation rejected 1 0.00417225
+AnnotationManager add assigns timestamp 1 0.00308614
+AnnotationManager remove 1 0.00579893
+AnnotationManager remove unknown fails 1 0.00416172
+AnnotationManager update 1 0.00305248
+AnnotationManager update unknown fails 1 0.00604795
+AnnotationManager resolve 1 0.00443434
+AnnotationManager resolve already resolved fails 1 0.00319871
+AnnotationManager reopen 1 0.00601845
+AnnotationManager reopen already open fails 1 0.00417685
+AnnotationManager findByTarget 1 0.00308892
+AnnotationManager findByAuthor 1 0.00619902
+AnnotationManager findByKind 1 0.00462631
+AnnotationManager unresolved and resolved filters 1 0.00337613
+AnnotationManager allIds 1 0.00629714
+AnnotationManager observer fires on add 1 0.00435465
+AnnotationManager observer fires on remove 1 0.00320842
+AnnotationManager observer fires on resolve 1 0.00601964
+AnnotationManager removeObserver stops notifications 1 0.00430353
+AnnotationManager clear empties all 1 0.00319768
+Full annotation pipeline: add → resolve → reopen → remove 1 0.00601144
+Filter by target and kind returns correct subsets 1 0.00433775
+Timestamps increment monotonically 1 0.00323089
+clearObservers stops all notifications 1 0.00600834
+indexedItemKindName returns correct strings 1 0.00424282
+IndexedItem default is invalid 1 0.00309406
+IndexedItem valid construction 1 0.00590972
+IndexedItem invalid without id 1 0.00429159
+IndexedItem invalid without label 1 0.00311976
+IndexedItem equality by id 1 0.00621651
+FilterQuery empty query matches everything 1 0.00455969
+FilterQuery text match case-insensitive 1 0.00327713
+FilterQuery kind filter 1 0.00621178
+FilterQuery required tags all must match 1 0.00431735
+FilterQuery required fields all must exist 1 0.00310161
+FilterQuery combined text + kind + tags + fields 1 0.0059131
+WorkspaceFilterIndex empty state 1 0.00436297
+WorkspaceFilterIndex addItem 1 0.00307836
+WorkspaceFilterIndex duplicate addItem fails 1 0.00597175
+WorkspaceFilterIndex invalid item rejected 1 0.00415429
+WorkspaceFilterIndex removeItem 1 0.00301084
+WorkspaceFilterIndex removeItem unknown fails 1 0.00602154
+WorkspaceFilterIndex updateItem 1 0.0044635
+WorkspaceFilterIndex updateItem unknown fails 1 0.00318907
+WorkspaceFilterIndex query by text 1 0.00602591
+WorkspaceFilterIndex findByKind 1 0.00418189
+WorkspaceFilterIndex findByTag 1 0.00305687
+WorkspaceFilterIndex allIds 1 0.00602583
+WorkspaceFilterIndex observer fires on addItem 1 0.0043608
+WorkspaceFilterIndex observer fires on removeItem 1 0.00305822
+WorkspaceFilterIndex removeObserver stops notifications 1 0.006151
+WorkspaceFilterIndex clear empties all items 1 0.00452572
+Full filter index pipeline: add → query → update → remove 1 0.00319713
+Combined filter: text + kind + tags + fields 1 0.00605847
+clearObservers stops all notifications 1 0.00420296
+Multiple observers all fire 1 0.00311384
+ThemeSlot name helpers 1 0.00601709
+ThemeColorMap default state 1 0.00437177
+ThemeColorMap set and get 1 0.0032895
+ThemeColorMap isDefined false for unset slot 1 0.00760121
+ThemeColorMap reset single slot 1 0.00571545
+ThemeColorMap resetAll clears all slots 1 0.00327592
+ThemeColorMap allDefined requires all 14 slots 1 0.0064768
+ThemeColorMap definedCount tracks correctly 1 0.00454936
+ThemeDescriptor default is invalid 1 0.00322752
+ThemeDescriptor valid with id and displayName 1 0.0108565
+ThemeDescriptor invalid without id 1 0.00919351
+ThemeDescriptor invalid without displayName 1 0.00701789
+ThemeDescriptor isBuiltIn flag 1 0.0124965
+ThemeEnforcer passes fully-defined theme 1 0.00802784
+ThemeEnforcer reports violation for each missing slot 1 0.00355269
+ThemeEnforcer reports violation for invalid descriptor 1 0.00656741
+ThemeEnforcer violation carries slot info 1 0.00459369
+ThemeRegistry empty state 1 0.00326991
+ThemeRegistry register theme 1 0.00627198
+ThemeRegistry duplicate registration fails 1 0.00443035
+ThemeRegistry invalid registration fails 1 0.00335478
+ThemeRegistry find returns correct descriptor 1 0.00614593
+ThemeRegistry find returns null for unknown id 1 0.00420567
+ThemeRegistry apply theme sets active 1 0.00304475
+ThemeRegistry apply unknown theme fails 1 0.0058669
+ThemeRegistry unregister removes theme 1 0.00430912
+ThemeRegistry cannot unregister active theme 1 0.00293396
+ThemeRegistry unregister unknown fails 1 0.00592834
+ThemeRegistry allIds returns all registered ids 1 0.00433048
+ThemeRegistry observer fires on applyTheme 1 0.00313509
+ThemeRegistry observer fires on theme switch 1 0.0061157
+ThemeRegistry clearObservers removes all observers 1 0.00446192
+ThemeRegistry clear resets registry 1 0.00316603
+Theme integration: register, enforce, apply, switch 1 0.00598305
+Theme integration: invalid theme rejected by enforcer 1 0.0042152
+Theme integration: multiple observers fire in order 1 0.00304066
+TourStepKind name helpers 1 0.0060064
+TourState name helpers 1 0.00438522
+TourStep default is invalid 1 0.00312511
+TourStep valid with id and title 1 0.00597422
+TourStep invalid without id 1 0.0041405
+TourStep invalid without title 1 0.00301756
+TourStep stores kind correctly 1 0.00592394
+TourSequence default is invalid 1 0.00436393
+TourSequence invalid with no steps 1 0.00309024
+TourSequence valid after adding steps 1 0.00626316
+TourSequence addStep rejects invalid step 1 0.00444589
+TourSequence stepAt returns correct step 1 0.00325107
+TourSequence stepAt out-of-range returns null 1 0.00612079
+TourProgress default is inactive 1 0.0044304
+TourProgress isActive for valid indices 1 0.00313039
+TourProgress fraction computation 1 0.00595082
+TourProgress isActive false when stepIndex == totalSteps 1 0.00412308
+TourController default state is Idle 1 0.00299508
+TourController load valid sequence 1 0.00596055
+TourController load invalid sequence fails 1 0.00443321
+TourController start transitions to Running 1 0.00314118
+TourController start fails without loaded sequence 1 0.00597465
+TourController start fails if already running 1 0.0041384
+TourController next advances step 1 0.003026
+TourController next on last step completes tour 1 0.00607204
+TourController next fails when not Running 1 0.00444909
+TourController prev goes back 1 0.0031901
+TourController prev fails at first step 1 0.00626071
+TourController pause and resume 1 0.00447913
+TourController pause fails when not Running 1 0.00323317
+TourController resume fails when not Paused 1 0.0061369
+TourController cancel from Running 1 0.00427254
+TourController cancel from Paused 1 0.00317745
+TourController cancel fails when Idle 1 0.00588272
+TourController currentStep returns active step 1 0.00417565
+TourController currentStep null when Idle 1 0.00307929
+TourController reset returns to Idle 1 0.00609827
+TourController observer fires on state change 1 0.00454735
+TourController observer fires on next 1 0.00320603
+TourController clearObservers removes observers 1 0.00611248
+Tour integration: full walk-through 1 0.0042273
+Tour integration: pause mid-tour then resume 1 0.00312261
+Tour integration: progress fraction increases 1 0.00611505
+SplitOrientation name helpers 1 0.00443665
+TabEntry default is invalid 1 0.00318191
+TabEntry valid with id and label 1 0.00610776
+TabEntry invalid without id 1 0.00428822
+TabEntry invalid without label 1 0.00314573
+TabEntry equality by id 1 0.00620586
+TabGroup default empty state 1 0.00456539
+TabGroup isValid requires groupId 1 0.00330986
+TabGroup addTab sets first as active 1 0.0061164
+TabGroup addTab duplicate fails 1 0.00424043
+TabGroup addTab invalid tab fails 1 0.00313868
+TabGroup removeTab removes and adjusts active 1 0.00574559
+TabGroup removeTab unknown fails 1 0.00413014
+TabGroup setActiveTab succeeds for existing tab 1 0.00304104
+TabGroup setActiveTab fails for unknown tab 1 0.00607947
+TabGroup hasTab correctly 1 0.00442999
+TabGroup empty after all tabs removed 1 0.00315424
+SplitPane default is a leaf 1 0.00597641
+SplitPane invalid without id 1 0.00418357
+SplitPane valid with id 1 0.00308374
+SplitPane branch when orientation is set 1 0.00595204
+SplitViewController initialises with root leaf 1 0.00431893
+SplitViewController containsPane root 1 0.00321867
+SplitViewController setActivePane succeeds for known pane 1 0.00617883
+SplitViewController setActivePane fails for unknown pane 1 0.00431057
+SplitViewController addTab to root pane 1 0.0031085
+SplitViewController addTab duplicate fails 1 0.00581915
+SplitViewController addTab to unknown pane fails 1 0.00417028
+SplitViewController removeTab removes correctly 1 0.00302726
+SplitViewController removeTab unknown tab fails 1 0.00594535
+SplitViewController setActiveTab succeeds 1 0.00437302
+SplitViewController splitPane horizontally 1 0.00309141
+SplitViewController splitPane vertically 1 0.00596078
+SplitViewController splitPane with None orientation fails 1 0.00416686
+SplitViewController splitPane with duplicate secondId fails 1 0.0030351
+SplitViewController splitPane on branch fails 1 0.00603809
+SplitViewController splitPane preserves existing tabs in first child 1 0.00439462
+SplitViewController collapsePane reverts to leaf 1 0.00315572
+SplitViewController collapsePane on leaf fails 1 0.00608644
+SplitViewController observer fires on addTab 1 0.00442865
+SplitViewController observer fires on splitPane 1 0.0032571
+SplitViewController clearObservers removes observers 1 0.006138
+SplitView integration: split root, add tabs to both panes 1 0.00420409
+SplitView integration: switch active pane 1 0.00306487
+SplitView integration: collapse after adding tabs keeps first-child tabs 1 0.00613158
+SplitView integration: multiple observers 1 0.00458971
+FrameBudget default is valid 1 0.00320207
+FrameBudget invalid when totalMs is zero 1 0.00602119
+FrameBudget invalid when updateMs is zero 1 0.0041927
+FrameResult default state is zeroed 1 0.00312085
+FrameStatistics default state 1 0.00586078
+FrameStatistics reset clears all fields 1 0.00418506
+FrameStatistics budgetUtilization returns zero for zero budget 1 0.00307024
+FrameStatistics budgetUtilization correct ratio 1 0.00575046
+WorkspaceFrameController default target is 60 FPS 1 0.00415622
+WorkspaceFrameController default maxDtSec is 0.1 1 0.00309487
+WorkspaceFrameController setTargetFPS updates budget 1 0.00597295
+WorkspaceFrameController setTargetFPS ignores non-positive 1 0.00428828
+WorkspaceFrameController setMaxDeltaTime updates maxDtSec 1 0.00308473
+WorkspaceFrameController setEMAAlpha within valid range 1 0.00609361
+WorkspaceFrameController setEMAAlpha ignores out-of-range 1 0.00446631
+WorkspaceFrameController setBudget accepts valid budget 1 0.0031353
+WorkspaceFrameController setBudget ignores invalid budget 1 0.00597097
+WorkspaceFrameController beginFrame increments frameNumber 1 0.00412153
+WorkspaceFrameController beginFrame clamps negative dt 1 0.00303494
+WorkspaceFrameController beginFrame clamps dt above maxDtSec 1 0.00568468
+WorkspaceFrameController first frame seeds EMA with clamped dt 1 0.00414
+WorkspaceFrameController markUpdateDone and markRenderDone record timing 1 0.003001
+WorkspaceFrameController endFrame increments totalFrames 1 0.0058784
+WorkspaceFrameController skippedFrames when over budget 1 0.00429039
+WorkspaceFrameController wasSkipped set on next frame after budget overrun 1 0.00305042
+WorkspaceFrameController shouldSleep when under budget 1 0.00593177
+WorkspaceFrameController sleepMs returns correct slack 1 0.00417046
+WorkspaceFrameController resetStats clears statistics 1 0.00299707
+FrameController integration: 10-frame loop accumulates stats 1 0.00589699
+FrameController integration: budget overrun is detected 1 0.00434509
+FrameController integration: EMA converges toward steady-state dt 1 0.00306666
+ProjectFileVersion default is 1.0.0 1 0.00621763
+ProjectFileVersion toString formats major.minor.patch 1 0.0044823
+ProjectFileVersion isCompatible same version 1 0.00318531
+ProjectFileVersion isCompatible file minor older than reader 1 0.00602059
+ProjectFileVersion incompatible when file minor is newer than reader 1 0.00414512
+ProjectFileVersion incompatible when major version differs 1 0.00303174
+ProjectFileVersion parse valid string 1 0.00570693
+ProjectFileVersion parse fails on invalid string 1 0.00410452
+ProjectFileVersion current returns 1.0.0 1 0.00298153
+ProjectFileVersion equality operator 1 0.00600932
+ProjectFileSection default is empty 1 0.0044203
+ProjectFileSection set and get value 1 0.00317348
+ProjectFileSection set overwrites existing key 1 0.00609644
+ProjectFileSection get returns nullptr for missing key 1 0.00423026
+ProjectFileSection getOr returns default for missing key 1 0.00311296
+ProjectFileSection getOr returns value for existing key 1 0.00612932
+ProjectFileSection has returns correct result 1 0.00446031
+ProjectFileSection remove existing key succeeds 1 0.00314251
+ProjectFileSection remove missing key fails 1 0.00603412
+ProjectFileSection clear empties all entries 1 0.00418492
+WorkspaceProjectFile default is invalid 1 0.00308082
+WorkspaceProjectFile valid with id and name 1 0.00567332
+WorkspaceProjectFile invalid without id 1 0.00414339
+WorkspaceProjectFile invalid without name 1 0.00302127
+WorkspaceProjectFile setContentRoot stores path 1 0.00595468
+WorkspaceProjectFile section() creates section on demand 1 0.00437658
+WorkspaceProjectFile section() returns existing section 1 0.00308548
+WorkspaceProjectFile findSection returns nullptr for missing 1 0.00597075
+WorkspaceProjectFile removeSection removes correctly 1 0.00417651
+WorkspaceProjectFile removeSection fails for unknown name 1 0.0030914
+WorkspaceProjectFile serialize produces magic header 1 0.0058722
+WorkspaceProjectFile serialize and parse round-trip 1 0.00425016
+WorkspaceProjectFile serialize and parse with sections 1 0.00313604
+WorkspaceProjectFile parse fails on missing magic 1 0.00598247
+WorkspaceProjectFile parse fails on empty input 1 0.00425495
+ProjectFile integration: full round-trip preserves all data 1 0.00315222
+ProjectFile integration: version compatibility check 1 0.00618454
+ProjectFile integration: multiple sections independent 1 0.00453455
+ChatRole name helpers correct 1 0.00319541
+ChatMessage default role is User 1 0.00632649
+ChatMessage isAssistant true when role is Assistant 1 0.00448843
+ChatMessage isSystem true when role is System 1 0.00315313
+ChatMessage pending flag defaults to false 1 0.0059823
+ChatSession default is empty 1 0.0041207
+ChatSession addUserMessage adds with correct role 1 0.00303432
+ChatSession addAssistantMessage adds with correct role 1 0.00574764
+ChatSession addSystemMessage adds with correct role 1 0.00412857
+ChatSession lastMessage returns most recent message 1 0.00303601
+ChatSession lastMessage returns nullptr when empty 1 0.00563193
+ChatSession id is preserved 1 0.00407754
+ChatSession clear removes all messages 1 0.00296503
+ChatSession message ids are unique 1 0.00594472
+AISessionContextType name helpers all values 1 0.00437828
+AISessionContext default is invalid 1 0.00314482
+AISessionContext valid with type and content 1 0.00621401
+AISessionContext invalid without content 1 0.00440974
+AISessionContext pinned flag defaults to false 1 0.00328028
+AIPanelSession default is empty 1 0.00606645
+AIPanelSession sessionId is preserved 1 0.00419593
+AIPanelSession submitUserTurn increments turnCount 1 0.00305078
+AIPanelSession receiveAssistantResponse does not increment turnCount 1 0.00571576
+AIPanelSession addContext valid context 1 0.00408094
+AIPanelSession addContext invalid context rejected 1 0.00300805
+AIPanelSession removeContext removes by label 1 0.00599873
+AIPanelSession removeContext fails for unknown label 1 0.00440621
+AIPanelSession findContext returns correct context 1 0.00311988
+AIPanelSession clearUnpinnedContexts removes only unpinned 1 0.00604341
+AIPanelSession setTitle and title accessors 1 0.00419002
+AIPanelSession reset clears everything 1 0.00298993
+AIPanelSession integration: multi-turn conversation 1 0.00598047
+AIPanelSession integration: pinned context survives clearUnpinned 1 0.00439985
+AIPanelSession integration: reset and restart fresh session 1 0.00310722
+ConsoleCmdScope name helpers all values 1 0.00588153
+ConsoleCmdArgType name helpers all values 1 0.00412842
+ConsoleCmdExecResult name helpers all values 1 0.0029875
+ConsoleCommand stores name scope argType 1 0.00589722
+ConsoleCommand default enabled and not hidden 1 0.00433349
+ConsoleCommand setDescription stores description 1 0.00304388
+ConsoleCommand setEnabled false disables command 1 0.0060038
+ConsoleCommand setHidden true hides command 1 0.00422622
+ConsoleCommandBus default is empty 1 0.00309515
+ConsoleCommandBus registerCommand adds command 1 0.00623414
+ConsoleCommandBus registerCommand duplicate fails 1 0.00448063
+ConsoleCommandBus unregisterCommand removes command 1 0.00316915
+ConsoleCommandBus unregisterCommand fails for unknown name 1 0.00618657
+ConsoleCommandBus findCommand returns nullptr for unknown 1 0.00459069
+ConsoleCommandBus findCommand returns pointer to existing 1 0.00320902
+ConsoleCommandBus execute known command returns Ok 1 0.00607857
+ConsoleCommandBus execute unknown command returns NotFound 1 0.00418483
+ConsoleCommandBus execute disabled command returns PermissionDenied 1 0.00307482
+ConsoleCommandBus countByScope filters correctly 1 0.00577907
+ConsoleCommandBus hiddenCount counts hidden commands 1 0.00412103
+ConsoleCommandBus enabledCount counts enabled commands 1 0.00302069
+ConsoleCmdBus integration: multi-scope command palette 1 0.00575503
+ConsoleCmdBus integration: execute and lastExec tracking 1 0.00413742
+ConsoleCmdBus integration: disable then re-enable command 1 0.00301679
+DockSplitOrientation name helpers 1 0.00589988
+DockNodeKind name helpers 1 0.00431906
+DockTreeNode default is invalid 1 0.00321046
+DockTreeNode valid when id is non-zero 1 0.00608478
+DockTreeNode default kind is TabStack 1 0.00420624
+DockTreeNode isSplit when kind is Split 1 0.00308815
+DockTreeNode addPanel appends panel id 1 0.00606894
+DockTreeNode removePanel removes existing panel 1 0.00442951
+DockTreeNode removePanel fails for unknown panel 1 0.00311489
+DockTree default is empty 1 0.00599066
+DockTree addNode succeeds for valid node 1 0.00413392
+DockTree addNode sets rootId on first node 1 0.00308103
+DockTree addNode rejects invalid node (id==0) 1 0.00597849
+DockTree addNode rejects duplicate id 1 0.00437128
+DockTree removeNode removes existing node 1 0.00310986
+DockTree removeNode fails for unknown id 1 0.00597048
+DockTree findNode returns nullptr for unknown id 1 0.00416833
+DockTree findNode returns correct node 1 0.0030268
+DockTree findNodeMut allows mutation 1 0.0058135
+DockTree setRootId changes root 1 0.00419397
+DockTree clear resets tree 1 0.00303319
+DockTreeSerializer serialize produces root line 1 0.0061233
+DockTreeSerializer serialize encodes TabStack node 1 0.00452176
+DockTreeSerializer serialize encodes Split node 1 0.00318116
+DockTreeSerializer deserialize fails on empty input 1 0.0060688
+DockTreeSerializer deserialize fails when no root line 1 0.0042011
+DockTreeSerializer round-trip TabStack preserves panels 1 0.00303671
+DockTreeSerializer round-trip Split preserves children and ratio 1 0.00565747
+DockTreeSerializer integration: full layout round-trip 1 0.00412368
+DockTreeSerializer integration: empty tree serializes and fails deserialization 1 0.00299739
+DockTreeSerializer integration: mutate then re-serialize 1 0.00608883
+ContentRouterPolicy name helpers all values 1 0.00447945
+RouteResult default is not matched 1 0.00322642
+RoutingRule invalid without name 1 0.00599778
+RoutingRule invalid without toolId 1 0.00418279
+RoutingRule valid with name and toolId 1 0.00304324
+RoutingRule matches correct type tag 1 0.00598409
+RoutingRule wildcard Unknown matches any type 1 0.00442705
+RoutingRule disabled rule never matches 1 0.00315882
+RoutingRule source filter blocks non-matching source 1 0.00595237
+ContentRouter default policy is Reject 1 0.00413777
+ContentRouter addRule succeeds for valid rule 1 0.00305814
+ContentRouter addRule rejects invalid rule (no name) 1 0.00599079
+ContentRouter addRule rejects duplicate name 1 0.0044339
+ContentRouter removeRule removes existing rule 1 0.00313284
+ContentRouter removeRule fails for unknown name 1 0.00600038
+ContentRouter hasRule returns correct result 1 0.00419562
+ContentRouter enableRule toggles rule enabled state 1 0.00306378
+ContentRouter route returns matched result for known type 1 0.0062122
+ContentRouter route fails with Reject policy on no match 1 0.00462371
+ContentRouter route uses default tool on UseDefault policy 1 0.00320039
+ContentRouter route signals prompt on Prompt policy 1 0.00597177
+ContentRouter route respects priority ordering 1 0.00413041
+ContentRouter route increments routeCount on match 1 0.00303531
+ContentRouter route increments missCount on no match 1 0.00577104
+ContentRouter clearRules empties rule list 1 0.00413139
+DropState name helpers all values 1 0.00303921
+DropEffect name helpers all values 1 0.00605562
+DropTargetHandler default state is Idle 1 0.00441001
+DropTargetHandler default effect is Copy 1 0.00317376
+DropTargetHandler onDragEnter accepts known extension 1 0.00613657
+DropTargetHandler onDragEnter rejects unknown extension by default 1 0.00428673
+DropTargetHandler onDragEnter accepts unknown extension when acceptUnknown set 1 0.00314174
+DropTargetHandler onDragOver returns Copy when not rejected 1 0.00615832
+DropTargetHandler onDragOver returns None when rejected 1 0.00447936
+DropTargetHandler onDragLeave sets DragLeave state 1 0.00315549
+DropTargetHandler onDrop without pipeline returns 0 1 0.00604436
+DropTargetHandler lastDroppedPaths stores drop paths 1 0.00424473
+DropTargetHandler reset returns to Idle 1 0.00309508
+DropTargetHandler setDefaultEffect changes effect 1 0.00579554
+ContentRouter integration: multi-type routing pipeline 1 0.00409936
+ContentRouter integration: disable and fallback to default 1 0.0030099
+DropTargetHandler integration: enter → hover → drop sequence 1 0.0060619
+ImportJobStatus – all values have names 1 0.00442975
+ImportJob – default state is Queued 1 0.00316144
+ImportJob – isDone only for Done status 1 0.0060141
+ImportJob – isFailed only for Failed status 1 0.00415618
+ImportJob – isActive during in-progress states 1 0.00300868
+ImportJob – isFinished for Done/Failed/Cancelled 1 0.00586256
+AssetImportQueue – default empty 1 0.00435411
+AssetImportQueue – enqueue adds job 1 0.0030953
+AssetImportQueue – find by id 1 0.00594026
+AssetImportQueue – find unknown id returns nullptr 1 0.00411842
+AssetImportQueue – startNext advances first queued job 1 0.00300377
+AssetImportQueue – startNext returns false when none queued 1 0.00593016
+AssetImportQueue – advance progresses job through pipeline 1 0.00437507
+AssetImportQueue – advance updates totalCompleted 1 0.00313816
+AssetImportQueue – failJob marks job as failed 1 0.00596214
+AssetImportQueue – failJob ignores finished jobs 1 0.00412541
+AssetImportQueue – cancel queued job 1 0.00302026
+AssetImportQueue – cancel unknown id returns false 1 0.00603594
+AssetImportQueue – clearFinished removes done/failed/cancelled jobs 1 0.00449151
+AssetImportQueue – priority ordering: high priority first 1 0.00314411
+AssetImportQueue – onComplete callback fires on Done 1 0.00601612
+AssetImportQueue – enqueueFromPipeline ingests pending items 1 0.00419972
+AssetImportQueue – full pipeline: enqueue, advance, complete 1 0.0030841
+AssetImportQueue – mixed: some complete, some fail, some cancel 1 0.00574365
+LayoutPanelType – all values have names 1 0.00414023
+LayoutDockZone – all values have names 1 0.00302758
+LayoutPanel – default visible and not pinned 1 0.0059466
+LayoutPanel – hide and show 1 0.00439793
+LayoutPanel – pin and unpin 1 0.0031558
+LayoutPanel – hasSize true when both dimensions set 1 0.00596674
+LayoutPanel – hasSize false when one dimension is zero 1 0.00420797
+LayoutSplit – invalid without panel ids 1 0.00306292
+LayoutSplit – invalid when ratio is 0 or 1 1 0.00588112
+LayoutSplit – valid with both ids and 0 < ratio < 1 1 0.00420676
+LayoutSplit – flipOrientation toggles isHorizontal 1 0.00311443
+WorkspaceLayout – constructed with name, initially empty 1 0.0061774
+WorkspaceLayout – addPanel succeeds 1 0.0044978
+WorkspaceLayout – addPanel rejects duplicate id 1 0.00317421
+WorkspaceLayout – removePanel succeeds 1 0.00600063
+WorkspaceLayout – removePanel unknown returns false 1 0.00418772
+WorkspaceLayout – findPanel returns pointer 1 0.00308971
+WorkspaceLayout – findPanel returns nullptr for unknown 1 0.00581054
+WorkspaceLayout – findPanel mutation persists 1 0.00416851
+WorkspaceLayout – addSplit rejects invalid split 1 0.00304125
+WorkspaceLayout – addSplit accepts valid split 1 0.00600872
+WorkspaceLayout – visiblePanelCount 1 0.00437102
+WorkspaceLayout – pinnedPanelCount 1 0.00310635
+WorkspaceLayout – showAll and hideAll 1 0.00593355
+WorkspaceLayoutManager – default empty, no active 1 0.00417008
+WorkspaceLayoutManager – createLayout returns pointer 1 0.00303194
+WorkspaceLayoutManager – createLayout rejects duplicate name 1 0.00607606
+WorkspaceLayoutManager – removeLayout succeeds 1 0.00449389
+WorkspaceLayoutManager – removeLayout unknown returns false 1 0.00316388
+WorkspaceLayoutManager – findLayout returns pointer 1 0.00598045
+WorkspaceLayoutManager – findLayout returns nullptr for unknown 1 0.00414574
+WorkspaceLayoutManager – setActive succeeds for existing layout 1 0.00302702
+WorkspaceLayoutManager – setActive fails for unknown layout 1 0.0059482
+WorkspaceLayoutManager – activeLayout returns correct pointer 1 0.00437896
+WorkspaceLayoutManager – activeLayout returns nullptr when no active 1 0.00309719
+WorkspaceLayoutManager – removing active layout clears active name 1 0.00604706
+WorkspaceLayout integration – build full layout, switch active 1 0.00429955
+WorkspaceLayout integration – hide all, show all, count panels 1 0.00316164
+logLevelName – all levels have names 1 0.00610353
+logLevelAtLeast – ordering is Trace < Debug < Info < Warn < Error < Fatal 1 0.00431306
+LogEntry – default is invalid (seq 0, empty message) 1 0.00308811
+LogEntry – valid when seq > 0 and message non-empty 1 0.00578911
+LogEntry – isError for Error and Fatal 1 0.00410259
+LogEntry – isWarning for Warn and above 1 0.00301605
+LogSink – invalid without id 1 0.00603302
+LogSink – invalid without name 1 0.00443702
+LogSink – invalid without callback 1 0.00313782
+LogSink – valid with id + name + callback 1 0.00595454
+LogSink – accepts filters by minLevel 1 0.00418448
+LogSink – accepts filters by tagFilter (empty = any tag) 1 0.00306891
+LogSink – accepts returns false when disabled 1 0.0060762
+LogRoute – invalid without id 1 0.00441913
+LogRoute – invalid without name 1 0.00315463
+LogRoute – valid with id and name 1 0.006281
+LogRoute – matchesSource: empty pattern matches anything 1 0.00452637
+LogRoute – matchesSource: prefix match 1 0.00312164
+LoggingRouteV1 – default empty state 1 0.00608444
+LoggingRouteV1 – addSink stores valid sink 1 0.00428395
+LoggingRouteV1 – addSink rejects invalid sink 1 0.00314066
+LoggingRouteV1 – addSink rejects duplicate id 1 0.00578646
+LoggingRouteV1 – removeSink succeeds 1 0.00410874
+LoggingRouteV1 – removeSink unknown returns false 1 0.00300505
+LoggingRouteV1 – addRoute stores valid route 1 0.00599279
+LoggingRouteV1 – addRoute rejects invalid route (no id) 1 0.00444031
+LoggingRouteV1 – addRoute rejects duplicate id 1 0.00320103
+LoggingRouteV1 – removeRoute succeeds 1 0.00594867
+LoggingRouteV1 – log buffers entry 1 0.00413157
+LoggingRouteV1 – convenience helpers (trace/debug/info/warn/error/fatal) 1 0.00303341
+LoggingRouteV1 – countByLevel filters correctly 1 0.00575877
+LoggingRouteV1 – clearBuffer empties buffer but keeps logCount 1 0.00413104
+LoggingRouteV1 – sink receives logged entries above minLevel 1 0.0030122
+LoggingRouteV1 – setSinkEnabled disables delivery 1 0.00623881
+LoggingRouteV1 – setMinLevel updates sink threshold 1 0.00459969
+LoggingRouteV1 – findSink returns const pointer 1 0.00322516
+LoggingRouteV1 integration – multi-sink with different level filters 1 0.00614557
+LoggingRouteV1 integration – tag-filtered sink 1 0.00448003
+LoggingRouteV1 integration – buffer accumulates multiple messages 1 0.00310937
+LoggingRouteV1 integration – sequential seq numbers 1 0.00587903
+NotificationType – all four values exist 1 0.00410599
+EditorNotification – default is not expired 1 0.00299844
+EditorNotification – isExpired when elapsed >= ttl 1 0.00566199
+EditorNotification – not expired when elapsed < ttl 1 0.00408461
+EditorNotification – progress 0 at start, 1 at expiry 1 0.00297324
+EditorNotification – progress capped at 1 when over-elapsed 1 0.00566917
+EditorNotification – zero ttl yields progress 1 1 0.00410121
+NotificationQueue – default empty 1 0.00302434
+NotificationQueue – push adds notification 1 0.00570668
+NotificationQueue – current returns first notification 1 0.00410751
+NotificationQueue – push multiple, count reflects all 1 0.00300062
+NotificationQueue – tick advances elapsed 1 0.005916
+NotificationQueue – tick removes expired notifications 1 0.00435573
+NotificationQueue – tick removes all when all expire 1 0.00308561
+NotificationQueue – clear empties queue 1 0.00597177
+NotificationQueue – push uses default ttl of 3 1 0.00414797
+NotificationQueue integration – FIFO ordering preserved through ticks 1 0.00307794
+NotificationQueue integration – progress tracking for active notification 1 0.00604551
+NotificationSeverity – all values have names 1 0.00442186
+NotificationState – all values have names 1 0.0031553
+Notification – default state is Pending 1 0.00587924
+Notification – show transitions to Shown 1 0.00414737
+Notification – dismiss transitions to Dismissed 1 0.0029981
+Notification – expire transitions to Expired 1 0.00585791
+Notification – isError for Error and Critical 1 0.00422176
+Notification – isCritical only for Critical 1 0.00295603
+Notification – durationMs default 3000 1 0.00618279
+NotificationChannel – constructed with name, initially empty 1 0.00457892
+NotificationChannel – post shows notification 1 0.00323034
+NotificationChannel – post rejects duplicate id 1 0.00607692
+NotificationChannel – find returns mutable pointer 1 0.00419865
+NotificationChannel – find returns nullptr for unknown 1 0.00308973
+NotificationChannel – dismiss changes state 1 0.00583096
+NotificationChannel – dismiss unknown returns false 1 0.00417252
+NotificationChannel – errorCount counts Error+ severity 1 0.00303188
+NotificationChannel – clearDismissed removes dismissed and expired 1 0.0060394
+NotificationChannel – clearDismissed returns 0 when nothing to clear 1 0.00439152
+NotificationSystem – default empty 1 0.00312539
+NotificationSystem – createChannel returns pointer 1 0.00595044
+NotificationSystem – createChannel rejects duplicate name 1 0.00416524
+NotificationSystem – removeChannel succeeds 1 0.0030748
+NotificationSystem – removeChannel unknown returns false 1 0.00580634
+NotificationSystem – findChannel returns pointer 1 0.0041811
+NotificationSystem – findChannel returns nullptr for unknown 1 0.00309987
+NotificationSystem – post to existing channel succeeds 1 0.00614555
+NotificationSystem – post to unknown channel fails 1 0.00445546
+NotificationSystem – totalActive sums across channels 1 0.00313804
+NotificationSystem – totalActive drops when dismissed 1 0.00600334
+NotificationSystem integration – multi-channel error aggregation 1 0.00424966
+NotificationSystem integration – dismiss and clearDismissed across channel 1 0.00309758
+NotificationSystem integration – persistent notification survives dismiss of others 1 0.00577323
+UndoActionType – all values have names 1 0.00411965
+UndoActionState – all values have names 1 0.00300352
+UndoAction – default state is Pending 1 0.00593172
+UndoAction – apply transitions to Applied 1 0.00437293
+UndoAction – undo from Applied transitions to Undone 1 0.00307387
+UndoAction – undo from non-Applied has no effect 1 0.00590716
+UndoAction – invalidate marks action invalid 1 0.00413483
+UndoGroup – constructed with name, initially empty 1 0.00298711
+UndoGroup – addAction succeeds 1 0.00595501
+UndoGroup – addAction rejects duplicate id 1 0.00436831
+UndoGroup – removeAction succeeds 1 0.00305972
+UndoGroup – removeAction unknown returns false 1 0.00603891
+UndoGroup – find returns mutable pointer 1 0.0042393
+UndoGroup – find returns nullptr for unknown 1 0.00309989
+UndoGroup – applyAll marks all actions Applied 1 0.00599312
+UndoGroup – undoAll reverts all Applied actions 1 0.00438576
+UndoGroup – undoAll skips non-Applied actions 1 0.00305211
+UndoRedoSystem – default empty state 1 0.00584099
+UndoRedoSystem – pushGroup enables undo 1 0.00407259
+UndoRedoSystem – undo returns true and moves to redo 1 0.00297062
+UndoRedoSystem – redo returns true and moves back to undo 1 0.00584512
+UndoRedoSystem – undo when empty returns false 1 0.0043514
+UndoRedoSystem – redo when empty returns false 1 0.00305269
+UndoRedoSystem – pushGroup clears redo stack 1 0.00588457
+UndoRedoSystem – multiple pushes stack correctly 1 0.00415677
+UndoRedoSystem – undo moves from top of stack 1 0.00301074
+UndoRedoSystem – clear empties both stacks 1 0.00594873
+UndoRedoSystem integration – multi-step undo/redo cycle 1 0.00440785
+UndoRedoSystem integration – group applyAll/undoAll through system 1 0.0031301
+SelectionContextType – all values have names 1 0.0060994
+SelectionRecord – default is invalid 1 0.00430909
+SelectionRecord – isValid when id is set 1 0.00312615
+SelectionRecord – equality by id 1 0.00621508
+SelectionSet – default is empty 1 0.00444527
+SelectionSet – add valid record 1 0.00324115
+SelectionSet – add invalid record rejected 1 0.00598634
+SelectionSet – add duplicate rejected 1 0.00415935
+SelectionSet – remove existing 1 0.00299714
+SelectionSet – remove unknown returns false 1 0.00599878
+SelectionSet – contains and find 1 0.00442606
+SelectionSet – clear empties and bumps version 1 0.00316013
+SelectionSet – items returns all records 1 0.00606598
+SelectionSet – countByContext 1 0.00423635
+SelectionHistory – default has no history 1 0.00305484
+SelectionHistory – push one entry 1 0.00605292
+SelectionHistory – back and forward 1 0.0044312
+SelectionHistory – back at beginning returns false 1 0.00310563
+SelectionHistory – forward at end returns false 1 0.00607631
+SelectionHistory – push truncates forward history 1 0.00427237
+SelectionHistory – clear empties everything 1 0.00312745
+SelectionHistory – MAX_HISTORY caps depth 1 0.00605356
+SelectionSystem – default empty 1 0.00447955
+SelectionSystem – createSet 1 0.00318997
+SelectionSystem – createSet duplicate rejected 1 0.00594902
+SelectionSystem – createSet empty name rejected 1 0.00413941
+SelectionSystem – removeSet 1 0.00302263
+SelectionSystem – removeSet unknown returns false 1 0.00600766
+SelectionSystem – removeSet clears activeSet name 1 0.00443733
+SelectionSystem – setActiveSet 1 0.00311697
+SelectionSystem – setActiveSet unknown fails 1 0.00597591
+SelectionSystem – setActiveContext 1 0.00418698
+SelectionSystem – select adds to active set 1 0.00312567
+SelectionSystem – select with no active set returns false 1 0.00592421
+SelectionSystem – deselect removes from active set 1 0.00417894
+SelectionSystem – clearActive empties active set 1 0.00301259
+SelectionSystem – MAX_SETS enforced 1 0.00603326
+SelectionSystem – clearAll clears sets and history 1 0.00436926
+Integration – multi-context selection 1 0.0030442
+Integration – history navigation after select/deselect 1 0.00605736
+Integration – countByContext across sets 1 0.00447787
+ProjectManagerState – all values have names 1 0.00315564
+RecentProjectEntry – default is not valid 1 0.0059212
+RecentProjectEntry – isValid when path set 1 0.00412729
+ProjectManagerConfig – defaults 1 0.00305273
+ProjectManager – default state is Idle 1 0.00569121
+ProjectManager – newProject transitions to Open 1 0.00410498
+ProjectManager – newProject empty path rejected 1 0.00303617
+ProjectManager – newProject rejected when already open 1 0.00600784
+ProjectManager – openProject works same as newProject 1 0.00434885
+ProjectManager – markDirty sets dirty flag 1 0.00310601
+ProjectManager – markDirty no-op when not open 1 0.00584617
+ProjectManager – save clears dirty flag 1 0.00412648
+ProjectManager – save fails when not open 1 0.00300688
+ProjectManager – closeProject from Open transitions to Idle 1 0.00606001
+ProjectManager – closeProject fails when already Idle 1 0.00441942
+ProjectManager – setError transitions to Error state 1 0.0031187
+ProjectManager – clearError from Error returns to Idle 1 0.00602954
+ProjectManager – clearError no-op when not in error state 1 0.00426562
+ProjectManager – closeProject from Error resets state 1 0.00315215
+ProjectManager – tickAutoSave no-op when not open 1 0.00577592
+ProjectManager – tickAutoSave no-op when not dirty 1 0.0040602
+ProjectManager – tickAutoSave no-op when disabled 1 0.00299218
+ProjectManager – tickAutoSave triggers after interval 1 0.00596729
+ProjectManager – autoSaveAccum resets after trigger 1 0.00440199
+ProjectManager – autoSave callback is invoked 1 0.00310252
+ProjectManager – newProject pushes to recent 1 0.00590845
+ProjectManager – multiple projects populate recent in order 1 0.00411505
+ProjectManager – reopening same path bumps it to front 1 0.00298692
+ProjectManager – recent list capped at maxRecentProjects 1 0.00595851
+ProjectManager – clearRecent empties list 1 0.00431286
+ProjectManager – removeRecent by path 1 0.00303384
+ProjectManager – removeRecent unknown returns false 1 0.00601016
+ProjectManager – setConfig updates knobs 1 0.00427288
+Integration – full open/dirty/save/close cycle 1 0.0031361
+Integration – auto-save fires multiple times 1 0.00323744
+Integration – error then reopen 1 0.00245516
+---

@@ -1,0 +1,19 @@
+{
+  "documentType": "PCGRuleSetDocument",
+  "ruleSetId": "default_surface_generation",
+  "displayName": "Default Surface Generation",
+  "generatorType": "SurfaceScatter",
+  "seedPolicy": "Deterministic",
+  "biomeFilters": ["barren", "rocky", "ash"],
+  "assetPools": [
+    {
+      "poolId": "surface_structures",
+      "assets": [
+        { "assetId": "mining_rig_core", "weight": 1.0 },
+        { "assetId": "storage_crate_small", "weight": 2.0 }
+      ]
+    }
+  ],
+  "density": { "min": 0.05, "max": 0.2 },
+  "placement": { "minSpacing": 3.0, "maxSlope": 25.0 }
+}

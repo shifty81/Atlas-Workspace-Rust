@@ -1,0 +1,8 @@
+source_repo,source_path,target_path,decision,notes
+MasterRepoRefactor-main,NovaForge/... ,NovaForge/... ,KEEP_AS_BASE,fill in
+AtlasSuite,NovaForge/... ,NovaForge/... ,MERGE,fill in
+AtlasSuite,AtlasSuite_Runtime_Bridge/... ,Integrations/AtlasSuite/Runtime/... ,MERGE,fill in
+AtlasSuite,AtlasSuite_Suite_Contamination/... ,Integrations/AtlasSuite/Adapter/... ,MERGE,fill in
+AtlasSuite,AtlasAI_ProjectAdapter/... ,AtlasAI/ProjectAdapters/... ,MERGE,fill in
+NovaForge-main,...,...,CHERRY_PICK,fill in
+Nova-Forge-Expeditions-main,...,...,ARCHIVE_ONLY,fill in

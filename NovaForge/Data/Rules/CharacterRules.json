@@ -1,0 +1,13 @@
+{
+  "documentType": "CharacterRulesDocument",
+  "species": [
+    {
+      "speciesId": "human",
+      "displayName": "Human",
+      "baseStats": { "health": 100, "stamina": 100, "oxygen": 100 },
+      "startingRig": "starter_rig_frame",
+      "traits": ["adaptive", "salvager"]
+    }
+  ],
+  "defaults": { "startingSpecies": "human" }
+}

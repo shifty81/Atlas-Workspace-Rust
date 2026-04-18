@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://novaforge.dev/schemas/rig.schema.json",
+  "title": "R.I.G. Definition",
+  "description": "Defines a R.I.G. (Reactive Interface Gear) configuration at a given tier.",
+  "type": "object",
+  "required": ["tier", "power_capacity", "slots"],
+  "properties": {
+    "tier": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 5,
+      "description": "R.I.G. progression tier. 0 = starter, 5 = experimental."
+    },
+    "power_capacity": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Maximum power budget in kilowatts at this tier."
+    },
+    "slots": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "slot_type"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^slot_[a-z_]+$",
+            "description": "Unique slot identifier."
+          },
+          "slot_type": {
+            "type": "string",
+            "enum": ["core", "armor", "shield", "utility", "interface", "propulsion", "power", "weapon"],
+            "description": "Slot functional category."
+          },
+          "accepts": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "Module type IDs accepted by this slot."
+          },
+          "locked": {
+            "type": "boolean",
+            "default": false,
+            "description": "If true, slot is occupied by a built-in module."
+          },
+          "unlock_tier": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Minimum R.I.G. tier to use this slot."
+          }
+        },
+        "additionalProperties": false
+      },
+      "description": "Available module slots at this tier."
+    },
+    "base_health": {
+      "type": "number",
+      "minimum": 1,
+      "description": "Base health points at this tier."
+    },
+    "base_energy": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Base energy capacity at this tier."
+    },
+    "base_oxygen": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Base oxygen tank capacity (seconds of breathable air)."
+    },
+    "base_stamina": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Base stamina for physical actions."
+    }
+  },
+  "additionalProperties": false
+}

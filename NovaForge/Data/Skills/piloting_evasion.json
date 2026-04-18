@@ -1,0 +1,16 @@
+{
+  "id": "skill_piloting_evasion",
+  "name": "Evasive Maneuvers",
+  "category": "Piloting",
+  "description": "Advanced flight techniques that make the pilot harder to hit, weaving through hostile fire with calculated precision.",
+  "max_level": 5,
+  "prerequisites": [
+    { "skill_id": "skill_piloting_basics", "level": 2 }
+  ],
+  "effects": [
+    { "stat": "evasion_chance", "modifier": 0.06, "per_level": true },
+    { "stat": "turn_rate", "modifier": 0.04, "per_level": true }
+  ],
+  "unlock_cost_base": 600,
+  "tags": ["defensive", "agility"]
+}

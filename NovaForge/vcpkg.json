@@ -1,0 +1,29 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
+  "name": "novaforge",
+  "version": "0.1.0",
+  "description": "NovaForge — voxel space game built on AtlasWorkspace",
+  "dependencies": [
+    {
+      "name": "glfw3",
+      "platform": "windows | osx"
+    },
+    {
+      "name": "opengl",
+      "platform": "windows"
+    },
+
+    "vulkan-headers",
+    "openal-soft",
+    "bullet3",
+    "nlohmann-json",
+    "spdlog",
+    "entt",
+    "cereal",
+    "stb",
+    "assimp",
+    "fmt",
+    "glm"
+  ],
+  "builtin-baseline": "7516a02de04e8f8ff4e4beb8f8eb00552b67a5f2"
+}

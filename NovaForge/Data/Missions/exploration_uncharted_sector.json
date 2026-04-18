@@ -1,0 +1,20 @@
+{
+  "id": "mission_exploration_uncharted_sector",
+  "name": "Uncharted Sector Survey",
+  "type": "Exploration",
+  "description": "The Cartographers' Guild has contracted you to survey an uncharted sector beyond the frontier. Map stellar bodies, catalogue resource deposits, and document any signs of prior civilisation.",
+  "difficulty": 5,
+  "objectives": [
+    { "type": "scan", "target": "stellar_body", "count": 5 },
+    { "type": "collect", "target": "mineral_sample", "count": 3 },
+    { "type": "reach", "target": "waypoint_sector_core", "count": 1 }
+  ],
+  "rewards": {
+    "credits": 7500,
+    "xp": 2000,
+    "items": ["mod_engine_ion_drive", "mod_scanner_deep_probe"]
+  },
+  "prerequisites": ["mission_story_first_contact"],
+  "min_level": 5,
+  "tags": ["exploration", "survey", "guild"]
+}

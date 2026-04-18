@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://novaforge.dev/schemas/skill.schema.json",
+  "title": "Skill Definition",
+  "description": "Defines a character skill that can be trained and levelled up.",
+  "type": "object",
+  "required": ["id", "name", "category", "max_level"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^skill_[a-z]+_[a-z_]+$",
+      "description": "Unique skill identifier following the pattern skill_<category>_<name>."
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Human-readable display name."
+    },
+    "category": {
+      "type": "string",
+      "enum": ["Combat", "Engineering", "Science", "Leadership", "Piloting", "Mining", "Trading", "Stealth"],
+      "description": "Skill tree this skill belongs to."
+    },
+    "max_level": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Maximum achievable level for this skill."
+    },
+    "description": {
+      "type": "string",
+      "description": "Flavour text shown in the skill tree UI."
+    },
+    "prerequisites": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["skill_id", "level"],
+        "properties": {
+          "skill_id": {
+            "type": "string",
+            "description": "ID of the prerequisite skill."
+          },
+          "level": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Minimum level required in the prerequisite skill."
+          }
+        },
+        "additionalProperties": false
+      },
+      "description": "Skills that must be trained before this one can be unlocked."
+    },
+    "effects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["stat", "modifier", "per_level"],
+        "properties": {
+          "stat": {
+            "type": "string",
+            "description": "The stat affected by this skill."
+          },
+          "modifier": {
+            "type": "number",
+            "description": "Base modifier value applied."
+          },
+          "per_level": {
+            "type": "boolean",
+            "description": "Whether the modifier scales with each level."
+          }
+        },
+        "additionalProperties": false
+      },
+      "description": "Stat modifiers granted by this skill."
+    },
+    "unlock_cost_base": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Base XP cost to unlock level 1; subsequent levels scale from this."
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true,
+      "description": "Freeform tags for filtering and scripting."
+    }
+  },
+  "additionalProperties": false
+}

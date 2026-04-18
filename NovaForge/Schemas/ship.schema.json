@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://novaforge.dev/schemas/ship.schema.json",
+  "title": "Ship Definition",
+  "description": "Defines a playable or NPC ship in the NovaForge universe.",
+  "type": "object",
+  "required": ["id", "name", "class", "hull_points", "shield_points", "mass", "max_speed"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^ship_[a-z]+_[a-z_]+$",
+      "description": "Unique ship identifier following the pattern ship_<class>_<name>."
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Human-readable display name of the ship."
+    },
+    "class": {
+      "type": "string",
+      "enum": ["Fighter", "Frigate", "Cruiser", "Battleship", "Carrier", "Transport", "Mining", "Explorer"],
+      "description": "Ship class that determines base role and docking category."
+    },
+    "hull_points": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Base structural hit points before destruction."
+    },
+    "shield_points": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Base energy shield capacity."
+    },
+    "mass": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "description": "Ship mass in metric tonnes, affects inertia and fuel consumption."
+    },
+    "max_speed": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "description": "Maximum velocity in metres per second."
+    },
+    "description": {
+      "type": "string",
+      "description": "Flavour text shown in the ship catalogue."
+    },
+    "module_slots": {
+      "type": "integer",
+      "minimum": 1,
+      "default": 4,
+      "description": "Number of module hardpoints available."
+    },
+    "crew_capacity": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Maximum crew complement."
+    },
+    "cargo_capacity": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Cargo hold volume in cubic metres."
+    },
+    "turn_rate": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "description": "Rotational speed in degrees per second."
+    },
+    "acceleration": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "description": "Linear acceleration in m/s²."
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true,
+      "description": "Freeform tags for filtering and scripting."
+    }
+  },
+  "additionalProperties": false
+}

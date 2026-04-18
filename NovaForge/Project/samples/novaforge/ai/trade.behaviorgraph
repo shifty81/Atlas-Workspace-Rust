@@ -1,0 +1,33 @@
+{
+    "schema": "atlas.behaviorgraph.v1",
+    "nodes": [
+        {
+            "id": "market_risk",
+            "type": "ThreatAssessment",
+            "position": [100, 200],
+            "params": {}
+        },
+        {
+            "id": "profit_score",
+            "type": "UtilityScore",
+            "position": [350, 200],
+            "params": {
+                "threatWeight": 0.2,
+                "healthWeight": 0.8
+            }
+        },
+        {
+            "id": "action",
+            "type": "ActionSelector",
+            "position": [600, 200],
+            "params": {}
+        }
+    ],
+    "links": [
+        { "from": "market_risk.threat", "to": "profit_score.threat" },
+        { "from": "profit_score.utility", "to": "action.score_a" }
+    ],
+    "outputs": {
+        "decision": "action.action"
+    }
+}

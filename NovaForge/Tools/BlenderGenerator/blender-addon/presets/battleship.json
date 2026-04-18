@@ -1,0 +1,9 @@
+{
+    "hull_class": "battleship",
+    "length": [25, 50],
+    "beam": [8, 14],
+    "height": [6, 10],
+    "segments": 20,
+    "slot_count": 12,
+    "typical_slots": ["weapon", "weapon", "weapon", "weapon", "engine", "engine", "engine", "shield", "shield", "sensor", "bay", "utility"]
+}

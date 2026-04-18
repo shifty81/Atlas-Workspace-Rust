@@ -1,0 +1,54 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "novaforge.module.v1",
+    "title": "NovaForge Module Definition",
+    "description": "Schema for NovaForge ship module data files",
+    "type": "object",
+    "required": ["id", "name", "slot_type"],
+    "properties": {
+        "id": {
+            "type": "string",
+            "description": "Unique module identifier"
+        },
+        "name": {
+            "type": "string",
+            "description": "Display name of the module"
+        },
+        "slot_type": {
+            "type": "string",
+            "enum": ["high", "mid", "low", "rig"],
+            "description": "Which slot type this module fits"
+        },
+        "category": {
+            "type": "string",
+            "enum": ["weapon", "defense", "propulsion", "electronic", "mining", "drone", "utility"],
+            "description": "Module functional category"
+        },
+        "tech_level": {
+            "type": "integer",
+            "enum": [1, 2],
+            "description": "Technology level (Tech I or Tech II)"
+        },
+        "meta_level": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Meta level for module quality progression"
+        },
+        "stats": {
+            "type": "object",
+            "additionalProperties": { "type": "number" }
+        },
+        "skill_requirements": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "required": ["skill", "level"],
+                "properties": {
+                    "skill": { "type": "string" },
+                    "level": { "type": "integer", "minimum": 1, "maximum": 5 }
+                }
+            }
+        }
+    },
+    "additionalProperties": true
+}

@@ -1,0 +1,1345 @@
+{
+  "lynx": {
+    "id": "lynx",
+    "name": "Lynx",
+    "class": "Assault Frigate",
+    "tech_level": 2,
+    "race": "Keldari",
+    "description": "The Lynx is a shield-focused assault frigate with exceptional speed and firepower. It excels in hit-and-run tactics and skirmish warfare.",
+    "hull_hp": 450,
+    "armor_hp": 500,
+    "shield_hp": 750,
+    "capacitor": 350,
+    "cpu": 175,
+    "powergrid": 48,
+    "high_slots": 4,
+    "mid_slots": 4,
+    "low_slots": 3,
+    "rig_slots": 2,
+    "cargo_capacity": 110,
+    "max_velocity": 385,
+    "inertia_modifier": 2.5,
+    "signature_radius": 32,
+    "scan_resolution": 680,
+    "max_locked_targets": 5,
+    "max_targeting_range": 24000,
+    "shield_recharge_time": 550,
+    "capacitor_recharge_time": 145,
+    "bonuses": {
+      "small_projectile_damage": 10,
+      "small_projectile_falloff": 15,
+      "small_projectile_tracking": 7.5,
+      "shield_resistances": 4,
+      "assault_damage_control_effectiveness": 10
+    },
+    "resistances": {
+      "shield": {
+        "em": 10,
+        "thermal": 25,
+        "kinetic": 45,
+        "explosive": 55
+      },
+      "armor": {
+        "em": 60,
+        "thermal": 40,
+        "kinetic": 30,
+        "explosive": 15
+      },
+      "hull": {
+        "em": 40,
+        "thermal": 40,
+        "kinetic": 40,
+        "explosive": 40
+      }
+    },
+    "model_data": {
+      "turret_hardpoints": 3,
+      "launcher_hardpoints": 1,
+      "drone_bays": 0,
+      "engine_count": 3,
+      "generation_seed": 6571
+    }
+  },
+  "gyrhawk": {
+    "id": "gyrhawk",
+    "name": "Gyrhawk",
+    "class": "Assault Frigate",
+    "tech_level": 2,
+    "race": "Veyren",
+    "description": "The Gyrhawk is the ultimate shield-tanking assault frigate, featuring tremendous defensive capabilities and devastating close-range firepower with rockets.",
+    "hull_hp": 520,
+    "armor_hp": 350,
+    "shield_hp": 1050,
+    "capacitor": 420,
+    "cpu": 195,
+    "powergrid": 52,
+    "high_slots": 4,
+    "mid_slots": 5,
+    "low_slots": 2,
+    "rig_slots": 2,
+    "cargo_capacity": 130,
+    "max_velocity": 280,
+    "inertia_modifier": 2.9,
+    "signature_radius": 30,
+    "scan_resolution": 620,
+    "max_locked_targets": 5,
+    "max_targeting_range": 28000,
+    "shield_recharge_time": 450,
+    "capacitor_recharge_time": 155,
+    "bonuses": {
+      "rocket_damage": 10,
+      "rocket_explosion_velocity": 10,
+      "shield_boost_amount": 10,
+      "shield_resistances": 5,
+      "assault_damage_control_effectiveness": 10
+    },
+    "resistances": {
+      "shield": {
+        "em": 10,
+        "thermal": 30,
+        "kinetic": 50,
+        "explosive": 60
+      },
+      "armor": {
+        "em": 55,
+        "thermal": 50,
+        "kinetic": 30,
+        "explosive": 15
+      },
+      "hull": {
+        "em": 40,
+        "thermal": 40,
+        "kinetic": 40,
+        "explosive": 40
+      }
+    },
+    "model_data": {
+      "turret_hardpoints": 4,
+      "launcher_hardpoints": 2,
+      "drone_bays": 0,
+      "engine_count": 2,
+      "generation_seed": 84553
+    }
+  },
+  "duelliste": {
+    "id": "duelliste",
+    "name": "Duelliste",
+    "class": "Assault Frigate",
+    "tech_level": 2,
+    "race": "Aurelian",
+    "description": "The Duelliste is an armor-focused assault frigate designed for close-range blaster combat. Its exceptional armor tank and brutal damage output make it a devastating brawler.",
+    "hull_hp": 480,
+    "armor_hp": 850,
+    "shield_hp": 550,
+    "capacitor": 380,
+    "cpu": 185,
+    "powergrid": 46,
+    "high_slots": 4,
+    "mid_slots": 3,
+    "low_slots": 4,
+    "rig_slots": 2,
+    "cargo_capacity": 145,
+    "max_velocity": 320,
+    "inertia_modifier": 2.7,
+    "signature_radius": 33,
+    "scan_resolution": 690,
+    "max_locked_targets": 5,
+    "max_targeting_range": 26000,
+    "shield_recharge_time": 650,
+    "capacitor_recharge_time": 140,
+    "bonuses": {
+      "small_hybrid_damage": 10,
+      "small_hybrid_tracking": 7.5,
+      "armor_repair_amount": 10,
+      "armor_resistances": 4,
+      "assault_damage_control_effectiveness": 10
+    },
+    "resistances": {
+      "shield": {
+        "em": 5,
+        "thermal": 25,
+        "kinetic": 45,
+        "explosive": 55
+      },
+      "armor": {
+        "em": 55,
+        "thermal": 45,
+        "kinetic": 35,
+        "explosive": 65
+      },
+      "hull": {
+        "em": 40,
+        "thermal": 40,
+        "kinetic": 40,
+        "explosive": 40
+      }
+    },
+    "model_data": {
+      "turret_hardpoints": 4,
+      "launcher_hardpoints": 1,
+      "drone_bays": 0,
+      "engine_count": 2,
+      "generation_seed": 73976
+    }
+  },
+  "justicar": {
+    "id": "justicar",
+    "name": "Justicar",
+    "class": "Assault Frigate",
+    "tech_level": 2,
+    "race": "Solari",
+    "description": "The Justicar combines the Solari's signature armor tank with focused laser weaponry. It excels at sustained damage output and can withstand tremendous punishment.",
+    "hull_hp": 500,
+    "armor_hp": 950,
+    "shield_hp": 480,
+    "capacitor": 480,
+    "cpu": 165,
+    "powergrid": 54,
+    "high_slots": 4,
+    "mid_slots": 3,
+    "low_slots": 4,
+    "rig_slots": 2,
+    "cargo_capacity": 120,
+    "max_velocity": 265,
+    "inertia_modifier": 3.1,
+    "signature_radius": 35,
+    "scan_resolution": 580,
+    "max_locked_targets": 5,
+    "max_targeting_range": 30000,
+    "shield_recharge_time": 720,
+    "capacitor_recharge_time": 175,
+    "bonuses": {
+      "small_energy_damage": 10,
+      "small_energy_tracking": 7.5,
+      "armor_repair_amount": 10,
+      "armor_resistances": 5,
+      "capacitor_use_reduction": 15,
+      "assault_damage_control_effectiveness": 10
+    },
+    "resistances": {
+      "shield": {
+        "em": 5,
+        "thermal": 25,
+        "kinetic": 45,
+        "explosive": 55
+      },
+      "armor": {
+        "em": 60,
+        "thermal": 45,
+        "kinetic": 35,
+        "explosive": 20
+      },
+      "hull": {
+        "em": 40,
+        "thermal": 40,
+        "kinetic": 40,
+        "explosive": 40
+      }
+    },
+    "model_data": {
+      "turret_hardpoints": 3,
+      "launcher_hardpoints": 2,
+      "drone_bays": 0,
+      "engine_count": 2,
+      "generation_seed": 2795
+    }
+  },
+  "direwolf": {
+    "id": "direwolf",
+    "name": "Direwolf",
+    "class": "Assault Frigate",
+    "tech_level": 2,
+    "race": "Keldari",
+    "description": "The Direwolf is an armor-focused assault frigate that trades the Lynx's speed for better tank. It's designed for sustained combat and alpha strike damage.",
+    "hull_hp": 470,
+    "armor_hp": 800,
+    "shield_hp": 600,
+    "capacitor": 360,
+    "cpu": 180,
+    "powergrid": 50,
+    "high_slots": 4,
+    "mid_slots": 3,
+    "low_slots": 4,
+    "rig_slots": 2,
+    "cargo_capacity": 115,
+    "max_velocity": 305,
+    "inertia_modifier": 2.8,
+    "signature_radius": 34,
+    "scan_resolution": 660,
+    "max_locked_targets": 5,
+    "max_targeting_range": 22000,
+    "shield_recharge_time": 590,
+    "capacitor_recharge_time": 150,
+    "bonuses": {
+      "small_projectile_damage": 10,
+      "small_projectile_tracking": 10,
+      "armor_repair_amount": 10,
+      "armor_resistances": 4,
+      "assault_damage_control_effectiveness": 10
+    },
+    "resistances": {
+      "shield": {
+        "em": 8,
+        "thermal": 25,
+        "kinetic": 45,
+        "explosive": 55
+      },
+      "armor": {
+        "em": 62,
+        "thermal": 42,
+        "kinetic": 32,
+        "explosive": 18
+      },
+      "hull": {
+        "em": 40,
+        "thermal": 40,
+        "kinetic": 40,
+        "explosive": 40
+      }
+    },
+    "model_data": {
+      "turret_hardpoints": 4,
+      "launcher_hardpoints": 1,
+      "drone_bays": 1,
+      "engine_count": 2,
+      "generation_seed": 56923
+    }
+  },
+  "frostvane": {
+    "id": "frostvane",
+    "name": "Frostvane",
+    "class": "Assault Frigate",
+    "tech_level": 2,
+    "race": "Veyren",
+    "description": "The Frostvane is built for long-range railgun combat with a powerful shield tank. It can project damage at extreme ranges while maintaining defensive superiority.",
+    "hull_hp": 530,
+    "armor_hp": 360,
+    "shield_hp": 1000,
+    "capacitor": 440,
+    "cpu": 200,
+    "powergrid": 53,
+    "high_slots": 4,
+    "mid_slots": 5,
+    "low_slots": 2,
+    "rig_slots": 2,
+    "cargo_capacity": 135,
+    "max_velocity": 270,
+    "inertia_modifier": 3.0,
+    "signature_radius": 31,
+    "scan_resolution": 610,
+    "max_locked_targets": 6,
+    "max_targeting_range": 42000,
+    "shield_recharge_time": 460,
+    "capacitor_recharge_time": 160,
+    "bonuses": {
+      "small_hybrid_damage": 10,
+      "small_hybrid_optimal_range": 10,
+      "shield_boost_amount": 10,
+      "shield_resistances": 5,
+      "assault_damage_control_effectiveness": 10
+    },
+    "resistances": {
+      "shield": {
+        "em": 12,
+        "thermal": 32,
+        "kinetic": 52,
+        "explosive": 62
+      },
+      "armor": {
+        "em": 56,
+        "thermal": 51,
+        "kinetic": 31,
+        "explosive": 16
+      },
+      "hull": {
+        "em": 40,
+        "thermal": 40,
+        "kinetic": 40,
+        "explosive": 40
+      }
+    },
+    "model_data": {
+      "turret_hardpoints": 4,
+      "launcher_hardpoints": 1,
+      "drone_bays": 1,
+      "engine_count": 3,
+      "generation_seed": 94800
+    }
+  },
+  "talon": {
+    "id": "talon",
+    "name": "Talon",
+    "class": "Interceptor",
+    "tech_level": 2,
+    "race": "Keldari",
+    "description": "The Talon is a combat interceptor built for speed and devastating hit-and-run attacks. Its autocannons deliver punishing close-range damage while its agility keeps it out of danger.",
+    "hull_hp": 350,
+    "armor_hp": 300,
+    "shield_hp": 500,
+    "capacitor": 300,
+    "cpu": 170,
+    "powergrid": 42,
+    "high_slots": 4,
+    "mid_slots": 4,
+    "low_slots": 3,
+    "rig_slots": 2,
+    "cargo_capacity": 110,
+    "max_velocity": 440,
+    "inertia_modifier": 2.1,
+    "signature_radius": 30,
+    "scan_resolution": 760,
+    "max_locked_targets": 5,
+    "max_targeting_range": 24000,
+    "shield_recharge_time": 560,
+    "capacitor_recharge_time": 150,
+    "bonuses": {
+      "small_projectile_damage": 10,
+      "small_projectile_tracking": 7.5,
+      "mwd_signature_bloom_reduction": 15,
+      "warp_speed_bonus": 25
+    },
+    "resistances": {
+      "shield": {
+        "em": 10,
+        "thermal": 25,
+        "kinetic": 45,
+        "explosive": 55
+      },
+      "armor": {
+        "em": 60,
+        "thermal": 40,
+        "kinetic": 30,
+        "explosive": 15
+      },
+      "hull": {
+        "em": 40,
+        "thermal": 40,
+        "kinetic": 40,
+        "explosive": 40
+      }
+    },
+    "model_data": {
+      "turret_hardpoints": 3,
+      "launcher_hardpoints": 0,
+      "drone_bays": 0,
+      "engine_count": 4,
+      "generation_seed": 56185
+    }
+  },
+  "jaktfalk": {
+    "id": "jaktfalk",
+    "name": "Jaktfalk",
+    "class": "Interceptor",
+    "tech_level": 2,
+    "race": "Veyren",
+    "description": "The Jaktfalk is a combat interceptor that combines missile systems with extreme speed. Its light missiles allow it to engage targets at range while maintaining high velocity.",
+    "hull_hp": 380,
+    "armor_hp": 280,
+    "shield_hp": 600,
+    "capacitor": 320,
+    "cpu": 180,
+    "powergrid": 40,
+    "high_slots": 4,
+    "mid_slots": 4,
+    "low_slots": 2,
+    "rig_slots": 2,
+    "cargo_capacity": 120,
+    "max_velocity": 420,
+    "inertia_modifier": 2.3,
+    "signature_radius": 29,
+    "scan_resolution": 740,
+    "max_locked_targets": 6,
+    "max_targeting_range": 28000,
+    "shield_recharge_time": 520,
+    "capacitor_recharge_time": 155,
+    "bonuses": {
+      "light_missile_damage": 10,
+      "light_missile_velocity": 10,
+      "mwd_signature_bloom_reduction": 15,
+      "warp_speed_bonus": 25
+    },
+    "resistances": {
+      "shield": {
+        "em": 10,
+        "thermal": 30,
+        "kinetic": 50,
+        "explosive": 60
+      },
+      "armor": {
+        "em": 55,
+        "thermal": 50,
+        "kinetic": 30,
+        "explosive": 15
+      },
+      "hull": {
+        "em": 40,
+        "thermal": 40,
+        "kinetic": 40,
+        "explosive": 40
+      }
+    },
+    "model_data": {
+      "turret_hardpoints": 2,
+      "launcher_hardpoints": 0,
+      "drone_bays": 0,
+      "engine_count": 4,
+      "generation_seed": 78543
+    }
+  },
+  "eclair": {
+    "id": "eclair",
+    "name": "Eclair",
+    "class": "Interceptor",
+    "tech_level": 2,
+    "race": "Aurelian",
+    "description": "The Eclair is a combat interceptor armed with blasters for devastating close-range engagements. It combines Aurelian firepower with interceptor-class speed and agility.",
+    "hull_hp": 360,
+    "armor_hp": 400,
+    "shield_hp": 400,
+    "capacitor": 310,
+    "cpu": 165,
+    "powergrid": 44,
+    "high_slots": 3,
+    "mid_slots": 3,
+    "low_slots": 3,
+    "rig_slots": 2,
+    "cargo_capacity": 115,
+    "max_velocity": 430,
+    "inertia_modifier": 2.2,
+    "signature_radius": 31,
+    "scan_resolution": 750,
+    "max_locked_targets": 5,
+    "max_targeting_range": 24000,
+    "shield_recharge_time": 600,
+    "capacitor_recharge_time": 145,
+    "bonuses": {
+      "small_hybrid_damage": 10,
+      "small_hybrid_tracking": 7.5,
+      "mwd_signature_bloom_reduction": 15,
+      "warp_speed_bonus": 25
+    },
+    "resistances": {
+      "shield": {
+        "em": 5,
+        "thermal": 25,
+        "kinetic": 45,
+        "explosive": 55
+      },
+      "armor": {
+        "em": 55,
+        "thermal": 45,
+        "kinetic": 35,
+        "explosive": 65
+      },
+      "hull": {
+        "em": 40,
+        "thermal": 40,
+        "kinetic": 40,
+        "explosive": 40
+      }
+    },
+    "model_data": {
+      "turret_hardpoints": 3,
+      "launcher_hardpoints": 0,
+      "drone_bays": 0,
+      "engine_count": 4,
+      "generation_seed": 6667
+    }
+  },
+  "templar": {
+    "id": "templar",
+    "name": "Templar",
+    "class": "Interceptor",
+    "tech_level": 2,
+    "race": "Solari",
+    "description": "The Templar is a combat interceptor wielding pulse lasers with deadly precision. Its speed and tracking bonuses allow it to maintain optimal range while orbiting targets at high velocity.",
+    "hull_hp": 370,
+    "armor_hp": 390,
+    "shield_hp": 350,
+    "capacitor": 340,
+    "cpu": 160,
+    "powergrid": 48,
+    "high_slots": 4,
+    "mid_slots": 3,
+    "low_slots": 3,
+    "rig_slots": 2,
+    "cargo_capacity": 105,
+    "max_velocity": 415,
+    "inertia_modifier": 2.4,
+    "signature_radius": 32,
+    "scan_resolution": 720,
+    "max_locked_targets": 5,
+    "max_targeting_range": 26000,
+    "shield_recharge_time": 650,
+    "capacitor_recharge_time": 170,
+    "bonuses": {
+      "small_energy_damage": 10,
+      "small_energy_tracking": 7.5,
+      "mwd_signature_bloom_reduction": 15,
+      "warp_speed_bonus": 25
+    },
+    "resistances": {
+      "shield": {
+        "em": 5,
+        "thermal": 25,
+        "kinetic": 45,
+        "explosive": 55
+      },
+      "armor": {
+        "em": 60,
+        "thermal": 45,
+        "kinetic": 35,
+        "explosive": 20
+      },
+      "hull": {
+        "em": 40,
+        "thermal": 40,
+        "kinetic": 40,
+        "explosive": 40
+      }
+    },
+    "model_data": {
+      "turret_hardpoints": 3,
+      "launcher_hardpoints": 1,
+      "drone_bays": 0,
+      "engine_count": 3,
+      "generation_seed": 31977
+    }
+  },
+  "needlepoint": {
+    "id": "needlepoint",
+    "name": "Needlepoint",
+    "class": "Interceptor",
+    "tech_level": 2,
+    "race": "Keldari",
+    "description": "The Needlepoint is a fleet interceptor designed for long-range tackling. Its warp disruptor range bonus and bubble immunity make it the premier fast tackle ship for fleet operations.",
+    "hull_hp": 320,
+    "armor_hp": 260,
+    "shield_hp": 480,
+    "capacitor": 290,
+    "cpu": 175,
+    "powergrid": 38,
+    "high_slots": 3,
+    "mid_slots": 5,
+    "low_slots": 2,
+    "rig_slots": 2,
+    "cargo_capacity": 120,
+    "max_velocity": 460,
+    "inertia_modifier": 2.0,
+    "signature_radius": 28,
+    "scan_resolution": 790,
+    "max_locked_targets": 6,
+    "max_targeting_range": 28000,
+    "shield_recharge_time": 570,
+    "capacitor_recharge_time": 148,
+    "bonuses": {
+      "warp_disruptor_range": 10,
+      "warp_scramble_strength": 10,
+      "mwd_signature_bloom_reduction": 15,
+      "warp_speed_bonus": 25,
+      "interdiction_nullifier": true
+    },
+    "resistances": {
+      "shield": {
+        "em": 10,
+        "thermal": 25,
+        "kinetic": 45,
+        "explosive": 55
+      },
+      "armor": {
+        "em": 60,
+        "thermal": 40,
+        "kinetic": 30,
+        "explosive": 15
+      },
+      "hull": {
+        "em": 40,
+        "thermal": 40,
+        "kinetic": 40,
+        "explosive": 40
+      }
+    },
+    "model_data": {
+      "turret_hardpoints": 2,
+      "launcher_hardpoints": 0,
+      "drone_bays": 0,
+      "engine_count": 4,
+      "generation_seed": 57635
+    }
+  },
+  "svellgyrhawk": {
+    "id": "svellgyrhawk",
+    "name": "Svellgyrhawk",
+    "class": "Interceptor",
+    "tech_level": 2,
+    "race": "Veyren",
+    "description": "The Svellgyrhawk is a fleet interceptor optimized for long-range tackle and fleet scouting. Its shield tank and bubble immunity make it an essential tool for fleet commanders.",
+    "hull_hp": 340,
+    "armor_hp": 250,
+    "shield_hp": 550,
+    "capacitor": 310,
+    "cpu": 185,
+    "powergrid": 39,
+    "high_slots": 3,
+    "mid_slots": 5,
+    "low_slots": 2,
+    "rig_slots": 2,
+    "cargo_capacity": 125,
+    "max_velocity": 440,
+    "inertia_modifier": 2.2,
+    "signature_radius": 29,
+    "scan_resolution": 770,
+    "max_locked_targets": 6,
+    "max_targeting_range": 30000,
+    "shield_recharge_time": 530,
+    "capacitor_recharge_time": 155,
+    "bonuses": {
+      "warp_disruptor_range": 10,
+      "warp_scramble_strength": 10,
+      "mwd_signature_bloom_reduction": 15,
+      "warp_speed_bonus": 25,
+      "interdiction_nullifier": true
+    },
+    "resistances": {
+      "shield": {
+        "em": 10,
+        "thermal": 30,
+        "kinetic": 50,
+        "explosive": 60
+      },
+      "armor": {
+        "em": 55,
+        "thermal": 50,
+        "kinetic": 30,
+        "explosive": 15
+      },
+      "hull": {
+        "em": 40,
+        "thermal": 40,
+        "kinetic": 40,
+        "explosive": 40
+      }
+    },
+    "model_data": {
+      "turret_hardpoints": 2,
+      "launcher_hardpoints": 0,
+      "drone_bays": 0,
+      "engine_count": 4,
+      "generation_seed": 97372
+    }
+  },
+  "fleuret": {
+    "id": "fleuret",
+    "name": "Fleuret",
+    "class": "Interceptor",
+    "tech_level": 2,
+    "race": "Aurelian",
+    "description": "The Fleuret is a fleet interceptor built for speed and tackle supremacy. Its warp disruptor bonuses and bubble immunity make it ideal for catching and holding targets for the fleet.",
+    "hull_hp": 330,
+    "armor_hp": 350,
+    "shield_hp": 380,
+    "capacitor": 300,
+    "cpu": 170,
+    "powergrid": 40,
+    "high_slots": 3,
+    "mid_slots": 4,
+    "low_slots": 3,
+    "rig_slots": 2,
+    "cargo_capacity": 115,
+    "max_velocity": 450,
+    "inertia_modifier": 2.1,
+    "signature_radius": 30,
+    "scan_resolution": 780,
+    "max_locked_targets": 5,
+    "max_targeting_range": 26000,
+    "shield_recharge_time": 610,
+    "capacitor_recharge_time": 142,
+    "bonuses": {
+      "warp_disruptor_range": 10,
+      "warp_scramble_strength": 10,
+      "mwd_signature_bloom_reduction": 15,
+      "warp_speed_bonus": 25,
+      "interdiction_nullifier": true
+    },
+    "resistances": {
+      "shield": {
+        "em": 5,
+        "thermal": 25,
+        "kinetic": 45,
+        "explosive": 55
+      },
+      "armor": {
+        "em": 55,
+        "thermal": 45,
+        "kinetic": 35,
+        "explosive": 65
+      },
+      "hull": {
+        "em": 40,
+        "thermal": 40,
+        "kinetic": 40,
+        "explosive": 40
+      }
+    },
+    "model_data": {
+      "turret_hardpoints": 2,
+      "launcher_hardpoints": 1,
+      "drone_bays": 0,
+      "engine_count": 4,
+      "generation_seed": 28814
+    }
+  },
+  "anathemist": {
+    "id": "anathemist",
+    "name": "Anathemist",
+    "class": "Interceptor",
+    "tech_level": 2,
+    "race": "Solari",
+    "description": "The Anathemist is a fleet interceptor that combines Solari engineering with unmatched tackle capability. Its bubble immunity and warp disruptor bonuses make it a feared tackler across Astralis.",
+    "hull_hp": 340,
+    "armor_hp": 370,
+    "shield_hp": 340,
+    "capacitor": 330,
+    "cpu": 165,
+    "powergrid": 42,
+    "high_slots": 3,
+    "mid_slots": 3,
+    "low_slots": 4,
+    "rig_slots": 2,
+    "cargo_capacity": 100,
+    "max_velocity": 435,
+    "inertia_modifier": 2.3,
+    "signature_radius": 31,
+    "scan_resolution": 750,
+    "max_locked_targets": 5,
+    "max_targeting_range": 28000,
+    "shield_recharge_time": 660,
+    "capacitor_recharge_time": 165,
+    "bonuses": {
+      "warp_disruptor_range": 10,
+      "warp_scramble_strength": 10,
+      "mwd_signature_bloom_reduction": 15,
+      "warp_speed_bonus": 25,
+      "interdiction_nullifier": true
+    },
+    "resistances": {
+      "shield": {
+        "em": 5,
+        "thermal": 25,
+        "kinetic": 45,
+        "explosive": 55
+      },
+      "armor": {
+        "em": 60,
+        "thermal": 45,
+        "kinetic": 35,
+        "explosive": 20
+      },
+      "hull": {
+        "em": 40,
+        "thermal": 40,
+        "kinetic": 40,
+        "explosive": 40
+      }
+    },
+    "model_data": {
+      "turret_hardpoints": 3,
+      "launcher_hardpoints": 1,
+      "drone_bays": 0,
+      "engine_count": 4,
+      "generation_seed": 91147
+    }
+  },
+  "duskrunner": {
+    "id": "duskrunner",
+    "name": "Duskrunner",
+    "class": "Covert Ops",
+    "tech_level": 2,
+    "race": "Keldari",
+    "description": "The Duskrunner is a Keldari covert ops frigate designed for exploration and scanning. Its speed and agility combined with a Covert Ops Cloaking Device make it an exceptional scout and probe scanner.",
+    "hull_hp": 300,
+    "armor_hp": 250,
+    "shield_hp": 450,
+    "capacitor": 320,
+    "cpu": 240,
+    "powergrid": 35,
+    "high_slots": 3,
+    "mid_slots": 5,
+    "low_slots": 3,
+    "rig_slots": 2,
+    "cargo_capacity": 250,
+    "max_velocity": 395,
+    "inertia_modifier": 2.3,
+    "signature_radius": 30,
+    "scan_resolution": 720,
+    "max_locked_targets": 5,
+    "max_targeting_range": 40000,
+    "shield_recharge_time": 560,
+    "capacitor_recharge_time": 150,
+    "bonuses": {
+      "scan_probe_strength": 10,
+      "scan_deviation_reduction": 10,
+      "virus_coherence": 10,
+      "hacking_bonus": 5,
+      "covert_ops_cloak": true,
+      "cloaking_device_cpu": -20
+    },
+    "resistances": {
+      "shield": {
+        "em": 10,
+        "thermal": 25,
+        "kinetic": 45,
+        "explosive": 55
+      },
+      "armor": {
+        "em": 60,
+        "thermal": 40,
+        "kinetic": 30,
+        "explosive": 15
+      },
+      "hull": {
+        "em": 40,
+        "thermal": 40,
+        "kinetic": 40,
+        "explosive": 40
+      }
+    },
+    "model_data": {
+      "turret_hardpoints": 2,
+      "launcher_hardpoints": 1,
+      "drone_bays": 1,
+      "engine_count": 3,
+      "generation_seed": 29541
+    }
+  },
+  "spektor": {
+    "id": "spektor",
+    "name": "Spektor",
+    "class": "Covert Ops",
+    "tech_level": 2,
+    "race": "Veyren",
+    "description": "The Spektor is a Veyren covert ops frigate optimized for probe scanning and exploration. Its strong shield and mid-slot layout allow effective use of scanning and hacking modules while remaining cloaked.",
+    "hull_hp": 330,
+    "armor_hp": 220,
+    "shield_hp": 580,
+    "capacitor": 370,
+    "cpu": 250,
+    "powergrid": 33,
+    "high_slots": 3,
+    "mid_slots": 5,
+    "low_slots": 3,
+    "rig_slots": 2,
+    "cargo_capacity": 270,
+    "max_velocity": 355,
+    "inertia_modifier": 2.7,
+    "signature_radius": 29,
+    "scan_resolution": 680,
+    "max_locked_targets": 6,
+    "max_targeting_range": 45000,
+    "shield_recharge_time": 500,
+    "capacitor_recharge_time": 155,
+    "bonuses": {
+      "scan_probe_strength": 10,
+      "scan_deviation_reduction": 10,
+      "virus_coherence": 10,
+      "hacking_bonus": 5,
+      "covert_ops_cloak": true,
+      "cloaking_device_cpu": -20
+    },
+    "resistances": {
+      "shield": {
+        "em": 10,
+        "thermal": 30,
+        "kinetic": 50,
+        "explosive": 60
+      },
+      "armor": {
+        "em": 55,
+        "thermal": 50,
+        "kinetic": 30,
+        "explosive": 15
+      },
+      "hull": {
+        "em": 40,
+        "thermal": 40,
+        "kinetic": 40,
+        "explosive": 40
+      }
+    },
+    "model_data": {
+      "turret_hardpoints": 1,
+      "launcher_hardpoints": 0,
+      "drone_bays": 1,
+      "engine_count": 2,
+      "generation_seed": 1043
+    }
+  },
+  "luminos": {
+    "id": "luminos",
+    "name": "Luminos",
+    "class": "Covert Ops",
+    "tech_level": 2,
+    "race": "Aurelian",
+    "description": "The Luminos is a Aurelian covert ops frigate built for deep-space exploration and scanning. Its balanced slot layout and drone bay make it a versatile exploration platform capable of hacking and data analysis while cloaked.",
+    "hull_hp": 280,
+    "armor_hp": 320,
+    "shield_hp": 340,
+    "capacitor": 340,
+    "cpu": 230,
+    "powergrid": 38,
+    "high_slots": 3,
+    "mid_slots": 4,
+    "low_slots": 4,
+    "rig_slots": 2,
+    "cargo_capacity": 260,
+    "max_velocity": 370,
+    "inertia_modifier": 2.5,
+    "signature_radius": 32,
+    "scan_resolution": 700,
+    "max_locked_targets": 5,
+    "max_targeting_range": 38000,
+    "shield_recharge_time": 620,
+    "capacitor_recharge_time": 145,
+    "bonuses": {
+      "scan_probe_strength": 10,
+      "scan_deviation_reduction": 10,
+      "virus_coherence": 10,
+      "hacking_bonus": 5,
+      "covert_ops_cloak": true,
+      "cloaking_device_cpu": -20
+    },
+    "resistances": {
+      "shield": {
+        "em": 5,
+        "thermal": 25,
+        "kinetic": 45,
+        "explosive": 55
+      },
+      "armor": {
+        "em": 55,
+        "thermal": 45,
+        "kinetic": 35,
+        "explosive": 65
+      },
+      "hull": {
+        "em": 40,
+        "thermal": 40,
+        "kinetic": 40,
+        "explosive": 40
+      }
+    },
+    "model_data": {
+      "turret_hardpoints": 2,
+      "launcher_hardpoints": 0,
+      "drone_bays": 0,
+      "engine_count": 2,
+      "generation_seed": 10736
+    }
+  },
+  "veiled_eye": {
+    "id": "veiled_eye",
+    "name": "Veiled Eye",
+    "class": "Covert Ops",
+    "tech_level": 2,
+    "race": "Solari",
+    "description": "The Veiled Eye is an Solari covert ops frigate engineered for covert exploration and intelligence gathering. Its armor-focused design and generous capacitor allow sustained scanning operations deep behind enemy lines.",
+    "hull_hp": 350,
+    "armor_hp": 350,
+    "shield_hp": 300,
+    "capacitor": 380,
+    "cpu": 220,
+    "powergrid": 42,
+    "high_slots": 3,
+    "mid_slots": 4,
+    "low_slots": 4,
+    "rig_slots": 2,
+    "cargo_capacity": 230,
+    "max_velocity": 360,
+    "inertia_modifier": 2.6,
+    "signature_radius": 34,
+    "scan_resolution": 660,
+    "max_locked_targets": 5,
+    "max_targeting_range": 42000,
+    "shield_recharge_time": 680,
+    "capacitor_recharge_time": 168,
+    "bonuses": {
+      "scan_probe_strength": 10,
+      "scan_deviation_reduction": 10,
+      "virus_coherence": 10,
+      "hacking_bonus": 5,
+      "covert_ops_cloak": true,
+      "cloaking_device_cpu": -20
+    },
+    "resistances": {
+      "shield": {
+        "em": 5,
+        "thermal": 25,
+        "kinetic": 45,
+        "explosive": 55
+      },
+      "armor": {
+        "em": 60,
+        "thermal": 45,
+        "kinetic": 35,
+        "explosive": 20
+      },
+      "hull": {
+        "em": 40,
+        "thermal": 40,
+        "kinetic": 40,
+        "explosive": 40
+      }
+    },
+    "model_data": {
+      "turret_hardpoints": 1,
+      "launcher_hardpoints": 1,
+      "drone_bays": 1,
+      "engine_count": 2,
+      "generation_seed": 65244
+    }
+  },
+  "shadowfang": {
+    "id": "shadowfang",
+    "name": "Shadowfang",
+    "class": "Stealth Bomber",
+    "tech_level": 2,
+    "race": "Keldari",
+    "description": "The Shadowfang is a Keldari stealth bomber designed to deliver devastating torpedo strikes from the safety of a Covert Ops cloak. Its explosive damage specialization makes it lethal against battleships and structures.",
+    "hull_hp": 250,
+    "armor_hp": 200,
+    "shield_hp": 350,
+    "capacitor": 280,
+    "cpu": 260,
+    "powergrid": 38,
+    "high_slots": 3,
+    "mid_slots": 4,
+    "low_slots": 3,
+    "rig_slots": 2,
+    "cargo_capacity": 175,
+    "max_velocity": 380,
+    "inertia_modifier": 2.2,
+    "signature_radius": 32,
+    "scan_resolution": 700,
+    "max_locked_targets": 5,
+    "max_targeting_range": 45000,
+    "shield_recharge_time": 580,
+    "capacitor_recharge_time": 155,
+    "bonuses": {
+      "torpedo_damage": 5,
+      "torpedo_explosion_velocity": 10,
+      "bomb_launcher": true,
+      "covert_ops_cloak": true,
+      "cloaking_device_cpu": -20
+    },
+    "resistances": {
+      "shield": {
+        "em": 10,
+        "thermal": 25,
+        "kinetic": 45,
+        "explosive": 55
+      },
+      "armor": {
+        "em": 60,
+        "thermal": 40,
+        "kinetic": 30,
+        "explosive": 15
+      },
+      "hull": {
+        "em": 40,
+        "thermal": 40,
+        "kinetic": 40,
+        "explosive": 40
+      }
+    },
+    "model_data": {
+      "turret_hardpoints": 2,
+      "launcher_hardpoints": 4,
+      "drone_bays": 0,
+      "engine_count": 2,
+      "generation_seed": 62709
+    }
+  },
+  "frostbane": {
+    "id": "frostbane",
+    "name": "Frostbane",
+    "class": "Stealth Bomber",
+    "tech_level": 2,
+    "race": "Veyren",
+    "description": "The Frostbane is a Veyren stealth bomber specializing in kinetic torpedo strikes. Its advanced targeting systems and covert capabilities make it an ideal ambush vessel for fleet operations.",
+    "hull_hp": 230,
+    "armor_hp": 180,
+    "shield_hp": 380,
+    "capacitor": 290,
+    "cpu": 270,
+    "powergrid": 36,
+    "high_slots": 3,
+    "mid_slots": 5,
+    "low_slots": 2,
+    "rig_slots": 2,
+    "cargo_capacity": 170,
+    "max_velocity": 370,
+    "inertia_modifier": 2.3,
+    "signature_radius": 33,
+    "scan_resolution": 710,
+    "max_locked_targets": 6,
+    "max_targeting_range": 48000,
+    "shield_recharge_time": 570,
+    "capacitor_recharge_time": 160,
+    "bonuses": {
+      "torpedo_damage": 5,
+      "torpedo_kinetic_damage": 10,
+      "bomb_launcher": true,
+      "covert_ops_cloak": true,
+      "cloaking_device_cpu": -20
+    },
+    "resistances": {
+      "shield": {
+        "em": 10,
+        "thermal": 30,
+        "kinetic": 50,
+        "explosive": 40
+      },
+      "armor": {
+        "em": 50,
+        "thermal": 45,
+        "kinetic": 25,
+        "explosive": 10
+      },
+      "hull": {
+        "em": 40,
+        "thermal": 40,
+        "kinetic": 40,
+        "explosive": 40
+      }
+    },
+    "model_data": {
+      "turret_hardpoints": 2,
+      "launcher_hardpoints": 4,
+      "drone_bays": 0,
+      "engine_count": 2,
+      "generation_seed": 80323
+    }
+  },
+  "vengeresse": {
+    "id": "vengeresse",
+    "name": "Vengeresse",
+    "class": "Stealth Bomber",
+    "tech_level": 2,
+    "race": "Aurelian",
+    "description": "The Vengeresse is a Aurelian stealth bomber that delivers thermal torpedo damage with surgical precision. Combined with its drone bay and Covert Ops cloak, it excels at hit-and-run attacks.",
+    "hull_hp": 280,
+    "armor_hp": 220,
+    "shield_hp": 300,
+    "capacitor": 300,
+    "cpu": 255,
+    "powergrid": 40,
+    "high_slots": 3,
+    "mid_slots": 3,
+    "low_slots": 4,
+    "rig_slots": 2,
+    "cargo_capacity": 180,
+    "max_velocity": 365,
+    "inertia_modifier": 2.4,
+    "signature_radius": 34,
+    "scan_resolution": 690,
+    "max_locked_targets": 5,
+    "max_targeting_range": 44000,
+    "shield_recharge_time": 590,
+    "capacitor_recharge_time": 158,
+    "bonuses": {
+      "torpedo_damage": 5,
+      "torpedo_thermal_damage": 10,
+      "bomb_launcher": true,
+      "covert_ops_cloak": true,
+      "cloaking_device_cpu": -20
+    },
+    "resistances": {
+      "shield": {
+        "em": 10,
+        "thermal": 25,
+        "kinetic": 45,
+        "explosive": 50
+      },
+      "armor": {
+        "em": 55,
+        "thermal": 45,
+        "kinetic": 35,
+        "explosive": 10
+      },
+      "hull": {
+        "em": 40,
+        "thermal": 40,
+        "kinetic": 40,
+        "explosive": 40
+      }
+    },
+    "model_data": {
+      "turret_hardpoints": 1,
+      "launcher_hardpoints": 3,
+      "drone_bays": 0,
+      "engine_count": 3,
+      "generation_seed": 546
+    }
+  },
+  "sanctifier": {
+    "id": "sanctifier",
+    "name": "Sanctifier",
+    "class": "Stealth Bomber",
+    "tech_level": 2,
+    "race": "Solari",
+    "description": "The Sanctifier is an Solari stealth bomber that harnesses EM torpedo damage to punish shield-tanked targets. Its armor tank and Covert Ops capabilities make it a versatile ambush platform.",
+    "hull_hp": 240,
+    "armor_hp": 250,
+    "shield_hp": 280,
+    "capacitor": 310,
+    "cpu": 265,
+    "powergrid": 37,
+    "high_slots": 3,
+    "mid_slots": 3,
+    "low_slots": 4,
+    "rig_slots": 2,
+    "cargo_capacity": 165,
+    "max_velocity": 360,
+    "inertia_modifier": 2.5,
+    "signature_radius": 35,
+    "scan_resolution": 680,
+    "max_locked_targets": 5,
+    "max_targeting_range": 46000,
+    "shield_recharge_time": 600,
+    "capacitor_recharge_time": 165,
+    "bonuses": {
+      "torpedo_damage": 5,
+      "torpedo_em_damage": 10,
+      "bomb_launcher": true,
+      "covert_ops_cloak": true,
+      "cloaking_device_cpu": -20
+    },
+    "resistances": {
+      "shield": {
+        "em": 15,
+        "thermal": 30,
+        "kinetic": 40,
+        "explosive": 45
+      },
+      "armor": {
+        "em": 60,
+        "thermal": 50,
+        "kinetic": 25,
+        "explosive": 10
+      },
+      "hull": {
+        "em": 40,
+        "thermal": 40,
+        "kinetic": 40,
+        "explosive": 40
+      }
+    },
+    "model_data": {
+      "turret_hardpoints": 1,
+      "launcher_hardpoints": 3,
+      "drone_bays": 0,
+      "engine_count": 3,
+      "generation_seed": 29142
+    }
+  }
+}

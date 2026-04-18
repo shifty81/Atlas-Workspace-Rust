@@ -1,0 +1,40 @@
+{
+  "schema": "atlas.strategygraph.v1",
+  "nodes": [
+    {
+      "id": "influence_solari",
+      "type": "InfluenceRing",
+      "position": [100, 200],
+      "params": {
+        "radius": 10000,
+        "strength": 1.0,
+        "falloff": 2.0
+      }
+    },
+    {
+      "id": "threat_field",
+      "type": "ThreatField",
+      "position": [100, 400],
+      "params": {
+        "hostilityWeight": 0.8
+      }
+    },
+    {
+      "id": "objective",
+      "type": "ObjectiveScore",
+      "position": [400, 300],
+      "params": {
+        "resourceWeight": 0.4,
+        "threatWeight": 0.3,
+        "controlWeight": 0.3
+      }
+    }
+  ],
+  "links": [
+    { "from": "influence_solari.influence", "to": "objective.control" },
+    { "from": "threat_field.threat", "to": "objective.threat" }
+  ],
+  "outputs": {
+    "faction_score": "objective.score"
+  }
+}

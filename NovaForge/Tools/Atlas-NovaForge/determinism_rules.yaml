@@ -1,0 +1,108 @@
+# Atlas Determinism Lint Rules
+#
+# Machine-readable rule definitions for the contract scanner.
+# These rules define what is forbidden inside deterministic simulation
+# code. The contract_scan.py tool can consume these rules to enforce
+# the Atlas Core Contract at CI time.
+#
+# See: docs/ATLAS_CORE_CONTRACT.md
+#      docs/ATLAS_DETERMINISM_ENFORCEMENT.md
+
+rules:
+
+  - id: no_unordered_containers
+    applies_to: deterministic
+    forbidden:
+      - "std::unordered_map"
+      - "std::unordered_set"
+    message: "Unordered containers have platform-dependent iteration order — use std::map/std::set"
+
+  - id: no_system_time
+    applies_to: deterministic
+    forbidden:
+      - "std::chrono"
+      - "time("
+      - "clock("
+      - "gettimeofday"
+      - "clock_gettime"
+      - "QueryPerformanceCounter"
+    message: "System time is nondeterministic — use AtlasTick only"
+
+  - id: no_global_rng
+    applies_to: deterministic
+    forbidden:
+      - "rand("
+      - "srand("
+      - "random_device"
+      - "<random>"
+    message: "Global RNG is nondeterministic — use DeterministicRNG only"
+
+  - id: no_floating_eq
+    applies_to: deterministic
+    forbidden:
+      - "== float"
+      - "== double"
+    message: "Floating-point equality is unreliable across platforms"
+
+  - id: no_threading
+    applies_to: deterministic
+    forbidden:
+      - "std::thread"
+      - "std::mutex"
+      - "std::condition_variable"
+    message: "Threading in deterministic code causes nondeterministic execution order"
+
+  - id: no_io
+    applies_to: deterministic
+    forbidden:
+      - "fopen"
+      - "std::ifstream"
+      - "std::ofstream"
+      - "fwrite"
+      - "fread"
+    message: "IO is forbidden during simulation — state must flow through deterministic channels"
+
+  - id: no_platform_simd
+    applies_to: deterministic
+    forbidden:
+      - "__m128"
+      - "__m256"
+      - "__m512"
+      - "_mm_"
+      - "_mm256_"
+      - "_mm512_"
+    message: "Platform-dependent SIMD intrinsics — use Atlas math wrappers"
+
+  - id: no_banned_ui_libs
+    applies_to: all
+    forbidden:
+      - "imgui.h"
+      - "imgui_impl_"
+      - "ImGui::"
+      - "IMGUI_"
+      - "nuklear.h"
+    message: "Third-party UI libraries are banned — use Atlas custom UI"
+
+# Directories where deterministic rules apply
+simulation_dirs:
+  - ecs
+  - sim
+  - physics
+  - gameplay
+  - ai
+
+# Directories exempt from deterministic rules (allowed to use
+# platform APIs, timing, etc.)
+exempt_dirs:
+  - contract
+  - render
+  - platform
+
+# Files that legitimately use otherwise-forbidden APIs
+exempt_files:
+  - TickScheduler.cpp
+  - TickScheduler.h
+  - JobTracer.cpp
+  - JobTracer.h
+  - TLCModelChecker.cpp
+  - TLCModelChecker.h

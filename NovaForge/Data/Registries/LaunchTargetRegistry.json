@@ -1,0 +1,5 @@
+{
+  "targets": [
+    { "targetId": "client_default", "displayName": "NovaForge Client", "profilePath": "Config/LaunchProfiles/ClientDefault.json" }
+  ]
+}

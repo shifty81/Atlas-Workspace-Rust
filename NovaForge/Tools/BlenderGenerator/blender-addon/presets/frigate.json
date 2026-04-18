@@ -1,0 +1,9 @@
+{
+    "hull_class": "frigate",
+    "length": [6, 12],
+    "beam": [2, 4],
+    "height": [1.5, 3],
+    "segments": 12,
+    "slot_count": 5,
+    "typical_slots": ["weapon", "weapon", "engine", "shield", "sensor"]
+}

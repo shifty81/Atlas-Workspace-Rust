@@ -1,0 +1,26 @@
+{
+  "schema": "atlas.build_target_registry.v1",
+  "targets": [
+    {
+      "targetId": "novaforge_editor",
+      "displayName": "NovaForge Editor",
+      "kind": "editor",
+      "executable": "NovaForgeEditor",
+      "args": ["--hosted"]
+    },
+    {
+      "targetId": "novaforge_client",
+      "displayName": "NovaForge Game",
+      "kind": "client",
+      "executable": "NovaForgeGame",
+      "args": ["--hosted"]
+    },
+    {
+      "targetId": "novaforge_server",
+      "displayName": "NovaForge Server",
+      "kind": "server",
+      "executable": "NovaForgeServer",
+      "args": ["--hosted"]
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "galactic_response": {
+    "description": "Faction response curves based on perceived titan threat level",
+    "response_thresholds": {
+      "ignore_rumor": {
+        "min_threat": 0.0,
+        "max_threat": 0.1,
+        "description": "No response, rumors dismissed",
+        "actions": []
+      },
+      "border_patrol_increase": {
+        "min_threat": 0.1,
+        "max_threat": 0.25,
+        "description": "Increased patrol frequency at borders",
+        "actions": ["increase_patrol_density", "scout_outer_systems"]
+      },
+      "capital_production_prioritized": {
+        "min_threat": 0.25,
+        "max_threat": 0.4,
+        "description": "Military-industrial complex activated",
+        "actions": ["prioritize_capital_blueprints", "stockpile_minerals", "recruit_pilots"]
+      },
+      "outer_system_evacuation": {
+        "min_threat": 0.4,
+        "max_threat": 0.6,
+        "description": "Non-essential personnel withdrawn from outer systems",
+        "actions": ["evacuate_civilians", "consolidate_assets", "abandon_outposts"]
+      },
+      "emergency_doctrine": {
+        "min_threat": 0.6,
+        "max_threat": 0.75,
+        "description": "Military mobilization, all reserves activated",
+        "actions": ["mobilize_reserves", "form_defense_fleet", "fortify_gates"]
+      },
+      "preemptive_strike": {
+        "min_threat": 0.75,
+        "max_threat": 0.9,
+        "description": "Offensive operations against suspected titan sites",
+        "actions": ["launch_strike_fleet", "deep_space_recon", "sabotage_operations"]
+      },
+      "total_war": {
+        "min_threat": 0.9,
+        "max_threat": 1.0,
+        "description": "Galaxy-wide mobilization, no civilian operations",
+        "actions": ["full_mobilization", "civilian_conscription", "scorched_earth_outer_systems"]
+      }
+    },
+    "response_curves": {
+      "border_reinforcement": {
+        "activation_threshold": 0.25,
+        "scale_factor": 1.33,
+        "max_value": 1.0
+      },
+      "capital_production": {
+        "activation_threshold": 0.4,
+        "scale_factor": 1.67,
+        "max_value": 1.0
+      },
+      "outer_abandonment": {
+        "activation_threshold": 0.6,
+        "scale_factor": 2.5,
+        "max_value": 1.0
+      },
+      "emergency_doctrine": {
+        "activation_threshold": 0.75,
+        "scale_factor": 4.0,
+        "max_value": 1.0
+      }
+    }
+  }
+}

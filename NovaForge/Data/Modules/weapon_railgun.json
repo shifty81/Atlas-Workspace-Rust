@@ -1,0 +1,13 @@
+{
+  "id": "mod_weapon_railgun",
+  "name": "Gauss-7 Railgun",
+  "type": "Weapon",
+  "description": "A high-velocity kinetic accelerator that launches tungsten slugs at near-relativistic speeds. Devastating against armoured hulls, but slow to cycle.",
+  "power_cost": 55.0,
+  "mass": 8.5,
+  "damage": 210.0,
+  "fire_rate": 0.8,
+  "range": 2400.0,
+  "tier": 3,
+  "tags": ["kinetic", "armor_piercing", "long_range"]
+}

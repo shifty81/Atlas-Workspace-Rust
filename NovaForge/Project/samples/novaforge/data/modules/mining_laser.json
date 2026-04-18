@@ -1,0 +1,14 @@
+{
+  "id": "mod_mining_laser",
+  "name": "Cobalt Extraction Laser",
+  "type": "Mining",
+  "description": "A precision thermal cutter designed to fracture asteroid surfaces and liberate embedded ore. Draws moderate power but yields high-purity mineral output.",
+  "power_cost": 30.0,
+  "mass": 3.8,
+  "damage": 40.0,
+  "fire_rate": 4.0,
+  "range": 300.0,
+  "capacity": 120.0,
+  "tier": 2,
+  "tags": ["mining", "extraction", "thermal"]
+}

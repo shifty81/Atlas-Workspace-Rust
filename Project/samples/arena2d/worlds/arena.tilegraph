@@ -1,0 +1,37 @@
+{
+    "schema": "atlas.tilegraph.v1",
+    "nodes": [
+        {
+            "id": "floor",
+            "type": "BaseTile",
+            "position": [100, 200],
+            "params": { "tileID": 1 }
+        },
+        {
+            "id": "wall",
+            "type": "BaseTile",
+            "position": [100, 400],
+            "params": { "tileID": 2 }
+        },
+        {
+            "id": "noise",
+            "type": "NoiseField",
+            "position": [300, 300],
+            "params": { "frequency": 0.15, "seed": 42 }
+        },
+        {
+            "id": "layout",
+            "type": "TileSelect",
+            "position": [500, 300],
+            "params": { "threshold": 0.6 }
+        }
+    ],
+    "links": [
+        { "from": "floor.tile", "to": "layout.below" },
+        { "from": "wall.tile", "to": "layout.above" },
+        { "from": "noise.field", "to": "layout.field" }
+    ],
+    "outputs": {
+        "arena_map": "layout.tilemap"
+    }
+}

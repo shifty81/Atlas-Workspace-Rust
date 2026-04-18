@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://novaforge.dev/schemas/recipe.schema.json",
+  "title": "Processing Recipe",
+  "description": "Defines a centrifuge or crafting recipe for material conversion.",
+  "type": "object",
+  "required": ["id", "inputs", "outputs", "processing_time"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^recipe_[a-z_]+$",
+      "description": "Unique recipe identifier."
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable recipe name."
+    },
+    "processor": {
+      "type": "string",
+      "enum": ["centrifuge", "workbench", "furnace", "assembler"],
+      "default": "centrifuge",
+      "description": "Processing station required."
+    },
+    "inputs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["material", "quantity"],
+        "properties": {
+          "material": { "type": "string", "description": "Input material ID." },
+          "quantity": { "type": "integer", "minimum": 1, "description": "Required quantity." }
+        },
+        "additionalProperties": false
+      },
+      "minItems": 1,
+      "description": "Required input materials."
+    },
+    "outputs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["material", "quantity"],
+        "properties": {
+          "material": { "type": "string", "description": "Output material ID." },
+          "quantity": { "type": "integer", "minimum": 1, "description": "Produced quantity." }
+        },
+        "additionalProperties": false
+      },
+      "minItems": 1,
+      "description": "Produced output materials."
+    },
+    "processing_time": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "description": "Base processing time in seconds."
+    },
+    "power_cost": {
+      "type": "number",
+      "minimum": 0,
+      "default": 0,
+      "description": "Continuous power draw during processing (kW)."
+    },
+    "required_tier": {
+      "type": "integer",
+      "minimum": 0,
+      "default": 0,
+      "description": "Minimum processor/R.I.G. tier to use this recipe."
+    },
+    "skill_requirement": {
+      "type": "string",
+      "description": "Skill ID required to unlock this recipe."
+    }
+  },
+  "additionalProperties": false
+}

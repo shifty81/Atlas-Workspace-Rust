@@ -1,0 +1,17 @@
+# AtlasAI Rule Evaluator — Runtime Configuration
+# See AtlasAI/Atlas_Arbiter/README.md for documentation.
+
+[atlas_ai]
+# Directory containing .atlas_ai.json rule files
+rules_dir = "rules"
+
+# Pipeline directory for ChangeEvent I/O
+pipeline_dir = "../../../.novaforge/pipeline"
+
+# Log level: debug, info, warn, error
+log_level = "info"
+
+[output]
+# Where to write violation reports
+# Violations are also emitted as pipeline ChangeEvents
+report_format = "json"   # json | text | sarif

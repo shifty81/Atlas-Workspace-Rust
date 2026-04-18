@@ -1,0 +1,61 @@
+{
+  "schema": "atlas.project.v1",
+  "projectId": "novaforge",
+  "projectName": "NovaForge",
+  "projectType": "novaforge",
+  "projectVersion": 1,
+  "name": "NovaForge",
+  "version": "0.1.0",
+  "description": "NovaForge — open-world voxel MMO built on the Atlas engine.",
+  "adapter": "novaforge",
+  "capabilities": [
+    "Rendering3D",
+    "Physics3D",
+    "UI",
+    "Networking",
+    "AI",
+    "Animation",
+    "VoxelEditor",
+    "TerrainEditor",
+    "Blueprints"
+  ],
+  "roots": {
+    "content": "Content",
+    "data": "Data",
+    "config": "Config",
+    "schemas": "Schemas",
+    "generated": "Generated",
+    "cache": "Cache"
+  },
+  "registries": {
+    "asset": "Data/Registries/AssetRegistry.json",
+    "document": "Data/Registries/DocumentRegistry.json",
+    "schema": "Data/Registries/SchemaRegistry.json",
+    "pcg": "Data/Registries/PCGRegistry.json",
+    "build": "Data/Registries/BuildTargetRegistry.json",
+    "launch": "Data/Registries/LaunchTargetRegistry.json"
+  },
+  "startup": {
+    "layout": "novaforge_default",
+    "tool": "scene",
+    "world": "Data/Worlds/DefaultWorld.json"
+  },
+  "config": {
+    "projectSettings": "Config/WorkspaceProjectSettings.json",
+    "pieSettings": "Config/PIESettings.json",
+    "pcgPreviewDefaults": "Config/PCGPreviewDefaults.json"
+  },
+  "modules": {
+    "worldGraph": "worlds/devworld.worldgraph",
+    "ai": true,
+    "content": "Content"
+  },
+  "runtime": {
+    "entryWorld": "Data/Worlds/DefaultWorld.json",
+    "tickRate": 30,
+    "maxPlayers": 64
+  },
+  "assets": {
+    "root": "Content"
+  }
+}

@@ -1,0 +1,279 @@
+#pragma once
+
+#include <memory>
+#include <vector>
+#include <unordered_map>
+#include <string>
+#include <glm/glm.hpp>
+
+namespace atlas {
+
+// Forward declarations
+class Shader;
+class Camera;
+class Mesh;
+class Model;
+class HealthBarRenderer;
+class WarpEffectRenderer;
+class Entity;
+
+/**
+ * Visual representation of a game entity
+ */
+struct EntityVisual {
+    std::shared_ptr<Model> model;
+    glm::vec3 position;
+    glm::vec3 rotation;  // Euler angles (pitch, yaw, roll)
+    float scale;
+    
+    // Health data for health bars
+    float currentShield;
+    float maxShield;
+    float currentArmor;
+    float maxArmor;
+    float currentHull;
+    float maxHull;
+
+    // Ship type and faction (for debug / shader tinting)
+    std::string shipType;
+    std::string faction;
+    
+    EntityVisual() 
+        : position(0.0f)
+        , rotation(0.0f)
+        , scale(1.0f)
+        , currentShield(0.0f)
+        , maxShield(0.0f)
+        , currentArmor(0.0f)
+        , maxArmor(0.0f)
+        , currentHull(0.0f)
+        , maxHull(0.0f)
+    {}
+};
+
+/**
+ * Main renderer class for Nova Forge
+ * 
+ * Handles all OpenGL rendering including:
+ * - Starfield background rendering
+ * - Entity 3D models with lighting
+ * - Health bar overlays (shield/armor/hull)
+ * - Camera transforms and viewport management
+ * 
+ * Rendering Pipeline Order:
+ * 1. Clear framebuffer
+ * 2. Render nebula background (procedural space clouds)
+ * 3. Render starfield (background)
+ * 4. Render 3D entities with lighting
+ * 5. Render health bars (overlay)
+ * 
+ * Uses OpenGL 3.3+ with separate shaders for different render passes.
+ */
+class Renderer {
+public:
+    Renderer();
+    ~Renderer();
+
+    /**
+     * Initialize renderer
+     */
+    bool initialize();
+
+    /**
+     * Begin frame
+     */
+    void beginFrame();
+
+    /**
+     * End frame
+     */
+    void endFrame();
+
+    /**
+     * Render the scene
+     */
+    void renderScene(Camera& camera);
+
+    /**
+     * Clear screen with color
+     */
+    void clear(const glm::vec4& color = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
+
+    /**
+     * Set viewport
+     */
+    void setViewport(int x, int y, int width, int height);
+
+    // === Entity Visual Management ===
+    
+    /**
+     * Configure the solar system sun for rendering.
+     * Call each frame with the current system's sun data.
+     * @param position World position of the sun
+     * @param color Light color of the sun
+     * @param radius Physical radius of the sun in meters
+     */
+    void setSunState(const glm::vec3& position, const glm::vec3& color, float radius);
+
+    /**
+     * Disable sun rendering (e.g. when no solar system is loaded)
+     */
+    void disableSun();
+
+    /**
+     * Update and render the warp tunnel overlay effect.
+     * Call after renderScene() each frame.
+     *
+     * @param phase     Warp phase (0=none, 1=align, 2=accel, 3=cruise, 4=decel)
+     * @param progress  Overall warp progress 0–1
+     * @param intensity Effect intensity 0–1
+     * @param direction Warp heading (world-space normalised vector)
+     * @param deltaTime Frame time in seconds
+     */
+    void updateWarpEffect(int phase, float progress, float intensity,
+                          const glm::vec3& direction, float deltaTime);
+
+    /**
+     * Render the warp tunnel overlay (called from renderScene or externally).
+     */
+    void renderWarpEffect();
+
+    /**
+     * Create visual representation for an entity
+     * @param entity The entity to create visuals for
+     * @return true if successful
+     */
+    bool createEntityVisual(const std::shared_ptr<Entity>& entity);
+    
+    /**
+     * Remove visual representation for an entity
+     * @param entityId The entity ID to remove
+     */
+    void removeEntityVisual(const std::string& entityId);
+    
+    /**
+     * Update entity visuals from entity manager
+     * @param entities Map of entity ID to entity
+     */
+    void updateEntityVisuals(const std::unordered_map<std::string, std::shared_ptr<Entity>>& entities);
+
+private:
+    /**
+     * Initialize starfield geometry
+     * 
+     * Creates a procedurally generated star background with ~1000 stars
+     * distributed in a sphere around the camera. Stars have varying brightness
+     * to simulate depth and variety.
+     */
+    void setupStarfield();
+    
+    /**
+     * Setup nebula background quad
+     */
+    void setupNebula();
+    
+    /**
+     * Render procedural nebula background
+     * 
+     * Renders a full-screen quad with procedural noise-based nebula clouds.
+     * Creates subtle purple/blue/red space clouds for atmosphere.
+     * Must be rendered first (before starfield and entities).
+     * 
+     * @param camera Current camera for view direction reconstruction
+     */
+    void renderNebula(Camera& camera);
+    
+    /**
+     * Render the starfield background
+     * 
+     * Renders star points using GL_POINTS with the starfield shader.
+     * Stars maintain fixed position relative to camera to create parallax
+     * illusion. Must be rendered first (before entities).
+     * 
+     * @param camera Current camera for view transformation
+     */
+    void renderStarfield(Camera& camera);
+    
+    /**
+     * Render all game entities
+     * 
+     * Renders ships, stations, asteroids using 3D models. Applies:
+     * - Model transformation (position, rotation, scale)
+     * - View/projection matrices from camera
+     * - Basic lighting (directional light)
+     * - Faction-specific colors
+     * 
+     * Must be rendered after starfield, before health bars.
+     * 
+     * @param camera Current camera for view/projection matrices
+     */
+    void renderEntities(Camera& camera);
+    
+    /**
+     * Render health bars above entities
+     * 
+     * Renders 2D health bar overlays showing shield/armor/hull for each entity.
+     * Health bars are:
+     * - Positioned above entities in 3D space
+     * - Billboard-oriented (always face camera)
+     * - Color-coded (blue=shield, yellow=armor, red=hull)
+     * - Only shown for entities with health components
+     * 
+     * Must be rendered last (on top of everything else).
+     * 
+     * @param camera Current camera for world-to-screen projection
+     */
+    void renderHealthBars(Camera& camera);
+
+    /**
+     * Setup sun sphere geometry for solar system rendering
+     */
+    void setupSunMesh();
+
+    /**
+     * Render the solar system sun as a bright glowing sphere at the origin.
+     * Uses additive blending for a luminous glow effect.
+     * 
+     * @param camera Current camera for view/projection matrices
+     * @param sunPosition World position of the sun
+     * @param sunColor Light color of the sun
+     * @param sunRadius Physical radius of the sun in meters
+     */
+    void renderSun(Camera& camera, const glm::vec3& sunPosition,
+                   const glm::vec3& sunColor, float sunRadius);
+
+    std::unique_ptr<Shader> m_basicShader;
+    std::unique_ptr<Shader> m_starfieldShader;
+    std::unique_ptr<Shader> m_nebulaShader;
+    std::unique_ptr<Shader> m_entityShader;
+    std::unique_ptr<HealthBarRenderer> m_healthBarRenderer;
+    std::unique_ptr<WarpEffectRenderer> m_warpEffectRenderer;
+    
+    // Nebula background data
+    unsigned int m_nebulaVAO;
+    unsigned int m_nebulaVBO;
+    
+    // Starfield data
+    unsigned int m_starfieldVAO;
+    unsigned int m_starfieldVBO;
+    int m_starCount;
+
+    // Sun sphere data
+    unsigned int m_sunVAO;
+    unsigned int m_sunVBO;
+    unsigned int m_sunEBO;
+    int m_sunIndexCount;
+
+    // Sun rendering state (set externally by scene)
+    bool m_sunEnabled;
+    glm::vec3 m_sunPosition;
+    glm::vec3 m_sunColor;
+    float m_sunRadius;
+
+    // Entity visuals
+    std::unordered_map<std::string, EntityVisual> m_entityVisuals;
+
+    bool m_initialized;
+};
+
+} // namespace atlas

@@ -1,0 +1,10 @@
+{
+  "schemas": [
+    { "documentType": "WorldDocument", "schemaPath": "Schemas/World.schema.json" },
+    { "documentType": "AssetDocument", "schemaPath": "Schemas/Asset.schema.json" },
+    { "documentType": "CharacterRulesDocument", "schemaPath": "Schemas/CharacterRules.schema.json" },
+    { "documentType": "EconomyRulesDocument", "schemaPath": "Schemas/EconomyRules.schema.json" },
+    { "documentType": "ProgressionRulesDocument", "schemaPath": "Schemas/ProgressionRules.schema.json" },
+    { "documentType": "PCGRuleSetDocument", "schemaPath": "Schemas/PCGRuleSet.schema.json" }
+  ]
+}

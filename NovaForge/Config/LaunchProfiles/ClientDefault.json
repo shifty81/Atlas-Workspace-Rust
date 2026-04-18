@@ -1,0 +1,7 @@
+{
+  "profileId": "client_default",
+  "displayName": "Client Default",
+  "target": "novaforge_client",
+  "arguments": [],
+  "workingDirectory": "."
+}

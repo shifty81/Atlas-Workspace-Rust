@@ -1,0 +1,43 @@
+{
+    "schema": "atlas.data.v1",
+    "description": "EVEOFFLINE game data manifest — references content at repository data/ root",
+    "contentRoot": "../../data",
+    "categories": {
+        "ships": {
+            "path": "ships/",
+            "files": ["frigates.json", "destroyers.json", "cruisers.json", "battlecruisers.json", "battleships.json", "capitals.json", "industrials.json", "mining_barges.json", "exhumers.json", "tech2_frigates.json", "tech2_destroyers.json", "tech2_cruisers.json", "tech2_battlecruisers.json", "tech2_battleships.json"]
+        },
+        "modules": {
+            "path": "modules/",
+            "files": ["weapons.json", "large_weapons.json", "capital_modules.json", "defensive.json", "mining.json", "utility.json", "drones.json", "tech2_modules.json", "faction_modules.json"]
+        },
+        "skills": {
+            "path": "skills/",
+            "files": ["skills.json", "science_skills.json"]
+        },
+        "universe": {
+            "path": "universe/",
+            "files": ["systems.json", "station_types.json", "station_visual_data.json", "asteroid_visual_data.json", "enhanced_systems.json", "warp_mechanics.json", "player_structures.json", "pirate_doctrine.json", "titan_assembly.json", "sector_defaults.json", "galactic_response.json"]
+        },
+        "fleet": {
+            "path": "fleet/",
+            "files": ["captain_backgrounds.json", "personality_profiles.json", "chatter_templates.json", "faction_culture.json", "rumors.json", "warp_anomalies.json", "fleet_norms.json"]
+        },
+        "missions": {
+            "path": "missions/",
+            "files": ["level1_missions.json", "level2_missions.json", "level3_missions.json", "level4_missions.json", "level5_missions.json", "epic_arcs.json", "mining_missions.json", "incursions.json"]
+        },
+        "market": { "path": "market/", "files": ["prices.json"] },
+        "industry": { "path": "industry/", "files": ["blueprints.json", "datacores.json", "decryptors.json"] },
+        "npcs": { "path": "npcs/", "files": ["pirates.json", "sleepers.json", "rare_spawns.json", "hireable_pilots.json"] },
+        "exploration": { "path": "exploration/", "files": ["sites.json", "deadspace_complexes.json"] },
+        "corporations": { "path": "corporations/", "files": ["corporations.json"] },
+        "contracts": { "path": "contracts/", "files": ["contracts.json"] },
+        "characterCreation": { "path": "character_creation/", "files": ["races.json", "clones.json", "implants.json"] },
+        "wormholes": { "path": "wormholes/", "files": ["wormhole_classes.json", "wormhole_effects.json"] },
+        "asteroidFields": { "path": "asteroid_fields/", "files": ["belts.json", "belt_layouts.json", "ore_types.json"] },
+        "security": { "path": "security/", "files": ["concord_and_insurance.json"] },
+        "planetaryInteraction": { "path": "planetary_interaction/", "files": ["resources.json"] },
+        "ui": { "path": "ui/", "files": ["eve_dark_theme.json"] }
+    }
+}

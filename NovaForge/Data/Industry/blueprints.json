@@ -1,0 +1,148 @@
+{
+  "blueprints": {
+    "fang_blueprint": {
+      "blueprint_id": "fang_blueprint",
+      "item_type": "ship",
+      "item_id": "fang",
+      "material_efficiency": 0,
+      "time_efficiency": 0,
+      "runs": -1,
+      "materials": {
+        "ferrium": 30000,
+        "ignium": 8000,
+        "allonium": 2000,
+        "isodium": 500,
+        "noctium": 100,
+        "zyrium": 20,
+        "megrium": 5
+      },
+      "manufacturing_time": 7200
+    },
+    "falk_blueprint": {
+      "blueprint_id": "falk_blueprint",
+      "item_type": "ship",
+      "item_id": "falk",
+      "material_efficiency": 0,
+      "time_efficiency": 0,
+      "runs": -1,
+      "materials": {
+        "ferrium": 32000,
+        "ignium": 9000,
+        "allonium": 2500,
+        "isodium": 600,
+        "noctium": 120,
+        "zyrium": 25,
+        "megrium": 8
+      },
+      "manufacturing_time": 7200
+    },
+    "autocannon_blueprint": {
+      "blueprint_id": "autocannon_blueprint",
+      "item_type": "module",
+      "item_id": "150mm_autocannon_i",
+      "material_efficiency": 0,
+      "time_efficiency": 0,
+      "runs": -1,
+      "materials": {
+        "ferrium": 500,
+        "ignium": 200,
+        "allonium": 50
+      },
+      "manufacturing_time": 600
+    },
+    "shield_extender_blueprint": {
+      "blueprint_id": "shield_extender_blueprint",
+      "item_type": "module",
+      "item_id": "medium_shield_extender_i",
+      "material_efficiency": 0,
+      "time_efficiency": 0,
+      "runs": -1,
+      "materials": {
+        "ferrium": 300,
+        "ignium": 150,
+        "allonium": 100,
+        "isodium": 50
+      },
+      "manufacturing_time": 600
+    },
+    "drone_blueprint": {
+      "blueprint_id": "drone_blueprint",
+      "item_type": "drone",
+      "item_id": "hobgoblin_i",
+      "material_efficiency": 0,
+      "time_efficiency": 0,
+      "runs": -1,
+      "materials": {
+        "ferrium": 200,
+        "ignium": 100,
+        "allonium": 50,
+        "isodium": 25
+      },
+      "manufacturing_time": 300
+    },
+    "ammo_blueprint": {
+      "blueprint_id": "ammo_blueprint",
+      "item_type": "ammo",
+      "item_id": "emp_s",
+      "material_efficiency": 0,
+      "time_efficiency": 0,
+      "runs": -1,
+      "materials": {
+        "ferrium": 10,
+        "ignium": 5
+      },
+      "manufacturing_time": 60
+    }
+  },
+  "materials": {
+    "ferrium": {
+      "item_id": "ferrium",
+      "name": "Ferrium",
+      "volume": 0.01,
+      "base_price": 5.0,
+      "description": "The most common ore mineral"
+    },
+    "ignium": {
+      "item_id": "ignium",
+      "name": "Ignium",
+      "volume": 0.01,
+      "base_price": 10.0,
+      "description": "Common ore mineral used in manufacturing"
+    },
+    "allonium": {
+      "item_id": "allonium",
+      "name": "Allonium",
+      "volume": 0.01,
+      "base_price": 50.0,
+      "description": "Mid-tier ore mineral"
+    },
+    "isodium": {
+      "item_id": "isodium",
+      "name": "Isodium",
+      "volume": 0.01,
+      "base_price": 100.0,
+      "description": "Mid-tier ore mineral"
+    },
+    "noctium": {
+      "item_id": "noctium",
+      "name": "Noctium",
+      "volume": 0.01,
+      "base_price": 500.0,
+      "description": "High-tier ore mineral"
+    },
+    "zyrium": {
+      "item_id": "zyrium",
+      "name": "Zyrium",
+      "volume": 0.01,
+      "base_price": 1000.0,
+      "description": "High-tier ore mineral"
+    },
+    "megrium": {
+      "item_id": "megrium",
+      "name": "Megrium",
+      "volume": 0.01,
+      "base_price": 2000.0,
+      "description": "Rare ore mineral"
+    }
+  }
+}

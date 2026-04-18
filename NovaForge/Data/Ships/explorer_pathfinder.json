@@ -1,0 +1,16 @@
+{
+  "id": "ship_explorer_pathfinder",
+  "name": "Pathfinder Deep-Range Scout",
+  "class": "Explorer",
+  "description": "Engineered for months-long solo expeditions into uncharted space, the Pathfinder carries advanced sensor arrays, an extended-range jump drive, and self-sustaining life-support systems.",
+  "hull_points": 900,
+  "shield_points": 350,
+  "mass": 65.0,
+  "max_speed": 280.0,
+  "module_slots": 6,
+  "crew_capacity": 3,
+  "cargo_capacity": 80.0,
+  "turn_rate": 55.0,
+  "acceleration": 18.0,
+  "tags": ["exploration", "scanner", "long_range", "solo"]
+}

@@ -1,0 +1,457 @@
+{
+  "deadspace_complexes": {
+    "description": "Deadspace complexes are instanced areas of space containing NPC enemies and valuable loot. They are accessed through acceleration gates and contain multiple rooms of increasing difficulty.",
+    "difficulty_levels": {
+      "level_1": {
+        "name": "Minor Annex",
+        "security_range": "0.7 to 1.0",
+        "ship_restriction": "frigates_and_destroyers",
+        "npc_types": [
+          "frigate",
+          "destroyer"
+        ],
+        "rooms": 2,
+        "description": "Basic deadspace sites suitable for new players in frigates.",
+        "loot_tier": "basic",
+        "estimated_bounties": 500000
+      },
+      "level_2": {
+        "name": "Standard Compound",
+        "security_range": "0.5 to 0.7",
+        "ship_restriction": "cruisers_and_below",
+        "npc_types": [
+          "frigate",
+          "destroyer",
+          "cruiser"
+        ],
+        "rooms": 3,
+        "description": "Moderate deadspace sites requiring cruiser-class vessels.",
+        "loot_tier": "standard",
+        "estimated_bounties": 2000000
+      },
+      "level_3": {
+        "name": "Major Outpost",
+        "security_range": "0.3 to 0.5",
+        "ship_restriction": "battlecruisers_and_below",
+        "npc_types": [
+          "cruiser",
+          "battlecruiser"
+        ],
+        "rooms": 4,
+        "description": "Challenging deadspace sites with heavy NPC presence.",
+        "loot_tier": "advanced",
+        "estimated_bounties": 8000000
+      },
+      "level_4": {
+        "name": "Stronghold",
+        "security_range": "0.1 to 0.4",
+        "ship_restriction": "battleships_and_below",
+        "npc_types": [
+          "battlecruiser",
+          "battleship"
+        ],
+        "rooms": 5,
+        "description": "Dangerous deadspace sites requiring battleship-class vessels with proper tank.",
+        "loot_tier": "rare",
+        "estimated_bounties": 25000000
+      },
+      "level_5": {
+        "name": "Pirate Stronghold",
+        "security_range": "0.0 to 0.2",
+        "ship_restriction": "none",
+        "npc_types": [
+          "battleship",
+          "commander"
+        ],
+        "rooms": 6,
+        "description": "Extremely dangerous complexes in null-sec space. May contain officer spawns with faction loot.",
+        "loot_tier": "faction",
+        "estimated_bounties": 75000000
+      }
+    },
+    "complex_templates": {
+      "venom_syndicate_hideout": {
+        "id": "venom_syndicate_hideout",
+        "name": "Venom Syndicate Hideout",
+        "faction": "Venom Syndicate",
+        "difficulty": "level_1",
+        "rooms": [
+          {
+            "room_number": 1,
+            "name": "Outer Rimward",
+            "npcs": [
+              {
+                "type": "venom_syndicate_scout",
+                "count": 3
+              },
+              {
+                "type": "venom_syndicate_soldier",
+                "count": 2
+              }
+            ],
+            "has_gate": true
+          },
+          {
+            "room_number": 2,
+            "name": "Inner Sanctum",
+            "npcs": [
+              {
+                "type": "venom_syndicate_soldier",
+                "count": 4
+              },
+              {
+                "type": "venom_syndicate_lieutenant",
+                "count": 1
+              }
+            ],
+            "has_gate": false,
+            "loot_container": true,
+            "possible_loot": [
+              "small_hybrid_ammo",
+              "light_shield_booster",
+              "isk_bounty"
+            ]
+          }
+        ]
+      },
+      "iron_corsairs_base": {
+        "id": "iron_corsairs_base",
+        "name": "Iron Corsairs Guerilla Grounds",
+        "faction": "Iron Corsairs",
+        "difficulty": "level_2",
+        "rooms": [
+          {
+            "room_number": 1,
+            "name": "Patrol Area",
+            "npcs": [
+              {
+                "type": "iron_corsairs_scout",
+                "count": 4
+              },
+              {
+                "type": "iron_corsairs_soldier",
+                "count": 3
+              }
+            ],
+            "has_gate": true
+          },
+          {
+            "room_number": 2,
+            "name": "Supply Depot",
+            "npcs": [
+              {
+                "type": "iron_corsairs_soldier",
+                "count": 5
+              },
+              {
+                "type": "iron_corsairs_cruiser",
+                "count": 2
+              }
+            ],
+            "has_gate": true
+          },
+          {
+            "room_number": 3,
+            "name": "Command Center",
+            "npcs": [
+              {
+                "type": "iron_corsairs_cruiser",
+                "count": 3
+              },
+              {
+                "type": "iron_corsairs_commander",
+                "count": 1
+              }
+            ],
+            "has_gate": false,
+            "loot_container": true,
+            "possible_loot": [
+              "medium_missile_ammo",
+              "shield_extender",
+              "isk_bounty",
+              "blueprint_copy"
+            ]
+          }
+        ]
+      },
+      "crimson_order_fortress": {
+        "id": "crimson_order_fortress",
+        "name": "Crimson Order Fortress",
+        "faction": "Crimson Order",
+        "difficulty": "level_3",
+        "rooms": [
+          {
+            "room_number": 1,
+            "name": "Outer Defense Ring",
+            "npcs": [
+              {
+                "type": "crimson_order_scout",
+                "count": 5
+              },
+              {
+                "type": "crimson_order_soldier",
+                "count": 4
+              }
+            ],
+            "has_gate": true
+          },
+          {
+            "room_number": 2,
+            "name": "Inner Barricade",
+            "npcs": [
+              {
+                "type": "crimson_order_soldier",
+                "count": 4
+              },
+              {
+                "type": "crimson_order_cruiser",
+                "count": 3
+              }
+            ],
+            "has_gate": true
+          },
+          {
+            "room_number": 3,
+            "name": "Cathedral of the Damned",
+            "npcs": [
+              {
+                "type": "crimson_order_cruiser",
+                "count": 3
+              },
+              {
+                "type": "crimson_order_battlecruiser",
+                "count": 2
+              }
+            ],
+            "has_gate": true
+          },
+          {
+            "room_number": 4,
+            "name": "Sanctum of Blood",
+            "npcs": [
+              {
+                "type": "crimson_order_battlecruiser",
+                "count": 2
+              },
+              {
+                "type": "crimson_order_commander",
+                "count": 1
+              }
+            ],
+            "has_gate": false,
+            "loot_container": true,
+            "possible_loot": [
+              "energy_turret_upgrade",
+              "armor_hardener",
+              "isk_bounty",
+              "faction_module"
+            ]
+          }
+        ]
+      },
+      "hollow_citadel": {
+        "id": "hollow_citadel",
+        "name": "Hollow's Citadel",
+        "faction": "Hollow",
+        "difficulty": "level_4",
+        "rooms": [
+          {
+            "room_number": 1,
+            "name": "Outer Garrison",
+            "npcs": [
+              {
+                "type": "hollow_soldier",
+                "count": 6
+              },
+              {
+                "type": "hollow_cruiser",
+                "count": 3
+              }
+            ],
+            "has_gate": true
+          },
+          {
+            "room_number": 2,
+            "name": "Slave Pens",
+            "npcs": [
+              {
+                "type": "hollow_cruiser",
+                "count": 4
+              },
+              {
+                "type": "hollow_battlecruiser",
+                "count": 2
+              }
+            ],
+            "has_gate": true
+          },
+          {
+            "room_number": 3,
+            "name": "Inner Sanctum",
+            "npcs": [
+              {
+                "type": "hollow_battlecruiser",
+                "count": 3
+              },
+              {
+                "type": "hollow_battleship",
+                "count": 2
+              }
+            ],
+            "has_gate": true
+          },
+          {
+            "room_number": 4,
+            "name": "War Room",
+            "npcs": [
+              {
+                "type": "hollow_battleship",
+                "count": 3
+              },
+              {
+                "type": "hollow_commander",
+                "count": 1
+              }
+            ],
+            "has_gate": true
+          },
+          {
+            "room_number": 5,
+            "name": "True Power Core",
+            "npcs": [
+              {
+                "type": "hollow_battleship",
+                "count": 2
+              },
+              {
+                "type": "hollow_officer",
+                "count": 1
+              }
+            ],
+            "has_gate": false,
+            "loot_container": true,
+            "possible_loot": [
+              "faction_module",
+              "deadspace_module",
+              "isk_bounty",
+              "implant"
+            ]
+          }
+        ]
+      },
+      "shadow_pact_haven": {
+        "id": "shadow_pact_haven",
+        "name": "Shadow Pact Haven",
+        "faction": "Shadow Pact",
+        "difficulty": "level_5",
+        "rooms": [
+          {
+            "room_number": 1,
+            "name": "Outer Patrol",
+            "npcs": [
+              {
+                "type": "angel_soldier",
+                "count": 6
+              },
+              {
+                "type": "angel_cruiser",
+                "count": 4
+              }
+            ],
+            "has_gate": true
+          },
+          {
+            "room_number": 2,
+            "name": "Defense Grid",
+            "npcs": [
+              {
+                "type": "angel_cruiser",
+                "count": 5
+              },
+              {
+                "type": "angel_battlecruiser",
+                "count": 3
+              }
+            ],
+            "has_gate": true
+          },
+          {
+            "room_number": 3,
+            "name": "Smuggler's Den",
+            "npcs": [
+              {
+                "type": "angel_battlecruiser",
+                "count": 4
+              },
+              {
+                "type": "angel_battleship",
+                "count": 2
+              }
+            ],
+            "has_gate": true
+          },
+          {
+            "room_number": 4,
+            "name": "Command Nexus",
+            "npcs": [
+              {
+                "type": "angel_battleship",
+                "count": 4
+              },
+              {
+                "type": "angel_commander",
+                "count": 1
+              }
+            ],
+            "has_gate": true
+          },
+          {
+            "room_number": 5,
+            "name": "War Fleet Assembly",
+            "npcs": [
+              {
+                "type": "angel_battleship",
+                "count": 3
+              },
+              {
+                "type": "angel_commander",
+                "count": 2
+              }
+            ],
+            "has_gate": true
+          },
+          {
+            "room_number": 6,
+            "name": "Pact Ascendant Throne",
+            "npcs": [
+              {
+                "type": "angel_battleship",
+                "count": 2
+              },
+              {
+                "type": "angel_officer",
+                "count": 1
+              }
+            ],
+            "has_gate": false,
+            "loot_container": true,
+            "possible_loot": [
+              "faction_module",
+              "deadspace_module",
+              "officer_module",
+              "isk_bounty",
+              "implant",
+              "blueprint_original"
+            ]
+          }
+        ]
+      }
+    },
+    "escalation_mechanics": {
+      "description": "Completing a deadspace complex has a chance to escalate to a higher difficulty site in a nearby system.",
+      "escalation_chance": 0.05,
+      "escalation_duration_hours": 24,
+      "max_escalation_jumps": 5
+    }
+  }
+}

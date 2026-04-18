@@ -1,0 +1,13 @@
+{
+  "id": "skill_mining_efficiency",
+  "name": "Ore Extraction Efficiency",
+  "category": "Mining",
+  "description": "Refined extraction methods that increase yield per asteroid and reduce energy consumption of mining equipment.",
+  "max_level": 5,
+  "effects": [
+    { "stat": "mining_yield", "modifier": 0.12, "per_level": true },
+    { "stat": "mining_power_cost", "modifier": -0.06, "per_level": true }
+  ],
+  "unlock_cost_base": 350,
+  "tags": ["resource", "economy"]
+}

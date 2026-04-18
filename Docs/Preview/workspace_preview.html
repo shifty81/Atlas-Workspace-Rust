@@ -1,0 +1,1277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atlas Workspace — Shell Preview</title>
+<style>
+/* ─── Reset ────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ─── Theme (EditorTheme.h RRGGBBAA → CSS) ─────────────────────── */
+:root {
+  --panel-bg:       #2B2B2B;
+  --panel-header:   #3C3C3C;
+  --panel-border:   #555555;
+  --panel-text:     #DCDCDC;
+  --hover-hi:       #383838;
+  --sel-hi:         #264F78;
+  --sel-bd:         #007ACC;
+  --input-bg:       #1E1E1E;
+  --input-border:   #474747;
+  --input-text:     #D4D4D4;
+  --btn-bg:         #3C3C3C;
+  --btn-hover:      #505050;
+  --btn-text:       #CCCCCC;
+  --toolbar-bg:     #333333;
+  --statusbar-bg:   #007ACC;
+  --statusbar-text: #FFFFFF;
+  --accent:         #007ACC;
+  --dirty:          #E8A435;
+  --activity-bg:    #252526;
+  --activity-icon:  #858585;
+  --activity-active:#FFFFFF;
+  --title-bg:       #1F1F1F;
+  --success:        #4EC9B0;
+  --warning:        #E8A435;
+  --error:          #F44747;
+}
+
+body {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-size: 13px;
+  background: #111;
+  color: var(--panel-text);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 20px 40px;
+  min-height: 100vh;
+}
+
+/* ─── Page header ───────────────────────────────────────────────── */
+.page-header {
+  text-align: center;
+  margin-bottom: 16px;
+}
+.page-header h1 {
+  font-size: 20px;
+  font-weight: 500;
+  color: #eee;
+  margin-bottom: 4px;
+}
+.page-header p {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 8px;
+}
+.badge {
+  display: inline-block;
+  background: var(--accent);
+  color: #fff;
+  font-size: 10px;
+  padding: 2px 7px;
+  border-radius: 3px;
+  margin: 0 3px;
+}
+.badge.dark { background: #3C3C3C; border: 1px solid #555; }
+
+.caption {
+  width: 1280px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #555;
+  margin-bottom: 6px;
+  padding: 0 2px;
+}
+
+/* ─── Workspace shell ───────────────────────────────────────────── */
+.ws {
+  width: 1280px;
+  height: 800px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #3a3a3a;
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: 0 10px 50px rgba(0,0,0,0.7);
+  flex-shrink: 0;
+}
+
+/* ─── Title bar ─────────────────────────────────────────────────── */
+.titlebar {
+  height: 30px;
+  background: var(--title-bg);
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  gap: 8px;
+  border-bottom: 1px solid #333;
+  flex-shrink: 0;
+  user-select: none;
+}
+.traffic-lights { display: flex; gap: 6px; }
+.tl { width: 12px; height: 12px; border-radius: 50%; }
+.tl-close   { background: #FF5F57; }
+.tl-min     { background: #FFBD2E; }
+.tl-max     { background: #28C940; }
+.title-text {
+  flex: 1;
+  text-align: center;
+  font-size: 12px;
+  color: #888;
+}
+.title-text span { color: #ccc; }
+.title-project { color: var(--accent) !important; }
+
+/* ─── Menu bar (24px) ───────────────────────────────────────────── */
+.menubar {
+  height: 26px;
+  background: #252526;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #333;
+  flex-shrink: 0;
+}
+.menu-item {
+  padding: 0 10px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  color: #ccc;
+  cursor: pointer;
+}
+.menu-item:hover { background: #3e3e42; }
+.menu-item.open  { background: var(--accent); color: #fff; }
+
+/* ─── Body row: activity bar + side panel + main + right panel ── */
+.ws-body {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+/* ─── Activity bar (48px — the tool switcher) ───────────────────── */
+.activity-bar {
+  width: 48px;
+  background: var(--activity-bg);
+  border-right: 1px solid #333;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 4px 0;
+  flex-shrink: 0;
+}
+.act-tool {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  cursor: pointer;
+  position: relative;
+  color: var(--activity-icon);
+  font-size: 20px;
+}
+.act-tool:hover { color: #ccc; }
+.act-tool.active {
+  color: var(--activity-active);
+  border-left: 2px solid var(--accent);
+}
+.act-tool::after {
+  content: attr(data-label);
+  font-size: 8px;
+  color: inherit;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 44px;
+  text-overflow: ellipsis;
+  text-align: center;
+}
+.act-spacer { flex: 1; }
+.act-divider {
+  width: 32px;
+  height: 1px;
+  background: #3a3a3a;
+  margin: 4px 0;
+}
+
+/* ─── Side panel (shared panels, 260px) ────────────────────────── */
+.side-panel {
+  width: 260px;
+  background: var(--panel-bg);
+  border-right: 1px solid var(--panel-border);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+.side-title {
+  height: 35px;
+  background: var(--panel-header);
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #aaa;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--panel-border);
+  flex-shrink: 0;
+}
+.side-section {
+  border-bottom: 1px solid #3a3a3a;
+  flex-shrink: 0;
+}
+.side-section-hdr {
+  display: flex;
+  align-items: center;
+  padding: 5px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #888;
+  cursor: pointer;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  gap: 5px;
+}
+.side-section-hdr:hover { background: rgba(255,255,255,0.04); }
+.side-section-hdr .arrow { font-size: 9px; }
+.side-item {
+  padding: 4px 10px 4px 22px;
+  font-size: 12px;
+  color: var(--panel-text);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+.side-item:hover { background: var(--hover-hi); }
+.side-item.selected { background: var(--sel-hi); border-left: 2px solid var(--accent); padding-left: 20px; }
+.side-item .icon { font-size: 12px; color: #888; flex-shrink: 0; }
+.side-item .lbl  { flex: 1; }
+.side-item .badge2 {
+  font-size: 9px;
+  background: rgba(255,255,255,0.08);
+  padding: 1px 4px;
+  border-radius: 2px;
+  color: #777;
+}
+.side-search {
+  margin: 6px 8px;
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: 3px;
+  padding: 4px 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: #555;
+  flex-shrink: 0;
+}
+.side-body { flex: 1; overflow-y: auto; }
+
+/* ─── Main area ─────────────────────────────────────────────────── */
+.main-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #1e1e1e;
+}
+
+/* ─── Tool tab bar ───────────────────────────────────────────────── */
+.tool-tabbar {
+  height: 35px;
+  background: #252526;
+  display: flex;
+  align-items: flex-end;
+  border-bottom: 1px solid #333;
+  padding: 0;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.tool-tab {
+  height: 35px;
+  padding: 0 14px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  color: #888;
+  cursor: pointer;
+  border-right: 1px solid #333;
+  white-space: nowrap;
+}
+.tool-tab:hover { color: #ccc; background: rgba(255,255,255,0.04); }
+.tool-tab.active {
+  background: #1e1e1e;
+  color: #fff;
+  border-top: 2px solid var(--accent);
+  height: 35px;
+}
+.tool-tab .close { color: #555; font-size: 11px; margin-left: 3px; }
+.tool-tab.active .close { color: #888; }
+.tool-tab.active .close:hover { color: #fff; }
+
+/* ─── Tool content area ─────────────────────────────────────────── */
+.tool-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ─── Project Browser tool view ────────────────────────────────── */
+.proj-browser {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+.proj-browser-left {
+  width: 220px;
+  background: #252526;
+  border-right: 1px solid #333;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  overflow-y: auto;
+}
+.proj-tree-hdr {
+  padding: 8px 10px 4px;
+  font-size: 10px;
+  font-weight: 700;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+.proj-tree-item {
+  padding: 5px 10px 5px 18px;
+  font-size: 12px;
+  color: #bbb;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+.proj-tree-item:hover { background: var(--hover-hi); }
+.proj-tree-item.sel { background: var(--sel-hi); border-left: 2px solid var(--accent); padding-left: 16px; }
+.proj-tree-item .arrow { font-size: 9px; color: #666; width: 10px; }
+.proj-browser-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.proj-toolbar {
+  height: 36px;
+  background: #2d2d2d;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  gap: 6px;
+  border-bottom: 1px solid #333;
+  flex-shrink: 0;
+}
+.ptb-btn {
+  height: 26px;
+  padding: 0 10px;
+  background: var(--btn-bg);
+  border: 1px solid #555;
+  border-radius: 3px;
+  color: var(--btn-text);
+  font-size: 11px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+}
+.ptb-btn:hover { background: var(--btn-hover); }
+.ptb-btn.primary { background: var(--accent); border-color: #005fa3; color: #fff; }
+.ptb-sep { width: 1px; height: 20px; background: #444; margin: 0 2px; }
+.ptb-spacer { flex: 1; }
+.ptb-search {
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: 3px;
+  padding: 3px 8px;
+  font-size: 11px;
+  color: #666;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  width: 180px;
+}
+.asset-grid {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 12px;
+  gap: 10px;
+  align-content: flex-start;
+  overflow-y: auto;
+}
+.asset-item {
+  width: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 3px;
+  border: 1px solid transparent;
+}
+.asset-item:hover { background: var(--hover-hi); border-color: #444; }
+.asset-item.sel { background: var(--sel-hi); border-color: var(--sel-bd); }
+.asset-icon { font-size: 28px; line-height: 1; }
+.asset-name { font-size: 10px; color: #aaa; text-align: center; word-break: break-all; }
+.asset-type { font-size: 9px; color: #666; }
+
+/* ─── App launcher bar ───────────────────────────────────────────── */
+.app-launcher {
+  height: 52px;
+  background: #252526;
+  border-top: 1px solid #333;
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.app-launcher-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin-right: 6px;
+}
+.app-btn {
+  height: 34px;
+  padding: 0 14px;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid #555;
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  white-space: nowrap;
+}
+.app-btn:hover { background: var(--btn-hover); }
+.app-btn.run { background: #1a5c2a; border-color: #28a745; color: #7eff9a; }
+.app-btn.run:hover { background: #1e6e32; }
+.app-btn.server { background: #1a3a5c; border-color: #2980b9; color: #7fc8ff; }
+.app-btn.server:hover { background: #1e4570; }
+.app-btn.editor { background: #3c1a5c; border-color: #8e44ad; color: #d7a8ff; }
+.app-btn.editor:hover { background: #481e6e; }
+.app-status {
+  font-size: 10px;
+  color: #555;
+}
+.app-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #444;
+  display: inline-block;
+  margin-right: 4px;
+}
+.app-dot.running { background: var(--success); box-shadow: 0 0 4px var(--success); }
+.app-launcher-spacer { flex: 1; }
+.ws-version { font-size: 10px; color: #444; }
+
+/* ─── Right panel — Inspector (270px) ──────────────────────────── */
+.right-panel {
+  width: 270px;
+  background: var(--panel-bg);
+  border-left: 1px solid var(--panel-border);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+.rp-tabs {
+  display: flex;
+  background: #252526;
+  border-bottom: 1px solid var(--panel-border);
+  flex-shrink: 0;
+}
+.rp-tab {
+  padding: 7px 12px;
+  font-size: 11px;
+  color: #777;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+}
+.rp-tab:hover { color: #ccc; }
+.rp-tab.active { color: var(--panel-text); border-bottom-color: var(--accent); }
+.rp-body { flex: 1; overflow-y: auto; }
+.rp-section {
+  border-bottom: 1px solid #383838;
+  padding-bottom: 4px;
+}
+.rp-section-hdr {
+  padding: 7px 10px 4px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #999;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
+.rp-section-hdr:hover { background: var(--hover-hi); }
+.prop { display: flex; align-items: center; padding: 3px 10px; gap: 8px; }
+.prop:hover { background: rgba(255,255,255,0.03); }
+.plabel { width: 90px; font-size: 11px; color: #999; flex-shrink: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pval {
+  flex: 1; background: var(--input-bg); border: 1px solid var(--input-border);
+  border-radius: 2px; padding: 2px 5px; font-size: 11px; color: var(--input-text);
+  font-family: monospace;
+}
+.pval.link { color: var(--accent); cursor: pointer; border-color: transparent; background: transparent; }
+
+/* ─── Bottom panels ─────────────────────────────────────────────── */
+.bottom-strip {
+  height: 180px;
+  display: flex;
+  border-top: 1px solid var(--panel-border);
+  flex-shrink: 0;
+}
+.bottom-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--panel-bg);
+  overflow: hidden;
+}
+.bottom-panel + .bottom-panel {
+  border-left: 1px solid var(--panel-border);
+}
+.bp-header {
+  height: 28px;
+  background: #252526;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #333;
+  flex-shrink: 0;
+}
+.bp-tab {
+  padding: 0 12px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  font-size: 11px;
+  color: #777;
+  cursor: pointer;
+  border-right: 1px solid #333;
+}
+.bp-tab:hover { color: #ccc; }
+.bp-tab.active { color: var(--panel-text); border-bottom: 2px solid var(--accent); margin-bottom: -1px; }
+.bp-actions { margin-left: auto; display: flex; align-items: center; padding: 0 6px; gap: 4px; }
+.bp-icon-btn { color: #555; cursor: pointer; font-size: 12px; padding: 2px; border-radius: 2px; }
+.bp-icon-btn:hover { color: #ccc; background: rgba(255,255,255,0.08); }
+.bp-body { flex: 1; overflow-y: auto; padding: 4px 0; }
+.log { padding: 2px 8px; font-size: 11px; font-family: monospace; display: flex; gap: 8px; align-items: baseline; }
+.log-ts { color: #454545; font-size: 10px; width: 60px; flex-shrink: 0; }
+.log-tag { color: #569CD6; }
+.log-msg { flex: 1; }
+.log.info  .log-msg { color: #888; }
+.log.ok    .log-msg { color: var(--success); }
+.log.warn  .log-msg { color: var(--warning); }
+.log.err   .log-msg { color: var(--error); }
+
+/* ─── Notification panel ────────────────────────────────────────── */
+.notif { padding: 5px 10px; display: flex; gap: 8px; align-items: flex-start; border-bottom: 1px solid #333; }
+.notif:hover { background: var(--hover-hi); }
+.notif-dot { width: 6px; height: 6px; border-radius: 50%; margin-top: 4px; flex-shrink: 0; }
+.notif-dot.info    { background: var(--accent); }
+.notif-dot.success { background: var(--success); }
+.notif-dot.warning { background: var(--warning); }
+.notif-dot.error   { background: var(--error); }
+.notif-msg { font-size: 11px; color: #bbb; flex: 1; line-height: 1.5; }
+.notif-ts  { font-size: 10px; color: #555; white-space: nowrap; }
+
+/* AtlasAI panel */
+.atlasai-panel { display: flex; flex-direction: column; height: 100%; }
+.ai-history { flex: 1; overflow-y: auto; padding: 8px 10px; display: flex; flex-direction: column; gap: 8px; }
+.ai-msg { max-width: 90%; padding: 6px 10px; border-radius: 4px; font-size: 11px; line-height: 1.6; }
+.ai-user { align-self: flex-end; background: var(--sel-hi); color: #ccc; border: 1px solid var(--sel-bd); }
+.ai-bot  { align-self: flex-start; background: #2d2d2d; color: #bbb; border: 1px solid #444; }
+.ai-input { display: flex; gap: 6px; padding: 6px 8px; background: var(--input-bg); border-top: 1px solid #333; flex-shrink: 0; }
+.ai-field { flex: 1; background: transparent; border: none; color: var(--input-text); font-size: 12px; font-family: inherit; outline: none; }
+.ai-send { background: var(--accent); color: #fff; border: none; border-radius: 3px; padding: 4px 10px; font-size: 11px; cursor: pointer; }
+
+/* ─── Status bar (24px) ─────────────────────────────────────────── */
+.statusbar {
+  height: 24px;
+  background: var(--statusbar-bg);
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  gap: 8px;
+  flex-shrink: 0;
+  font-size: 11px;
+  color: var(--statusbar-text);
+}
+.sb-item { display: flex; align-items: center; gap: 4px; opacity: 0.9; white-space: nowrap; }
+.sb-item + .sb-item::before { content: '│'; opacity: 0.3; margin-right: 4px; }
+.sb-mode { font-weight: 600; opacity: 1; }
+.sb-spacer { flex: 1; }
+.sb-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--success); }
+.sb-warning { color: #ffeb99; }
+
+/* ─── Scrollbar ─────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 7px; height: 7px; }
+::-webkit-scrollbar-track { background: var(--panel-bg); }
+::-webkit-scrollbar-thumb { background: #4a4a4a; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #5a5a5a; }
+
+/* ─── Legend ────────────────────────────────────────────────────── */
+.legend {
+  width: 1280px;
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+.legend-box {
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-radius: 4px;
+  padding: 12px;
+}
+.legend-box h3 {
+  font-size: 11px;
+  font-weight: 700;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin-bottom: 8px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #2a2a2a;
+}
+.legend-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: #777;
+  margin-bottom: 4px;
+  line-height: 1.4;
+}
+.lswatch { width: 12px; height: 12px; border-radius: 2px; flex-shrink: 0; }
+.lkey {
+  background: #222;
+  border: 1px solid #3a3a3a;
+  border-radius: 2px;
+  padding: 1px 5px;
+  font-family: monospace;
+  font-size: 10px;
+  color: #999;
+  white-space: nowrap;
+}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <h1>⬡ Atlas Workspace Shell</h1>
+  <p>The OS-type host environment — editors are <strong>separate executables</strong> launched from here</p>
+  <span class="badge">Phase 18</span>
+  <span class="badge dark">WorkspaceShell.h</span>
+  <span class="badge dark">IHostedTool.h</span>
+  <span class="badge dark">ToolRegistry.h</span>
+</div>
+
+<div class="caption">
+  <span>Atlas Workspace Shell · 1280 × 800 · Activity bar + Shared panels + Tool area + App launcher</span>
+  <span>WorkspaceShell.h → ToolRegistry + PanelRegistry + WorkspaceAppRegistry + ShellContract</span>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!--  WORKSPACE SHELL                                              -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div class="ws">
+
+  <!-- ── Title bar ── -->
+  <div class="titlebar">
+    <div class="traffic-lights">
+      <div class="tl tl-close"></div>
+      <div class="tl tl-min"></div>
+      <div class="tl tl-max"></div>
+    </div>
+    <div class="title-text">
+      Atlas Workspace — <span class="title-project">MyGame</span>
+      <span style="color:#555"> · workspace.project_browser</span>
+    </div>
+  </div>
+
+  <!-- ── Menu bar ── -->
+  <div class="menubar">
+    <div class="menu-item open">Workspace</div>
+    <div class="menu-item">Project</div>
+    <div class="menu-item">Tools</div>
+    <div class="menu-item">Launch</div>
+    <div class="menu-item">View</div>
+    <div class="menu-item">AtlasAI</div>
+    <div class="menu-item">Help</div>
+  </div>
+
+  <!-- ── Body ── -->
+  <div class="ws-body">
+
+    <!-- ── Activity Bar — tool switcher ── -->
+    <div class="activity-bar">
+
+      <!-- Hosted tools from HostToolId namespace -->
+      <div class="act-tool active" data-label="Projects" title="workspace.project_browser">📁</div>
+      <div class="act-tool" data-label="Scene" title="workspace.scene_editor">🌐</div>
+      <div class="act-tool" data-label="Assets" title="workspace.asset_editor">🎨</div>
+      <div class="act-tool" data-label="Material" title="workspace.material_editor">💎</div>
+      <div class="act-tool" data-label="Logic" title="workspace.visual_logic_editor">🔷</div>
+      <div class="act-tool" data-label="UI" title="workspace.ui_editor">📱</div>
+      <div class="act-tool" data-label="Anim" title="workspace.animation_editor">🎬</div>
+      <div class="act-tool" data-label="Data" title="workspace.data_editor">📊</div>
+      <div class="act-divider"></div>
+      <div class="act-tool" data-label="Build" title="workspace.build_tool">🔨</div>
+      <div class="act-tool" data-label="NovaForge" title="workspace.project_systems">⬡</div>
+
+      <div class="act-spacer"></div>
+
+      <!-- Bottom icons -->
+      <div class="act-tool" data-label="AtlasAI" title="workspace.atlasai">🤖</div>
+      <div class="act-tool" data-label="Settings" title="Workspace settings">⚙</div>
+
+    </div>
+
+    <!-- ── Side panel — shared panels for active tool ── -->
+    <div class="side-panel">
+      <div class="side-title">Project Browser</div>
+
+      <div class="side-search">🔍 <span>Search project…</span></div>
+
+      <!-- Project section -->
+      <div class="side-section">
+        <div class="side-section-hdr"><span class="arrow">▾</span> MyGame</div>
+
+        <div class="side-item">
+          <span class="icon">▾</span>
+          <span class="icon">📁</span>
+          <span class="lbl">Content</span>
+        </div>
+        <div class="side-item" style="padding-left:38px">
+          <span class="icon">📁</span>
+          <span class="lbl">Meshes</span>
+          <span class="badge2">142</span>
+        </div>
+        <div class="side-item" style="padding-left:38px">
+          <span class="icon">📁</span>
+          <span class="lbl">Textures</span>
+          <span class="badge2">89</span>
+        </div>
+        <div class="side-item selected" style="padding-left:38px">
+          <span class="icon">📁</span>
+          <span class="lbl">Materials</span>
+          <span class="badge2">34</span>
+        </div>
+        <div class="side-item" style="padding-left:38px">
+          <span class="icon">📁</span>
+          <span class="lbl">Audio</span>
+          <span class="badge2">67</span>
+        </div>
+        <div class="side-item" style="padding-left:38px">
+          <span class="icon">📁</span>
+          <span class="lbl">Blueprints</span>
+          <span class="badge2">28</span>
+        </div>
+        <div class="side-item" style="padding-left:38px">
+          <span class="icon">📁</span>
+          <span class="lbl">Scenes</span>
+          <span class="badge2">12</span>
+        </div>
+        <div class="side-item">
+          <span class="icon">▸</span>
+          <span class="icon">📁</span>
+          <span class="lbl">Source</span>
+        </div>
+        <div class="side-item">
+          <span class="icon">▸</span>
+          <span class="icon">📁</span>
+          <span class="lbl">Config</span>
+        </div>
+      </div>
+
+      <!-- Shared panels section -->
+      <div class="side-section">
+        <div class="side-section-hdr"><span class="arrow">▾</span> Shared Panels</div>
+        <div class="side-item">
+          <span class="icon">🔍</span>
+          <span class="lbl">Component Inspector</span>
+        </div>
+        <div class="side-item">
+          <span class="icon">📋</span>
+          <span class="lbl">Outliner</span>
+        </div>
+        <div class="side-item">
+          <span class="icon">📟</span>
+          <span class="lbl">Console</span>
+        </div>
+        <div class="side-item">
+          <span class="icon">🔔</span>
+          <span class="lbl">Notifications</span>
+          <span class="badge2" style="background:#264F78;color:#7ec8ff;">3</span>
+        </div>
+        <div class="side-item">
+          <span class="icon">🔬</span>
+          <span class="lbl">Diagnostics</span>
+        </div>
+        <div class="side-item">
+          <span class="icon">📈</span>
+          <span class="lbl">Pipeline Monitor</span>
+        </div>
+      </div>
+
+      <!-- Layout presets section -->
+      <div class="side-section">
+        <div class="side-section-hdr"><span class="arrow">▾</span> Layout Presets</div>
+        <div class="side-item selected">
+          <span class="icon">🗂</span>
+          <span class="lbl">Default</span>
+          <span class="badge2">built-in</span>
+        </div>
+        <div class="side-item">
+          <span class="icon">💻</span>
+          <span class="lbl">Coding</span>
+          <span class="badge2">built-in</span>
+        </div>
+        <div class="side-item">
+          <span class="icon">🐛</span>
+          <span class="lbl">Debugging</span>
+          <span class="badge2">built-in</span>
+        </div>
+        <div class="side-item">
+          <span class="icon">🗃</span>
+          <span class="lbl">Asset Browser</span>
+          <span class="badge2">built-in</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── Main area — active tool: Project Browser ── -->
+    <div class="main-area">
+
+      <!-- Tool tabs -->
+      <div class="tool-tabbar">
+        <div class="tool-tab active">
+          📁 Project Browser
+          <span class="close">✕</span>
+        </div>
+        <div class="tool-tab">
+          🌐 Scene Editor
+          <span class="close">✕</span>
+        </div>
+        <div class="tool-tab">
+          🎨 Asset Editor
+          <span class="close">✕</span>
+        </div>
+        <div class="tool-tab">
+          🔷 Visual Logic
+          <span class="close">✕</span>
+        </div>
+      </div>
+
+      <!-- Project Browser tool content -->
+      <div class="tool-content">
+        <div class="proj-browser">
+
+          <!-- Project tree (left sidebar within tool) -->
+          <div class="proj-browser-left">
+            <div class="proj-tree-hdr">Workspace</div>
+
+            <div class="proj-tree-item">
+              <span class="arrow">▾</span>📦
+              <span>MyGame</span>
+            </div>
+            <div class="proj-tree-item" style="padding-left:28px">
+              <span class="arrow">▾</span>📁
+              <span>Content</span>
+            </div>
+            <div class="proj-tree-item sel" style="padding-left:42px">
+              <span class="arrow"></span>💎
+              <span>Materials</span>
+            </div>
+            <div class="proj-tree-item" style="padding-left:42px">
+              <span class="arrow"></span>🖼
+              <span>Textures</span>
+            </div>
+            <div class="proj-tree-item" style="padding-left:42px">
+              <span class="arrow"></span>🧱
+              <span>Meshes</span>
+            </div>
+            <div class="proj-tree-item" style="padding-left:42px">
+              <span class="arrow">▾</span>🎬
+              <span>Scenes</span>
+            </div>
+            <div class="proj-tree-item" style="padding-left:56px">
+              <span class="arrow"></span>🌐
+              <span>world_01.nfw</span>
+            </div>
+            <div class="proj-tree-item" style="padding-left:56px">
+              <span class="arrow"></span>🌐
+              <span>world_02.nfw</span>
+            </div>
+            <div class="proj-tree-item" style="padding-left:42px">
+              <span class="arrow"></span>🔊
+              <span>Audio</span>
+            </div>
+            <div class="proj-tree-item" style="padding-left:28px">
+              <span class="arrow">▸</span>📁
+              <span>Source</span>
+            </div>
+            <div class="proj-tree-item" style="padding-left:28px">
+              <span class="arrow">▸</span>📁
+              <span>Config</span>
+            </div>
+          </div>
+
+          <!-- Asset grid (main content within tool) -->
+          <div class="proj-browser-main">
+            <div class="proj-toolbar">
+              <div class="ptb-btn">⬆ Import</div>
+              <div class="ptb-btn">📁 New Folder</div>
+              <div class="ptb-sep"></div>
+              <div class="ptb-btn">Filters ▾</div>
+              <div class="ptb-btn">Sort ▾</div>
+              <div class="ptb-spacer"></div>
+              <div class="ptb-search">🔍 <span>Search Materials…</span></div>
+              <div class="ptb-sep"></div>
+              <div class="ptb-btn">⊞</div>
+              <div class="ptb-btn">≡</div>
+            </div>
+
+            <div class="asset-grid">
+              <div class="asset-item sel">
+                <div class="asset-icon">💎</div>
+                <div class="asset-name">mat_terrain_grass</div>
+                <div class="asset-type">Material</div>
+              </div>
+              <div class="asset-item">
+                <div class="asset-icon">💎</div>
+                <div class="asset-name">mat_terrain_rock</div>
+                <div class="asset-type">Material</div>
+              </div>
+              <div class="asset-item">
+                <div class="asset-icon">💎</div>
+                <div class="asset-name">mat_water_ocean</div>
+                <div class="asset-type">Material</div>
+              </div>
+              <div class="asset-item">
+                <div class="asset-icon">💎</div>
+                <div class="asset-name">mat_character_skin</div>
+                <div class="asset-type">Material</div>
+              </div>
+              <div class="asset-item">
+                <div class="asset-icon">💎</div>
+                <div class="asset-name">mat_glass_window</div>
+                <div class="asset-type">Material</div>
+              </div>
+              <div class="asset-item">
+                <div class="asset-icon">💎</div>
+                <div class="asset-name">mat_metal_rusty</div>
+                <div class="asset-type">Material</div>
+              </div>
+              <div class="asset-item">
+                <div class="asset-icon">💎</div>
+                <div class="asset-name">mat_wood_plank</div>
+                <div class="asset-type">Material</div>
+              </div>
+              <div class="asset-item">
+                <div class="asset-icon">💎</div>
+                <div class="asset-name">mat_concrete</div>
+                <div class="asset-type">Material</div>
+              </div>
+              <div class="asset-item">
+                <div class="asset-icon">💎</div>
+                <div class="asset-name">mat_emissive_glow</div>
+                <div class="asset-type">Material</div>
+              </div>
+              <div class="asset-item">
+                <div class="asset-icon">📦</div>
+                <div class="asset-name">mat_instance_01</div>
+                <div class="asset-type">Mat Inst</div>
+              </div>
+              <div class="asset-item">
+                <div class="asset-icon">📦</div>
+                <div class="asset-name">mat_instance_02</div>
+                <div class="asset-type">Mat Inst</div>
+              </div>
+              <div class="asset-item">
+                <div class="asset-icon">🖼</div>
+                <div class="asset-name">tex_normal_base</div>
+                <div class="asset-type">Texture</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- App launcher bar — launches editors as separate executables -->
+        <div class="app-launcher">
+          <span class="app-launcher-label">Launch</span>
+
+          <div class="app-btn editor">
+            🎮 NovaForge Editor
+          </div>
+          <div class="app-status">
+            <span class="app-dot"></span>Not running
+          </div>
+
+          <div style="width:12px"></div>
+
+          <div class="app-btn run">
+            ▶ Game
+          </div>
+          <div class="app-status">
+            <span class="app-dot running"></span>Running · PID 4821
+          </div>
+
+          <div style="width:12px"></div>
+
+          <div class="app-btn server">
+            ⚡ Server
+          </div>
+          <div class="app-status">
+            <span class="app-dot"></span>Not running
+          </div>
+
+          <div class="app-launcher-spacer"></div>
+
+          <div style="font-size:11px;color:#555;">
+            Executables launched via WorkspaceLaunchService · --hosted
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Bottom strip within main — Console + Notifications + AtlasAI -->
+      <div class="bottom-strip">
+
+        <!-- Console panel -->
+        <div class="bottom-panel">
+          <div class="bp-header">
+            <div class="bp-tab active">Console</div>
+            <div class="bp-tab">Log Output</div>
+            <div class="bp-tab">Diagnostics</div>
+            <div class="bp-actions">
+              <div class="bp-icon-btn" title="Clear">🗑</div>
+              <div class="bp-icon-btn" title="Filter">⋯</div>
+            </div>
+          </div>
+          <div class="bp-body">
+            <div class="log ok">  <span class="log-ts">0:00.001</span><span class="log-tag">[Workspace]</span><span class="log-msg">=== Atlas Workspace Shell ===</span></div>
+            <div class="log info"><span class="log-ts">0:00.003</span><span class="log-tag">[Shell]</span><span class="log-msg">Phase: Initializing</span></div>
+            <div class="log info"><span class="log-ts">0:00.005</span><span class="log-tag">[ToolRegistry]</span><span class="log-msg">Registered: workspace.project_browser</span></div>
+            <div class="log info"><span class="log-ts">0:00.006</span><span class="log-tag">[ToolRegistry]</span><span class="log-msg">Registered: workspace.scene_editor</span></div>
+            <div class="log info"><span class="log-ts">0:00.007</span><span class="log-tag">[ToolRegistry]</span><span class="log-msg">Registered: workspace.asset_editor</span></div>
+            <div class="log info"><span class="log-ts">0:00.008</span><span class="log-tag">[ToolRegistry]</span><span class="log-msg">Registered: workspace.visual_logic_editor</span></div>
+            <div class="log info"><span class="log-ts">0:00.009</span><span class="log-tag">[PanelRegistry]</span><span class="log-msg">Registered: content_browser, component_inspector, diagnostics…</span></div>
+            <div class="log ok">  <span class="log-ts">0:00.012</span><span class="log-tag">[Shell]</span><span class="log-msg">Phase: Ready — 11 tools, 14 panels</span></div>
+            <div class="log ok">  <span class="log-ts">0:00.015</span><span class="log-tag">[Shell]</span><span class="log-msg">Project loaded: MyGame</span></div>
+            <div class="log info"><span class="log-ts">0:00.016</span><span class="log-tag">[ProjectSystems]</span><span class="log-msg">NovaForge panels: economy, inventory_rules, shop, mission_rules, progression, character_rules</span></div>
+            <div class="log info"><span class="log-ts">0:00.020</span><span class="log-tag">[AppRegistry]</span><span class="log-msg">NovaForgeGame launched (PID 4821) — --hosted</span></div>
+          </div>
+        </div>
+
+        <!-- Notification Center panel -->
+        <div class="bottom-panel">
+          <div class="bp-header">
+            <div class="bp-tab active">Notifications</div>
+            <div class="bp-tab">Pipeline Monitor</div>
+            <div class="bp-actions">
+              <div class="bp-icon-btn" title="Dismiss all">✕</div>
+            </div>
+          </div>
+          <div class="bp-body">
+            <div class="notif">
+              <div class="notif-dot success"></div>
+              <div class="notif-msg">Project loaded: MyGame</div>
+              <div class="notif-ts">0:00s</div>
+            </div>
+            <div class="notif">
+              <div class="notif-dot info"></div>
+              <div class="notif-msg">NovaForgeGame launched (PID 4821) in hosted mode</div>
+              <div class="notif-ts">0:20s</div>
+            </div>
+            <div class="notif">
+              <div class="notif-dot info"></div>
+              <div class="notif-msg">Layout changed to: Default</div>
+              <div class="notif-ts">0:21s</div>
+            </div>
+            <div class="notif">
+              <div class="notif-dot warning"></div>
+              <div class="notif-msg">workspace.atlasai: AtlasAI panel requires connection</div>
+              <div class="notif-ts">0:25s</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- AtlasAI Chat panel -->
+        <div class="bottom-panel">
+          <div class="bp-header">
+            <div class="bp-tab active">🤖 AtlasAI</div>
+            <div class="bp-tab">Command Palette</div>
+          </div>
+          <div class="atlasai-panel">
+            <div class="ai-history">
+              <div class="ai-msg ai-user">What tools are registered in the workspace?</div>
+              <div class="ai-msg ai-bot">The workspace has 11 hosted tools registered: <b>project_browser</b>, <b>scene_editor</b>, <b>asset_editor</b>, <b>material_editor</b>, <b>visual_logic_editor</b>, <b>ui_editor</b>, <b>animation_editor</b>, <b>data_editor</b>, <b>build_tool</b>, <b>project_systems</b>, and <b>atlasai</b>.</div>
+            </div>
+            <div class="ai-input">
+              <input class="ai-field" type="text" placeholder="Ask AtlasAI anything about your workspace…">
+              <button class="ai-send">Send</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── Right panel — Component Inspector (shared panel) ── -->
+    <div class="right-panel">
+      <div class="rp-tabs">
+        <div class="rp-tab active">Inspector</div>
+        <div class="rp-tab">Asset Preview</div>
+      </div>
+      <div class="rp-body">
+
+        <!-- Selected asset info -->
+        <div style="padding:8px 10px 6px;border-bottom:1px solid #383838;">
+          <div style="font-size:12px;font-weight:600;color:#ddd;">💎 mat_terrain_grass</div>
+          <div style="font-size:10px;color:#555;margin-top:2px;">Material · Content/Materials/</div>
+        </div>
+
+        <!-- Material properties -->
+        <div class="rp-section">
+          <div class="rp-section-hdr"><span>▾</span> Material Properties</div>
+          <div class="prop"><span class="plabel">Shader</span><div class="pval link">PBR_Standard</div></div>
+          <div class="prop"><span class="plabel">Base Color</span><div class="pval">#4A7A3A</div></div>
+          <div class="prop"><span class="plabel">Roughness</span><div class="pval">0.75</div></div>
+          <div class="prop"><span class="plabel">Metallic</span><div class="pval">0.00</div></div>
+          <div class="prop"><span class="plabel">Normal Map</span><div class="pval link">tex_normal_grass</div></div>
+          <div class="prop"><span class="plabel">UV Tiling</span><div class="pval">4.0 × 4.0</div></div>
+          <div class="prop"><span class="plabel">Two Sided</span><div class="pval">false</div></div>
+        </div>
+
+        <!-- Usage -->
+        <div class="rp-section">
+          <div class="rp-section-hdr"><span>▾</span> Used By (3 assets)</div>
+          <div class="prop"><div class="pval link" style="background:transparent;border:none;">terrain_heightmap.obj</div></div>
+          <div class="prop"><div class="pval link" style="background:transparent;border:none;">foliage_patch_01.obj</div></div>
+          <div class="prop"><div class="pval link" style="background:transparent;border:none;">terrain_patch_lod0.obj</div></div>
+        </div>
+
+        <!-- NovaForge project systems panels -->
+        <div class="rp-section">
+          <div class="rp-section-hdr"><span>▾</span> NovaForge Systems</div>
+          <div class="prop"><span class="plabel">Economy</span><div class="pval link">workspace.project_systems</div></div>
+          <div class="prop"><span class="plabel">Inventory</span><div class="pval link">workspace.project_systems</div></div>
+          <div class="prop"><span class="plabel">Progression</span><div class="pval link">workspace.project_systems</div></div>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- ws-body -->
+
+  <!-- ── Status bar ── -->
+  <div class="statusbar">
+    <div class="sb-item sb-mode">⬡ Atlas Workspace</div>
+    <div class="sb-item">MyGame</div>
+    <div class="sb-item">workspace.project_browser — Active</div>
+    <div class="sb-item" style="color:#7eff9a;opacity:1;"><span class="sb-dot"></span> NovaForgeGame Running</div>
+    <div class="sb-spacer"></div>
+    <div class="sb-item">11 tools · 14 panels</div>
+    <div class="sb-item">Layout: Default</div>
+    <div class="sb-item">ShellPhase: Ready</div>
+  </div>
+
+</div><!-- .ws -->
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!--  LEGEND                                                        -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div class="legend">
+
+  <div class="legend-box">
+    <h3>Zones</h3>
+    <div class="legend-row"><div class="lswatch" style="background:#252526;border:1px solid #333"></div>Activity Bar — 48px, HostedToolCategory icons</div>
+    <div class="legend-row"><div class="lswatch" style="background:#2B2B2B;border:1px solid #555"></div>Side Panel — 260px, shared panels per tool</div>
+    <div class="legend-row"><div class="lswatch" style="background:#1E1E1E;border:1px solid #444"></div>Tool Area — flexible, active IHostedTool</div>
+    <div class="legend-row"><div class="lswatch" style="background:#252526;border:1px solid #333"></div>App Launcher — separate-process executables</div>
+    <div class="legend-row"><div class="lswatch" style="background:#2B2B2B;border:1px solid #555"></div>Right Panel — SharedPanel: component_inspector</div>
+    <div class="legend-row"><div class="lswatch" style="background:#2B2B2B;border:1px solid #555"></div>Bottom Strip — Console · Notifications · AtlasAI</div>
+    <div class="legend-row"><div class="lswatch" style="background:#007ACC;border:1px solid #005fa3"></div>Status Bar — 24px, ShellPhase + active tool</div>
+  </div>
+
+  <div class="legend-box">
+    <h3>Hosted Tools (HostToolId)</h3>
+    <div class="legend-row">📁 workspace.project_browser</div>
+    <div class="legend-row">🌐 workspace.scene_editor</div>
+    <div class="legend-row">🎨 workspace.asset_editor</div>
+    <div class="legend-row">💎 workspace.material_editor</div>
+    <div class="legend-row">🔷 workspace.visual_logic_editor</div>
+    <div class="legend-row">📱 workspace.ui_editor</div>
+    <div class="legend-row">🎬 workspace.animation_editor</div>
+    <div class="legend-row">📊 workspace.data_editor</div>
+    <div class="legend-row">🔨 workspace.build_tool</div>
+    <div class="legend-row">⬡ workspace.project_systems (NovaForge)</div>
+    <div class="legend-row">🤖 workspace.atlasai</div>
+  </div>
+
+  <div class="legend-box">
+    <h3>Shared Panels (PanelRegistry)</h3>
+    <div class="legend-row">content_browser — Navigation</div>
+    <div class="legend-row">component_inspector — Inspector</div>
+    <div class="legend-row">diagnostics — Output</div>
+    <div class="legend-row">memory_profiler — Output</div>
+    <div class="legend-row">pipeline_monitor — Output</div>
+    <div class="legend-row">notification_center — Status</div>
+    <div class="legend-row">inspector — Inspector</div>
+    <div class="legend-row">outliner — Navigation</div>
+    <div class="legend-row">console — Output</div>
+    <div class="legend-row">atlasai_chat — AI</div>
+    <div class="legend-row">command_palette — Editing</div>
+    <div class="legend-row">asset_preview — Preview</div>
+  </div>
+
+  <div class="legend-box">
+    <h3>Separate Executables (WorkspaceAppRegistry)</h3>
+    <div class="legend-row">🎮 NovaForgeEditor.exe — --hosted</div>
+    <div class="legend-row">▶ NovaForgeGame.exe — --hosted</div>
+    <div class="legend-row">⚡ NovaForgeServer.exe — --headless</div>
+    <div style="margin-top:8px;border-top:1px solid #2a2a2a;padding-top:8px;">
+      <div class="legend-row" style="color:#555;font-size:10px;">All child processes launched via WorkspaceLaunchService. None are embedded in the workspace. The workspace is a generic host — it does NOT know about game editors specifically.</div>
+    </div>
+    <div style="margin-top:8px;">
+      <h3>Build &amp; Run (Windows)</h3>
+      <div class="legend-row"><span class="lkey">cmake -S . -B build</span></div>
+      <div class="legend-row"><span class="lkey">cmake --build build --target AtlasWorkspace</span></div>
+      <div class="legend-row"><span class="lkey">./build/bin/AtlasWorkspace.exe</span></div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

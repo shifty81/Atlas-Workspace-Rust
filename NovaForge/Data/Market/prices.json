@@ -1,0 +1,66 @@
+{
+  "base_prices": {
+    "ferrium": 5.0,
+    "ignium": 10.0,
+    "allonium": 50.0,
+    "isodium": 100.0,
+    "noctium": 500.0,
+    "zyrium": 1000.0,
+    "megrium": 2000.0,
+    "fang": 350000.0,
+    "falk": 380000.0,
+    "revel": 390000.0,
+    "sentinel": 360000.0,
+    "cleaver": 850000.0,
+    "skarn": 900000.0,
+    "vaillant": 920000.0,
+    "adjudicator": 880000.0,
+    "strider": 2500000.0,
+    "brynjar": 2800000.0,
+    "chevalier": 2900000.0,
+    "bastion": 2700000.0,
+    "150mm_autocannon_i": 25000.0,
+    "200mm_autocannon_i": 50000.0,
+    "light_missile_launcher_i": 30000.0,
+    "medium_shield_extender_i": 45000.0,
+    "armor_plate_i": 40000.0,
+    "damage_control_i": 100000.0,
+    "hobgoblin_i": 15000.0,
+    "warrior_i": 18000.0,
+    "hammerhead_i": 40000.0,
+    "emp_s": 50.0,
+    "fusion_s": 50.0,
+    "light_missile": 100.0
+  },
+  "trade_hubs": [
+    {
+      "location_id": "thyrkstad_4_4",
+      "name": "Thyrkstad IV - Moon 4 - Veyren Fleet Assembly Yard",
+      "system": "thyrkstad",
+      "description": "The largest trade hub in Astralis"
+    },
+    {
+      "location_id": "solari_8_emperor",
+      "name": "Solari VIII (Oris) - Emperor Family Academy",
+      "system": "solari",
+      "description": "Major Solari trade hub"
+    },
+    {
+      "location_id": "aurendis_ix_navy",
+      "name": "Aurendis IX - Moon 20 - Aurelian Grand Assembly Plant",
+      "system": "aurendis",
+      "description": "Major Aurelian trade hub"
+    },
+    {
+      "location_id": "rens_vi_tormund",
+      "name": "Rens VI - Moon 8 - Tormund Tribe Treasury",
+      "system": "rens",
+      "description": "Major Keldari trade hub"
+    }
+  ],
+  "market_fees": {
+    "broker_fee_base": 0.03,
+    "sales_tax": 0.02,
+    "relist_fee": 0.01
+  }
+}

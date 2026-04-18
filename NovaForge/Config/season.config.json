@@ -1,0 +1,16 @@
+{
+  "season": {
+    "enabled": true,
+    "length_days": 180,
+    "server_authoritative": true,
+    "client_override_allowed": false,
+    "current_season": 1,
+    "season_name": "Genesis",
+    "start_date": "2026-01-01",
+    "rewards": {
+      "completion_bonus": true,
+      "exclusive_cosmetics": true,
+      "legacy_title": true
+    }
+  }
+}

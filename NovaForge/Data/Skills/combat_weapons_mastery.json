@@ -1,0 +1,13 @@
+{
+  "id": "skill_combat_weapons_mastery",
+  "name": "Weapons Mastery",
+  "category": "Combat",
+  "description": "Sharpens targeting instincts and weapon handling, increasing damage output with all equipped weapon systems.",
+  "max_level": 5,
+  "effects": [
+    { "stat": "weapon_damage", "modifier": 0.08, "per_level": true },
+    { "stat": "critical_chance", "modifier": 0.02, "per_level": true }
+  ],
+  "unlock_cost_base": 500,
+  "tags": ["damage", "offensive"]
+}

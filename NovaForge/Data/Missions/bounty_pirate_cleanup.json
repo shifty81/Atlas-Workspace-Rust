@@ -1,0 +1,20 @@
+{
+  "id": "mission_bounty_pirate_cleanup",
+  "name": "Pirate Cleanup: Scorn Belt",
+  "type": "Bounty",
+  "description": "Pirate raiders have established a forward camp in the Scorn asteroid belt, disrupting trade routes and ambushing freighters. Neutralise the pirate vessels and destroy their supply cache to collect the bounty.",
+  "difficulty": 4,
+  "objectives": [
+    { "type": "destroy", "target": "pirate_raider", "count": 6 },
+    { "type": "destroy", "target": "pirate_supply_cache", "count": 1 }
+  ],
+  "rewards": {
+    "credits": 5000,
+    "xp": 1200,
+    "items": ["mod_weapon_plasma_cannon"]
+  },
+  "prerequisites": ["mission_story_first_contact"],
+  "time_limit_seconds": 1800,
+  "min_level": 3,
+  "tags": ["combat", "bounty", "repeatable"]
+}

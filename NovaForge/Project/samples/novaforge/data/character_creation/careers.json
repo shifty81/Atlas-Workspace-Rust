@@ -1,0 +1,129 @@
+{
+  "careers": {
+    "soldier": {
+      "id": "soldier",
+      "name": "Soldier",
+      "description": "A combat-focused career path. Soldiers excel in weapons systems, tactical maneuvering, and ship-to-ship warfare. They are the backbone of any fleet engagement.",
+      "starting_ship_rule": "roll",
+      "ship_classes": ["frigate", "destroyer"],
+      "bonus_skills": {
+        "gunnery": 2,
+        "missiles": 1,
+        "navigation": 1,
+        "spaceship_command": 1
+      },
+      "attribute_bonuses": {
+        "perception": 2,
+        "willpower": 1
+      },
+      "starting_credits": 25000,
+      "starting_modules": [
+        "small_armor_repairer",
+        "basic_shield_booster",
+        "small_weapon_turret"
+      ]
+    },
+    "explorer": {
+      "id": "explorer",
+      "name": "Explorer",
+      "description": "Explorers specialize in scanning, hacking, and traversing unknown space. They map new systems and uncover hidden sites. A lone wolf by nature.",
+      "starting_ship_rule": "roll",
+      "ship_classes": ["frigate", "destroyer"],
+      "bonus_skills": {
+        "astrometrics": 2,
+        "hacking": 1,
+        "archaeology": 1,
+        "navigation": 2
+      },
+      "attribute_bonuses": {
+        "intelligence": 2,
+        "perception": 1
+      },
+      "starting_credits": 20000,
+      "starting_modules": [
+        "core_probe_launcher",
+        "data_analyzer",
+        "microwarpdrive"
+      ]
+    },
+    "industrialist": {
+      "id": "industrialist",
+      "name": "Industrialist",
+      "description": "Industrialists are the builders and producers of the galaxy. They mine, manufacture, and trade goods. Always start with a destroyer hull for maximum cargo and fitting potential.",
+      "starting_ship_rule": "destroyer_always",
+      "ship_classes": ["destroyer"],
+      "bonus_skills": {
+        "mining": 2,
+        "industry": 2,
+        "trade": 1,
+        "engineering": 1
+      },
+      "attribute_bonuses": {
+        "memory": 2,
+        "intelligence": 1
+      },
+      "starting_credits": 50000,
+      "starting_modules": [
+        "mining_laser",
+        "expanded_cargohold",
+        "survey_scanner"
+      ]
+    },
+    "trader": {
+      "id": "trader",
+      "name": "Trader",
+      "description": "Traders make their fortune through commerce and logistics. They buy low, sell high, and run goods across dangerous trade routes.",
+      "starting_ship_rule": "roll",
+      "ship_classes": ["frigate", "destroyer"],
+      "bonus_skills": {
+        "trade": 2,
+        "social": 2,
+        "navigation": 1,
+        "spaceship_command": 1
+      },
+      "attribute_bonuses": {
+        "charisma": 2,
+        "memory": 1
+      },
+      "starting_credits": 75000,
+      "starting_modules": [
+        "expanded_cargohold",
+        "basic_shield_booster",
+        "afterburner"
+      ]
+    }
+  },
+  "ship_roll_weights": {
+    "frigate": 60,
+    "destroyer": 40
+  },
+  "starter_ships": {
+    "shuttle": {
+      "name": "Starter Shuttle",
+      "description": "A basic shuttle for emergency transport. Minimal fitting and cargo.",
+      "hull_class": "shuttle",
+      "cargo_capacity": 100,
+      "high_slots": 0,
+      "mid_slots": 1,
+      "low_slots": 1
+    },
+    "frigate": {
+      "name": "Starter Frigate",
+      "description": "A versatile light combat vessel. Fast and agile with moderate firepower.",
+      "hull_class": "frigate",
+      "cargo_capacity": 250,
+      "high_slots": 3,
+      "mid_slots": 3,
+      "low_slots": 3
+    },
+    "destroyer": {
+      "name": "Starter Destroyer",
+      "description": "A heavier combat platform with more firepower and fitting room. Industrialists prefer these for their expanded capabilities.",
+      "hull_class": "destroyer",
+      "cargo_capacity": 450,
+      "high_slots": 7,
+      "mid_slots": 3,
+      "low_slots": 3
+    }
+  }
+}

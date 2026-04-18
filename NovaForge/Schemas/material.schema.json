@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://novaforge.dev/schemas/material.schema.json",
+  "title": "Voxel Material Definition",
+  "description": "Defines physical properties of a voxel material type for simulation.",
+  "type": "object",
+  "required": ["id", "type", "density"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^mat_[a-z_]+$",
+      "description": "Unique material identifier."
+    },
+    "type": {
+      "type": "string",
+      "enum": ["Air", "Stone", "Dirt", "Grass", "Metal", "Glass", "Water", "Ore_Iron", "Ore_Gold", "Ore_Crystal", "Sand", "Debris", "Concrete"],
+      "description": "Material type mapping to VoxelType enum."
+    },
+    "density": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Material density in kg/m³ (×1000 for g/cm³)."
+    },
+    "hardness": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 10,
+      "description": "Resistance to mining/destruction on 0-10 scale."
+    },
+    "is_loose": {
+      "type": "boolean",
+      "default": false,
+      "description": "If true, material is subject to sand/collapse physics."
+    },
+    "can_collapse": {
+      "type": "boolean",
+      "default": false,
+      "description": "If true, material collapses when unsupported."
+    },
+    "yield_material": {
+      "type": "string",
+      "description": "Raw material ID produced when mined."
+    },
+    "yield_quantity": {
+      "type": "integer",
+      "minimum": 0,
+      "default": 1,
+      "description": "Number of raw material units per voxel mined."
+    },
+    "structural_strength": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Load-bearing capacity in relative units."
+    },
+    "blast_resistance": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Resistance to explosion damage."
+    }
+  },
+  "additionalProperties": false
+}

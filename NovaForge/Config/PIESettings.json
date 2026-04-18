@@ -1,0 +1,6 @@
+{
+  "defaultWorld": "Data/Worlds/DefaultWorld.json",
+  "spawnMode": "PlayerStart",
+  "autoFocusViewport": true,
+  "restoreEditorCameraOnExit": true
+}

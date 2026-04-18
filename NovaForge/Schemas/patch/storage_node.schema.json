@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "StorageNode",
+  "type": "object",
+  "required": ["node_id", "node_type", "access_tier", "capacity_units", "current_units"],
+  "properties": {
+    "node_id": {"type": "string"},
+    "node_type": {"type": "string"},
+    "access_tier": {"type": "integer", "minimum": 1, "maximum": 6},
+    "network_id": {"type": "string"},
+    "supported_classes": {"type": "array", "items": {"type": "string"}},
+    "capacity_units": {"type": "integer", "minimum": 0},
+    "current_units": {"type": "integer", "minimum": 0},
+    "power_required": {"type": "boolean"},
+    "search_visible": {"type": "boolean"}
+  }
+}

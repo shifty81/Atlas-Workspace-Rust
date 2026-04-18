@@ -1,0 +1,17 @@
+{
+  "schema": "atlas.launch_target_registry.v1",
+  "targets": [
+    {
+      "targetId": "client_default",
+      "displayName": "NovaForge Client",
+      "profilePath": "config/runtime.json",
+      "kind": "client"
+    },
+    {
+      "targetId": "server_default",
+      "displayName": "NovaForge Server",
+      "profilePath": "config/runtime.json",
+      "kind": "server"
+    }
+  ]
+}

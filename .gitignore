@@ -1,0 +1,103 @@
+# ── Build output ──────────────────────────────────────────────────
+Builds/
+build/
+build_ci/
+build_check/
+build_tests/
+build_test/
+build_test_debug/
+out/
+dist/
+cmake-build-*/
+*.o
+*.obj
+*.a
+*.lib
+*.so
+*.dylib
+*.dll
+*.exe
+
+# ── CMake ─────────────────────────────────────────────────────────
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+CTestTestfile.cmake
+Makefile.cmake
+compile_commands.json
+install_manifest.txt
+*.cmake
+!CMakeLists.txt
+!CMakePresets.json
+!Source/**/CMakeLists.txt
+!Tests/CMakeLists.txt
+!NovaForge/**/CMakeLists.txt
+!cmake/*.cmake
+
+# ── IDE / Editor ──────────────────────────────────────────────────
+.vs/
+.vscode/
+*.sln
+*.vcxproj
+*.vcxproj.*
+*.suo
+*.user
+*.sdf
+*.opensdf
+*.ipch
+*.aps
+.idea/
+*.swp
+*.swo
+*~
+.project
+.cproject
+.settings/
+*.code-workspace
+
+# ── OS ────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.lnk
+
+# ── Dependency managers ───────────────────────────────────────────
+vcpkg_installed/
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# ── Logs & temp ───────────────────────────────────────────────────
+*.log
+*.tmp
+*.bak
+*.swp
+
+# ── Runtime state (editor session persistence) ────────────────────
+Saved/
+
+# ── Atlas Workspace runtime ───────────────────────────────────────
+Atlas/Workspace/Sessions/*
+!Atlas/Workspace/Sessions/.gitkeep
+
+# ── Pipeline IPC runtime ─────────────────────────────────────────
+NovaForge/.novaforge/pipeline/
+!NovaForge/.novaforge/.gitkeep
+
+# ── Generated verification ────────────────────────────────────────
+build_verify/
+
+# ── Binaries / Intermediate ──────────────────────────────────────
+Binaries/
+Intermediate/
+x64/
+Debug/
+Release/
+
+# ── Package output ────────────────────────────────────────────────
+*.tar.gz
+*.tar.bz2
+*.7z
+NovaForge/Docs/Architecture.zip

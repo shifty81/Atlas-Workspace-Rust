@@ -1,0 +1,9 @@
+{
+    "hull_class": "cruiser",
+    "length": [12, 25],
+    "beam": [4, 8],
+    "height": [3, 6],
+    "segments": 16,
+    "slot_count": 8,
+    "typical_slots": ["weapon", "weapon", "weapon", "engine", "engine", "shield", "sensor", "bay"]
+}

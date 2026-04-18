@@ -1,0 +1,6 @@
+{
+  "defaultRuleSet": "default_surface_generation",
+  "defaultSeed": 1337,
+  "defaultBiome": "barren",
+  "previewBounds": { "x": 32, "y": 8, "z": 32 }
+}

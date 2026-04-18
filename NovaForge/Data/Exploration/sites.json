@@ -1,0 +1,345 @@
+{
+  "signature_templates": {
+    "combat_iron_corsairs_hideout": {
+      "signature_type": "combat",
+      "name_prefix": "Iron Corsairs",
+      "name_suffix": "Hideout",
+      "difficulty": 2,
+      "npc_spawns": [
+        "iron_corsairs_frigate",
+        "iron_corsairs_frigate",
+        "iron_corsairs_destroyer",
+        "iron_corsairs_cruiser"
+      ],
+      "loot_table": {
+        "salvage_material": 20,
+        "datacores": 2
+      },
+      "isk_reward": 500000
+    },
+    "combat_venom_syndicate_base": {
+      "signature_type": "combat",
+      "name_prefix": "Venom Syndicate",
+      "name_suffix": "Base",
+      "difficulty": 3,
+      "npc_spawns": [
+        "venom_syndicate_destroyer",
+        "venom_syndicate_destroyer",
+        "venom_syndicate_cruiser",
+        "venom_syndicate_cruiser"
+      ],
+      "loot_table": {
+        "salvage_material": 30,
+        "datacores": 3,
+        "blueprint_copy": 1
+      },
+      "isk_reward": 1000000
+    },
+    "relic_ancient_ruins": {
+      "signature_type": "relic",
+      "name_prefix": "Ancient",
+      "name_suffix": "Ruins",
+      "difficulty": 2,
+      "npc_spawns": [],
+      "loot_table": {
+        "ancient_artifacts": 5,
+        "salvage_material": 15,
+        "datacores": 3
+      },
+      "isk_reward": 750000
+    },
+    "data_research_facility": {
+      "signature_type": "data",
+      "name_prefix": "Abandoned",
+      "name_suffix": "Research Facility",
+      "difficulty": 3,
+      "npc_spawns": [
+        "rogue_construct_frigate",
+        "rogue_construct_cruiser"
+      ],
+      "loot_table": {
+        "datacores": 8,
+        "salvage_material": 10,
+        "blueprint_copy": 1
+      },
+      "isk_reward": 1200000
+    },
+    "gas_cloud_small": {
+      "signature_type": "gas",
+      "name_prefix": "Bountiful",
+      "name_suffix": "Gas Cloud",
+      "difficulty": 1,
+      "npc_spawns": [],
+      "loot_table": {
+        "nebuline_c28": 100
+      },
+      "isk_reward": 300000
+    },
+    "gas_cloud_large": {
+      "signature_type": "gas",
+      "name_prefix": "Vast",
+      "name_suffix": "Gas Reservoir",
+      "difficulty": 2,
+      "npc_spawns": [
+        "pirate_frigate"
+      ],
+      "loot_table": {
+        "nebuline_c28": 250,
+        "nebuline_c32": 50
+      },
+      "isk_reward": 800000
+    },
+    "combat_crimson_order_refuge": {
+      "signature_type": "combat",
+      "name_prefix": "Crimson Order",
+      "name_suffix": "Refuge",
+      "difficulty": 1,
+      "npc_spawns": [
+        "crimson_order_corpse",
+        "crimson_order_corpse",
+        "crimson_order_frigate"
+      ],
+      "loot_table": {
+        "salvage_material": 15,
+        "frequency_crystals": 5
+      },
+      "isk_reward": 350000
+    },
+    "combat_angel_hideaway": {
+      "signature_type": "combat",
+      "name_prefix": "Angel",
+      "name_suffix": "Hideaway",
+      "difficulty": 1,
+      "npc_spawns": [
+        "angel_frigate",
+        "angel_frigate",
+        "angel_frigate"
+      ],
+      "loot_table": {
+        "salvage_material": 12,
+        "projectile_ammo": 8
+      },
+      "isk_reward": 400000
+    },
+    "combat_hollow_den": {
+      "signature_type": "combat",
+      "name_prefix": "Hollow",
+      "name_suffix": "Den",
+      "difficulty": 2,
+      "npc_spawns": [
+        "hollow_frigate",
+        "hollow_frigate",
+        "hollow_cruiser"
+      ],
+      "loot_table": {
+        "salvage_material": 25,
+        "datacores": 3,
+        "frequency_crystals": 8
+      },
+      "isk_reward": 650000
+    },
+    "combat_venom_syndicate_fortress": {
+      "signature_type": "combat",
+      "name_prefix": "Venom Syndicate",
+      "name_suffix": "Fortress",
+      "difficulty": 4,
+      "npc_spawns": [
+        "venom_syndicate_soldier",
+        "venom_syndicate_soldier",
+        "venom_syndicate_battlecruiser",
+        "venom_syndicate_battlecruiser",
+        "venom_syndicate_battleship"
+      ],
+      "loot_table": {
+        "salvage_material": 50,
+        "datacores": 8,
+        "blueprint_copy": 2,
+        "faction_module": 1
+      },
+      "isk_reward": 5000000
+    },
+    "combat_iron_corsairs_haven": {
+      "signature_type": "combat",
+      "name_prefix": "Iron Corsairs",
+      "name_suffix": "Haven",
+      "difficulty": 5,
+      "npc_spawns": [
+        "iron_corsairs_battlecruiser",
+        "iron_corsairs_battlecruiser",
+        "iron_corsairs_battleship",
+        "iron_corsairs_battleship",
+        "iron_corsairs_battleship"
+      ],
+      "loot_table": {
+        "salvage_material": 80,
+        "datacores": 12,
+        "blueprint_copy": 3,
+        "faction_module": 2
+      },
+      "isk_reward": 12000000
+    },
+    "relic_dormant_enclave": {
+      "signature_type": "relic",
+      "name_prefix": "Dormant",
+      "name_suffix": "Enclave",
+      "difficulty": 3,
+      "npc_spawns": [],
+      "loot_table": {
+        "ancient_artifacts": 10,
+        "salvage_material": 20,
+        "datacores": 5,
+        "dormant_components": 3
+      },
+      "isk_reward": 1500000
+    },
+    "relic_forgotten_rimward": {
+      "signature_type": "relic",
+      "name_prefix": "Forgotten",
+      "name_suffix": "Rimward Habitation Coils",
+      "difficulty": 4,
+      "npc_spawns": [],
+      "loot_table": {
+        "ancient_artifacts": 15,
+        "salvage_material": 30,
+        "datacores": 8,
+        "blueprint_copy": 2
+      },
+      "isk_reward": 3000000
+    },
+    "data_unsecured_frontier": {
+      "signature_type": "data",
+      "name_prefix": "Unsecured",
+      "name_suffix": "Frontier Database",
+      "difficulty": 2,
+      "npc_spawns": [],
+      "loot_table": {
+        "datacores": 12,
+        "salvage_material": 8,
+        "decryptors": 2
+      },
+      "isk_reward": 900000
+    },
+    "data_central_iron_corsairs_survey": {
+      "signature_type": "data",
+      "name_prefix": "Central Iron Corsairs",
+      "name_suffix": "Survey Site",
+      "difficulty": 3,
+      "npc_spawns": [
+        "iron_corsairs_frigate",
+        "iron_corsairs_cleaver"
+      ],
+      "loot_table": {
+        "datacores": 15,
+        "salvage_material": 12,
+        "blueprint_copy": 2,
+        "decryptors": 3
+      },
+      "isk_reward": 1800000
+    },
+    "data_venom_syndicate_lookout": {
+      "signature_type": "data",
+      "name_prefix": "Venom Syndicate",
+      "name_suffix": "Lookout",
+      "difficulty": 4,
+      "npc_spawns": [
+        "venom_syndicate_destroyer",
+        "venom_syndicate_soldier"
+      ],
+      "loot_table": {
+        "datacores": 20,
+        "salvage_material": 15,
+        "blueprint_copy": 3,
+        "decryptors": 5
+      },
+      "isk_reward": 2500000
+    },
+    "wormhole_anomaly_rimward": {
+      "signature_type": "wormhole",
+      "name_prefix": "Unstable",
+      "name_suffix": "Wormhole",
+      "difficulty": 3,
+      "npc_spawns": [],
+      "loot_table": {},
+      "isk_reward": 0,
+      "destination_class": "C1-C3"
+    },
+    "wormhole_anomaly_deep": {
+      "signature_type": "wormhole",
+      "name_prefix": "Dangerous",
+      "name_suffix": "Wormhole",
+      "difficulty": 5,
+      "npc_spawns": [],
+      "loot_table": {},
+      "isk_reward": 0,
+      "destination_class": "C4-C6"
+    }
+  },
+  "loot_items": {
+    "salvage_material": {
+      "item_id": "salvage_material",
+      "name": "Salvaged Materials",
+      "volume": 5.0,
+      "base_value": 10000
+    },
+    "datacores": {
+      "item_id": "datacores",
+      "name": "Datacore",
+      "volume": 1.0,
+      "base_value": 50000
+    },
+    "ancient_artifacts": {
+      "item_id": "ancient_artifacts",
+      "name": "Ancient Artifacts",
+      "volume": 2.0,
+      "base_value": 100000
+    },
+    "blueprint_copy": {
+      "item_id": "blueprint_copy",
+      "name": "Blueprint Copy (Random)",
+      "volume": 0.1,
+      "base_value": 500000
+    },
+    "nebuline_c28": {
+      "item_id": "nebuline_c28",
+      "name": "Nebuline-C28",
+      "volume": 10.0,
+      "base_value": 2000
+    },
+    "nebuline_c32": {
+      "item_id": "nebuline_c32",
+      "name": "Nebuline-C32",
+      "volume": 10.0,
+      "base_value": 5000
+    },
+    "dormant_components": {
+      "item_id": "dormant_components",
+      "name": "Dormant Components",
+      "volume": 5.0,
+      "base_value": 200000
+    },
+    "decryptors": {
+      "item_id": "decryptors",
+      "name": "Decryptor",
+      "volume": 1.0,
+      "base_value": 150000
+    },
+    "faction_module": {
+      "item_id": "faction_module",
+      "name": "Faction Module (Random)",
+      "volume": 5.0,
+      "base_value": 25000000
+    },
+    "frequency_crystals": {
+      "item_id": "frequency_crystals",
+      "name": "Frequency Crystal",
+      "volume": 1.0,
+      "base_value": 5000
+    },
+    "projectile_ammo": {
+      "item_id": "projectile_ammo",
+      "name": "Projectile Ammunition",
+      "volume": 0.5,
+      "base_value": 2000
+    }
+  }
+}

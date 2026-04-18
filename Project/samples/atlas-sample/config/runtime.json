@@ -1,0 +1,7 @@
+{
+    "schema": "atlas.config.v1",
+    "tickRate": 60,
+    "maxPlayers": 1,
+    "networkMode": "local",
+    "deterministic": true
+}

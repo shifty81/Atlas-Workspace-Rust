@@ -1,0 +1,38 @@
+{
+    "version": 1,
+    "description": "Atlas Engine determinism configuration. Changes to this file require contract review.",
+    "simulation": {
+        "defaultTickRate": 60,
+        "fixedPointMath": false,
+        "fpContractMode": "off",
+        "deterministicAllocator": true,
+        "midTickMutationGuard": true
+    },
+    "replay": {
+        "formatVersion": 3,
+        "hashAlgorithm": "fnv1a",
+        "hashLadderEnabled": true,
+        "goldenReplayDir": "tests/replays"
+    },
+    "networking": {
+        "packetSchemaVersion": 1,
+        "saveBroadcastType": "0xFF00"
+    },
+    "assets": {
+        "binaryFormatMagic": "0x41544C42",
+        "hashVerification": true,
+        "immutabilityEnforced": true
+    },
+    "ci": {
+        "goldenReplayGate": true,
+        "contractBotEnabled": true,
+        "crossPlatformVerification": true
+    },
+    "forbiddenAPIs": [
+        "std::chrono (in simulation)",
+        "rand()",
+        "time()",
+        "<random> (in simulation)",
+        "std::unordered_map (in simulation without wrapper)"
+    ]
+}

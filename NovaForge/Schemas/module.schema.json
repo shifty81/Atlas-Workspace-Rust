@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://novaforge.dev/schemas/module.schema.json",
+  "title": "Module Definition",
+  "description": "Defines a ship module that can be installed into a module slot.",
+  "type": "object",
+  "required": ["id", "name", "type", "power_cost", "mass"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^mod_[a-z]+_[a-z0-9_]+$",
+      "description": "Unique module identifier following the pattern mod_<type>_<name>."
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Human-readable display name."
+    },
+    "type": {
+      "type": "string",
+      "enum": ["Weapon", "Shield", "Engine", "Reactor", "Cargo", "Mining", "Scanner", "Repair", "Armor", "Utility"],
+      "description": "Functional category of the module."
+    },
+    "power_cost": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Reactor power consumed while active, in kilowatts."
+    },
+    "mass": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Module mass in metric tonnes."
+    },
+    "description": {
+      "type": "string",
+      "description": "Flavour text shown in the module catalogue."
+    },
+    "damage": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Damage dealt per hit (weapons only)."
+    },
+    "fire_rate": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "description": "Rounds per second (weapons only)."
+    },
+    "range": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "description": "Effective range in metres (weapons only)."
+    },
+    "shield_boost": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Additional shield points provided."
+    },
+    "speed_boost": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Additional max speed in m/s."
+    },
+    "capacity": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Storage or resource capacity added."
+    },
+    "scan_range": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "description": "Detection radius in kilometres (scanners only)."
+    },
+    "repair_rate": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "description": "Hull points restored per second."
+    },
+    "tier": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 5,
+      "description": "Technology tier, 1 (basic) to 5 (legendary)."
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true,
+      "description": "Freeform tags for filtering and scripting."
+    }
+  },
+  "additionalProperties": false
+}

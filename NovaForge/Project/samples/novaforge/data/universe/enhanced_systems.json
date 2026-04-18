@@ -1,0 +1,347 @@
+{
+  "systems": [
+    {
+      "id": "aurendis",
+      "name": "Aurendis",
+      "security": 0.9,
+      "faction": "Aurelian",
+      "region": "Sinq Laison",
+      "type": "highsec",
+      "description": "Major trade hub in Aurelian space, known for market activity",
+      "coordinates": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "system_radius_au": 120,
+      "stations": [
+        {
+          "id": "aurendis_20_20",
+          "name": "Aurendis IX - Moon 20 - Aurelian Grand Assembly Plant",
+          "type": "military",
+          "faction": "Aurelian",
+          "distance_from_sun_au": 45,
+          "services": [
+            "market",
+            "repair",
+            "fitting",
+            "missions",
+            "cloning",
+            "insurance"
+          ],
+          "description": "Primary trade hub station with full services"
+        },
+        {
+          "id": "aurendis_university",
+          "name": "Aurendis V - University of Caille",
+          "type": "university",
+          "faction": "Aurelian",
+          "distance_from_sun_au": 25,
+          "services": [
+            "missions",
+            "market",
+            "cloning",
+            "repair"
+          ],
+          "description": "Educational facility with mission agents"
+        }
+      ],
+      "asteroid_belts": [
+        {
+          "id": "aurendis_belt_1",
+          "name": "Aurendis - Asteroid Belt I",
+          "size": "colossal",
+          "distance_from_sun_au": 18,
+          "layout": "cluster",
+          "ore_composition": {
+            "dustite": 0.5,
+            "ferrite": 0.3,
+            "ignaite": 0.15,
+            "crystite": 0.05
+          },
+          "asteroid_count": 60,
+          "npc_miners": true,
+          "respawn": "daily_downtime"
+        },
+        {
+          "id": "aurendis_belt_2",
+          "name": "Aurendis - Asteroid Belt II",
+          "size": "large",
+          "distance_from_sun_au": 35,
+          "layout": "semicircle",
+          "ore_composition": {
+            "dustite": 0.4,
+            "ferrite": 0.35,
+            "crystite": 0.25
+          },
+          "asteroid_count": 35,
+          "npc_miners": true,
+          "respawn": "daily_downtime"
+        },
+        {
+          "id": "aurendis_belt_3",
+          "name": "Aurendis - Asteroid Belt III",
+          "size": "medium",
+          "distance_from_sun_au": 52,
+          "layout": "scattered",
+          "ore_composition": {
+            "ferrite": 0.5,
+            "ignaite": 0.5
+          },
+          "asteroid_count": 18,
+          "npc_miners": false,
+          "respawn": "daily_downtime"
+        }
+      ],
+      "gates": [
+        {
+          "id": "gate_to_renyn",
+          "destination": "renyn",
+          "distance_from_sun_au": 85,
+          "description": "Stargate to Renyn system"
+        },
+        {
+          "id": "gate_to_villore",
+          "destination": "villore",
+          "distance_from_sun_au": 110,
+          "description": "Stargate to Villore system"
+        }
+      ],
+      "travel_examples": {
+        "gate_to_gate": {
+          "distance_au": 25,
+          "venture": "8 seconds (3s align + 3.1s warp + gate activation)",
+          "cruiser": "12 seconds (6s align + 8.3s warp + gate activation)",
+          "excavon": "31 seconds (12s align + 18.5s warp + gate activation)"
+        },
+        "belt_1_to_station": {
+          "distance_au": 27,
+          "venture": "7 seconds (3s align + 3.4s warp + dock)",
+          "cruiser": "15 seconds (6s align + 9s warp + dock)",
+          "excavon": "32 seconds (12s align + 20s warp + dock)"
+        }
+      }
+    },
+    {
+      "id": "renyn",
+      "name": "Renyn",
+      "security": 0.8,
+      "faction": "Aurelian",
+      "region": "Sinq Laison",
+      "type": "highsec",
+      "description": "Industrial system near Aurendis with good mining opportunities",
+      "coordinates": {
+        "x": 85000,
+        "y": 15000,
+        "z": 5000
+      },
+      "system_radius_au": 95,
+      "stations": [
+        {
+          "id": "renyn_industrial",
+          "name": "Renyn VII - Duvolle Laboratories Manufacturing Plant",
+          "type": "industrial",
+          "faction": "Aurelian",
+          "distance_from_sun_au": 38,
+          "services": [
+            "market",
+            "repair",
+            "fitting",
+            "manufacturing",
+            "research"
+          ],
+          "description": "Major industrial facility"
+        },
+        {
+          "id": "renyn_mining",
+          "name": "Renyn III - Astral Mining Inc. Refinery",
+          "type": "mining",
+          "faction": "Aurelian",
+          "distance_from_sun_au": 15,
+          "services": [
+            "refining",
+            "reprocessing",
+            "market",
+            "repair"
+          ],
+          "description": "Ore processing facility near mining belts"
+        }
+      ],
+      "asteroid_belts": [
+        {
+          "id": "renyn_belt_1",
+          "name": "Renyn - Asteroid Belt I",
+          "size": "large",
+          "distance_from_sun_au": 12,
+          "layout": "cluster",
+          "ore_composition": {
+            "dustite": 0.55,
+            "ferrite": 0.3,
+            "ignaite": 0.1,
+            "crystite": 0.05
+          },
+          "asteroid_count": 40,
+          "npc_miners": true,
+          "respawn": "daily_downtime"
+        },
+        {
+          "id": "renyn_belt_2",
+          "name": "Renyn - Asteroid Belt II",
+          "size": "colossal",
+          "distance_from_sun_au": 22,
+          "layout": "ring",
+          "ore_composition": {
+            "dustite": 0.45,
+            "ferrite": 0.25,
+            "ignaite": 0.2,
+            "crystite": 0.1
+          },
+          "asteroid_count": 70,
+          "npc_miners": true,
+          "respawn": "daily_downtime",
+          "notes": "Popular mining location, often contested"
+        }
+      ],
+      "gates": [
+        {
+          "id": "gate_to_aurendis",
+          "destination": "aurendis",
+          "distance_from_sun_au": 78,
+          "description": "Stargate to Aurendis system"
+        }
+      ],
+      "travel_examples": {
+        "belt_2_to_mining_station": {
+          "distance_au": 7,
+          "venture": "5 seconds (3s align + 0.9s warp + dock)",
+          "excavon": "17 seconds (12s align + 5.2s warp + dock)",
+          "notes": "Very short distance makes this ideal for mining operations"
+        }
+      }
+    },
+    {
+      "id": "thyrkstad",
+      "name": "Thyrkstad",
+      "security": 1.0,
+      "faction": "Veyren",
+      "region": "The Forge",
+      "type": "highsec",
+      "description": "The largest trade hub in Astralis, busiest system in the game",
+      "coordinates": {
+        "x": 200000,
+        "y": 50000,
+        "z": -10000
+      },
+      "system_radius_au": 100,
+      "stations": [
+        {
+          "id": "thyrkstad_4_4",
+          "name": "Thyrkstad IV - Moon 4 - Veyren Fleet Assembly Yard",
+          "type": "military",
+          "faction": "Veyren",
+          "distance_from_sun_au": 42,
+          "services": [
+            "market",
+            "repair",
+            "fitting",
+            "missions",
+            "cloning",
+            "contracts"
+          ],
+          "description": "The single most important trading station in EVE Online",
+          "special_note": "Handles trillions of ISK in daily trades"
+        }
+      ],
+      "asteroid_belts": [],
+      "gates": [
+        {
+          "id": "gate_to_rimward",
+          "destination": "rimward",
+          "distance_from_sun_au": 65,
+          "description": "Stargate to Rimward system"
+        },
+        {
+          "id": "gate_to_maurasi",
+          "destination": "maurasi",
+          "distance_from_sun_au": 88,
+          "description": "Stargate to Maurasi system"
+        }
+      ],
+      "notes": "No asteroid belts due to high traffic and system importance"
+    },
+    {
+      "id": "kelheim",
+      "name": "Kelheim",
+      "security": 0.5,
+      "faction": "Keldari",
+      "region": "Metropolis",
+      "type": "highsec",
+      "description": "Regional trade hub in Keldari space",
+      "coordinates": {
+        "x": -80000,
+        "y": 120000,
+        "z": 5000
+      },
+      "system_radius_au": 110,
+      "stations": [
+        {
+          "id": "kelheim_8_12",
+          "name": "Kelheim VIII - Moon 12 - Boundless Creation Factory",
+          "type": "industrial",
+          "faction": "Keldari",
+          "distance_from_sun_au": 55,
+          "services": [
+            "market",
+            "repair",
+            "fitting",
+            "missions",
+            "manufacturing"
+          ],
+          "description": "Major Keldari trade hub"
+        }
+      ],
+      "asteroid_belts": [
+        {
+          "id": "kelheim_belt_1",
+          "name": "Kelheim - Asteroid Belt I",
+          "size": "large",
+          "distance_from_sun_au": 28,
+          "layout": "scattered",
+          "ore_composition": {
+            "dustite": 0.35,
+            "crystite": 0.3,
+            "shadite": 0.25,
+            "corite": 0.1
+          },
+          "asteroid_count": 38,
+          "npc_miners": true,
+          "respawn": "daily_downtime",
+          "notes": "0.5 security allows for better ore but increased danger"
+        }
+      ],
+      "gates": [
+        {
+          "id": "gate_to_duskfall",
+          "destination": "duskfall",
+          "distance_from_sun_au": 95,
+          "description": "Stargate to Duskfall (DANGEROUS lowsec)"
+        }
+      ]
+    }
+  ],
+  "gameplay_notes": {
+    "daily_routine": {
+      "11_05_utc": "Wake up after downtime, check market in hub",
+      "11_30_utc": "Undock and travel to mining system",
+      "11_45_utc": "Arrive at belt, may be already mined",
+      "12_00_utc": "Find colossal belt in adjacent system, start mining",
+      "13_00_utc": "Inventory full, warp to station (20s), dock, refine, sell"
+    },
+    "scale_reference": {
+      "single_system_crossing": "20-30 seconds for 100 AU in fast ship",
+      "gate_to_gate_average": "30-60 seconds including alignment and gate activation",
+      "mining_roundtrip": "1-2 minutes depending on ship",
+      "cross_universe": "2-8 hours for dedicated traveler (5000+ systems)"
+    }
+  }
+}

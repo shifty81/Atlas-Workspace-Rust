@@ -1,0 +1,11 @@
+{
+  "current_phase": 1,
+  "migrated_files": [],
+  "allowed_theme_default_files": [
+    "Source/UI/src/AtlasUI/Theme/ThemeDefaults.cpp",
+    "Source/UI/include/NF/UI/AtlasUI/Theme/ThemeTypes.h",
+    "Source/UI/include/NF/UI/AtlasUI/Theme/ThemeTokens.h",
+    "Source/UI/include/NF/UI/AtlasUI/DrawPrimitives.h",
+    "Source/UI/include/NF/UI/AtlasUI/WidgetTheme.h"
+  ]
+}

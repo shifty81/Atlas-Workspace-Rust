@@ -1,0 +1,17 @@
+{
+  "schema": "atlas.asset_registry.v1",
+  "assets": [
+    { "assetId": "galaxy_worldgraph",      "documentPath": "worlds/galaxy.worldgraph",            "category": "World" },
+    { "assetId": "station_tilegraph",      "documentPath": "worlds/station_interior.tilegraph",   "category": "World" },
+    { "assetId": "faction_ai_strategy",    "documentPath": "strategy/faction_ai.strategygraph",   "category": "AI" },
+    { "assetId": "captain_greeting_conv",  "documentPath": "conversations/captain_greeting.conversation", "category": "Dialogue" },
+    { "assetId": "combat_behaviorgraph",   "documentPath": "ai/combat.behaviorgraph",             "category": "AI" },
+    { "assetId": "patrol_behaviorgraph",   "documentPath": "ai/patrol.behaviorgraph",             "category": "AI" },
+    { "assetId": "trade_behaviorgraph",    "documentPath": "ai/trade.behaviorgraph",              "category": "AI" },
+    { "assetId": "prices_market",          "documentPath": "data/market/prices.json",             "category": "Data" },
+    { "assetId": "skills_tree",            "documentPath": "data/skills/skills.json",             "category": "Data" },
+    { "assetId": "science_skills",         "documentPath": "data/skills/science_skills.json",     "category": "Data" },
+    { "assetId": "races_character",        "documentPath": "data/character_creation/races.json",  "category": "Data" },
+    { "assetId": "careers_character",      "documentPath": "data/character_creation/careers.json","category": "Data" }
+  ]
+}
