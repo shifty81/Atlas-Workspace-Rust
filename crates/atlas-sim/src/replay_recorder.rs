@@ -156,3 +156,104 @@ impl ReplayRecorder {
         self.state = ReplayState::Idle;
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn recorder_with_frames(n: u32) -> ReplayRecorder {
+        let mut r = ReplayRecorder::new();
+        r.start_recording(60, 0xDEAD);
+        for i in 0..n {
+            r.record_frame_with_hash(i, vec![i as u8], (i as u64) * 1000);
+        }
+        r
+    }
+
+    #[test]
+    fn start_recording_sets_state() {
+        let mut r = ReplayRecorder::new();
+        assert_eq!(r.state(), ReplayState::Idle);
+        r.start_recording(30, 42);
+        assert_eq!(r.state(), ReplayState::Recording);
+        assert_eq!(r.header().tick_rate, 30);
+        assert_eq!(r.header().seed, 42);
+    }
+
+    #[test]
+    fn record_and_lookup_frame() {
+        let mut r = recorder_with_frames(5);
+        assert_eq!(r.frame_count(), 5);
+        let f = r.frame_at_tick(3).unwrap();
+        assert_eq!(f.tick, 3);
+        assert_eq!(f.input_data, vec![3u8]);
+        assert_eq!(f.state_hash, 3000);
+    }
+
+    #[test]
+    fn stop_recording() {
+        let mut r = recorder_with_frames(3);
+        r.stop_recording();
+        assert_eq!(r.state(), ReplayState::Idle);
+        assert_eq!(r.header().frame_count, 3);
+    }
+
+    #[test]
+    fn mark_and_list_save_points() {
+        let mut r = recorder_with_frames(5);
+        r.mark_save_point(2);
+        r.mark_save_point(4);
+        let pts = r.save_points();
+        assert!(pts.contains(&2));
+        assert!(pts.contains(&4));
+        assert_eq!(pts.len(), 2);
+    }
+
+    #[test]
+    fn duration_ticks_is_max_tick() {
+        let r = recorder_with_frames(6); // ticks 0..5
+        assert_eq!(r.duration_ticks(), 5);
+    }
+
+    #[test]
+    fn clear_resets_all() {
+        let mut r = recorder_with_frames(4);
+        r.clear();
+        assert_eq!(r.frame_count(), 0);
+        assert_eq!(r.state(), ReplayState::Idle);
+        assert_eq!(r.header().tick_rate, 0);
+    }
+
+    #[test]
+    fn save_and_load_roundtrip() {
+        let r = recorder_with_frames(4);
+        let path = "/tmp/test_replay.bin";
+        assert!(r.save_replay(path));
+
+        let mut r2 = ReplayRecorder::new();
+        assert!(r2.load_replay(path));
+        assert_eq!(r2.state(), ReplayState::Playing);
+        assert_eq!(r2.frame_count(), 4);
+        assert_eq!(r2.header().tick_rate, 60);
+        assert_eq!(r2.header().seed, 0xDEAD);
+
+        for i in 0..4u32 {
+            let f = r2.frame_at_tick(i).unwrap();
+            assert_eq!(f.input_data, vec![i as u8]);
+            assert_eq!(f.state_hash, (i as u64) * 1000);
+        }
+    }
+
+    #[test]
+    fn load_invalid_file_returns_false() {
+        let mut r = ReplayRecorder::new();
+        assert!(!r.load_replay("/tmp/nonexistent_replay_xyz.bin"));
+    }
+
+    #[test]
+    fn load_bad_magic_returns_false() {
+        std::fs::write("/tmp/bad_magic.bin", b"AAAA").unwrap();
+        let mut r = ReplayRecorder::new();
+        assert!(!r.load_replay("/tmp/bad_magic.bin"));
+    }
+}

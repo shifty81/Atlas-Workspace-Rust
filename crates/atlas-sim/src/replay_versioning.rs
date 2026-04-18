@@ -73,3 +73,96 @@ impl ReplayVersionRegistry {
         self.minimum_version = 0;
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn reg_with_defaults() -> ReplayVersionRegistry {
+        let mut r = ReplayVersionRegistry::new();
+        r.register_defaults();
+        r
+    }
+
+    #[test]
+    fn register_defaults_sets_versions() {
+        let r = reg_with_defaults();
+        assert_eq!(r.current_version(), 3);
+        assert_eq!(r.minimum_version(), 1);
+        assert_eq!(r.version_count(), 3);
+    }
+
+    #[test]
+    fn compatible_version() {
+        let r = reg_with_defaults();
+        assert_eq!(r.check_compatibility(3), ReplayCompatibility::Compatible);
+    }
+
+    #[test]
+    fn upgradeable_version() {
+        let r = reg_with_defaults();
+        assert_eq!(r.check_compatibility(2), ReplayCompatibility::Upgradeable);
+    }
+
+    #[test]
+    fn too_old_version() {
+        let mut r = reg_with_defaults();
+        r.set_minimum_version(2);
+        assert_eq!(r.check_compatibility(1), ReplayCompatibility::TooOld);
+    }
+
+    #[test]
+    fn too_new_version() {
+        let mut r = reg_with_defaults();
+        r.register_version(ReplayVersionInfo { version: 99, description: "future".into(), deprecated: false });
+        // 99 is known but above current_version=3 → TooNew
+        assert_eq!(r.check_compatibility(99), ReplayCompatibility::TooNew);
+    }
+
+    #[test]
+    fn unknown_version() {
+        let r = reg_with_defaults();
+        assert_eq!(r.check_compatibility(42), ReplayCompatibility::Unknown);
+    }
+
+    #[test]
+    fn can_migrate_range() {
+        let r = reg_with_defaults();
+        assert!(r.can_migrate(1));
+        assert!(r.can_migrate(3));
+        assert!(!r.can_migrate(0));
+        assert!(!r.can_migrate(4));
+    }
+
+    #[test]
+    fn get_version_info() {
+        let r = reg_with_defaults();
+        let info = r.get_version_info(1).unwrap();
+        assert!(info.deprecated);
+        let info2 = r.get_version_info(3).unwrap();
+        assert!(!info2.deprecated);
+    }
+
+    #[test]
+    fn deprecated_versions_listed() {
+        let r = reg_with_defaults();
+        let depr = r.deprecated_versions();
+        assert!(depr.contains(&1));
+        assert!(!depr.contains(&3));
+    }
+
+    #[test]
+    fn clear_resets_registry() {
+        let mut r = reg_with_defaults();
+        r.clear();
+        assert_eq!(r.version_count(), 0);
+        assert_eq!(r.current_version(), 0);
+        assert_eq!(r.minimum_version(), 0);
+    }
+
+    #[test]
+    fn all_versions_returns_full_list() {
+        let r = reg_with_defaults();
+        assert_eq!(r.all_versions().len(), 3);
+    }
+}

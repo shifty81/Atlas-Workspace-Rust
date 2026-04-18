@@ -62,3 +62,90 @@ impl SimMirrorController {
     pub fn is_enabled(&self) -> bool { self.enabled }
     pub fn set_enabled(&mut self, e: bool) { self.enabled = e; }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    // Minimal deterministic simulation: hash = tick mod N
+    struct CounterSim { tick: u64 }
+    impl ISimulation for CounterSim {
+        fn step(&mut self, _input: &[u8]) { self.tick += 1; }
+        fn world_hash(&self) -> u64 { self.tick }
+        fn current_tick(&self) -> u64 { self.tick }
+    }
+
+    // Simulation that diverges after a configurable tick
+    struct DivergeSim { tick: u64, diverge_at: u64 }
+    impl ISimulation for DivergeSim {
+        fn step(&mut self, _input: &[u8]) { self.tick += 1; }
+        fn world_hash(&self) -> u64 {
+            if self.tick >= self.diverge_at { self.tick + 0xFFFF } else { self.tick }
+        }
+        fn current_tick(&self) -> u64 { self.tick }
+    }
+
+    fn synced_controller() -> SimMirrorController {
+        let mut ctrl = SimMirrorController::new();
+        ctrl.set_server(Box::new(CounterSim { tick: 0 }));
+        ctrl.set_client(Box::new(CounterSim { tick: 0 }));
+        ctrl
+    }
+
+    #[test]
+    fn no_desync_when_identical() {
+        let mut ctrl = synced_controller();
+        ctrl.run_frames(&[vec![], vec![], vec![]]);
+        assert!(!ctrl.has_desync());
+        assert_eq!(ctrl.frame_count(), 3);
+    }
+
+    #[test]
+    fn desync_detected_on_diverge() {
+        let mut ctrl = SimMirrorController::new();
+        ctrl.set_server(Box::new(DivergeSim { tick: 0, diverge_at: 2 }));
+        ctrl.set_client(Box::new(CounterSim { tick: 0 }));
+        let desync_count = ctrl.run_frames(&[vec![], vec![], vec![]]);
+        assert!(ctrl.has_desync());
+        assert!(desync_count > 0);
+        // After step 2 the server hash = tick+0xFFFF (≥ diverge_at=2), client = tick → mismatch at frame 2
+        assert_eq!(ctrl.first_desync().unwrap().tick, 2);
+    }
+
+    #[test]
+    fn reset_clears_desyncs() {
+        let mut ctrl = SimMirrorController::new();
+        ctrl.set_server(Box::new(DivergeSim { tick: 0, diverge_at: 1 }));
+        ctrl.set_client(Box::new(CounterSim { tick: 0 }));
+        ctrl.run_frames(&[vec![], vec![]]);
+        assert!(ctrl.has_desync());
+        ctrl.reset();
+        assert!(!ctrl.has_desync());
+        assert_eq!(ctrl.frame_count(), 0);
+    }
+
+    #[test]
+    fn disabled_controller_returns_false() {
+        let mut ctrl = synced_controller();
+        ctrl.set_enabled(false);
+        assert!(!ctrl.is_enabled());
+        let result = ctrl.step(&[]);
+        assert!(!result); // disabled always returns false
+        assert_eq!(ctrl.frame_count(), 0);
+    }
+
+    #[test]
+    fn step_without_sims_returns_false() {
+        let mut ctrl = SimMirrorController::new();
+        assert!(!ctrl.step(&[]));
+    }
+
+    #[test]
+    fn desyncs_slice_contains_all_events() {
+        let mut ctrl = SimMirrorController::new();
+        ctrl.set_server(Box::new(DivergeSim { tick: 0, diverge_at: 1 }));
+        ctrl.set_client(Box::new(CounterSim { tick: 0 }));
+        ctrl.run_frames(&[vec![], vec![], vec![]]);
+        assert!(!ctrl.desyncs().is_empty());
+    }
+}

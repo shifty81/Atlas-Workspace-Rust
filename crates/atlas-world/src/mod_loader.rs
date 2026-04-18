@@ -129,3 +129,130 @@ impl ModLoader {
         true
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn basic_mod(id: &str) -> ModDescriptor {
+        ModDescriptor {
+            id: id.into(),
+            name: format!("Mod {id}"),
+            version: "1.0".into(),
+            author: "Tester".into(),
+            description: String::new(),
+            dependencies: Vec::new(),
+            entry_path: String::new(),
+            enabled: false,
+        }
+    }
+
+    fn mod_with_dep(id: &str, dep: &str) -> ModDescriptor {
+        let mut m = basic_mod(id);
+        m.dependencies = vec![dep.into()];
+        m
+    }
+
+    #[test]
+    fn register_and_count() {
+        let mut ml = ModLoader::new();
+        assert_eq!(ml.register_mod(basic_mod("alpha")), ModLoadResult::Success);
+        assert_eq!(ml.mod_count(), 1);
+    }
+
+    #[test]
+    fn duplicate_register_returns_already_loaded() {
+        let mut ml = ModLoader::new();
+        ml.register_mod(basic_mod("a"));
+        assert_eq!(ml.register_mod(basic_mod("a")), ModLoadResult::AlreadyLoaded);
+        assert_eq!(ml.mod_count(), 1);
+    }
+
+    #[test]
+    fn invalid_descriptor_empty_id() {
+        let mut ml = ModLoader::new();
+        let mut m = basic_mod("");
+        m.name = "valid name".into();
+        assert_eq!(ml.register_mod(m), ModLoadResult::InvalidDescriptor);
+        assert_eq!(ml.mod_count(), 0);
+    }
+
+    #[test]
+    fn unregister_removes_mod() {
+        let mut ml = ModLoader::new();
+        ml.register_mod(basic_mod("beta"));
+        ml.unregister_mod("beta");
+        assert_eq!(ml.mod_count(), 0);
+    }
+
+    #[test]
+    fn load_mod_marks_enabled() {
+        let mut ml = ModLoader::new();
+        ml.register_mod(basic_mod("gamma"));
+        assert_eq!(ml.load_mod("gamma"), ModLoadResult::Success);
+        assert!(ml.is_loaded("gamma"));
+        assert_eq!(ml.loaded_mod_count(), 1);
+    }
+
+    #[test]
+    fn load_nonexistent_returns_not_found() {
+        let mut ml = ModLoader::new();
+        assert_eq!(ml.load_mod("missing"), ModLoadResult::NotFound);
+    }
+
+    #[test]
+    fn load_with_missing_dependency_returns_error() {
+        let mut ml = ModLoader::new();
+        ml.register_mod(mod_with_dep("child", "parent"));
+        assert_eq!(ml.load_mod("child"), ModLoadResult::MissingDependency);
+    }
+
+    #[test]
+    fn load_with_satisfied_dependency_succeeds() {
+        let mut ml = ModLoader::new();
+        ml.register_mod(basic_mod("parent"));
+        ml.register_mod(mod_with_dep("child", "parent"));
+        assert_eq!(ml.load_mod("child"), ModLoadResult::Success);
+    }
+
+    #[test]
+    fn unload_mod_marks_disabled() {
+        let mut ml = ModLoader::new();
+        ml.register_mod(basic_mod("delta"));
+        ml.load_mod("delta");
+        assert!(ml.is_loaded("delta"));
+        ml.unload_mod("delta");
+        assert!(!ml.is_loaded("delta"));
+    }
+
+    #[test]
+    fn load_order_tracks_registration_sequence() {
+        let mut ml = ModLoader::new();
+        ml.register_mod(basic_mod("first"));
+        ml.register_mod(basic_mod("second"));
+        let order = ml.load_order();
+        assert_eq!(order[0], "first");
+        assert_eq!(order[1], "second");
+    }
+
+    #[test]
+    fn resolve_load_order_respects_dependencies() {
+        let mut ml = ModLoader::new();
+        ml.register_mod(basic_mod("base"));
+        ml.register_mod(mod_with_dep("plugin", "base"));
+        assert!(ml.resolve_load_order());
+        let order = ml.load_order();
+        // "base" must come before "plugin"
+        let base_pos = order.iter().position(|s| s == "base").unwrap();
+        let plugin_pos = order.iter().position(|s| s == "plugin").unwrap();
+        assert!(base_pos < plugin_pos);
+    }
+
+    #[test]
+    fn get_mod_returns_descriptor() {
+        let mut ml = ModLoader::new();
+        ml.register_mod(basic_mod("omega"));
+        let m = ml.get_mod("omega").unwrap();
+        assert_eq!(m.name, "Mod omega");
+    }
+}
