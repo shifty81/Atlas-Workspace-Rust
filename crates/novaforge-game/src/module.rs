@@ -9,7 +9,6 @@
 //!
 //! GPL v3.0 — this file is part of `novaforge-game`.
 
-use atlas_ecs::World;
 use atlas_game::{GameModule, GameInitContext, GameTickContext};
 
 /// Configuration for the NovaForge game module.
