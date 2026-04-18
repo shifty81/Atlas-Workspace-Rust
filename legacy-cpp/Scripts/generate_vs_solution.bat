@@ -29,7 +29,7 @@ echo   AtlasWorkspace — Generating VS %VS_VERSION% Solution
 echo ══════════════════════════════════════════════════════════
 echo.
 
-pushd "%~dp0.."
+pushd "%~dp0..\.."
 
 cmake --preset %PRESET%
 if errorlevel 1 (

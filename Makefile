@@ -45,11 +45,11 @@ cargo clean
 
 cpp-build:
 @echo "WARNING: Building C++ legacy reference only"
-bash Scripts/build_cpp_legacy.sh Debug
+bash legacy-cpp/Scripts/build_cpp_legacy.sh Debug
 
 cpp-test:
 @echo "WARNING: Running C++ legacy tests"
-bash Scripts/build_cpp_legacy.sh Debug --test
+bash legacy-cpp/Scripts/build_cpp_legacy.sh Debug --test
 
 cpp-clean:
 rm -rf Builds/

@@ -33,6 +33,7 @@ impl SaveHeader {
         Ok(())
     }
 
+    #[allow(unused_assignments)]
     fn read(data: &[u8]) -> Option<Self> {
         if data.len() < Self::SIZE {
             return None;
@@ -91,6 +92,7 @@ impl PartialSaveHeader {
         Ok(())
     }
 
+    #[allow(unused_assignments)]
     fn read(data: &[u8]) -> Option<Self> {
         if data.len() < Self::SIZE {
             return None;

@@ -27,6 +27,7 @@ pub struct QueueFamilyIndices {
 // ── inner Vulkan state (feature-gated) ─────────────────────────────────────
 
 #[cfg(feature = "vulkan")]
+#[allow(dead_code)]
 struct VulkanHandles {
     entry:        ash::Entry,
     instance:     ash::Instance,
@@ -232,10 +233,9 @@ impl VulkanContext {
         };
 
         // 2. Collect required instance extensions from the window surface
-        let surface_exts = unsafe {
+        let surface_exts =
             ash_window::enumerate_required_extensions(window.raw_display_handle())
-                .map_err(|e| RendererError::Vulkan(format!("surface exts: {e}")))?
-        };
+                .map_err(|e| RendererError::Vulkan(format!("surface exts: {e}")))?;
         let mut instance_exts: Vec<*const i8> = surface_exts.to_vec();
         if config.validation_layers {
             instance_exts.push(ext::DebugUtils::name().as_ptr());
@@ -345,7 +345,7 @@ impl VulkanContext {
     }
 
     fn layer_available(entry: &ash::Entry, layer: &CStr) -> bool {
-        match unsafe { entry.enumerate_instance_layer_properties() } {
+        match entry.enumerate_instance_layer_properties() {
             Ok(layers) => layers.iter().any(|l| {
                 let n = unsafe { CStr::from_ptr(l.layer_name.as_ptr()) };
                 n == layer
