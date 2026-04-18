@@ -1,40 +1,59 @@
-# AtlasWorkspace — Development task shortcuts
-# Usage: make <target>
+# Atlas Workspace Makefile
+# Primary: Rust/Cargo | Legacy: C++/CMake
+.PHONY: all build release editor game workspace test check clippy fmt fmt-check doc shaders clean cpp-build cpp-test cpp-clean help
 
-LOG_DIR  := Logs
-LOG_FILE := $(LOG_DIR)/build.log
-TEST_LOG := $(LOG_DIR)/test.log
+all: build
 
-.PHONY: help configure build build-debug build-release test clean
+build:
+cargo build --workspace
 
-help: ## Show this help
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
-		awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2}'
+release:
+cargo build --workspace --release
 
-# ── Configure ─────────────────────────────────────────────────────
+editor:
+cargo build -p atlas-editor
 
-configure: ## Configure debug build with tests
-	@mkdir -p $(LOG_DIR)
-	cmake --preset debug 2>&1 | tee -a $(LOG_FILE)
+game:
+cargo build -p atlas-game
 
-configure-release: ## Configure release build
-	@mkdir -p $(LOG_DIR)
-	cmake --preset release 2>&1 | tee -a $(LOG_FILE)
+workspace:
+cargo build -p atlas-workspace
 
-# ── Build ─────────────────────────────────────────────────────────
+test:
+cargo test --workspace
 
-build: configure ## Build debug (all targets)
-	cmake --build --preset debug --parallel 2>&1 | tee -a $(LOG_FILE)
+check:
+cargo check --workspace
 
-build-release: configure-release ## Build release (all targets)
-	cmake --build --preset release --parallel 2>&1 | tee -a $(LOG_FILE)
+clippy:
+cargo clippy --workspace -- -D warnings
 
-# ── Test ──────────────────────────────────────────────────────────
+fmt:
+cargo fmt --all
 
-test: build ## Run all tests
-	ctest --preset debug --output-on-failure 2>&1 | tee $(TEST_LOG)
+fmt-check:
+cargo fmt --all -- --check
 
-# ── Clean ─────────────────────────────────────────────────────────
+doc:
+cargo doc --workspace --no-deps --open
 
-clean: ## Remove all build artifacts
-	rm -rf Builds/ build/ out/ dist/
+shaders:
+bash Scripts/build_shaders.sh
+
+clean:
+cargo clean
+
+cpp-build:
+@echo "WARNING: Building C++ legacy reference only"
+bash Scripts/build_cpp_legacy.sh Debug
+
+cpp-test:
+@echo "WARNING: Running C++ legacy tests"
+bash Scripts/build_cpp_legacy.sh Debug --test
+
+cpp-clean:
+rm -rf Builds/
+
+help:
+@echo "Rust targets:   build release editor game workspace test check clippy fmt fmt-check doc shaders clean"
+@echo "Legacy C++:     cpp-build cpp-test cpp-clean"

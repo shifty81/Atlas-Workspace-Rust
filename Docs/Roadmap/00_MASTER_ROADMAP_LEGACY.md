@@ -1,3 +1,11 @@
+> **ARCHIVED — C++ Era Roadmap**
+> This document describes the completed C++ implementation of Atlas Workspace Phases A–I.
+> It serves as the **specification and blueprint** for the Rust port (Phases 0–6).
+> Canonical roadmap: [00_MASTER_ROADMAP.md](00_MASTER_ROADMAP.md)
+> Date archived: 2026-04-18
+
+---
+
 # Master Roadmap (Legacy Archive)
 
 > ⚠️ **ARCHIVED** — This is the legacy roadmap covering Phases 0–71 (infrastructure build-out).
