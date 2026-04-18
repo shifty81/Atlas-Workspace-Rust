@@ -27,6 +27,12 @@ pub enum RendererError {
     Other(String),
 }
 
+impl From<ash::vk::Result> for RendererError {
+    fn from(r: ash::vk::Result) -> Self {
+        Self::Vulkan(r.to_string())
+    }
+}
+
 /// Convenience alias.
 pub type RendererResult<T> = Result<T, RendererError>;
 
@@ -47,6 +53,9 @@ pub struct RenderConfig {
     pub vsync:              bool,
     /// Enable MSAA (4× if supported).
     pub msaa:               bool,
+    /// Run without a GPU (no window, no GPU calls).
+    /// Automatically set when `ATLAS_HEADLESS=1` is in the environment.
+    pub headless:           bool,
 }
 
 impl Default for RenderConfig {
@@ -59,6 +68,7 @@ impl Default for RenderConfig {
             frames_in_flight:  2,
             vsync:             true,
             msaa:              false,
+            headless:          std::env::var("ATLAS_HEADLESS").is_ok(),
         }
     }
 }

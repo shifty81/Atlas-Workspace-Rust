@@ -4,28 +4,25 @@
 //!
 //! ## Architecture
 //!
-//! The renderer is built directly on [`ash`] (raw Vulkan bindings) with
-//! [`gpu-allocator`] for GPU memory management.
-//!
-//! ### Modules
-//!
 //! | Module | Purpose |
 //! |--------|---------|
-//! | [`context`] | Vulkan instance, device, queues, surface |
-//! | [`swapchain`] | Swapchain + frame synchronisation |
-//! | [`pipeline`] | Graphics pipeline builder |
-//! | [`buffer`] | GPU buffer wrappers (vertex, index, uniform) |
-//! | [`texture`] | Image + sampler |
-//! | [`frame`] | Per-frame command recording |
-//! | [`shader`] | SPIR-V shader loading |
-//! | [`render_pass`] | Render pass / attachment descriptions |
-//! | [`viewport`] | Camera and viewport state |
-//! | [`types`] | Shared renderer types |
+//! | [`context`]      | Vulkan instance, device, queues, surface |
+//! | [`swapchain`]    | Swapchain + image views + render pass + framebuffers |
+//! | [`frame`]        | Per-frame command buffers + GPU sync (semaphores/fences) |
+//! | [`render_loop`]  | Main acquire → record → present loop |
+//! | [`pipeline`]     | Graphics pipeline builder |
+//! | [`buffer`]       | GPU buffer wrappers (vertex, index, uniform) |
+//! | [`texture`]      | Image + sampler |
+//! | [`shader`]       | SPIR-V shader loading |
+//! | [`render_pass`]  | Render pass / attachment descriptions |
+//! | [`viewport`]     | Camera and viewport state |
+//! | [`types`]        | Shared renderer types |
 
 pub mod buffer;
 pub mod context;
 pub mod frame;
 pub mod pipeline;
+pub mod render_loop;
 pub mod render_pass;
 pub mod shader;
 pub mod swapchain;
@@ -41,7 +38,7 @@ pub mod post_process;
 pub mod shadow_map;
 pub mod spatial_hash;
 
-pub use context::VulkanContext;
+pub use context::{VulkanContext, QueueFamilyIndices};
 pub use types::{RenderConfig, RendererError, RendererResult};
 pub use viewport::{Camera, Viewport};
 pub use backend::{RenderApi, RendererCapabilities, RendererBackend, NullRendererBackend};
@@ -52,3 +49,6 @@ pub use pbr_material::{PbrTextureSlot, AlphaMode, PbrMaterialParams, PbrTextureB
 pub use post_process::{PostProcessEffect, ToneMapOperator, BloomSettings, ToneMappingSettings, PostProcessSettings, PostProcessPipeline};
 pub use shadow_map::{ShadowCascade, LightDirection, ShadowMapConfig, ShadowMap};
 pub use spatial_hash::{SpatialEntity, SpatialHash};
+pub use swapchain::{Swapchain, SwapchainConfig, PresentMode};
+pub use frame::{FrameCommands, FrameSync};
+pub use render_loop::{RenderLoop, ClearColor, UiPaintData};

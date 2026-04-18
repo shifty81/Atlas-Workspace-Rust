@@ -28,6 +28,7 @@ atlas-net.workspace       = true
 atlas-schema.workspace    = true
 atlas-abi.workspace       = true
 atlas-asset.workspace     = true
+atlas-editor.workspace    = true
 log.workspace             = true
 env_logger.workspace      = true
 thiserror.workspace       = true

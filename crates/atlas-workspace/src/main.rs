@@ -1,49 +1,60 @@
 //! Atlas Workspace — main executable entry-point.
 //!
-//! Boots the Rust/Vulkan workspace, runs a demo PCG world generation pass,
-//! and prints a summary to stdout.
+//! ## Launch modes
+//!
+//! | Mode | How to activate |
+//! |------|----------------|
+//! | **Editor** (default) | `cargo run --bin atlas-workspace` |
+//! | **Demo** (headless CI/PCG smoke test) | `cargo run --bin atlas-workspace -- --demo` |
+//! | **Headless editor** | `ATLAS_HEADLESS=1 cargo run --bin atlas-workspace` |
 
 use atlas_core::Logger;
-use atlas_pcg::{PcgManager, PcgDomain, SeedLevel};
-use atlas_renderer::{RenderConfig, VulkanContext};
-use atlas_world::{Universe, UniverseConfig};
 
 fn main() -> anyhow::Result<()> {
-    // Initialise logging
+    // Initialise logging (env_logger picks up RUST_LOG)
     Logger::init();
 
+    let args: Vec<String> = std::env::args().collect();
+    let demo_mode = args.iter().any(|a| a == "--demo");
+
+    if demo_mode {
+        log::info!("=== Atlas Workspace — Demo Mode ===");
+        run_demos();
+        Logger::shutdown();
+        return Ok(());
+    }
+
     log::info!("=== Atlas Workspace v{} ===", atlas_core::VERSION);
-    log::info!("Renderer backend: Vulkan (ash)");
 
-    // Initialise Vulkan context
-    let render_cfg = RenderConfig {
-        title:  "Atlas Workspace".into(),
-        width:  1920,
-        height: 1080,
-        validation_layers: cfg!(debug_assertions),
-        ..RenderConfig::default()
-    };
-    let ctx = VulkanContext::new(render_cfg)?;
-    log::info!("Vulkan context: {}", ctx.backend_description());
-
-    // Demo: PCG world generation
-    run_pcg_demo();
-
-    // Demo: full universe generation
-    run_universe_demo();
-
-    // Demo: new systems
-    run_new_systems_demo();
-
-    // Demo: new crates
-    run_new_crates_demo();
+    // Attempt to start the editor.  On CI / headless environments the GPU
+    // calls will be skipped automatically (ATLAS_HEADLESS=1 or no display).
+    match atlas_editor::EditorApp::run() {
+        Ok(())  => {}
+        Err(e)  => {
+            // If the event loop couldn't open a display (headless CI), fall back
+            // to the demo mode so the binary still exits cleanly.
+            log::warn!("Editor failed to start ({e}) — falling back to demo mode");
+            run_demos();
+        }
+    }
 
     Logger::shutdown();
     Ok(())
 }
 
+// ── Demo helpers ─────────────────────────────────────────────────────────────
+
+fn run_demos() {
+    run_pcg_demo();
+    run_universe_demo();
+    run_new_systems_demo();
+    run_new_crates_demo();
+}
+
 /// Exercise all 16 PCG domains.
 fn run_pcg_demo() {
+    use atlas_pcg::{PcgManager, PcgDomain, SeedLevel};
+
     log::info!("── PCG Domain Demo ────────────────────────────────────────");
     let mgr = PcgManager::new(0xDEADBEEF_CAFEF00D);
     log::info!("Universe seed: {:#018x}", mgr.universe_seed());
@@ -100,6 +111,8 @@ fn run_pcg_demo() {
 
 /// Generate a full universe and print the hierarchy.
 fn run_universe_demo() {
+    use atlas_world::{Universe, UniverseConfig};
+
     log::info!("── Universe Generation Demo ────────────────────────────────");
     let u = Universe::generate(UniverseConfig {
         seed:         0xC0FFEE42,
@@ -109,10 +122,7 @@ fn run_universe_demo() {
     log::info!("Universe seed: {:#018x}", u.seed());
     for (gi, galaxy) in u.galaxies.iter().enumerate() {
         log::info!("  Galaxy {}: {} systems, {} clusters",
-            gi,
-            galaxy.systems.len(),
-            galaxy.clusters.len(),
-        );
+            gi, galaxy.systems.len(), galaxy.clusters.len());
         let total_planets: usize = galaxy.systems.iter().map(|s| s.planets.len()).sum();
         let total_asteroids: usize = galaxy.systems.iter()
             .flat_map(|s| s.asteroid_belts.iter())
@@ -153,7 +163,8 @@ fn run_new_systems_demo() {
         world.init();
         let b = world.create_body(1.0, false);
         world.step(0.016);
-        log::info!("PhysicsWorld: body_count={}, body={:?}", world.body_count(), world.get_body(b).map(|b| b.position));
+        log::info!("PhysicsWorld: body_count={}, body={:?}",
+            world.body_count(), world.get_body(b).map(|b| b.position));
         world.shutdown();
     }
 
@@ -247,7 +258,10 @@ fn run_new_crates_demo() {
     {
         use atlas_schema::{SchemaValidator, SchemaDefinition};
         let mut validator = SchemaValidator::new();
-        let schema = SchemaDefinition { id: "test".into(), version: 1, inputs: vec![], outputs: vec![], nodes: vec![] };
+        let schema = SchemaDefinition {
+            id: "test".into(), version: 1,
+            inputs: vec![], outputs: vec![], nodes: vec![]
+        };
         let ok = validator.validate(&schema);
         log::info!("SchemaValidator: valid={}", ok);
     }
@@ -258,7 +272,11 @@ fn run_new_crates_demo() {
         let mut cap = AbiCapsule::new(AbiVersion::new(1, 0), "v1.0".into());
         cap.set_complete(true);
         registry.register_capsule(cap);
-        let target = ProjectAbiTarget { project_name: "demo".into(), target_abi: AbiVersion::new(1, 0), determinism_profile: "strict".into() };
+        let target = ProjectAbiTarget {
+            project_name:         "demo".into(),
+            target_abi:           AbiVersion::new(1, 0),
+            determinism_profile:  "strict".into(),
+        };
         let bound = registry.bind_project(&target);
         log::info!("AbiRegistry: bound={}", bound);
     }
@@ -271,4 +289,3 @@ fn run_new_crates_demo() {
         log::info!("AssetRegistry: count={}", reg.count());
     }
 }
-

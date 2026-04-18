@@ -1,0 +1,23 @@
+[package]
+name        = "atlas-editor"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+
+[dependencies]
+atlas-renderer.workspace = true
+atlas-ui.workspace       = true
+atlas-ecs.workspace      = true
+atlas-asset.workspace    = true
+atlas-core.workspace     = true
+atlas-math.workspace     = true
+log.workspace            = true
+thiserror.workspace      = true
+anyhow.workspace         = true
+egui.workspace           = true
+winit.workspace          = true
+
+[features]
+default = ["vulkan"]
+vulkan  = ["atlas-renderer/vulkan", "atlas-ui/vulkan"]

@@ -1,0 +1,19 @@
+[package]
+name        = "atlas-ui"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+
+[dependencies]
+atlas-renderer.workspace = true
+atlas-core.workspace     = true
+log.workspace            = true
+thiserror.workspace      = true
+egui.workspace           = true
+egui-winit.workspace     = true
+winit.workspace          = true
+
+[features]
+default = ["vulkan"]
+vulkan  = ["atlas-renderer/vulkan"]
