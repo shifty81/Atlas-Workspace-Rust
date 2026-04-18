@@ -92,3 +92,74 @@ impl SceneGraph {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::entity::INVALID_ENTITY;
+
+    #[test]
+    fn set_parent_and_query() {
+        let mut g = SceneGraph::new();
+        g.set_parent(2, 1);
+        assert_eq!(g.parent(2), 1);
+        assert!(g.is_root(1));
+        assert!(!g.is_root(2));
+    }
+
+    #[test]
+    fn child_count_and_slice() {
+        let mut g = SceneGraph::new();
+        g.set_parent(2, 1);
+        g.set_parent(3, 1);
+        assert_eq!(g.child_count(1), 2);
+        assert!(g.children(1).contains(&2));
+        assert!(g.children(1).contains(&3));
+    }
+
+    #[test]
+    fn remove_from_parent_makes_root() {
+        let mut g = SceneGraph::new();
+        g.set_parent(2, 1);
+        g.remove_from_parent(2);
+        assert!(g.is_root(2));
+        assert_eq!(g.child_count(1), 0);
+    }
+
+    #[test]
+    fn is_descendant_of() {
+        let mut g = SceneGraph::new();
+        g.set_parent(2, 1);
+        g.set_parent(3, 2);
+        assert!(g.is_descendant_of(3, 1));
+        assert!(g.is_descendant_of(3, 2));
+        assert!(!g.is_descendant_of(1, 2));
+    }
+
+    #[test]
+    fn remove_entity_reparents_children() {
+        let mut g = SceneGraph::new();
+        // 1 → 2 → 3
+        g.set_parent(2, 1);
+        g.set_parent(3, 2);
+        g.remove_entity(2); // 3 should move to 1
+        assert_eq!(g.parent(3), 1);
+        assert!(!g.children(1).contains(&2));
+    }
+
+    #[test]
+    fn reparent_detaches_from_old_parent() {
+        let mut g = SceneGraph::new();
+        g.set_parent(3, 1);
+        g.set_parent(3, 2); // move 3 under 2
+        assert_eq!(g.parent(3), 2);
+        assert_eq!(g.child_count(1), 0);
+        assert_eq!(g.child_count(2), 1);
+    }
+
+    #[test]
+    fn unknown_entity_parent_is_invalid() {
+        let g = SceneGraph::new();
+        assert_eq!(g.parent(999), INVALID_ENTITY);
+    }
+}

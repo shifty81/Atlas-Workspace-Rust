@@ -62,3 +62,61 @@ impl Default for Color {
         Color::WHITE
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn constants_correct() {
+        assert_eq!(Color::WHITE.r, 1.0);
+        assert_eq!(Color::BLACK.r, 0.0);
+        assert_eq!(Color::TRANSPARENT.a, 0.0);
+        assert_eq!(Color::RED.r, 1.0);
+        assert_eq!(Color::RED.g, 0.0);
+    }
+
+    #[test]
+    fn default_is_white() {
+        let c = Color::default();
+        assert_eq!(c, Color::WHITE);
+    }
+
+    #[test]
+    fn rgb_alpha_is_one() {
+        let c = Color::rgb(0.5, 0.5, 0.5);
+        assert_eq!(c.a, 1.0);
+    }
+
+    #[test]
+    fn from_u8_round_trip() {
+        let c = Color::from_u8(255, 128, 0, 255);
+        assert_eq!(c.r, 1.0);
+        assert!((c.g - 128.0 / 255.0).abs() < 1e-4);
+        assert_eq!(c.b, 0.0);
+        assert_eq!(c.a, 1.0);
+    }
+
+    #[test]
+    fn to_u32_packed() {
+        let u = Color::WHITE.to_u32();
+        assert_eq!(u, 0xFFFFFFFF);
+        let u2 = Color::BLACK.to_u32();
+        assert_eq!(u2, 0x000000FF); // r=0 g=0 b=0 a=255
+    }
+
+    #[test]
+    fn lerp_midpoint() {
+        let c = Color::BLACK.lerp(Color::WHITE, 0.5);
+        assert!((c.r - 0.5).abs() < 1e-5);
+        assert!((c.g - 0.5).abs() < 1e-5);
+        assert!((c.b - 0.5).abs() < 1e-5);
+        assert_eq!(c.a, 1.0);
+    }
+
+    #[test]
+    fn lerp_endpoints() {
+        assert_eq!(Color::RED.lerp(Color::BLUE, 0.0), Color::RED);
+        assert_eq!(Color::RED.lerp(Color::BLUE, 1.0), Color::BLUE);
+    }
+}

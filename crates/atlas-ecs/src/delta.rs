@@ -156,3 +156,83 @@ impl DeltaEditStore {
             .map_err(|e| std::io::Error::new(std::io::ErrorKind::Other, e.to_string()))
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn record_and_count() {
+        let mut store = DeltaEditStore::new(42);
+        assert_eq!(store.seed(), 42);
+        store.record(DeltaEdit::add_object(1, "Tree", [1.0, 0.0, 0.0]));
+        assert_eq!(store.count(), 1);
+    }
+
+    #[test]
+    fn clear_preserves_seed() {
+        let mut store = DeltaEditStore::new(99);
+        store.record(DeltaEdit::remove_object(2));
+        store.clear();
+        assert_eq!(store.count(), 0);
+        assert_eq!(store.seed(), 99);
+    }
+
+    #[test]
+    fn edit_type_names() {
+        assert_eq!(DeltaEditType::AddObject.name(), "AddObject");
+        assert_eq!(DeltaEditType::RemoveObject.name(), "RemoveObject");
+        assert_eq!(DeltaEditType::MoveObject.name(), "MoveObject");
+        assert_eq!(DeltaEditType::SetProperty.name(), "SetProperty");
+    }
+
+    #[test]
+    fn json_roundtrip() {
+        let mut store = DeltaEditStore::new(7);
+        store.record(DeltaEdit::add_object(1, "Rock", [0.0, 1.0, 2.0]));
+        store.record(DeltaEdit::set_property(1, "color", "red"));
+        let json = store.serialize_to_json().unwrap();
+        let mut store2 = DeltaEditStore::new(0);
+        store2.deserialize_from_json(&json).unwrap();
+        assert_eq!(store2.seed(), 7);
+        assert_eq!(store2.count(), 2);
+        assert_eq!(store2.edits()[0].edit_type, DeltaEditType::AddObject);
+        assert_eq!(store2.edits()[1].property_name, "color");
+    }
+
+    #[test]
+    fn file_roundtrip() {
+        let mut store = DeltaEditStore::new(55);
+        store.record(DeltaEdit::move_object(3, [5.0, 0.0, 0.0]));
+        let path = std::path::Path::new("/tmp/delta_test.json");
+        store.save_to_file(path).unwrap();
+        let mut store2 = DeltaEditStore::new(0);
+        store2.load_from_file(path).unwrap();
+        assert_eq!(store2.seed(), 55);
+        assert_eq!(store2.count(), 1);
+        assert_eq!(store2.edits()[0].edit_type, DeltaEditType::MoveObject);
+    }
+
+    #[test]
+    fn set_seed() {
+        let mut store = DeltaEditStore::new(1);
+        store.set_seed(100);
+        assert_eq!(store.seed(), 100);
+    }
+
+    #[test]
+    fn add_object_factory() {
+        let e = DeltaEdit::add_object(5, "Crate", [1.0, 2.0, 3.0]);
+        assert_eq!(e.edit_type, DeltaEditType::AddObject);
+        assert_eq!(e.entity_id, 5);
+        assert_eq!(e.object_type, "Crate");
+        assert_eq!(e.position, [1.0, 2.0, 3.0]);
+    }
+
+    #[test]
+    fn remove_object_factory() {
+        let e = DeltaEdit::remove_object(7);
+        assert_eq!(e.edit_type, DeltaEditType::RemoveObject);
+        assert_eq!(e.entity_id, 7);
+    }
+}

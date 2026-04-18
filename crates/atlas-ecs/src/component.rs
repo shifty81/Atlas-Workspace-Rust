@@ -78,3 +78,82 @@ impl ComponentStore {
             .unwrap_or_default()
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[derive(Debug, PartialEq, Clone)]
+    struct Health(i32);
+
+    #[derive(Debug, PartialEq, Clone)]
+    struct Name(String);
+
+    #[test]
+    fn add_and_get() {
+        let mut store = ComponentStore::new();
+        store.add(1u32, Health(100));
+        let h = store.get::<Health>(1).unwrap();
+        assert_eq!(h.0, 100);
+    }
+
+    #[test]
+    fn get_missing_returns_none() {
+        let store = ComponentStore::new();
+        assert!(store.get::<Health>(99).is_none());
+    }
+
+    #[test]
+    fn has_returns_true_when_present() {
+        let mut store = ComponentStore::new();
+        store.add(1u32, Health(50));
+        assert!(store.has::<Health>(1));
+        assert!(!store.has::<Health>(2));
+    }
+
+    #[test]
+    fn get_mut_allows_modification() {
+        let mut store = ComponentStore::new();
+        store.add(1u32, Health(10));
+        store.get_mut::<Health>(1).unwrap().0 = 99;
+        assert_eq!(store.get::<Health>(1).unwrap().0, 99);
+    }
+
+    #[test]
+    fn remove_component() {
+        let mut store = ComponentStore::new();
+        store.add(1u32, Health(10));
+        store.remove::<Health>(1);
+        assert!(!store.has::<Health>(1));
+    }
+
+    #[test]
+    fn remove_all_clears_entity() {
+        let mut store = ComponentStore::new();
+        store.add(1u32, Health(10));
+        store.add(1u32, Name("test".into()));
+        store.remove_all(1);
+        assert!(!store.has::<Health>(1));
+        assert!(!store.has::<Name>(1));
+    }
+
+    #[test]
+    fn add_overwrites_previous() {
+        let mut store = ComponentStore::new();
+        store.add(1u32, Health(1));
+        store.add(1u32, Health(999));
+        assert_eq!(store.get::<Health>(1).unwrap().0, 999);
+    }
+
+    #[test]
+    fn get_all_returns_all_entities_with_type() {
+        let mut store = ComponentStore::new();
+        store.add(1u32, Health(10));
+        store.add(2u32, Health(20));
+        store.add(3u32, Name("x".into()));
+        let all_health = store.get_all::<Health>();
+        assert_eq!(all_health.len(), 2);
+        assert!(all_health.contains_key(&1));
+        assert!(all_health.contains_key(&2));
+    }
+}

@@ -69,3 +69,65 @@ impl EntityManager {
         self.next_id = 1;
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn create_unique_ids() {
+        let mut em = EntityManager::new();
+        let a = em.create_entity();
+        let b = em.create_entity();
+        assert_ne!(a, b);
+        assert_ne!(a, INVALID_ENTITY);
+        assert_ne!(b, INVALID_ENTITY);
+    }
+
+    #[test]
+    fn alive_and_count() {
+        let mut em = EntityManager::new();
+        let e = em.create_entity();
+        assert!(em.is_alive(e));
+        assert_eq!(em.count(), 1);
+    }
+
+    #[test]
+    fn destroy_removes_from_alive() {
+        let mut em = EntityManager::new();
+        let e = em.create_entity();
+        em.destroy_entity(e);
+        assert!(!em.is_alive(e));
+        assert_eq!(em.count(), 0);
+    }
+
+    #[test]
+    fn id_recycled_after_destroy() {
+        let mut em = EntityManager::new();
+        let first = em.create_entity();
+        em.destroy_entity(first);
+        let recycled = em.create_entity();
+        assert_eq!(recycled, first);
+    }
+
+    #[test]
+    fn clear_resets_all() {
+        let mut em = EntityManager::new();
+        em.create_entity();
+        em.create_entity();
+        em.clear();
+        assert_eq!(em.count(), 0);
+        let fresh = em.create_entity();
+        assert_ne!(fresh, INVALID_ENTITY);
+    }
+
+    #[test]
+    fn alive_slice_contains_all_live_entities() {
+        let mut em = EntityManager::new();
+        let a = em.create_entity();
+        let b = em.create_entity();
+        let alive = em.alive();
+        assert!(alive.contains(&a));
+        assert!(alive.contains(&b));
+    }
+}

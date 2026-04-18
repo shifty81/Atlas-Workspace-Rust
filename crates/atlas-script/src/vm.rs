@@ -159,6 +159,12 @@ impl ScriptVM {
         self.functions.insert(name.to_owned(), Box::new(f));
     }
 
+    /// Call a registered native function by name with the given arguments.
+    /// Returns `None` if no function with that name is registered.
+    pub fn call_function(&self, name: &str, args: &[ScriptValue]) -> Option<ScriptValue> {
+        self.functions.get(name).map(|f| f(args))
+    }
+
     pub fn reset(&mut self) {
         self.stack.clear();
         self.step_count = 0;
