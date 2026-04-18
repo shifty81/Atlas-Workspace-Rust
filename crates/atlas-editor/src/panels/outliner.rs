@@ -1,6 +1,6 @@
-//! Outliner panel — lists ECS entities (M6).
+//! Outliner panel — lists ECS entities (M7).
 
-use atlas_ecs::{EntityId, World};
+use atlas_ecs::{EntityId, Name, World};
 
 use crate::selection::SelectionState;
 
@@ -20,7 +20,7 @@ impl OutlinerPanel {
     /// Draw the panel; returns any events the caller should process.
     pub fn show(
         &mut self,
-        ctx: &egui::Context,
+        ctx:   &egui::Context,
         world: &World,
         sel:   &mut SelectionState,
     ) -> Vec<OutlinerEvent> {
@@ -44,7 +44,11 @@ impl OutlinerPanel {
                         ui.label(egui::RichText::new("(no entities)").weak());
                     }
                     for id in entities {
-                        let label = format!("Entity #{id}");
+                        let label = world.components
+                            .get::<Name>(id)
+                            .map(|n| format!("{} [#{}]", n.as_str(), id))
+                            .unwrap_or_else(|| format!("Entity #{id}"));
+
                         let selected = sel.is_selected(id);
                         let response = ui.selectable_label(selected, &label);
                         if response.clicked() {

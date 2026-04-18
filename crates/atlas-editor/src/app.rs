@@ -1,4 +1,4 @@
-//! [`EditorApp`] — the editor application (M6).
+//! [`EditorApp`] — the editor application (M7).
 //!
 //! Orchestrates the winit event loop, egui UI, Vulkan renderer, ECS world,
 //! and all five editor panels.  In headless mode (no GPU / no display) the
@@ -22,10 +22,14 @@ use winit::{
 use crate::{
     build_system::GameBuildSystem,
     command::CommandStack,
-    entity_commands::{DeleteEntityCommand, SpawnEntityCommand},
+    entity_commands::{DeleteEntityCommand, RenameEntityCommand, SpawnEntityCommand},
     game_project_adapter::{EditorSession, PieState},
-    panels::{AssetBrowserPanel, ConsolePanel, OutlinerEvent, OutlinerPanel, PropertiesPanel, ViewportPanel},
+    panels::{
+        AssetBrowserPanel, ConsolePanel, OutlinerEvent, OutlinerPanel,
+        PropertiesEvent, PropertiesPanel, ViewportPanel,
+    },
     scene_renderer::SceneRenderer,
+    scene_serial,
     selection::SelectionState,
 };
 
@@ -54,8 +58,12 @@ pub struct EditorApp {
     asset_panel: AssetBrowserPanel,
     console:     ConsolePanel,
     // Misc
-    _log_entries: Arc<Mutex<Vec<LogEntry>>>,
-    show_about:   bool,
+    _log_entries:    Arc<Mutex<Vec<LogEntry>>>,
+    show_about:      bool,
+    /// Path of the most recently saved / opened scene file.
+    last_scene_path: Option<std::path::PathBuf>,
+    /// Toast message shown briefly in the status bar.
+    status_message:  Option<String>,
 }
 
 impl EditorApp {
@@ -115,18 +123,20 @@ impl EditorApp {
             assets: AssetRegistry::new(),
             render,
             ui,
-            selection:   SelectionState::new(),
-            commands:    CommandStack::default(),
-            scene:       SceneRenderer::new(),
-            session:     EditorSession::new(),
-            build_sys:   GameBuildSystem::new(),
-            outliner:    OutlinerPanel::new(),
-            properties:  PropertiesPanel::new(),
-            viewport:    ViewportPanel::new(),
-            asset_panel: AssetBrowserPanel::new(),
-            console:     ConsolePanel::new(log_entries.clone()),
-            _log_entries: log_entries,
-            show_about:   false,
+            selection:        SelectionState::new(),
+            commands:         CommandStack::default(),
+            scene:            SceneRenderer::new(),
+            session:          EditorSession::new(),
+            build_sys:        GameBuildSystem::new(),
+            outliner:         OutlinerPanel::new(),
+            properties:       PropertiesPanel::new(),
+            viewport:         ViewportPanel::new(),
+            asset_panel:      AssetBrowserPanel::new(),
+            console:          ConsolePanel::new(log_entries.clone()),
+            _log_entries:     log_entries,
+            show_about:       false,
+            last_scene_path:  None,
+            status_message:   None,
         })
     }
 
@@ -232,10 +242,22 @@ impl EditorApp {
             }
         }
 
-        self.properties.show(ctx, &mut self.world, &self.selection);
+        // Properties returns events (e.g. rename)
+        let props_events = self.properties.show(ctx, &mut self.world, &self.selection);
+        for event in props_events {
+            match event {
+                PropertiesEvent::Rename { name } => {
+                    if let Some(entity) = self.selection.primary() {
+                        self.commands.execute(
+                            Box::new(RenameEntityCommand::new(entity, name)),
+                            &mut self.world,
+                        );
+                    }
+                }
+            }
+        }
 
         // Asset browser + console share the bottom panel; console takes priority
-        // (shown if both open, they stack)
         if self.console.open {
             self.console.show(ctx);
         }
@@ -245,6 +267,13 @@ impl EditorApp {
 
         if self.viewport.open {
             self.viewport.show(ctx, &mut self.scene, &self.world, &mut self.selection);
+        }
+
+        // Status bar
+        if let Some(msg) = &self.status_message {
+            egui::TopBottomPanel::bottom("status_bar").show(ctx, |ui| {
+                ui.label(egui::RichText::new(msg).small().color(egui::Color32::from_rgb(200, 220, 200)));
+            });
         }
 
         // About dialog
@@ -268,14 +297,24 @@ impl EditorApp {
                         self.world = World::new();
                         self.selection.clear();
                         self.commands.clear();
+                        self.last_scene_path = None;
+                        self.status_message = Some("New scene created.".into());
                         ui.close_menu();
                     }
                     if ui.button("Open Scene…").clicked() {
-                        log::info!("[Editor] Open — not yet implemented");
+                        self.open_scene_dialog();
                         ui.close_menu();
                     }
-                    if ui.button("Save Scene…").clicked() {
-                        log::info!("[Editor] Save — not yet implemented");
+                    ui.separator();
+                    if ui.add_enabled(
+                        self.last_scene_path.is_some(),
+                        egui::Button::new("Save Scene"),
+                    ).clicked() {
+                        self.save_scene_to_last_path();
+                        ui.close_menu();
+                    }
+                    if ui.button("Save Scene As…").clicked() {
+                        self.save_scene_dialog();
                         ui.close_menu();
                     }
                     ui.separator();
@@ -369,20 +408,84 @@ impl EditorApp {
                     }
                 });
 
-                // Right-side: backend indicator
+                // Right-side: backend indicator + scene path
                 ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
                     ui.label(
                         egui::RichText::new(self.render_backend_name())
                             .color(egui::Color32::GRAY)
                             .small()
                     );
+                    if let Some(path) = &self.last_scene_path {
+                        ui.separator();
+                        ui.label(
+                            egui::RichText::new(path.display().to_string())
+                                .color(egui::Color32::GRAY)
+                                .small()
+                        );
+                    }
                 });
             });
         });
     }
 
+    // ── Scene I/O helpers ─────────────────────────────────────────────────────
+
+    fn open_scene_dialog(&mut self) {
+        let path = self.last_scene_path
+            .clone()
+            .unwrap_or_else(|| std::path::PathBuf::from("scene.json"));
+        match scene_serial::load_scene(&mut self.world, &path) {
+            Ok(()) => {
+                self.selection.clear();
+                self.commands.clear();
+                self.last_scene_path = Some(path.clone());
+                self.status_message  = Some(format!("Opened: {}", path.display()));
+                log::info!("[Editor] Scene loaded from {:?}", path);
+            }
+            Err(e) => {
+                self.status_message = Some(format!("Open failed: {e}"));
+                log::error!("[Editor] Open scene failed: {e}");
+            }
+        }
+    }
+
+    fn save_scene_to_last_path(&mut self) {
+        if let Some(path) = self.last_scene_path.clone() {
+            match scene_serial::save_scene(&self.world, &path) {
+                Ok(()) => {
+                    self.status_message = Some(format!("Saved: {}", path.display()));
+                }
+                Err(e) => {
+                    self.status_message = Some(format!("Save failed: {e}"));
+                    log::error!("[Editor] Save failed: {e}");
+                }
+            }
+        }
+    }
+
+    fn save_scene_dialog(&mut self) {
+        let path = self.last_scene_path
+            .clone()
+            .unwrap_or_else(|| std::path::PathBuf::from("scene.json"));
+        match scene_serial::save_scene(&self.world, &path) {
+            Ok(()) => {
+                self.last_scene_path = Some(path.clone());
+                self.status_message  = Some(format!("Saved: {}", path.display()));
+                log::info!("[Editor] Scene saved to {:?}", path);
+            }
+            Err(e) => {
+                self.status_message = Some(format!("Save failed: {e}"));
+                log::error!("[Editor] Save scene failed: {e}");
+            }
+        }
+    }
+
+    // ── Key input ─────────────────────────────────────────────────────────────
+
     fn handle_key(&mut self, event: &winit::event::KeyEvent, _window: &Window) {
         use winit::keyboard::{Key, NamedKey};
+        let ctrl = event.state == winit::event::ElementState::Pressed;
+        if !ctrl { return; }
         match &event.logical_key {
             Key::Named(NamedKey::F5) => {
                 if self.session.is_playing() {
@@ -394,6 +497,7 @@ impl EditorApp {
             Key::Character(c) => match c.as_str() {
                 "z" | "Z" => { self.commands.undo(&mut self.world); }
                 "y" | "Y" => { self.commands.redo(&mut self.world); }
+                "s" | "S" => { self.save_scene_dialog(); }
                 _ => {}
             }
             _ => {}
