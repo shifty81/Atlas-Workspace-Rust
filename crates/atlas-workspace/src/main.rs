@@ -35,6 +35,9 @@ fn main() -> anyhow::Result<()> {
     // Demo: new systems
     run_new_systems_demo();
 
+    // Demo: new crates
+    run_new_crates_demo();
+
     Logger::shutdown();
     Ok(())
 }
@@ -235,6 +238,37 @@ fn run_new_systems_demo() {
         assert_eq!(result, ModLoadResult::Success);
         loader.load_mod("core-mod");
         log::info!("ModLoader: mods={}, loaded={}", loader.mod_count(), loader.loaded_mod_count());
+    }
+}
+
+fn run_new_crates_demo() {
+    log::info!("── New Crates Demo ─────────────────────────────────────────");
+    // atlas-schema
+    {
+        use atlas_schema::{SchemaValidator, SchemaDefinition};
+        let mut validator = SchemaValidator::new();
+        let schema = SchemaDefinition { id: "test".into(), version: 1, inputs: vec![], outputs: vec![], nodes: vec![] };
+        let ok = validator.validate(&schema);
+        log::info!("SchemaValidator: valid={}", ok);
+    }
+    // atlas-abi
+    {
+        use atlas_abi::{AbiRegistry, AbiCapsule, AbiVersion, ProjectAbiTarget};
+        let mut registry = AbiRegistry::new();
+        let mut cap = AbiCapsule::new(AbiVersion::new(1, 0), "v1.0".into());
+        cap.set_complete(true);
+        registry.register_capsule(cap);
+        let target = ProjectAbiTarget { project_name: "demo".into(), target_abi: AbiVersion::new(1, 0), determinism_profile: "strict".into() };
+        let bound = registry.bind_project(&target);
+        log::info!("AbiRegistry: bound={}", bound);
+    }
+    // atlas-asset
+    {
+        use atlas_asset::{AssetRegistry, AssetMeta};
+        let mut reg = AssetRegistry::new();
+        let meta = AssetMeta::new("cube", "mesh", "meshes/cube.obj");
+        reg.register(meta);
+        log::info!("AssetRegistry: count={}", reg.count());
     }
 }
 

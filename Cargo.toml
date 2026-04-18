@@ -16,6 +16,9 @@ members = [
     "crates/atlas-sound",
     "crates/atlas-graphvm",
     "crates/atlas-net",
+    "crates/atlas-schema",
+    "crates/atlas-abi",
+    "crates/atlas-asset",
 ]
 resolver = "2"
 
@@ -43,6 +46,9 @@ atlas-ai         = { path = "crates/atlas-ai" }
 atlas-sound      = { path = "crates/atlas-sound" }
 atlas-graphvm    = { path = "crates/atlas-graphvm" }
 atlas-net        = { path = "crates/atlas-net" }
+atlas-schema     = { path = "crates/atlas-schema" }
+atlas-abi        = { path = "crates/atlas-abi" }
+atlas-asset      = { path = "crates/atlas-asset" }
 
 # Logging
 log              = "0.4"
