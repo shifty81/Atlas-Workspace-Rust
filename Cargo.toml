@@ -7,6 +7,18 @@ members = [
     "crates/atlas-renderer",
     "crates/atlas-world",
     "crates/atlas-workspace",
+    "crates/atlas-input",
+    "crates/atlas-physics",
+    "crates/atlas-sim",
+    "crates/atlas-script",
+    "crates/atlas-animation",
+    "crates/atlas-ai",
+    "crates/atlas-sound",
+    "crates/atlas-graphvm",
+    "crates/atlas-net",
+    "crates/atlas-schema",
+    "crates/atlas-abi",
+    "crates/atlas-asset",
 ]
 resolver = "2"
 
@@ -25,6 +37,18 @@ atlas-ecs        = { path = "crates/atlas-ecs" }
 atlas-pcg        = { path = "crates/atlas-pcg" }
 atlas-renderer   = { path = "crates/atlas-renderer" }
 atlas-world      = { path = "crates/atlas-world" }
+atlas-input      = { path = "crates/atlas-input" }
+atlas-physics    = { path = "crates/atlas-physics" }
+atlas-sim        = { path = "crates/atlas-sim" }
+atlas-script     = { path = "crates/atlas-script" }
+atlas-animation  = { path = "crates/atlas-animation" }
+atlas-ai         = { path = "crates/atlas-ai" }
+atlas-sound      = { path = "crates/atlas-sound" }
+atlas-graphvm    = { path = "crates/atlas-graphvm" }
+atlas-net        = { path = "crates/atlas-net" }
+atlas-schema     = { path = "crates/atlas-schema" }
+atlas-abi        = { path = "crates/atlas-abi" }
+atlas-asset      = { path = "crates/atlas-asset" }
 
 # Logging
 log              = "0.4"

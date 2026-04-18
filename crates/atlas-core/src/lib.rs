@@ -9,11 +9,13 @@
 //! - [`error`] — base error types
 
 pub mod error;
+pub mod event_bus;
 pub mod logger;
 pub mod string_id;
 pub mod version;
 
 pub use error::{AtlasError, AtlasResult};
+pub use event_bus::{Event, EventBus, SubscriptionId};
 pub use logger::Logger;
 pub use string_id::StringId;
 pub use version::VERSION;
