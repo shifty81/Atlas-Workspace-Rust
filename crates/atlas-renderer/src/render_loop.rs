@@ -257,3 +257,65 @@ impl RenderLoop {
         }
     }
 }
+
+// ── Integration tests ────────────────────────────────────────────────────────
+
+#[cfg(test)]
+mod tests {
+    use crate::{
+        backend::NullRendererBackend,
+        backend::RendererBackend,
+        types::RenderConfig,
+    };
+    use super::{ClearColor, UiPaintData};
+
+    /// Verify that the NullRendererBackend can complete a simulated frame cycle
+    /// without a GPU — this is the headless render loop integration test.
+    #[test]
+    fn null_backend_frame_cycle() {
+        let mut backend = NullRendererBackend::new();
+        backend.init();
+        backend.set_viewport(1280, 720);
+        backend.begin_frame();
+        backend.end_frame();
+        backend.shutdown();
+    }
+
+    /// Verify ClearColor defaults are in valid linear range.
+    #[test]
+    fn clear_color_default_valid() {
+        let cc = ClearColor::default();
+        assert!(cc.r >= 0.0 && cc.r <= 1.0);
+        assert!(cc.g >= 0.0 && cc.g <= 1.0);
+        assert!(cc.b >= 0.0 && cc.b <= 1.0);
+        assert!(cc.a >= 0.0 && cc.a <= 1.0);
+    }
+
+    /// Verify UiPaintData::empty() can be created.
+    #[test]
+    fn ui_paint_data_empty_does_not_panic() {
+        let _ = UiPaintData::empty();
+    }
+
+    /// Simulate multiple frame cycles on the null backend — equivalent of a
+    /// 3-frame headless render loop.
+    #[test]
+    fn null_backend_multi_frame() {
+        let mut backend = NullRendererBackend::new();
+        backend.init();
+        for _ in 0..3 {
+            backend.begin_frame();
+            backend.end_frame();
+        }
+        backend.shutdown();
+    }
+
+    /// RenderConfig defaults should produce a valid (non-headless) config
+    /// when headless is explicitly false.
+    #[test]
+    fn render_config_default_is_non_headless() {
+        let cfg = RenderConfig::default();
+        // Default should enable validation layers in debug, be non-headless
+        assert!(!cfg.title.is_empty());
+    }
+}

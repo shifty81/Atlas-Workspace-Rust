@@ -4,6 +4,10 @@
 
 Atlas Workspace is a **generic host environment**. Game projects such as NovaForge are developed inside it but do not define the workspace core.
 
+> **License note**: Atlas Workspace core crates (`atlas-*`) are dual-licensed **MIT OR Apache-2.0**.
+> The `novaforge-game` crate and any code ported from Nova-Forge/Veloren is licensed **GPL v3.0**.
+> See [`LICENSES/`](LICENSES/) and [`CREDITS.md`](CREDITS.md) for full attribution.
+
 ---
 
 ## Quick Start (Rust)
@@ -27,7 +31,7 @@ cargo run --bin atlas-game
 ## Workspace Layout
 
 ```
-Cargo.toml                    # Workspace manifest (22 crates)
+Cargo.toml                    # Workspace manifest (23 crates)
 crates/
   atlas-core/                 # ✅ Foundation types, logging, string IDs, versioning
   atlas-math/                 # ✅ Vec2/3/4, Mat4, Quat, AABB, Ray, Transform, Color
@@ -39,11 +43,11 @@ crates/
   atlas-world/                # ✅ Universe-scale generation (galaxies, star systems,
   |                           #      planets, asteroids, asset registry, world state)
   atlas-workspace/            # ✅ Binary entry-point (cargo run --bin atlas-workspace)
-  atlas-renderer/             # 🔄 Vulkan rendering backend (context/pipeline done,
-  |                           #      awaiting live surface)
-  atlas-editor/               # 🔄 egui editor app (panels, commands, game_project_adapter
-  |                           #      in progress)
-  atlas-game/                 # 🔄 Standalone game binary (game loop scaffolding in progress)
+  atlas-renderer/             # 🔄 Vulkan rendering backend (context/pipeline/surface done;
+  |                           #      TerrainMesh upload, headless integration test added)
+  atlas-editor/               # 🔄 egui editor app (panels, commands, ViewportHost,
+  |                           #      NotificationCenter, LayoutPersistence, PropertyGrid)
+  atlas-game/                 # 🔄 Standalone game binary (GameRunner, GameModule trait)
   atlas-input/                # 🔲 Input system (winit events, action bindings)
   atlas-physics/              # 🔲 Physics (AABB, rigid body, ray-cast)
   atlas-sim/                  # 🔲 Simulation (fixed-timestep loop, system scheduler)
@@ -55,16 +59,24 @@ crates/
   atlas-net/                  # 🔲 Networking (client/server, message framing)
   atlas-schema/               # 🔲 JSON schema types (property grid, validation)
   atlas-abi/                  # 🔲 Stable C ABI for plugin loading
-  atlas-asset/                # 🔲 Asset registry (UUID handles, load pipeline)
-  atlas-ui/                   # 🔲 egui widget extensions and panel framework
+  atlas-asset/                # 🔄 Asset registry (UUID handles, load pipeline,
+  |                           #      NOVAFORGE_ASSETS_DIR env-var support)
+  atlas-ui/                   # 🔄 egui widget extensions (ScrollList, TreeView, LogCapture)
+  novaforge-game/             # 🔄 NovaForge game module (GPL v3.0) — implements GameModule,
+                              #      NovaForgeAdapter for IGameProjectAdapter
 Scripts/
   build_rust.sh               # Primary Rust build script
   test_rust.sh                # Rust test runner
   check_rust.sh               # Rust check + clippy
   build_shaders.sh            # SPIR-V shader compiler
+  fetch_novaforge_assets.sh   # Download Nova-Forge LFS assets → novaforge-assets/
   build_cpp_legacy.sh         # ⚠ Legacy C++ CMake build (reference only)
-NovaForge/                    # Hosted game project — C++ reference implementation
+novaforge-assets/             # ⚠ LOCAL ONLY — not committed. Run fetch_novaforge_assets.sh
+  README.md                   #   See novaforge-assets/README.md for instructions
+NovaForge/                    # C++ reference implementation (blueprint for Rust port)
 Source/                       # C++ workspace source — reference/archive only
+CREDITS.md                    # Full upstream attribution (Veloren, Nova-Forge, contributors)
+LICENSES/                     # MIT, Apache-2.0, GPL-3.0 license texts
 Docs/                         # Canon docs, roadmap, inventory
 ```
 
@@ -79,10 +91,13 @@ Docs/                         # Canon docs, roadmap, inventory
 | `atlas-ecs` | `EntityManager`, `ComponentStore`, `SceneGraph`, `SystemRegistry`, `DeltaEditStore` | ✅ Implemented |
 | `atlas-pcg` | `DeterministicRng`, `PcgManager`, 16 `PcgDomain`s, `ConstraintSolver`, `MeshGraph`, `MaterialGraph`, `TerrainGenerator`, `PlanetaryBase`, `BuildQueue` | ✅ Implemented |
 | `atlas-world` | `Universe`, `Galaxy`, `StarSystem`, `Planet`, `AsteroidBelt`, `AssetRegistry`, `WorldState` | ✅ Implemented |
-| `atlas-workspace` | Binary entry-point; boots renderer and runs PCG demo | ✅ Implemented |
-| `atlas-renderer` | Vulkan context, swapchain, shader SPIR-V loading, graphics pipeline builder, camera/viewport, GPU buffer + texture descriptors | 🔄 In Progress |
-| `atlas-editor` | egui editor app, 5 panels, CommandStack, SelectionState, game_project_adapter | 🔄 In Progress |
+| `atlas-workspace` | Binary entry-point; boots editor and runs PCG demo | ✅ Implemented |
+| `atlas-renderer` | Vulkan context+surface, swapchain, GBuffer, PBR material, shadow maps, post-process, instanced renderer, spatial hash, `TerrainMesh` | 🔄 In Progress |
+| `atlas-editor` | egui editor app, 5 panels, CommandStack, SelectionState, ViewportHost, NotificationCenter, LayoutPersistence, PropertyGrid | 🔄 In Progress |
 | `atlas-game` | Standalone game binary, `GameRunner`, `GameModule` trait | 🔄 In Progress |
+| `atlas-asset` | Asset handle + UUID registry, load-from-disk pipeline, `NOVAFORGE_ASSETS_DIR` support | 🔄 In Progress |
+| `atlas-ui` | egui widget extensions: `ScrollList`, `TreeView`, `UiLogCapture` | 🔄 In Progress |
+| `novaforge-game` | NovaForge game module (**GPL v3.0**) — `NovaForgeGameModule`, `NovaForgeAdapter` | 🔄 In Progress |
 | `atlas-input` | winit event → InputState, key/button/axis abstraction, action bindings | 🔲 Stub |
 | `atlas-physics` | AABB collision, `RigidBody` + ECS integration, ray-cast query API | 🔲 Stub |
 | `atlas-sim` | Fixed-timestep game loop, system scheduler, deterministic frame counter | 🔲 Stub |
@@ -94,8 +109,6 @@ Docs/                         # Canon docs, roadmap, inventory
 | `atlas-net` | Client/server, message framing | 🔲 Stub |
 | `atlas-schema` | JSON schema definition types, property grid, validation | 🔲 Stub |
 | `atlas-abi` | Stable `extern "C"` ABI for plugin loading, plugin descriptor | 🔲 Stub |
-| `atlas-asset` | Asset handle + UUID registry, load-from-disk pipeline, hot-reload watcher | 🔲 Stub |
-| `atlas-ui` | egui widget extensions, panel framework | 🔲 Stub |
 
 Legend: ✅ Implemented | 🔄 In Progress | 🔲 Stub
 
@@ -161,14 +174,17 @@ The boundary:
 ## Current Status
 
 > Reset Date: **2026-04-18** | Direction: **Rust + Vulkan** (primary). C++ in `Source/` is reference only.
-> Active Phase: **Phase 0 — Rust Foundation Completion**
+> Active Phase: **Phase 0 — Rust Foundation Completion (M15)**
 
-- **439 passing unit tests** across the Rust workspace
-- Vulkan context and pipeline implemented; awaiting live Vulkan surface (requires display server)
-- `atlas-renderer`: shader IR, spatial hash, PBR material, render config — done
-- `atlas-editor`: CommandStack, SelectionState, entity commands, 5 panels — in progress
+- **560 passing unit tests** across the Rust workspace (M14: +ScrollList, TreeView, ViewportHost, NotificationCenter)
+- Vulkan context, surface creation, and full acquire→present pipeline implemented
+- `atlas-renderer`: GBuffer, PBR material, shadow maps, post-process, instanced renderer, spatial hash, `TerrainMesh` — done
+- `atlas-editor`: CommandStack, SelectionState, entity commands, 5 panels, ViewportHost, NotificationCenter, LayoutPersistence, PropertyGrid — in progress
 - `atlas-game`: GameRunner, NullGameModule — scaffolded
-- **13 stub crates** awaiting implementation (Phase 0 milestones 0.2–0.8)
+- `atlas-ui`: ScrollList (virtual scroll), TreeView, UiLogCapture — implemented
+- `atlas-asset`: AssetRegistry, AssetMeta, AssetGraph + NOVAFORGE_ASSETS_DIR load path — in progress
+- `novaforge-game`: NovaForgeGameModule + NovaForgeAdapter stub — in progress (**GPL v3.0**)
+- **11 stub crates** awaiting implementation (Phase 0 milestones 0.2–0.8)
 
 See [Docs/Canon/00_PROJECT_STATUS.md](Docs/Canon/00_PROJECT_STATUS.md) for full per-crate detail.
 
@@ -182,6 +198,7 @@ See [Docs/Canon/00_PROJECT_STATUS.md](Docs/Canon/00_PROJECT_STATUS.md) for full 
 | `Scripts/test_rust.sh` | Rust test runner — per-crate pass/fail with log output |
 | `Scripts/check_rust.sh` | Fast `cargo check` + `cargo clippy` |
 | `Scripts/build_shaders.sh` | SPIR-V shader compiler for `atlas-renderer` |
+| `Scripts/fetch_novaforge_assets.sh` | Download Nova-Forge LFS assets → `novaforge-assets/` |
 | `Scripts/build_cpp_legacy.sh` | ⚠ Legacy C++ CMake build — **reference only** |
 
 ```bash
@@ -190,12 +207,14 @@ make build          # cargo build --workspace
 make test           # cargo test --workspace
 make clippy         # cargo clippy --workspace
 make shaders        # compile SPIR-V shaders
+make fetch-assets   # fetch Nova-Forge assets into novaforge-assets/
 
 # Or use scripts directly
 bash Scripts/build_rust.sh               # debug build
 bash Scripts/build_rust.sh release       # release build
 bash Scripts/build_rust.sh --test        # build + test
 bash Scripts/build_rust.sh --clippy      # build + clippy
+bash Scripts/fetch_novaforge_assets.sh   # fetch game assets locally
 ```
 
 ---
@@ -216,6 +235,39 @@ bash Scripts/build_cpp_legacy.sh Debug
 
 ---
 
+## NovaForge Game Project
+
+[Nova-Forge](https://github.com/shifty81/Nova-Forge) is a Rust fork of [Veloren](https://veloren.net) — an open-world voxel RPG. It is being adapted and integrated into this workspace as the `novaforge-game` crate.
+
+### Architecture
+
+```
+crates/novaforge-game/          # GPL v3.0 — implements atlas-game::GameModule
+  src/
+    lib.rs                      # Public API
+    module.rs                   # NovaForgeGameModule (game loop integration)
+    adapter.rs                  # NovaForgeAdapter (IGameProjectAdapter for editor)
+    systems/                    # Game systems (ported from Nova-Forge / Veloren)
+```
+
+### Game Assets
+
+Nova-Forge assets (textures, voxel models, audio, terrain maps) are **not committed** to this repository. They are stored locally in `novaforge-assets/` after running:
+
+```bash
+bash Scripts/fetch_novaforge_assets.sh
+```
+
+Set `NOVAFORGE_ASSETS_DIR=/path/to/novaforge-assets` to override the default search path.
+
+### Licensing
+
+`novaforge-game` inherits the **GNU General Public License v3.0** from Veloren (via Nova-Forge). Atlas Workspace core crates (`atlas-*`) remain **MIT OR Apache-2.0** and must never depend on `novaforge-game`. All communication between the editor and game logic flows through the `IGameProjectAdapter` trait boundary.
+
+See [`CREDITS.md`](CREDITS.md) for full upstream attribution.
+
+---
+
 ## Documentation Index
 
 ### Canon
@@ -225,9 +277,27 @@ bash Scripts/build_cpp_legacy.sh Debug
 - [Module Boundaries](Docs/Canon/11_MODULE_BOUNDARIES.md)
 
 ### Roadmap
-- [Master Roadmap (Rust Phase 0–6)](Docs/Roadmap/00_MASTER_ROADMAP.md)
+- [Master Roadmap (Rust Phase 0–7)](Docs/Roadmap/00_MASTER_ROADMAP.md)
 - [Legacy C++ Roadmap (Phases A–I)](Docs/Roadmap/00_MASTER_ROADMAP_LEGACY.md)
 
 ### Inventory
 - [Editor Tool Inventory](Docs/Inventory/EDITOR_TOOL_INVENTORY.md)
 - [Panel and Service Matrix](Docs/Inventory/PANEL_AND_SERVICE_MATRIX.md)
+
+---
+
+## Legal & Credits
+
+See [`CREDITS.md`](CREDITS.md) for full upstream attribution, contributor lists, and third-party acknowledgements.
+
+### License summary
+
+| Component | License |
+|-----------|---------|
+| Atlas Workspace core (`atlas-*` crates) | MIT OR Apache-2.0 |
+| `novaforge-game` crate (Veloren/Nova-Forge derived) | GNU General Public License v3.0 |
+
+License texts are in [`LICENSES/`](LICENSES/):
+- [`LICENSES/MIT`](LICENSES/MIT)
+- [`LICENSES/Apache-2.0`](LICENSES/Apache-2.0)
+- [`LICENSES/GPL-3.0`](LICENSES/GPL-3.0)

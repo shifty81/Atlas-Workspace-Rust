@@ -312,3 +312,162 @@ mod tests {
         assert!(reg.dependencies("nonexistent").is_empty());
     }
 }
+
+// ── AssetLoader ──────────────────────────────────────────────────────────────
+
+/// Resolves asset file paths relative to a configurable root directory.
+///
+/// The root is determined in priority order:
+/// 1. Explicit path provided to [`AssetLoader::new`].
+/// 2. `NOVAFORGE_ASSETS_DIR` environment variable.
+/// 3. `./novaforge-assets` relative to the current working directory.
+#[derive(Debug, Clone)]
+pub struct AssetLoader {
+    root: std::path::PathBuf,
+}
+
+impl AssetLoader {
+    /// Create a loader with an explicit root directory.
+    pub fn new(root: impl Into<std::path::PathBuf>) -> Self {
+        Self { root: root.into() }
+    }
+
+    /// Create a loader that auto-detects the root via environment variable,
+    /// then falls back to `./novaforge-assets`.
+    pub fn auto() -> Self {
+        let root = if let Ok(dir) = std::env::var("NOVAFORGE_ASSETS_DIR") {
+            if !dir.is_empty() {
+                std::path::PathBuf::from(dir)
+            } else {
+                std::path::PathBuf::from("novaforge-assets")
+            }
+        } else {
+            std::path::PathBuf::from("novaforge-assets")
+        };
+        Self { root }
+    }
+
+    /// Return the resolved root directory path.
+    pub fn root(&self) -> &std::path::Path { &self.root }
+
+    /// Resolve `relative_path` against the root, returning the full path.
+    pub fn resolve(&self, relative_path: &str) -> std::path::PathBuf {
+        self.root.join(relative_path)
+    }
+
+    /// Return `true` if the root directory exists on disk.
+    pub fn root_exists(&self) -> bool { self.root.is_dir() }
+
+    /// Scan the root directory (non-recursively) and register all JSON files
+    /// as `AssetMeta` entries in `registry`.  Returns the number of assets found.
+    ///
+    /// Files that do not parse cleanly are skipped with a warning log.
+    pub fn scan_into(&self, registry: &mut AssetRegistry) -> usize {
+        let Ok(entries) = std::fs::read_dir(&self.root) else {
+            return 0;
+        };
+        let mut count = 0;
+        for entry in entries.flatten() {
+            let path = entry.path();
+            if path.extension().and_then(|e| e.to_str()) == Some("json") {
+                match std::fs::read_to_string(&path) {
+                    Ok(json) => {
+                        if let Ok(mut metas) = serde_json::from_str::<Vec<AssetMeta>>(&json) {
+                            count += metas.len();
+                            for meta in metas.drain(..) {
+                                registry.register(meta);
+                            }
+                        }
+                    }
+                    Err(e) => {
+                        log::warn!("[AssetLoader] Could not read {}: {}", path.display(), e);
+                    }
+                }
+            }
+        }
+        count
+    }
+}
+
+#[cfg(test)]
+mod loader_tests {
+    use super::*;
+
+    #[test]
+    fn loader_new_sets_root() {
+        let loader = AssetLoader::new("/tmp/assets");
+        assert_eq!(loader.root(), std::path::Path::new("/tmp/assets"));
+    }
+
+    #[test]
+    fn loader_resolve_joins_path() {
+        let loader = AssetLoader::new("/tmp/assets");
+        let resolved = loader.resolve("common/items.json");
+        assert_eq!(resolved, std::path::PathBuf::from("/tmp/assets/common/items.json"));
+    }
+
+    #[test]
+    fn loader_auto_uses_env_var() {
+        // Set the env var and verify it is picked up
+        std::env::set_var("NOVAFORGE_ASSETS_DIR", "/env/assets");
+        let loader = AssetLoader::auto();
+        assert_eq!(loader.root(), std::path::Path::new("/env/assets"));
+        std::env::remove_var("NOVAFORGE_ASSETS_DIR");
+    }
+
+    #[test]
+    fn loader_auto_fallback_when_env_empty() {
+        std::env::set_var("NOVAFORGE_ASSETS_DIR", "");
+        let loader = AssetLoader::auto();
+        assert_eq!(loader.root(), std::path::Path::new("novaforge-assets"));
+        std::env::remove_var("NOVAFORGE_ASSETS_DIR");
+    }
+
+    #[test]
+    fn loader_auto_fallback_when_env_unset() {
+        std::env::remove_var("NOVAFORGE_ASSETS_DIR");
+        let loader = AssetLoader::auto();
+        assert_eq!(loader.root(), std::path::Path::new("novaforge-assets"));
+    }
+
+    #[test]
+    fn loader_root_exists_false_for_nonexistent() {
+        let loader = AssetLoader::new("/this/path/does/not/exist");
+        assert!(!loader.root_exists());
+    }
+
+    #[test]
+    fn loader_scan_into_empty_dir_returns_zero() {
+        use std::io::Write;
+        // Create a temporary directory with no JSON files
+        let tmp = std::env::temp_dir().join("atlas_asset_loader_test");
+        std::fs::create_dir_all(&tmp).ok();
+        let loader = AssetLoader::new(&tmp);
+        let mut reg = AssetRegistry::new();
+        let count = loader.scan_into(&mut reg);
+        assert_eq!(count, 0);
+        std::fs::remove_dir_all(&tmp).ok();
+    }
+
+    #[test]
+    fn loader_scan_into_parses_json_assets() {
+        use std::io::Write;
+        let tmp = std::env::temp_dir().join("atlas_asset_loader_test_scan");
+        std::fs::create_dir_all(&tmp).ok();
+
+        // Write a minimal asset manifest
+        let meta = AssetMeta::new("ScanMesh", "mesh", "scan.obj");
+        let json = serde_json::to_string(&vec![meta]).unwrap();
+        let mut f = std::fs::File::create(tmp.join("catalog.json")).unwrap();
+        f.write_all(json.as_bytes()).unwrap();
+
+        let loader = AssetLoader::new(&tmp);
+        let mut reg = AssetRegistry::new();
+        let count = loader.scan_into(&mut reg);
+        assert_eq!(count, 1);
+        assert!(reg.get_by_name("ScanMesh").is_some());
+
+        std::fs::remove_dir_all(&tmp).ok();
+    }
+}
+

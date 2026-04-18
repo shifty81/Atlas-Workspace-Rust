@@ -1,0 +1,20 @@
+[package]
+name        = "novaforge-game"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+# NovaForge derives from Veloren (Nova-Forge fork) which is GPL v3.0.
+# This crate MUST remain GPL v3.0. See LICENSES/GPL-3.0.
+license     = "GPL-3.0-only"
+description = "NovaForge game module — Rust port of Nova-Forge (Veloren fork). GPL v3.0."
+
+[dependencies]
+atlas-core.workspace   = true
+atlas-ecs.workspace    = true
+atlas-game             = { path = "../atlas-game" }
+atlas-asset.workspace  = true
+log.workspace          = true
+serde.workspace        = true
+serde_json.workspace   = true
+
+[dev-dependencies]
