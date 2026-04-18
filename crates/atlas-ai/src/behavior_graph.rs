@@ -257,3 +257,122 @@ impl BehaviorGraph {
         true
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    struct Constant(f32);
+    impl BehaviorNode for Constant {
+        fn name(&self) -> &str { "Constant" }
+        fn category(&self) -> &str { "test" }
+        fn inputs(&self) -> Vec<BehaviorPort> { vec![] }
+        fn outputs(&self) -> Vec<BehaviorPort> {
+            vec![BehaviorPort { name: "value".into(), pin_type: BehaviorPinType::Float }]
+        }
+        fn evaluate(&mut self, _ctx: &AIContext, _: &[BehaviorValue], outputs: &mut Vec<BehaviorValue>) {
+            outputs[0] = BehaviorValue { pin_type: BehaviorPinType::Float, data: vec![self.0] };
+        }
+    }
+
+    struct Passthrough;
+    impl BehaviorNode for Passthrough {
+        fn name(&self) -> &str { "Passthrough" }
+        fn category(&self) -> &str { "test" }
+        fn inputs(&self) -> Vec<BehaviorPort> {
+            vec![BehaviorPort { name: "in".into(), pin_type: BehaviorPinType::Float }]
+        }
+        fn outputs(&self) -> Vec<BehaviorPort> {
+            vec![BehaviorPort { name: "out".into(), pin_type: BehaviorPinType::Float }]
+        }
+        fn evaluate(&mut self, _ctx: &AIContext, inputs: &[BehaviorValue], outputs: &mut Vec<BehaviorValue>) {
+            if let Some(v) = inputs.first() { outputs[0] = v.clone(); }
+        }
+    }
+
+    fn ctx() -> AIContext { AIContext::default() }
+
+    #[test]
+    fn single_node_compile_execute() {
+        let mut g = BehaviorGraph::new();
+        let id = g.add_node(Box::new(Constant(9.0)));
+        assert!(g.compile());
+        assert!(g.execute(&ctx()));
+        let out = g.get_output(id, 0).unwrap();
+        assert_eq!(out.data, vec![9.0]);
+    }
+
+    #[test]
+    fn chained_passthrough() {
+        let mut g = BehaviorGraph::new();
+        let src = g.add_node(Box::new(Constant(5.5)));
+        let pass = g.add_node(Box::new(Passthrough));
+        g.add_edge(BehaviorEdge { from_node: src, from_port: 0, to_node: pass, to_port: 0 });
+        assert!(g.compile());
+        g.execute(&ctx());
+        let out = g.get_output(pass, 0).unwrap();
+        assert_eq!(out.data, vec![5.5]);
+    }
+
+    #[test]
+    fn cycle_detection() {
+        let mut g = BehaviorGraph::new();
+        let a = g.add_node(Box::new(Passthrough));
+        let b = g.add_node(Box::new(Passthrough));
+        g.add_edge(BehaviorEdge { from_node: a, from_port: 0, to_node: b, to_port: 0 });
+        g.add_edge(BehaviorEdge { from_node: b, from_port: 0, to_node: a, to_port: 0 });
+        assert!(!g.compile());
+    }
+
+    #[test]
+    fn remove_node_clears_compile() {
+        let mut g = BehaviorGraph::new();
+        let id = g.add_node(Box::new(Constant(1.0)));
+        g.compile();
+        assert!(g.is_compiled());
+        g.remove_node(id);
+        assert!(!g.is_compiled());
+        assert_eq!(g.node_count(), 0);
+    }
+
+    #[test]
+    fn execute_without_compile_returns_false() {
+        let mut g = BehaviorGraph::new();
+        g.add_node(Box::new(Constant(1.0)));
+        assert!(!g.execute(&ctx()));
+    }
+
+    #[test]
+    fn serialize_deserialize_roundtrip() {
+        let mut g = BehaviorGraph::new();
+        let id = g.add_node(Box::new(Constant(3.14)));
+        g.compile();
+        g.execute(&ctx());
+        let bytes = g.serialize_state();
+        assert!(!bytes.is_empty());
+
+        let mut g2 = BehaviorGraph::new();
+        g2.add_node(Box::new(Constant(0.0)));
+        assert!(g2.deserialize_state(&bytes));
+        let out = g2.get_output(id, 0).unwrap();
+        assert!((out.data[0] - 3.14_f32).abs() < 1e-5);
+    }
+
+    #[test]
+    fn deserialize_empty_data_fails() {
+        let mut g = BehaviorGraph::new();
+        assert!(!g.deserialize_state(&[]));
+    }
+
+    #[test]
+    fn remove_edge_invalidates_compile() {
+        let mut g = BehaviorGraph::new();
+        let src = g.add_node(Box::new(Constant(1.0)));
+        let pass = g.add_node(Box::new(Passthrough));
+        let edge = BehaviorEdge { from_node: src, from_port: 0, to_node: pass, to_port: 0 };
+        g.add_edge(edge.clone());
+        g.compile();
+        g.remove_edge(&edge);
+        assert!(!g.is_compiled());
+    }
+}

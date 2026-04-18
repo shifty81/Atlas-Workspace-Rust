@@ -106,3 +106,112 @@ impl EventBus {
         self.next_id = 1;
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::sync::{Arc, Mutex};
+
+    fn make_event(kind: &str) -> Event {
+        Event::new(kind)
+    }
+
+    #[test]
+    fn subscribe_and_publish() {
+        let mut bus = EventBus::new();
+        let received: Arc<Mutex<Vec<String>>> = Arc::new(Mutex::new(Vec::new()));
+        let r = received.clone();
+        bus.subscribe("damage", move |e| {
+            r.lock().unwrap().push(e.event_type.clone());
+        });
+        bus.publish(make_event("damage"));
+        assert_eq!(received.lock().unwrap().as_slice(), &["damage"]);
+    }
+
+    #[test]
+    fn wildcard_subscription_receives_all() {
+        let mut bus = EventBus::new();
+        let count = Arc::new(Mutex::new(0u32));
+        let c = count.clone();
+        bus.subscribe("*", move |_| { *c.lock().unwrap() += 1; });
+        bus.publish(make_event("foo"));
+        bus.publish(make_event("bar"));
+        assert_eq!(*count.lock().unwrap(), 2);
+    }
+
+    #[test]
+    fn unsubscribe_stops_delivery() {
+        let mut bus = EventBus::new();
+        let count = Arc::new(Mutex::new(0u32));
+        let c = count.clone();
+        let id = bus.subscribe("evt", move |_| { *c.lock().unwrap() += 1; });
+        bus.publish(make_event("evt")); // delivered
+        bus.unsubscribe(id);
+        bus.publish(make_event("evt")); // not delivered
+        assert_eq!(*count.lock().unwrap(), 1);
+    }
+
+    #[test]
+    fn enqueue_and_flush() {
+        let mut bus = EventBus::new();
+        let count = Arc::new(Mutex::new(0u32));
+        let c = count.clone();
+        bus.subscribe("e", move |_| { *c.lock().unwrap() += 1; });
+        bus.enqueue(make_event("e"));
+        bus.enqueue(make_event("e"));
+        assert_eq!(bus.queue_size(), 2);
+        assert_eq!(*count.lock().unwrap(), 0); // not yet dispatched
+        bus.flush();
+        assert_eq!(bus.queue_size(), 0);
+        assert_eq!(*count.lock().unwrap(), 2);
+    }
+
+    #[test]
+    fn subscription_count() {
+        let mut bus = EventBus::new();
+        assert_eq!(bus.subscription_count(), 0);
+        let id1 = bus.subscribe("a", |_| {});
+        let _id2 = bus.subscribe("b", |_| {});
+        assert_eq!(bus.subscription_count(), 2);
+        bus.unsubscribe(id1);
+        assert_eq!(bus.subscription_count(), 1);
+    }
+
+    #[test]
+    fn total_published_tracks_count() {
+        let mut bus = EventBus::new();
+        bus.publish(make_event("x"));
+        bus.publish(make_event("y"));
+        assert_eq!(bus.total_published(), 2);
+    }
+
+    #[test]
+    fn reset_clears_all() {
+        let mut bus = EventBus::new();
+        bus.subscribe("a", |_| {});
+        bus.enqueue(make_event("a"));
+        bus.reset();
+        assert_eq!(bus.subscription_count(), 0);
+        assert_eq!(bus.queue_size(), 0);
+        assert_eq!(bus.total_published(), 0);
+    }
+
+    #[test]
+    fn event_fields_propagated() {
+        let mut bus = EventBus::new();
+        let ev = Arc::new(Mutex::new(None::<Event>));
+        let ev2 = ev.clone();
+        bus.subscribe("hit", move |e| { *ev2.lock().unwrap() = Some(e.clone()); });
+        let mut e = make_event("hit");
+        e.int_param = 99;
+        e.float_param = 3.14;
+        e.str_param = "headshot".into();
+        e.sender_id = 7;
+        bus.publish(e);
+        let captured = ev.lock().unwrap().clone().unwrap();
+        assert_eq!(captured.int_param, 99);
+        assert!((captured.float_param - 3.14).abs() < 1e-10);
+        assert_eq!(captured.str_param, "headshot");
+        assert_eq!(captured.sender_id, 7);
+    }
+}

@@ -89,3 +89,77 @@ impl WorldStateSerializer {
         SerializerResult::Success
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn v(major: u32, minor: u32) -> SchemaVersion { SchemaVersion { major, minor } }
+
+    #[test]
+    fn serialize_then_validate_succeeds() {
+        let s = WorldStateSerializer::new();
+        let data = b"hello world";
+        let state = s.serialize(data);
+        assert_eq!(state.version, v(1, 0));
+        assert_eq!(s.validate(&state), SerializerResult::Success);
+    }
+
+    #[test]
+    fn hash_mismatch_detected() {
+        let s = WorldStateSerializer::new();
+        let mut state = s.serialize(b"original");
+        state.hash ^= 1; // corrupt the hash
+        assert_eq!(s.validate(&state), SerializerResult::HashMismatch);
+    }
+
+    #[test]
+    fn version_too_old() {
+        let mut s = WorldStateSerializer::new();
+        s.set_minimum_version(v(2, 0));
+        let mut state = s.serialize(b"data");
+        state.version = v(1, 0);
+        assert_eq!(s.validate(&state), SerializerResult::VersionTooOld);
+    }
+
+    #[test]
+    fn version_too_new() {
+        let s = WorldStateSerializer::new();
+        let mut state = s.serialize(b"data");
+        state.version = v(99, 0);
+        assert_eq!(s.validate(&state), SerializerResult::VersionTooNew);
+    }
+
+    #[test]
+    fn deserialize_calls_validate() {
+        let s = WorldStateSerializer::new();
+        let mut state = s.serialize(b"test");
+        assert_eq!(s.deserialize(&mut state), SerializerResult::Success);
+    }
+
+    #[test]
+    fn can_migrate_within_range() {
+        let mut s = WorldStateSerializer::new();
+        s.set_current_version(v(2, 0));
+        s.set_minimum_version(v(1, 0));
+        assert!(s.can_migrate(v(1, 0)));
+        assert!(s.can_migrate(v(2, 0)));
+        assert!(!s.can_migrate(v(0, 9)));
+        assert!(!s.can_migrate(v(3, 0)));
+    }
+
+    #[test]
+    fn schema_version_ordering() {
+        assert!(v(1, 0) < v(2, 0));
+        assert!(v(1, 1) < v(1, 2));
+        assert!(v(1, 0) == v(1, 0));
+    }
+
+    #[test]
+    fn serialize_different_data_gives_different_hashes() {
+        let s = WorldStateSerializer::new();
+        let a = s.serialize(b"aaa");
+        let b = s.serialize(b"bbb");
+        assert_ne!(a.hash, b.hash);
+    }
+}

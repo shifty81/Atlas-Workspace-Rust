@@ -55,3 +55,82 @@ impl StateHasher {
         h
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn hash_advances_with_data() {
+        let mut h = StateHasher::new();
+        h.reset(42);
+        h.advance_tick(1, b"state", 5, b"input", 5);
+        assert_eq!(h.current_tick(), 1);
+        assert!(!h.history().is_empty());
+    }
+
+    #[test]
+    fn same_data_gives_same_hash() {
+        let mut h1 = StateHasher::new();
+        let mut h2 = StateHasher::new();
+        h1.reset(0);
+        h2.reset(0);
+        h1.advance_tick(1, b"state", 5, b"input", 5);
+        h2.advance_tick(1, b"state", 5, b"input", 5);
+        assert_eq!(h1.current_hash(), h2.current_hash());
+    }
+
+    #[test]
+    fn different_data_gives_different_hash() {
+        let mut h1 = StateHasher::new();
+        let mut h2 = StateHasher::new();
+        h1.reset(0);
+        h2.reset(0);
+        h1.advance_tick(1, b"AAAA", 4, b"", 0);
+        h2.advance_tick(1, b"BBBB", 4, b"", 0);
+        assert_ne!(h1.current_hash(), h2.current_hash());
+    }
+
+    #[test]
+    fn divergence_detected() {
+        let mut h1 = StateHasher::new();
+        let mut h2 = StateHasher::new();
+        h1.reset(0);
+        h2.reset(0);
+        // Tick 1: same
+        h1.advance_tick(1, b"same", 4, b"", 0);
+        h2.advance_tick(1, b"same", 4, b"", 0);
+        // Tick 2: diverge
+        h1.advance_tick(2, b"aaa", 3, b"", 0);
+        h2.advance_tick(2, b"bbb", 3, b"", 0);
+        assert_eq!(h1.find_divergence(&h2), 2);
+    }
+
+    #[test]
+    fn no_divergence_returns_minus_one() {
+        let mut h1 = StateHasher::new();
+        let mut h2 = StateHasher::new();
+        h1.reset(7);
+        h2.reset(7);
+        h1.advance_tick(1, b"xyz", 3, b"", 0);
+        h2.advance_tick(1, b"xyz", 3, b"", 0);
+        assert_eq!(h1.find_divergence(&h2), -1);
+    }
+
+    #[test]
+    fn reset_clears_history() {
+        let mut h = StateHasher::new();
+        h.reset(0);
+        h.advance_tick(1, b"x", 1, b"", 0);
+        assert!(!h.history().is_empty());
+        h.reset(0);
+        assert!(h.history().is_empty());
+    }
+
+    #[test]
+    fn hash_combine_is_deterministic() {
+        let a = StateHasher::hash_combine(0, b"atlas");
+        let b = StateHasher::hash_combine(0, b"atlas");
+        assert_eq!(a, b);
+    }
+}
