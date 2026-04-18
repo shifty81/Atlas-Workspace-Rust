@@ -23,6 +23,15 @@ SHADER_SRC="$ROOT_DIR/crates/atlas-renderer/shaders"
 SHADER_OUT="$ROOT_DIR/target/shaders"
 LOG_DIR="$ROOT_DIR/Logs"
 LOG_FILE="$LOG_DIR/shader_build.log"
+STRICT=false
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --strict) STRICT=true ;;
+        *) echo "Unknown option: $1"; exit 1 ;;
+    esac
+    shift
+done
 
 mkdir -p "$SHADER_SRC"
 mkdir -p "$SHADER_OUT"
@@ -53,8 +62,12 @@ if ! command -v glslc &>/dev/null; then
     echo "  Alternatively, install the full Vulkan SDK:"
     echo "    https://vulkan.lunarg.com/sdk/home"
     echo ""
-    echo -e "${YELLOW}  Shader compilation skipped.${RESET}"
     echo "glslc not found — skipping" >> "$LOG_FILE"
+    if $STRICT; then
+        echo -e "${RED}${CROSS}  Strict mode: glslc is required. Aborting.${RESET}"
+        exit 1
+    fi
+    echo -e "${YELLOW}  Shader compilation skipped (use --strict to require glslc).${RESET}"
     exit 0
 fi
 
