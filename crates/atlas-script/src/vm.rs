@@ -415,3 +415,216 @@ impl ScriptVM {
         Ok(self.stack.pop().unwrap_or(ScriptValue::None))
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn make_script(name: &str, code: Vec<Instruction>, constants: Vec<ScriptValue>) -> CompiledScript {
+        let mut s = CompiledScript::new(name);
+        s.code = code;
+        s.constants = constants;
+        s
+    }
+
+    #[test]
+    fn push_int_halt() {
+        let mut vm = ScriptVM::new();
+        let script = make_script("test", vec![
+            Instruction::new(Opcode::PushInt, 0),
+            Instruction::new(Opcode::Halt, 0),
+        ], vec![ScriptValue::Int(42)]);
+        let result = vm.execute(&script).unwrap();
+        assert_eq!(result, ScriptValue::Int(42));
+    }
+
+    #[test]
+    fn arithmetic_int() {
+        let mut vm = ScriptVM::new();
+        // 10 + 3 = 13
+        let script = make_script("arith", vec![
+            Instruction::new(Opcode::PushInt, 0),   // 10
+            Instruction::new(Opcode::PushInt, 1),   // 3
+            Instruction::new(Opcode::Add, 0),
+            Instruction::new(Opcode::Halt, 0),
+        ], vec![ScriptValue::Int(10), ScriptValue::Int(3)]);
+        assert_eq!(vm.execute(&script).unwrap(), ScriptValue::Int(13));
+    }
+
+    #[test]
+    fn arithmetic_sub_mul_div() {
+        let mut vm = ScriptVM::new();
+        // 20 - 5 = 15
+        let script = make_script("sub", vec![
+            Instruction::new(Opcode::PushInt, 0),
+            Instruction::new(Opcode::PushInt, 1),
+            Instruction::new(Opcode::Sub, 0),
+            Instruction::new(Opcode::Halt, 0),
+        ], vec![ScriptValue::Int(20), ScriptValue::Int(5)]);
+        assert_eq!(vm.execute(&script).unwrap(), ScriptValue::Int(15));
+
+        vm.reset();
+        // 4 * 3 = 12
+        let script = make_script("mul", vec![
+            Instruction::new(Opcode::PushInt, 0),
+            Instruction::new(Opcode::PushInt, 1),
+            Instruction::new(Opcode::Mul, 0),
+            Instruction::new(Opcode::Halt, 0),
+        ], vec![ScriptValue::Int(4), ScriptValue::Int(3)]);
+        assert_eq!(vm.execute(&script).unwrap(), ScriptValue::Int(12));
+
+        vm.reset();
+        // 10 / 2 = 5
+        let script = make_script("div", vec![
+            Instruction::new(Opcode::PushInt, 0),
+            Instruction::new(Opcode::PushInt, 1),
+            Instruction::new(Opcode::Div, 0),
+            Instruction::new(Opcode::Halt, 0),
+        ], vec![ScriptValue::Int(10), ScriptValue::Int(2)]);
+        assert_eq!(vm.execute(&script).unwrap(), ScriptValue::Int(5));
+    }
+
+    #[test]
+    fn division_by_zero_error() {
+        let mut vm = ScriptVM::new();
+        let script = make_script("divzero", vec![
+            Instruction::new(Opcode::PushInt, 0),
+            Instruction::new(Opcode::PushInt, 1),
+            Instruction::new(Opcode::Div, 0),
+            Instruction::new(Opcode::Halt, 0),
+        ], vec![ScriptValue::Int(5), ScriptValue::Int(0)]);
+        assert!(matches!(vm.execute(&script), Err(ScriptVmError::DivisionByZero)));
+    }
+
+    #[test]
+    fn comparison_and_bool() {
+        let mut vm = ScriptVM::new();
+        // 3 < 5 → true
+        let script = make_script("lt", vec![
+            Instruction::new(Opcode::PushInt, 0),
+            Instruction::new(Opcode::PushInt, 1),
+            Instruction::new(Opcode::Lt, 0),
+            Instruction::new(Opcode::Halt, 0),
+        ], vec![ScriptValue::Int(3), ScriptValue::Int(5)]);
+        assert_eq!(vm.execute(&script).unwrap(), ScriptValue::Bool(true));
+    }
+
+    #[test]
+    fn conditional_jump() {
+        let mut vm = ScriptVM::new();
+        // if true jump to idx 3 (PushInt 99), else PushInt 0 → result should be 99
+        let script = make_script("jmpif", vec![
+            Instruction::new(Opcode::PushInt,   0),  // 0: push true
+            Instruction::new(Opcode::JmpIf,      3),  // 1: if truthy jump to 3
+            Instruction::new(Opcode::PushInt,    1),  // 2: push 0 (never reached)
+            Instruction::new(Opcode::PushInt,    2),  // 3: push 99
+            Instruction::new(Opcode::Halt,        0),  // 4: halt
+        ], vec![ScriptValue::Bool(true), ScriptValue::Int(0), ScriptValue::Int(99)]);
+        assert_eq!(vm.execute(&script).unwrap(), ScriptValue::Int(99));
+    }
+
+    #[test]
+    fn store_load_variable() {
+        let mut vm = ScriptVM::new();
+        // StoreVar "x" = 7, then LoadVar "x"
+        let script = make_script("var", vec![
+            Instruction::new(Opcode::PushInt,  0),  // push 7
+            Instruction::new(Opcode::StoreVar, 1),  // store as "x"
+            Instruction::new(Opcode::LoadVar,  1),  // load "x"
+            Instruction::new(Opcode::Halt,      0),
+        ], vec![ScriptValue::Int(7), ScriptValue::String("x".into())]);
+        assert_eq!(vm.execute(&script).unwrap(), ScriptValue::Int(7));
+    }
+
+    #[test]
+    fn native_function_call() {
+        let mut vm = ScriptVM::new();
+        vm.register_function("double", |args| {
+            match args.first() {
+                Some(ScriptValue::Int(n)) => ScriptValue::Int(n * 2),
+                _ => ScriptValue::None,
+            }
+        });
+        // call "double"(5) → 10
+        // CALL operand: fn_idx=0 in lower 16 bits, arg_count=1 in next 8 bits
+        let arg_count: i32 = 1 << 16;
+        let script = make_script("call", vec![
+            Instruction::new(Opcode::PushInt,  1),       // push 5
+            Instruction::new(Opcode::Call,     arg_count | 0), // call "double" with 1 arg
+            Instruction::new(Opcode::Halt,     0),
+        ], vec![ScriptValue::String("double".into()), ScriptValue::Int(5)]);
+        assert_eq!(vm.execute(&script).unwrap(), ScriptValue::Int(10));
+    }
+
+    #[test]
+    fn budget_exceeded() {
+        let mut vm = ScriptVM::new();
+        vm.set_max_steps(5);
+        // Infinite loop via unconditional jump to 0
+        let script = make_script("loop", vec![
+            Instruction::new(Opcode::Jmp, 0),
+        ], vec![]);
+        assert!(matches!(vm.execute(&script), Err(ScriptVmError::BudgetExceeded)));
+        assert!(vm.was_budget_exceeded());
+    }
+
+    #[test]
+    fn string_concat() {
+        let mut vm = ScriptVM::new();
+        let script = make_script("strcat", vec![
+            Instruction::new(Opcode::PushString, 0),
+            Instruction::new(Opcode::PushString, 1),
+            Instruction::new(Opcode::Add, 0),
+            Instruction::new(Opcode::Halt, 0),
+        ], vec![ScriptValue::String("Hello, ".into()), ScriptValue::String("World!".into())]);
+        assert_eq!(vm.execute(&script).unwrap(), ScriptValue::String("Hello, World!".into()));
+    }
+
+    #[test]
+    fn state_hash_deterministic() {
+        let mut vm = ScriptVM::new();
+        vm.set_variable("x", ScriptValue::Int(42));
+        let h1 = vm.state_hash();
+        let h2 = vm.state_hash();
+        assert_eq!(h1, h2);
+    }
+
+    #[test]
+    fn negation() {
+        let mut vm = ScriptVM::new();
+        let script = make_script("neg", vec![
+            Instruction::new(Opcode::PushInt, 0),
+            Instruction::new(Opcode::Neg,     0),
+            Instruction::new(Opcode::Halt,    0),
+        ], vec![ScriptValue::Int(7)]);
+        assert_eq!(vm.execute(&script).unwrap(), ScriptValue::Int(-7));
+    }
+
+    #[test]
+    fn sandbox_builtins() {
+        use crate::sandbox::ScriptSandbox;
+        let mut vm = ScriptVM::new();
+        ScriptSandbox::register_builtins(&mut vm);
+        // atlas_abs(-5) → 5
+        let arg_count: i32 = 1 << 16;
+        let script = make_script("abs", vec![
+            Instruction::new(Opcode::PushInt, 1),
+            Instruction::new(Opcode::Call, arg_count | 0),
+            Instruction::new(Opcode::Halt, 0),
+        ], vec![ScriptValue::String("atlas_abs".into()), ScriptValue::Int(-5)]);
+        assert_eq!(vm.execute(&script).unwrap(), ScriptValue::Int(5));
+    }
+
+    #[test]
+    fn modulo() {
+        let mut vm = ScriptVM::new();
+        // 10 % 3 = 1
+        let script = make_script("mod", vec![
+            Instruction::new(Opcode::PushInt, 0),
+            Instruction::new(Opcode::PushInt, 1),
+            Instruction::new(Opcode::Mod,     0),
+            Instruction::new(Opcode::Halt,    0),
+        ], vec![ScriptValue::Int(10), ScriptValue::Int(3)]);
+        assert_eq!(vm.execute(&script).unwrap(), ScriptValue::Int(1));
+    }
+}

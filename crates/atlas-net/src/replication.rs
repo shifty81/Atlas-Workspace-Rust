@@ -121,3 +121,47 @@ impl ReplicationManager {
         true
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn make_rule(tag: u32, name: &str) -> ReplicationRule {
+        ReplicationRule {
+            type_tag: tag,
+            component_name: name.into(),
+            frequency: ReplicateFrequency::OnChange,
+            direction: ReplicateDirection::ServerToClient,
+            reliable: true,
+            priority: 1,
+        }
+    }
+
+    #[test]
+    fn add_and_query_rule() {
+        let mut mgr = ReplicationManager::new();
+        mgr.add_rule(make_rule(1, "Transform"));
+        assert!(mgr.has_rule(1));
+        assert_eq!(mgr.rule_count(), 1);
+        let r = mgr.get_rule(1).unwrap();
+        assert_eq!(r.component_name, "Transform");
+    }
+
+    #[test]
+    fn remove_rule() {
+        let mut mgr = ReplicationManager::new();
+        mgr.add_rule(make_rule(1, "Transform"));
+        mgr.remove_rule(1);
+        assert!(!mgr.has_rule(1));
+        assert_eq!(mgr.rule_count(), 0);
+    }
+
+    #[test]
+    fn add_same_tag_replaces() {
+        let mut mgr = ReplicationManager::new();
+        mgr.add_rule(make_rule(1, "A"));
+        mgr.add_rule(make_rule(1, "B"));
+        assert_eq!(mgr.rule_count(), 1);
+        assert_eq!(mgr.get_rule(1).unwrap().component_name, "B");
+    }
+}

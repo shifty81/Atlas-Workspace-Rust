@@ -22,7 +22,7 @@ pub mod system;
 pub mod world;
 
 pub use component::ComponentStore;
-pub use components::Name;
+pub use components::{Name, PhysicsBody};
 pub use delta::{DeltaEdit, DeltaEditStore, DeltaEditType};
 pub use entity::{EntityId, EntityManager, INVALID_ENTITY};
 pub use scene_graph::SceneGraph;

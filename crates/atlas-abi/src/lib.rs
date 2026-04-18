@@ -132,3 +132,89 @@ impl AbiRegistry {
     pub fn unbind_project(&mut self, name: &str) { self.bindings.remove(name); }
     pub fn bound_projects(&self) -> Vec<String> { self.bindings.keys().cloned().collect() }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn v(major: u32, minor: u32) -> AbiVersion { AbiVersion::new(major, minor) }
+
+    fn make_capsule(major: u32, minor: u32) -> AbiCapsule {
+        let mut c = AbiCapsule::new(v(major, minor), format!("v{major}.{minor}"));
+        c.set_bound_count(5);
+        c.set_complete(true);
+        c
+    }
+
+    #[test]
+    fn register_and_get_capsule() {
+        let mut reg = AbiRegistry::new();
+        reg.register_capsule(make_capsule(1, 0));
+        assert!(reg.has_version(&v(1, 0)));
+        assert_eq!(reg.capsule_count(), 1);
+        let c = reg.get_capsule(&v(1, 0)).unwrap();
+        assert!(c.is_ready());
+    }
+
+    #[test]
+    fn find_compatible_prefers_highest_minor() {
+        let mut reg = AbiRegistry::new();
+        reg.register_capsule(make_capsule(1, 0));
+        reg.register_capsule(make_capsule(1, 2));
+        reg.register_capsule(make_capsule(1, 4));
+        let c = reg.find_compatible(&v(1, 3)).unwrap();
+        assert_eq!(c.version().minor, 2); // highest minor ≤ requested
+    }
+
+    #[test]
+    fn find_compatible_different_major_returns_none() {
+        let mut reg = AbiRegistry::new();
+        reg.register_capsule(make_capsule(2, 0));
+        assert!(reg.find_compatible(&v(1, 0)).is_none());
+    }
+
+    #[test]
+    fn bind_project() {
+        let mut reg = AbiRegistry::new();
+        reg.register_capsule(make_capsule(1, 0));
+        let target = ProjectAbiTarget {
+            project_name: "my_game".into(),
+            target_abi: v(1, 0),
+            determinism_profile: "strict".into(),
+        };
+        assert!(reg.bind_project(&target));
+        assert!(reg.is_project_bound("my_game"));
+    }
+
+    #[test]
+    fn unbind_project() {
+        let mut reg = AbiRegistry::new();
+        reg.register_capsule(make_capsule(1, 0));
+        let target = ProjectAbiTarget { project_name: "g".into(), target_abi: v(1, 0), determinism_profile: String::new() };
+        reg.bind_project(&target);
+        reg.unbind_project("g");
+        assert!(!reg.is_project_bound("g"));
+    }
+
+    #[test]
+    fn version_string_roundtrip() {
+        let ver = v(3, 7);
+        let s = ver.to_string();
+        let parsed = AbiVersion::from_str(&s).unwrap();
+        assert_eq!(parsed, ver);
+    }
+
+    #[test]
+    fn compatibility_check() {
+        assert!(v(1, 0).is_compatible_with(&v(1, 5)));
+        assert!(!v(1, 0).is_compatible_with(&v(2, 0)));
+    }
+
+    #[test]
+    fn seal_capsule() {
+        let mut c = make_capsule(1, 0);
+        assert!(!c.is_sealed());
+        c.seal();
+        assert!(c.is_sealed());
+    }
+}

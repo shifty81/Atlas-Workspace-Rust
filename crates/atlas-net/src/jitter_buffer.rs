@@ -93,3 +93,80 @@ impl JitterBuffer {
         self.total_dropped = 0;
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn push_and_flush_ready() {
+        let mut jb = JitterBuffer::new(0.05, 16, false);
+        jb.push(1, 0.0, vec![1, 2, 3]);
+        jb.push(2, 0.01, vec![4, 5, 6]);
+        // time 0.10 > arrival + delay (0.0 + 0.05 = 0.05)
+        let ready = jb.flush(0.10);
+        assert_eq!(ready.len(), 2);
+        assert_eq!(ready[0].tick, 1);
+        assert_eq!(ready[1].tick, 2);
+    }
+
+    #[test]
+    fn not_ready_before_delay() {
+        let mut jb = JitterBuffer::new(0.2, 16, false);
+        jb.push(1, 0.0, vec![]);
+        // Only 0.05s elapsed, target delay is 0.2s
+        let ready = jb.flush(0.05);
+        assert!(ready.is_empty());
+        assert_eq!(jb.buffered_count(), 1);
+    }
+
+    #[test]
+    fn late_packet_dropped() {
+        let mut jb = JitterBuffer::new(0.05, 16, false);
+        jb.push(5, 0.0, vec![]);
+        let _ = jb.flush(1.0); // release tick 5
+        // tick 3 is older than last released (5) → should be dropped
+        jb.push(3, 1.1, vec![]);
+        assert_eq!(jb.total_dropped(), 1);
+        assert_eq!(jb.buffered_count(), 0);
+    }
+
+    #[test]
+    fn overflow_trims_buffer() {
+        let mut jb = JitterBuffer::new(0.05, 3, false);
+        for i in 0..5u32 {
+            jb.push(i, 0.0, vec![i as u8]);
+        }
+        assert!(jb.buffered_count() <= 3);
+        assert!(jb.total_dropped() > 0);
+    }
+
+    #[test]
+    fn stats_track_push_count() {
+        let mut jb = JitterBuffer::new(0.05, 16, false);
+        jb.push(1, 0.0, vec![]);
+        jb.push(2, 0.0, vec![]);
+        assert_eq!(jb.total_pushed(), 2);
+    }
+
+    #[test]
+    fn reset_clears_state() {
+        let mut jb = JitterBuffer::new(0.05, 16, false);
+        jb.push(1, 0.0, vec![]);
+        jb.reset();
+        assert_eq!(jb.buffered_count(), 0);
+        assert_eq!(jb.total_pushed(), 0);
+        assert_eq!(jb.total_dropped(), 0);
+    }
+
+    #[test]
+    fn ordered_flush() {
+        let mut jb = JitterBuffer::new(0.05, 16, false);
+        // Push out of order
+        jb.push(3, 0.0, vec![3]);
+        jb.push(1, 0.0, vec![1]);
+        jb.push(2, 0.0, vec![2]);
+        let ready = jb.flush(1.0);
+        assert_eq!(ready.iter().map(|e| e.tick).collect::<Vec<_>>(), vec![1, 2, 3]);
+    }
+}
