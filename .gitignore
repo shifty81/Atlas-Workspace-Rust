@@ -131,3 +131,4 @@ novaforge-assets/**/*.ron
 # Keep the directory skeleton and documentation
 !novaforge-assets/README.md
 !novaforge-assets/**/.gitkeep
+/novaforge-assets
