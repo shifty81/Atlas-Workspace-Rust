@@ -12,7 +12,7 @@ use atlas_ecs::World;
 use atlas_renderer::{
     FrameSync, RenderConfig, RenderLoop, Swapchain, SwapchainConfig, VulkanContext,
 };
-use atlas_ui::{log_capture::LogEntry, UiContext, UiLogCapture};
+use atlas_ui::{log_capture::LogEntry, UiContext, UiLogCapture, UiRenderer};
 use winit::{
     event::{Event, WindowEvent},
     event_loop::{ControlFlow, EventLoop},
@@ -35,13 +35,15 @@ use crate::{
 
 // ── EditorApp ───────────────────────────────────────────────────────────────
 
-/// Main editor application.  Drives the winit + egui + Vulkan frame loop.
+/// Main editor application.  Drives the winit + egui + wgpu frame loop.
 pub struct EditorApp {
     // ECS
     world:     World,
     assets:    AssetRegistry,
     // Rendering
     render:    RenderLoop,
+    /// wgpu-backed egui renderer.  `None` when no GPU is available.
+    ui_renderer: Option<UiRenderer>,
     // UI
     ui:        UiContext,
     // Editor state
@@ -69,15 +71,18 @@ pub struct EditorApp {
 impl EditorApp {
     /// Create the application.  Requires the window to have been created
     /// already so egui and Vulkan can both reference it.
-    fn init(window: &Window, log_entries: Arc<Mutex<Vec<LogEntry>>>) -> Result<Self> {
+    fn init(window: Arc<Window>, log_entries: Arc<Mutex<Vec<LogEntry>>>) -> Result<Self> {
         let mut config = RenderConfig::default();
         config.title = "Atlas Workspace — Editor".into();
 
-        // Build GPU context (falls back to headless gracefully)
-        let ctx = VulkanContext::new_with_window(config.clone(), Some(window))?;
-        let headless = ctx.is_headless();
+        // Build a headless GPU context.  The Vulkan swapchain is intentionally
+        // kept headless here — the window surface is owned by the wgpu-based
+        // UiRenderer below, avoiding a conflict between two Vulkan instances
+        // on the same HWND.  The headless RenderLoop remains available for
+        // future off-screen GPU work.
+        let ctx = VulkanContext::new_with_window(config.clone(), None::<&Window>)?;
 
-        // Swapchain
+        // Swapchain / FrameSync (headless stubs — ctx is always headless here)
         let (w, h) = {
             let sz = window.inner_size();
             (sz.width.max(1), sz.height.max(1))
@@ -86,42 +91,28 @@ impl EditorApp {
             width: w, height: h,
             ..Default::default()
         };
-
-        let swapchain = if headless {
-            Swapchain::new_headless(sc_cfg)?
-        } else {
-            #[cfg(feature = "vulkan")]
-            { Swapchain::new_vulkan(sc_cfg, &ctx)? }
-            #[cfg(not(feature = "vulkan"))]
-            { Swapchain::new_headless(sc_cfg)? }
-        };
-
-        // Frame sync
-        let frame_sync = if headless {
-            FrameSync::new_headless(config.frames_in_flight)
-        } else {
-            #[cfg(feature = "vulkan")]
-            {
-                let device = ctx.device().expect("GPU context must have device");
-                let gfx_family = ctx.queue_families().expect("queues").graphics;
-                FrameSync::new_vulkan(config.frames_in_flight, device, gfx_family)?
-            }
-            #[cfg(not(feature = "vulkan"))]
-            { FrameSync::new_headless(config.frames_in_flight) }
-        };
-
-        let render = RenderLoop::new(ctx, swapchain, frame_sync);
+        let swapchain  = Swapchain::new_headless(sc_cfg)?;
+        let frame_sync = FrameSync::new_headless(config.frames_in_flight);
+        let render     = RenderLoop::new(ctx, swapchain, frame_sync);
 
         // egui
-        let ui = UiContext::new(window);
+        let ui = UiContext::new(&*window);
 
         // Style — dark theme
         ui.egui_ctx().set_style(egui_dark_style());
+
+        // wgpu-backed egui renderer.  Failure (e.g. no GPU) degrades to the
+        // headless path — the window stays dark-grey but the process runs.
+        let ui_renderer = match UiRenderer::new(window.clone()) {
+            Ok(r)  => { log::info!("[Editor] UiRenderer ready (wgpu)"); Some(r) }
+            Err(e) => { log::warn!("[Editor] UiRenderer unavailable: {e}"); None  }
+        };
 
         Ok(Self {
             world: World::new(),
             assets: AssetRegistry::new(),
             render,
+            ui_renderer,
             ui,
             selection:        SelectionState::new(),
             commands:         CommandStack::default(),
@@ -148,15 +139,19 @@ impl EditorApp {
 
         log::info!("[Editor] Starting Atlas Workspace");
 
-        // Create event loop and window
+        // Create event loop and window.
+        // `Arc` lets both the event loop closure and `UiRenderer` share the
+        // window handle without lifetime complications.
         let event_loop = EventLoop::new()?;
-        let window = WindowBuilder::new()
-            .with_title("Atlas Workspace")
-            .with_inner_size(winit::dpi::LogicalSize::new(1920u32, 1080u32))
-            .with_min_inner_size(winit::dpi::LogicalSize::new(800u32, 600u32))
-            .build(&event_loop)?;
+        let window = Arc::new(
+            WindowBuilder::new()
+                .with_title("Atlas Workspace")
+                .with_inner_size(winit::dpi::LogicalSize::new(1920u32, 1080u32))
+                .with_min_inner_size(winit::dpi::LogicalSize::new(800u32, 600u32))
+                .build(&event_loop)?,
+        );
 
-        let mut app = match EditorApp::init(&window, log_entries) {
+        let mut app = match EditorApp::init(window.clone(), log_entries) {
             Ok(a) => a,
             Err(e) => {
                 log::error!("[Editor] Init failed: {e}");
@@ -173,21 +168,21 @@ impl EditorApp {
             match &event {
                 Event::WindowEvent { event: we, .. } => {
                     // Feed to egui first
-                    let consumed = app.ui.handle_event(&window, we);
+                    let consumed = app.ui.handle_event(&*window, we);
 
                     if !consumed {
                         match we {
                             WindowEvent::CloseRequested => elwt.exit(),
                             WindowEvent::Resized(size) => {
-                                app.render.on_resize(size.width, size.height);
+                                app.on_resize(size.width, size.height);
                             }
                             WindowEvent::RedrawRequested => {
-                                app.draw_frame(&window);
+                                app.draw_frame(&*window);
                             }
                             WindowEvent::KeyboardInput { event, .. } => {
                                 use winit::event::ElementState::Pressed;
                                 if event.state == Pressed {
-                                    app.handle_key(event, &window);
+                                    app.handle_key(event, &*window);
                                 }
                             }
                             _ => {}
@@ -217,11 +212,24 @@ impl EditorApp {
         self.draw_ui(&ctx);
 
         // 3. End egui frame → tessellate
-        let _output = self.ui.end_frame(window);
+        let output = self.ui.end_frame(window);
 
-        // 4. Submit GPU frame
-        if let Err(e) = self.render.draw_frame(None) {
+        // 4. Paint egui output to the window via the wgpu renderer.
+        //    If the wgpu renderer is unavailable (no GPU), fall back to the
+        //    headless Vulkan path (which is a no-op but keeps the loop alive).
+        if let Some(ref mut renderer) = self.ui_renderer {
+            renderer.paint(output);
+        } else if let Err(e) = self.render.draw_frame(None) {
             log::error!("[Editor] draw_frame error: {e}");
+        }
+    }
+
+    /// Forward a resize event to both the headless render loop and the wgpu
+    /// surface so neither falls out of sync with the window dimensions.
+    fn on_resize(&mut self, width: u32, height: u32) {
+        self.render.on_resize(width, height);
+        if let Some(ref mut renderer) = self.ui_renderer {
+            renderer.on_resize(width, height);
         }
     }
 
@@ -512,8 +520,10 @@ impl EditorApp {
     }
 
     fn render_backend_name(&self) -> &'static str {
-        // We can't directly ask the render loop, so indicate headless vs GPU
-        if std::env::var("ATLAS_HEADLESS").is_ok() { "Headless" } else { "Vulkan" }
+        match &self.ui_renderer {
+            Some(_) => "wgpu",
+            None    => "Headless",
+        }
     }
 }
 

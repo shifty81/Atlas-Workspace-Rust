@@ -16,11 +16,13 @@
 
 pub mod context;
 pub mod log_capture;
+pub mod renderer;
 pub mod scroll_list;
 pub mod tree_view;
 
 pub use context::{UiContext, FrameOutput};
 pub use log_capture::UiLogCapture;
+pub use renderer::UiRenderer;
 pub use scroll_list::ScrollList;
 pub use tree_view::{TreeView, TreeNode, NodeId};
 
