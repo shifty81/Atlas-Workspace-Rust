@@ -144,6 +144,9 @@ impl ScriptAssembler {
                     let n_args_str = cparts.next().map(|s| s.trim()).unwrap_or("0");
                     let n_args: i32 = n_args_str.parse().map_err(|_| err(line_no, format!("expected arg count, got {n_args_str:?}")))?;
                     let fn_idx = add_constant(&mut constants, ScriptValue::String(fn_name.to_string()));
+                    // Encoding matches ScriptVM::execute CALL handler:
+                    //   bits  0-15 : constant-pool index of the function name (fn_idx)
+                    //   bits 16-23 : number of arguments to pop from the stack (n_args)
                     let operand = (n_args << 16) | (fn_idx as i32 & 0xFFFF);
                     (Opcode::Call, RawOperand::Index(operand))
                 }
