@@ -238,6 +238,12 @@ impl RenderLoop {
             hdr,
             ..Default::default()
         };
+        // Drop the old swapchain handles first so the native window surface is
+        // released before the new VkSwapchainKHR is created.  Without this,
+        // Rust's assignment order (rhs evaluated before lhs is dropped) means
+        // two swapchains briefly share the same surface, which Vulkan rejects
+        // with VK_ERROR_NATIVE_WINDOW_IN_USE_KHR.
+        self.swapchain.handles = None;
         self.swapchain = Swapchain::new_vulkan(new_cfg, &self.ctx)?;
         log::info!("[Renderer] Swapchain recreated {}×{}", self.surface_w, self.surface_h);
         Ok(())
