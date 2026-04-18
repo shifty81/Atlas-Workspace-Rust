@@ -195,3 +195,116 @@ impl SoundGraph {
         self.compiled
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    struct Oscillator(f32); // constant frequency output
+    impl SoundNode for Oscillator {
+        fn name(&self) -> &str { "Oscillator" }
+        fn category(&self) -> &str { "test" }
+        fn inputs(&self) -> Vec<SoundPort> { vec![] }
+        fn outputs(&self) -> Vec<SoundPort> {
+            vec![SoundPort { name: "audio".into(), pin_type: SoundPinType::AudioBuffer }]
+        }
+        fn evaluate(&mut self, _ctx: &SoundContext, _: &[SoundValue], outputs: &mut Vec<SoundValue>) {
+            outputs[0] = SoundValue { pin_type: SoundPinType::AudioBuffer, data: vec![self.0; 8] };
+        }
+    }
+
+    struct GainNode(f32);
+    impl SoundNode for GainNode {
+        fn name(&self) -> &str { "Gain" }
+        fn category(&self) -> &str { "test" }
+        fn inputs(&self) -> Vec<SoundPort> {
+            vec![SoundPort { name: "in".into(), pin_type: SoundPinType::AudioBuffer }]
+        }
+        fn outputs(&self) -> Vec<SoundPort> {
+            vec![SoundPort { name: "out".into(), pin_type: SoundPinType::AudioBuffer }]
+        }
+        fn evaluate(&mut self, _ctx: &SoundContext, inputs: &[SoundValue], outputs: &mut Vec<SoundValue>) {
+            let gain = self.0;
+            let data: Vec<f32> = inputs.first()
+                .map(|v| v.data.iter().map(|&s| s * gain).collect())
+                .unwrap_or_default();
+            outputs[0] = SoundValue { pin_type: SoundPinType::AudioBuffer, data };
+        }
+    }
+
+    fn ctx() -> SoundContext {
+        SoundContext { sample_rate: 44100, buffer_size: 8, seed: 1 }
+    }
+
+    #[test]
+    fn single_oscillator() {
+        let mut g = SoundGraph::new();
+        let id = g.add_node(Box::new(Oscillator(0.5)));
+        assert!(g.compile());
+        assert!(g.execute(&ctx()));
+        let out = g.get_output(id, 0).unwrap();
+        assert_eq!(out.data, vec![0.5; 8]);
+    }
+
+    #[test]
+    fn gain_node_scales_signal() {
+        let mut g = SoundGraph::new();
+        let osc = g.add_node(Box::new(Oscillator(1.0)));
+        let gain = g.add_node(Box::new(GainNode(0.5)));
+        g.add_edge(SoundEdge { from_node: osc, from_port: 0, to_node: gain, to_port: 0 });
+        assert!(g.compile());
+        g.execute(&ctx());
+        let out = g.get_output(gain, 0).unwrap();
+        for &s in &out.data {
+            assert!((s - 0.5).abs() < f32::EPSILON);
+        }
+    }
+
+    #[test]
+    fn cycle_detection() {
+        let mut g = SoundGraph::new();
+        let a = g.add_node(Box::new(Oscillator(0.0)));
+        let b = g.add_node(Box::new(GainNode(1.0)));
+        g.add_edge(SoundEdge { from_node: a, from_port: 0, to_node: b, to_port: 0 });
+        g.add_edge(SoundEdge { from_node: b, from_port: 0, to_node: a, to_port: 0 });
+        assert!(!g.compile());
+    }
+
+    #[test]
+    fn remove_node_invalidates_compile() {
+        let mut g = SoundGraph::new();
+        let id = g.add_node(Box::new(Oscillator(1.0)));
+        g.compile();
+        assert!(g.is_compiled());
+        g.remove_node(id);
+        assert!(!g.is_compiled());
+        assert_eq!(g.node_count(), 0);
+    }
+
+    #[test]
+    fn execute_without_compile_returns_false() {
+        let mut g = SoundGraph::new();
+        g.add_node(Box::new(Oscillator(1.0)));
+        assert!(!g.execute(&ctx()));
+    }
+
+    #[test]
+    fn empty_graph_compiles_and_executes() {
+        let mut g = SoundGraph::new();
+        assert!(g.compile());
+        assert!(g.execute(&ctx()));
+    }
+
+    #[test]
+    fn remove_edge_invalidates_compile() {
+        let mut g = SoundGraph::new();
+        let osc = g.add_node(Box::new(Oscillator(1.0)));
+        let gain = g.add_node(Box::new(GainNode(1.0)));
+        let edge = SoundEdge { from_node: osc, from_port: 0, to_node: gain, to_port: 0 };
+        g.add_edge(edge.clone());
+        g.compile();
+        assert!(g.is_compiled());
+        g.remove_edge(&edge);
+        assert!(!g.is_compiled());
+    }
+}

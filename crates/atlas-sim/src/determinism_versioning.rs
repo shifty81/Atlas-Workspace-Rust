@@ -63,3 +63,98 @@ impl DeterminismVersionRegistry {
         self.current_version = DeterminismVersion::default();
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn v(major: u32, minor: u32, patch: u32) -> DeterminismVersion {
+        DeterminismVersion { major, minor, patch, hash: 0, description: String::new() }
+    }
+
+    fn fork(name: &str, compat: bool) -> ForkInfo {
+        ForkInfo {
+            name: name.into(),
+            base_version: v(1, 0, 0),
+            current_version: v(1, 0, 0),
+            is_compatible: compat,
+        }
+    }
+
+    #[test]
+    fn set_and_get_version() {
+        let mut r = DeterminismVersionRegistry::new();
+        r.set_current_version(v(2, 3, 1));
+        let cur = r.get_current_version();
+        assert_eq!(cur.major, 2);
+        assert_eq!(cur.minor, 3);
+        assert_eq!(cur.patch, 1);
+    }
+
+    #[test]
+    fn register_and_lookup_fork() {
+        let mut r = DeterminismVersionRegistry::new();
+        r.register_fork(fork("server", true));
+        assert_eq!(r.fork_count(), 1);
+        let f = r.get_fork("server").unwrap();
+        assert_eq!(f.name, "server");
+        assert!(f.is_compatible);
+    }
+
+    #[test]
+    fn unregister_fork() {
+        let mut r = DeterminismVersionRegistry::new();
+        r.register_fork(fork("client", true));
+        r.unregister_fork("client");
+        assert_eq!(r.fork_count(), 0);
+        assert!(r.get_fork("client").is_none());
+    }
+
+    #[test]
+    fn check_compatibility_per_fork() {
+        let mut r = DeterminismVersionRegistry::new();
+        r.register_fork(fork("ok", true));
+        r.register_fork(fork("bad", false));
+        assert!(r.check_compatibility("ok"));
+        assert!(!r.check_compatibility("bad"));
+        assert!(!r.check_compatibility("unknown")); // non-existent → false
+    }
+
+    #[test]
+    fn check_all_compatibility_lists_incompatible() {
+        let mut r = DeterminismVersionRegistry::new();
+        r.register_fork(fork("ok", true));
+        r.register_fork(fork("broken", false));
+        let incompat = r.check_all_compatibility();
+        assert!(incompat.contains(&"broken".to_string()));
+        assert!(!incompat.contains(&"ok".to_string()));
+    }
+
+    #[test]
+    fn generate_report_contains_fork_info() {
+        let mut r = DeterminismVersionRegistry::new();
+        r.set_current_version(v(1, 0, 0));
+        r.register_fork(fork("demo", true));
+        let report = r.generate_report();
+        assert!(report.contains("demo"));
+        assert!(report.contains("compatible"));
+    }
+
+    #[test]
+    fn clear_resets_all() {
+        let mut r = DeterminismVersionRegistry::new();
+        r.set_current_version(v(2, 0, 0));
+        r.register_fork(fork("a", true));
+        r.clear();
+        assert_eq!(r.fork_count(), 0);
+        assert_eq!(r.get_current_version().major, 0);
+    }
+
+    #[test]
+    fn list_forks_returns_all() {
+        let mut r = DeterminismVersionRegistry::new();
+        r.register_fork(fork("x", true));
+        r.register_fork(fork("y", false));
+        assert_eq!(r.list_forks().len(), 2);
+    }
+}

@@ -48,3 +48,53 @@ impl Default for Transform {
         Self::IDENTITY
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::{Quat, Vec3};
+
+    #[test]
+    fn identity_position_is_zero() {
+        let t = Transform::IDENTITY;
+        assert_eq!(t.position, Vec3::ZERO);
+        assert_eq!(t.scale, Vec3::ONE);
+    }
+
+    #[test]
+    fn from_position() {
+        let t = Transform::from_position(Vec3::new(1.0, 2.0, 3.0));
+        assert_eq!(t.position, Vec3::new(1.0, 2.0, 3.0));
+        assert_eq!(t.rotation, Quat::IDENTITY);
+        assert_eq!(t.scale, Vec3::ONE);
+    }
+
+    #[test]
+    fn to_matrix_identity() {
+        let m = Transform::IDENTITY.to_matrix();
+        // identity matrix: diagonal is 1, translation is 0
+        assert!((m.col(3).x).abs() < 1e-5);
+        assert!((m.col(3).y).abs() < 1e-5);
+        assert!((m.col(3).z).abs() < 1e-5);
+    }
+
+    #[test]
+    fn compose_with_identity_is_self() {
+        let t = Transform::from_position(Vec3::new(5.0, 0.0, 0.0));
+        let composed = t.compose(&Transform::IDENTITY);
+        assert!((composed.position.x - 5.0).abs() < 1e-5);
+    }
+
+    #[test]
+    fn compose_translations_add() {
+        let parent = Transform::from_position(Vec3::new(10.0, 0.0, 0.0));
+        let child  = Transform::from_position(Vec3::new(5.0, 0.0, 0.0));
+        let world  = child.compose(&parent);
+        assert!((world.position.x - 15.0).abs() < 1e-4);
+    }
+
+    #[test]
+    fn default_is_identity() {
+        assert_eq!(Transform::default(), Transform::IDENTITY);
+    }
+}

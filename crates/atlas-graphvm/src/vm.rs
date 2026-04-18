@@ -206,3 +206,132 @@ impl GraphVM {
         &self.emitted_events
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn bc(instructions: Vec<(OpCode, u32, u32, u32)>, constants: Vec<Value>) -> Bytecode {
+        Bytecode {
+            instructions: instructions.into_iter().map(|(op, a, b, c)| Instruction { opcode: op, a, b, c }).collect(),
+            constants,
+        }
+    }
+
+    fn ctx() -> VmContext { VmContext { entity: 1, tick: 0 } }
+
+    #[test]
+    fn load_const_end() {
+        let mut vm = GraphVM::new();
+        let b = bc(vec![
+            (OpCode::LoadConst, 0, 0, 0),
+            (OpCode::End, 0, 0, 0),
+        ], vec![42]);
+        vm.execute(&b, &mut ctx()).unwrap();
+        assert_eq!(vm.stack(), &[42]);
+    }
+
+    #[test]
+    fn arithmetic() {
+        let mut vm = GraphVM::new();
+        // 10 + 5 = 15
+        let b = bc(vec![
+            (OpCode::LoadConst, 0, 0, 0),
+            (OpCode::LoadConst, 1, 0, 0),
+            (OpCode::Add, 0, 0, 0),
+            (OpCode::End, 0, 0, 0),
+        ], vec![10, 5]);
+        vm.execute(&b, &mut ctx()).unwrap();
+        assert_eq!(vm.stack(), &[15]);
+    }
+
+    #[test]
+    fn division_by_zero() {
+        let mut vm = GraphVM::new();
+        let b = bc(vec![
+            (OpCode::LoadConst, 0, 0, 0),
+            (OpCode::LoadConst, 1, 0, 0),
+            (OpCode::Div, 0, 0, 0),
+            (OpCode::End, 0, 0, 0),
+        ], vec![10, 0]);
+        assert!(matches!(vm.execute(&b, &mut ctx()), Err(GraphVmError::DivisionByZero)));
+    }
+
+    #[test]
+    fn store_and_load_var() {
+        let mut vm = GraphVM::new();
+        let b = bc(vec![
+            (OpCode::LoadConst, 0, 0, 0),   // push 99
+            (OpCode::StoreVar,  7, 0, 0),   // locals[7] = 99
+            (OpCode::LoadVar,   7, 0, 0),   // push locals[7]
+            (OpCode::End, 0, 0, 0),
+        ], vec![99]);
+        vm.execute(&b, &mut ctx()).unwrap();
+        assert_eq!(vm.get_local(7), Some(99));
+        assert_eq!(vm.stack(), &[99]);
+    }
+
+    #[test]
+    fn conditional_jump_false() {
+        let mut vm = GraphVM::new();
+        // push 0 (false) → JumpIfFalse to End, so no Add runs
+        let b = bc(vec![
+            (OpCode::LoadConst,   0, 0, 0),   // 0: push 0 (false)
+            (OpCode::JumpIfFalse, 3, 0, 0),   // 1: jump to 3 if false
+            (OpCode::LoadConst,   1, 0, 0),   // 2: push 100 (skipped)
+            (OpCode::End,         0, 0, 0),   // 3: end
+        ], vec![0, 100]);
+        vm.execute(&b, &mut ctx()).unwrap();
+        // Stack should have only what was pushed before the branch, which got popped
+        assert!(vm.stack().is_empty());
+    }
+
+    #[test]
+    fn emit_event() {
+        let mut vm = GraphVM::new();
+        let b = bc(vec![
+            (OpCode::LoadConst,  0, 0, 0),   // push 7
+            (OpCode::EmitEvent,  0, 0, 0),   // emit (entity=1, value=7)
+            (OpCode::End,        0, 0, 0),
+        ], vec![7]);
+        let mut c = VmContext { entity: 42, tick: 1 };
+        vm.execute(&b, &mut c).unwrap();
+        let events = vm.emitted_events();
+        assert_eq!(events.len(), 1);
+        assert_eq!(events[0], (42, 7));
+    }
+
+    #[test]
+    fn compare_ops() {
+        let mut vm = GraphVM::new();
+        // 3 < 5 → 1
+        let b = bc(vec![
+            (OpCode::LoadConst, 0, 0, 0),
+            (OpCode::LoadConst, 1, 0, 0),
+            (OpCode::CmpLt,     0, 0, 0),
+            (OpCode::End,       0, 0, 0),
+        ], vec![3, 5]);
+        vm.execute(&b, &mut ctx()).unwrap();
+        assert_eq!(vm.stack(), &[1]);
+    }
+
+    #[test]
+    fn nop_is_harmless() {
+        let mut vm = GraphVM::new();
+        let b = bc(vec![
+            (OpCode::Nop, 0, 0, 0),
+            (OpCode::LoadConst, 0, 0, 0),
+            (OpCode::End, 0, 0, 0),
+        ], vec![5]);
+        vm.execute(&b, &mut ctx()).unwrap();
+        assert_eq!(vm.stack(), &[5]);
+    }
+
+    #[test]
+    fn infinite_loop_detected() {
+        let mut vm = GraphVM::new();
+        // jump to itself
+        let b = bc(vec![(OpCode::Jump, 0, 0, 0)], vec![]);
+        assert!(matches!(vm.execute(&b, &mut ctx()), Err(GraphVmError::InfiniteLoop)));
+    }
+}

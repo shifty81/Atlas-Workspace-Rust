@@ -1,4 +1,4 @@
-//! Editor panel modules (M5).
+//! Editor panel modules (M7).
 
 pub mod asset_browser;
 pub mod console;
@@ -8,6 +8,6 @@ pub mod viewport;
 
 pub use asset_browser::AssetBrowserPanel;
 pub use console::ConsolePanel;
-pub use outliner::OutlinerPanel;
-pub use properties::PropertiesPanel;
+pub use outliner::{OutlinerPanel, OutlinerEvent};
+pub use properties::{PropertiesPanel, PropertiesEvent};
 pub use viewport::ViewportPanel;

@@ -129,3 +129,93 @@ impl InputManager {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn bind_and_query() {
+        let mut mgr = InputManager::new();
+        mgr.init();
+        mgr.bind_action(InputAction::Jump, InputDevice::Keyboard, 32, "Jump");
+        assert!(mgr.has_binding(InputAction::Jump));
+        assert_eq!(mgr.binding_count(), 1);
+        let b = mgr.get_binding(InputAction::Jump).unwrap();
+        assert_eq!(b.key_code, 32);
+        assert_eq!(b.name, "Jump");
+    }
+
+    #[test]
+    fn press_held_release_cycle() {
+        let mut mgr = InputManager::new();
+        mgr.init();
+        mgr.inject_press(InputAction::Jump);
+        let s = mgr.get_state(InputAction::Jump);
+        assert!(s.pressed);
+        assert!(s.held);
+        assert!(!s.released);
+        assert!(mgr.is_pressed(InputAction::Jump));
+        assert!(mgr.is_held(InputAction::Jump));
+
+        // After update, pressed clears but held stays
+        mgr.update();
+        let s = mgr.get_state(InputAction::Jump);
+        assert!(!s.pressed);
+        assert!(s.held);
+
+        // Release
+        mgr.inject_release(InputAction::Jump);
+        let s = mgr.get_state(InputAction::Jump);
+        assert!(!s.held);
+        assert!(s.released);
+    }
+
+    #[test]
+    fn axis_value() {
+        let mut mgr = InputManager::new();
+        mgr.init();
+        mgr.inject_axis(InputAction::MoveForward, 0.75);
+        assert!((mgr.get_axis(InputAction::MoveForward) - 0.75).abs() < f32::EPSILON);
+    }
+
+    #[test]
+    fn unbind_removes_binding() {
+        let mut mgr = InputManager::new();
+        mgr.bind_action(InputAction::Sprint, InputDevice::Keyboard, 160, "Sprint");
+        assert!(mgr.has_binding(InputAction::Sprint));
+        mgr.unbind_action(InputAction::Sprint);
+        assert!(!mgr.has_binding(InputAction::Sprint));
+        assert_eq!(mgr.binding_count(), 0);
+    }
+
+    #[test]
+    fn unbound_state_is_default() {
+        let mgr = InputManager::new();
+        let s = mgr.get_state(InputAction::Interact);
+        assert!(!s.pressed);
+        assert!(!s.held);
+        assert_eq!(s.value, 0.0);
+    }
+
+    #[test]
+    fn update_clears_released() {
+        let mut mgr = InputManager::new();
+        mgr.inject_release(InputAction::Crouch);
+        mgr.update();
+        let s = mgr.get_state(InputAction::Crouch);
+        assert!(!s.released);
+    }
+
+    #[test]
+    fn multiple_actions_independent() {
+        let mut mgr = InputManager::new();
+        mgr.inject_press(InputAction::Jump);
+        mgr.inject_press(InputAction::Sprint);
+        assert!(mgr.is_pressed(InputAction::Jump));
+        assert!(mgr.is_pressed(InputAction::Sprint));
+        mgr.inject_release(InputAction::Jump);
+        assert!(!mgr.is_held(InputAction::Jump));
+        assert!(mgr.is_held(InputAction::Sprint));
+    }
+}

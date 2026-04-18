@@ -21,6 +21,7 @@ members = [
     "crates/atlas-asset",
     "crates/atlas-ui",
     "crates/atlas-editor",
+    "crates/atlas-game",
 ]
 resolver = "2"
 
@@ -53,6 +54,7 @@ atlas-abi        = { path = "crates/atlas-abi" }
 atlas-asset      = { path = "crates/atlas-asset" }
 atlas-ui         = { path = "crates/atlas-ui" }
 atlas-editor     = { path = "crates/atlas-editor" }
+atlas-game       = { path = "crates/atlas-game" }
 
 # Logging
 log              = "0.4"

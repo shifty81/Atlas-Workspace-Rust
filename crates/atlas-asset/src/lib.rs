@@ -105,6 +105,10 @@ impl AssetRegistry {
             .collect()
     }
 
+    pub fn iter(&self) -> impl Iterator<Item = &AssetMeta> {
+        self.assets.values()
+    }
+
     pub fn clear(&mut self) { self.assets.clear(); }
 
     pub fn serialize(&self) -> String {

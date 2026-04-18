@@ -70,3 +70,83 @@ impl SchemaValidator {
     pub fn errors(&self) -> &[SchemaError] { &self.errors }
     pub fn clear(&mut self) { self.errors.clear(); }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn valid_schema() -> SchemaDefinition {
+        SchemaDefinition {
+            id: "MyGraph".into(),
+            version: 1,
+            inputs: vec![
+                SchemaField { name: "x".into(), value_type: SchemaValueType::Float, required: true },
+            ],
+            outputs: vec![
+                SchemaField { name: "result".into(), value_type: SchemaValueType::Float, required: false },
+            ],
+            nodes: vec![
+                SchemaNodeDef { id: "node1".into(), inputs: vec![], outputs: vec![] },
+            ],
+        }
+    }
+
+    #[test]
+    fn valid_schema_passes() {
+        let mut v = SchemaValidator::new();
+        assert!(v.validate(&valid_schema()));
+        assert!(v.errors().is_empty());
+    }
+
+    #[test]
+    fn empty_id_fails() {
+        let mut v = SchemaValidator::new();
+        let mut s = valid_schema();
+        s.id = String::new();
+        assert!(!v.validate(&s));
+        assert!(!v.errors().is_empty());
+    }
+
+    #[test]
+    fn negative_version_fails() {
+        let mut v = SchemaValidator::new();
+        let mut s = valid_schema();
+        s.version = -1;
+        assert!(!v.validate(&s));
+    }
+
+    #[test]
+    fn duplicate_input_field_fails() {
+        let mut v = SchemaValidator::new();
+        let mut s = valid_schema();
+        s.inputs.push(SchemaField { name: "x".into(), value_type: SchemaValueType::Int, required: false });
+        assert!(!v.validate(&s));
+    }
+
+    #[test]
+    fn duplicate_output_field_fails() {
+        let mut v = SchemaValidator::new();
+        let mut s = valid_schema();
+        s.outputs.push(SchemaField { name: "result".into(), value_type: SchemaValueType::Bool, required: false });
+        assert!(!v.validate(&s));
+    }
+
+    #[test]
+    fn empty_node_id_fails() {
+        let mut v = SchemaValidator::new();
+        let mut s = valid_schema();
+        s.nodes.push(SchemaNodeDef { id: String::new(), inputs: vec![], outputs: vec![] });
+        assert!(!v.validate(&s));
+    }
+
+    #[test]
+    fn clear_resets_errors() {
+        let mut v = SchemaValidator::new();
+        let mut s = valid_schema();
+        s.id = String::new();
+        v.validate(&s);
+        assert!(!v.errors().is_empty());
+        v.clear();
+        assert!(v.errors().is_empty());
+    }
+}

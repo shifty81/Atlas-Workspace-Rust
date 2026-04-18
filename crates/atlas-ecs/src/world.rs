@@ -46,3 +46,43 @@ impl Default for World {
         Self::new()
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[derive(Clone, PartialEq, Debug)]
+    struct Tag(u32);
+
+    #[test]
+    fn spawn_and_despawn() {
+        let mut w = World::new();
+        let e = w.spawn();
+        assert!(w.entities.is_alive(e));
+        w.despawn(e);
+        assert!(!w.entities.is_alive(e));
+    }
+
+    #[test]
+    fn add_and_get_component() {
+        let mut w = World::new();
+        let e = w.spawn();
+        w.components.add(e, Tag(42));
+        assert_eq!(w.components.get::<Tag>(e).unwrap().0, 42);
+    }
+
+    #[test]
+    fn despawn_removes_components() {
+        let mut w = World::new();
+        let e = w.spawn();
+        w.components.add(e, Tag(1));
+        w.despawn(e);
+        assert!(w.components.get::<Tag>(e).is_none());
+    }
+
+    #[test]
+    fn default_world_is_empty() {
+        let w = World::default();
+        assert_eq!(w.entities.count(), 0);
+    }
+}

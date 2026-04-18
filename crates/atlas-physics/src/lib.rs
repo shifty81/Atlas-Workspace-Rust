@@ -1,3 +1,7 @@
+pub mod physics_system;
+
+pub use physics_system::PhysicsSystem;
+
 use std::collections::HashMap;
 use atlas_math::Vec3;
 
@@ -117,9 +121,14 @@ impl PhysicsWorld {
         for id in &ids {
             let body = self.bodies.get_mut(id).unwrap();
             if !body.is_static && body.active {
-                body.acceleration = self.gravity;
-                body.velocity += body.acceleration * dt;
-                body.position += body.velocity * dt;
+                // Gravity is added to accumulated forces each frame.
+                // acceleration acts as a per-frame force accumulator; it is
+                // reset to zero after integration so callers must re-apply
+                // impulse forces every tick.
+                body.acceleration += self.gravity;
+                body.velocity     += body.acceleration * dt;
+                body.position     += body.velocity     * dt;
+                body.acceleration  = Vec3::ZERO;   // reset accumulator
             }
         }
 
@@ -143,5 +152,101 @@ impl PhysicsWorld {
 
     pub fn collisions(&self) -> &[CollisionPair] {
         &self.collisions
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn create_and_destroy_body() {
+        let mut w = PhysicsWorld::new();
+        let id = w.create_body(1.0, false);
+        assert_eq!(w.body_count(), 1);
+        w.destroy_body(id);
+        assert_eq!(w.body_count(), 0);
+    }
+
+    #[test]
+    fn gravity_integration() {
+        let mut w = PhysicsWorld::new();
+        let id = w.create_body(1.0, false);
+        w.set_position(id, 0.0, 10.0, 0.0);
+        let dt = 0.1_f32;
+        w.step(dt);
+        let body = w.get_body(id).unwrap();
+        // After one step, velocity should be ~= gravity * dt = -0.981 in Y
+        assert!((body.velocity.y - (-9.81 * dt)).abs() < 0.001);
+        // Position moves down
+        assert!(body.position.y < 10.0);
+    }
+
+    #[test]
+    fn static_body_does_not_move() {
+        let mut w = PhysicsWorld::new();
+        let id = w.create_body(0.0, true);
+        w.set_position(id, 5.0, 5.0, 5.0);
+        w.step(0.1);
+        let body = w.get_body(id).unwrap();
+        assert!((body.position.x - 5.0).abs() < f32::EPSILON);
+        assert!((body.position.y - 5.0).abs() < f32::EPSILON);
+    }
+
+    #[test]
+    fn apply_force_changes_velocity() {
+        let mut w = PhysicsWorld::new();
+        let id = w.create_body(2.0, false);
+        // Override gravity for this test
+        w.set_gravity(0.0, 0.0, 0.0);
+        w.apply_force(id, 10.0, 0.0, 0.0);
+        w.step(1.0);
+        let body = w.get_body(id).unwrap();
+        // a = F/m = 10/2 = 5; v = a*dt = 5; x = v*dt = 5
+        assert!((body.velocity.x - 5.0).abs() < 0.001);
+        assert!((body.position.x - 5.0).abs() < 0.001);
+    }
+
+    #[test]
+    fn collision_detection() {
+        let mut w = PhysicsWorld::new();
+        w.set_gravity(0.0, 0.0, 0.0);
+        let a = w.create_body(1.0, false);
+        let b = w.create_body(1.0, false);
+        // Place them at the same position → should collide (AABB unit cubes overlap)
+        w.set_position(a, 0.0, 0.0, 0.0);
+        w.set_position(b, 0.5, 0.0, 0.0); // within 1.0 unit
+        w.step(0.016);
+        assert!(!w.collisions().is_empty());
+    }
+
+    #[test]
+    fn no_collision_when_far() {
+        let mut w = PhysicsWorld::new();
+        w.set_gravity(0.0, 0.0, 0.0);
+        let a = w.create_body(1.0, false);
+        let b = w.create_body(1.0, false);
+        w.set_position(a, 0.0, 0.0, 0.0);
+        w.set_position(b, 100.0, 0.0, 0.0);
+        w.step(0.016);
+        assert!(w.collisions().is_empty());
+    }
+
+    #[test]
+    fn set_and_get_gravity() {
+        let mut w = PhysicsWorld::new();
+        w.set_gravity(0.0, -20.0, 0.0);
+        assert!((w.gravity().y - (-20.0)).abs() < f32::EPSILON);
+    }
+
+    #[test]
+    fn set_velocity_directly() {
+        let mut w = PhysicsWorld::new();
+        w.set_gravity(0.0, 0.0, 0.0);
+        let id = w.create_body(1.0, false);
+        w.set_velocity(id, 3.0, 0.0, 0.0);
+        w.step(1.0);
+        let body = w.get_body(id).unwrap();
+        assert!((body.position.x - 3.0).abs() < 0.01);
     }
 }

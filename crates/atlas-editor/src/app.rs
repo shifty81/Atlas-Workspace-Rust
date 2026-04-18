@@ -1,4 +1,4 @@
-//! [`EditorApp`] — the editor application (M5).
+//! [`EditorApp`] — the editor application (M7).
 //!
 //! Orchestrates the winit event loop, egui UI, Vulkan renderer, ECS world,
 //! and all five editor panels.  In headless mode (no GPU / no display) the
@@ -10,7 +10,7 @@ use anyhow::Result;
 use atlas_asset::AssetRegistry;
 use atlas_ecs::World;
 use atlas_renderer::{
-    ClearColor, FrameSync, RenderConfig, RenderLoop, Swapchain, SwapchainConfig, VulkanContext,
+    FrameSync, RenderConfig, RenderLoop, Swapchain, SwapchainConfig, VulkanContext,
 };
 use atlas_ui::{log_capture::LogEntry, UiContext, UiLogCapture};
 use winit::{
@@ -20,9 +20,16 @@ use winit::{
 };
 
 use crate::{
+    build_system::GameBuildSystem,
     command::CommandStack,
-    panels::{AssetBrowserPanel, ConsolePanel, OutlinerPanel, PropertiesPanel, ViewportPanel},
+    entity_commands::{DeleteEntityCommand, RenameEntityCommand, SpawnEntityCommand},
+    game_project_adapter::{EditorSession, PieState},
+    panels::{
+        AssetBrowserPanel, ConsolePanel, OutlinerEvent, OutlinerPanel,
+        PropertiesEvent, PropertiesPanel, ViewportPanel,
+    },
     scene_renderer::SceneRenderer,
+    scene_serial,
     selection::SelectionState,
 };
 
@@ -41,6 +48,9 @@ pub struct EditorApp {
     selection: SelectionState,
     commands:  CommandStack,
     scene:     SceneRenderer,
+    // Game / PIE
+    session:   EditorSession,
+    build_sys: GameBuildSystem,
     // Panels
     outliner:    OutlinerPanel,
     properties:  PropertiesPanel,
@@ -48,8 +58,12 @@ pub struct EditorApp {
     asset_panel: AssetBrowserPanel,
     console:     ConsolePanel,
     // Misc
-    log_entries: Arc<Mutex<Vec<LogEntry>>>,
-    show_about:  bool,
+    _log_entries:    Arc<Mutex<Vec<LogEntry>>>,
+    show_about:      bool,
+    /// Path of the most recently saved / opened scene file.
+    last_scene_path: Option<std::path::PathBuf>,
+    /// Toast message shown briefly in the status bar.
+    status_message:  Option<String>,
 }
 
 impl EditorApp {
@@ -109,16 +123,20 @@ impl EditorApp {
             assets: AssetRegistry::new(),
             render,
             ui,
-            selection:   SelectionState::new(),
-            commands:    CommandStack::default(),
-            scene:       SceneRenderer::new(),
-            outliner:    OutlinerPanel::new(),
-            properties:  PropertiesPanel::new(),
-            viewport:    ViewportPanel::new(),
-            asset_panel: AssetBrowserPanel::new(),
-            console:     ConsolePanel::new(log_entries.clone()),
-            log_entries,
-            show_about:  false,
+            selection:        SelectionState::new(),
+            commands:         CommandStack::default(),
+            scene:            SceneRenderer::new(),
+            session:          EditorSession::new(),
+            build_sys:        GameBuildSystem::new(),
+            outliner:         OutlinerPanel::new(),
+            properties:       PropertiesPanel::new(),
+            viewport:         ViewportPanel::new(),
+            asset_panel:      AssetBrowserPanel::new(),
+            console:          ConsolePanel::new(log_entries.clone()),
+            _log_entries:     log_entries,
+            show_about:       false,
+            last_scene_path:  None,
+            status_message:   None,
         })
     }
 
@@ -163,6 +181,9 @@ impl EditorApp {
                             WindowEvent::Resized(size) => {
                                 app.render.on_resize(size.width, size.height);
                             }
+                            WindowEvent::RedrawRequested => {
+                                app.draw_frame(&window);
+                            }
                             WindowEvent::KeyboardInput { event, .. } => {
                                 use winit::event::ElementState::Pressed;
                                 if event.state == Pressed {
@@ -176,9 +197,6 @@ impl EditorApp {
                 Event::AboutToWait => {
                     window.request_redraw();
                 }
-                Event::WindowEvent { event: WindowEvent::RedrawRequested, .. } => {
-                    app.draw_frame(&window);
-                }
                 _ => {}
             }
         })?;
@@ -189,6 +207,9 @@ impl EditorApp {
     // ── frame ────────────────────────────────────────────────────────────
 
     fn draw_frame(&mut self, window: &Window) {
+        // Poll PIE session each frame
+        self.session.poll();
+
         // 1. Begin egui frame
         let ctx = self.ui.begin_frame(window).clone();
 
@@ -199,7 +220,6 @@ impl EditorApp {
         let _output = self.ui.end_frame(window);
 
         // 4. Submit GPU frame
-        // TODO M4: pass _output.paint_jobs to Vulkan egui renderer
         if let Err(e) = self.render.draw_frame(None) {
             log::error!("[Editor] draw_frame error: {e}");
         }
@@ -207,11 +227,37 @@ impl EditorApp {
 
     fn draw_ui(&mut self, ctx: &egui::Context) {
         self.menu_bar(ctx);
-        self.outliner.show(ctx, &self.world, &mut self.selection);
-        self.properties.show(ctx, &self.world, &self.selection);
+
+        // Outliner returns events to process after the borrow ends
+        let outliner_events = self.outliner.show(ctx, &self.world, &mut self.selection);
+        for event in outliner_events {
+            match event {
+                OutlinerEvent::SpawnEntity => {
+                    self.commands.execute(Box::new(SpawnEntityCommand::new()), &mut self.world);
+                }
+                OutlinerEvent::DeleteEntity(id) => {
+                    self.commands.execute(Box::new(DeleteEntityCommand::new(id)), &mut self.world);
+                    self.selection.clear();
+                }
+            }
+        }
+
+        // Properties returns events (e.g. rename)
+        let props_events = self.properties.show(ctx, &mut self.world, &self.selection);
+        for event in props_events {
+            match event {
+                PropertiesEvent::Rename { name } => {
+                    if let Some(entity) = self.selection.primary() {
+                        self.commands.execute(
+                            Box::new(RenameEntityCommand::new(entity, name)),
+                            &mut self.world,
+                        );
+                    }
+                }
+            }
+        }
 
         // Asset browser + console share the bottom panel; console takes priority
-        // (shown if both open, they stack)
         if self.console.open {
             self.console.show(ctx);
         }
@@ -221,6 +267,13 @@ impl EditorApp {
 
         if self.viewport.open {
             self.viewport.show(ctx, &mut self.scene, &self.world, &mut self.selection);
+        }
+
+        // Status bar
+        if let Some(msg) = &self.status_message {
+            egui::TopBottomPanel::bottom("status_bar").show(ctx, |ui| {
+                ui.label(egui::RichText::new(msg).small().color(egui::Color32::from_rgb(200, 220, 200)));
+            });
         }
 
         // About dialog
@@ -244,19 +297,28 @@ impl EditorApp {
                         self.world = World::new();
                         self.selection.clear();
                         self.commands.clear();
+                        self.last_scene_path = None;
+                        self.status_message = Some("New scene created.".into());
                         ui.close_menu();
                     }
                     if ui.button("Open Scene…").clicked() {
-                        log::info!("[Editor] Open — not yet implemented");
+                        self.open_scene_dialog();
                         ui.close_menu();
                     }
-                    if ui.button("Save Scene…").clicked() {
-                        log::info!("[Editor] Save — not yet implemented");
+                    ui.separator();
+                    if ui.add_enabled(
+                        self.last_scene_path.is_some(),
+                        egui::Button::new("Save Scene"),
+                    ).clicked() {
+                        self.save_scene_to_last_path();
+                        ui.close_menu();
+                    }
+                    if ui.button("Save Scene As…").clicked() {
+                        self.save_scene_dialog();
                         ui.close_menu();
                     }
                     ui.separator();
                     if ui.button("Exit").clicked() {
-                        // The event loop will handle the actual exit via CloseRequested
                         std::process::exit(0);
                     }
                 });
@@ -282,7 +344,54 @@ impl EditorApp {
                         self.commands.redo(&mut self.world);
                         ui.close_menu();
                     }
+
+                    ui.separator();
+                    if ui.button("Spawn Entity").clicked() {
+                        self.commands.execute(Box::new(SpawnEntityCommand::new()), &mut self.world);
+                        ui.close_menu();
+                    }
                 });
+
+                // ── Play / Build toolbar ─────────────────────────────────────
+                ui.separator();
+                let is_playing = self.session.is_playing();
+                let play_label = if is_playing { "⏹ Stop" } else { "▶ Play (F5)" };
+                let play_color = if is_playing {
+                    egui::Color32::from_rgb(220, 80, 80)
+                } else {
+                    egui::Color32::from_rgb(80, 200, 80)
+                };
+
+                if ui.add(egui::Button::new(
+                    egui::RichText::new(play_label).color(play_color).strong()
+                )).clicked() {
+                    if is_playing {
+                        self.session.stop_pie();
+                    } else {
+                        self.session.start_pie(&self.world);
+                    }
+                }
+
+                let build_label = if self.build_sys.is_building() { "⟳ Building…" } else { "🔨 Build Game" };
+                if ui.add_enabled(
+                    !self.build_sys.is_building(),
+                    egui::Button::new(build_label),
+                ).clicked() {
+                    self.build_sys.start_build(false);
+                }
+
+                // Show PIE state badge
+                let pie_text = match self.session.pie_state() {
+                    PieState::Idle     => String::new(),
+                    PieState::Starting => "PIE: Starting…".into(),
+                    PieState::Running  => "PIE: Running".into(),
+                    PieState::Stopping => "PIE: Stopping…".into(),
+                    PieState::Error(e) => format!("PIE Error: {e}"),
+                };
+                if !pie_text.is_empty() {
+                    ui.separator();
+                    ui.label(egui::RichText::new(&pie_text).small().color(egui::Color32::YELLOW));
+                }
 
                 ui.menu_button("Window", |ui| {
                     ui.checkbox(&mut self.outliner.open,    "Outliner");
@@ -299,25 +408,103 @@ impl EditorApp {
                     }
                 });
 
-                // Right-side: backend indicator
+                // Right-side: backend indicator + scene path
                 ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
                     ui.label(
                         egui::RichText::new(self.render_backend_name())
                             .color(egui::Color32::GRAY)
                             .small()
                     );
+                    if let Some(path) = &self.last_scene_path {
+                        ui.separator();
+                        ui.label(
+                            egui::RichText::new(path.display().to_string())
+                                .color(egui::Color32::GRAY)
+                                .small()
+                        );
+                    }
                 });
             });
         });
     }
 
+    // ── Scene I/O helpers ─────────────────────────────────────────────────────
+
+    fn open_scene_dialog(&mut self) {
+        let path = self.last_scene_path
+            .clone()
+            .unwrap_or_else(|| std::path::PathBuf::from("scene.json"));
+        match scene_serial::load_scene(&mut self.world, &path) {
+            Ok(()) => {
+                self.selection.clear();
+                self.commands.clear();
+                self.last_scene_path = Some(path.clone());
+                self.status_message  = Some(format!("Opened: {}", path.display()));
+                log::info!("[Editor] Scene loaded from {:?}", path);
+            }
+            Err(e) => {
+                self.status_message = Some(format!("Open failed: {e}"));
+                log::error!("[Editor] Open scene failed: {e}");
+            }
+        }
+    }
+
+    fn save_scene_to_last_path(&mut self) {
+        if let Some(path) = self.last_scene_path.clone() {
+            match scene_serial::save_scene(&self.world, &path) {
+                Ok(()) => {
+                    self.status_message = Some(format!("Saved: {}", path.display()));
+                }
+                Err(e) => {
+                    self.status_message = Some(format!("Save failed: {e}"));
+                    log::error!("[Editor] Save failed: {e}");
+                }
+            }
+        }
+    }
+
+    fn save_scene_dialog(&mut self) {
+        let path = self.last_scene_path
+            .clone()
+            .unwrap_or_else(|| std::path::PathBuf::from("scene.json"));
+        match scene_serial::save_scene(&self.world, &path) {
+            Ok(()) => {
+                self.last_scene_path = Some(path.clone());
+                self.status_message  = Some(format!("Saved: {}", path.display()));
+                log::info!("[Editor] Scene saved to {:?}", path);
+            }
+            Err(e) => {
+                self.status_message = Some(format!("Save failed: {e}"));
+                log::error!("[Editor] Save scene failed: {e}");
+            }
+        }
+    }
+
+    // ── Key input ─────────────────────────────────────────────────────────────
+
     fn handle_key(&mut self, event: &winit::event::KeyEvent, _window: &Window) {
         use winit::keyboard::{Key, NamedKey};
+        let pressed = event.state == winit::event::ElementState::Pressed;
+        if !pressed { return; }
         match &event.logical_key {
-            Key::Named(NamedKey::F5)  => { log::info!("[Editor] F5 — play (stub)"); }
-            Key::Character(c)         => match c.as_str() {
+            Key::Named(NamedKey::F5) => {
+                if self.session.is_playing() {
+                    self.session.stop_pie();
+                } else {
+                    self.session.start_pie(&self.world);
+                }
+            }
+            Key::Character(c) => match c.as_str() {
                 "z" | "Z" => { self.commands.undo(&mut self.world); }
                 "y" | "Y" => { self.commands.redo(&mut self.world); }
+                // Ctrl+S — save to last path, or use save-as dialog if no path yet
+                "s" | "S" => {
+                    if self.last_scene_path.is_some() {
+                        self.save_scene_to_last_path();
+                    } else {
+                        self.save_scene_dialog();
+                    }
+                }
                 _ => {}
             }
             _ => {}

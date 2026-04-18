@@ -62,3 +62,63 @@ impl Default for Aabb {
         Self::empty()
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::Vec3;
+
+    #[test]
+    fn empty_aabb_contains_nothing() {
+        let a = Aabb::empty();
+        assert!(!a.contains(Vec3::ZERO));
+    }
+
+    #[test]
+    fn default_is_empty() {
+        let a = Aabb::default();
+        assert!(!a.contains(Vec3::ZERO));
+    }
+
+    #[test]
+    fn new_and_contains() {
+        let a = Aabb::new(Vec3::new(-1.0, -1.0, -1.0), Vec3::new(1.0, 1.0, 1.0));
+        assert!(a.contains(Vec3::ZERO));
+        assert!(a.contains(Vec3::new(1.0, 1.0, 1.0)));  // inclusive boundary
+        assert!(!a.contains(Vec3::new(2.0, 0.0, 0.0)));
+    }
+
+    #[test]
+    fn size_and_center() {
+        let a = Aabb::new(Vec3::new(0.0, 0.0, 0.0), Vec3::new(4.0, 6.0, 8.0));
+        assert_eq!(a.size(), Vec3::new(4.0, 6.0, 8.0));
+        assert_eq!(a.center(), Vec3::new(2.0, 3.0, 4.0));
+    }
+
+    #[test]
+    fn expand_point() {
+        let mut a = Aabb::empty();
+        a.expand_point(Vec3::new(1.0, 2.0, 3.0));
+        a.expand_point(Vec3::new(-1.0, 0.0, 5.0));
+        assert!(a.contains(Vec3::new(0.0, 1.0, 4.0)));
+        assert!(!a.contains(Vec3::new(2.0, 0.0, 0.0)));
+    }
+
+    #[test]
+    fn expand_aabb() {
+        let mut a = Aabb::new(Vec3::ZERO, Vec3::ONE);
+        let b = Aabb::new(Vec3::new(2.0, 2.0, 2.0), Vec3::new(3.0, 3.0, 3.0));
+        a.expand_aabb(&b);
+        assert!(a.contains(Vec3::new(2.5, 2.5, 2.5)));
+        assert!(a.contains(Vec3::ZERO));
+    }
+
+    #[test]
+    fn overlaps() {
+        let a = Aabb::new(Vec3::ZERO, Vec3::ONE);
+        let b = Aabb::new(Vec3::new(0.5, 0.5, 0.5), Vec3::new(1.5, 1.5, 1.5));
+        let c = Aabb::new(Vec3::new(2.0, 2.0, 2.0), Vec3::new(3.0, 3.0, 3.0));
+        assert!(a.overlaps(&b));
+        assert!(!a.overlaps(&c));
+    }
+}

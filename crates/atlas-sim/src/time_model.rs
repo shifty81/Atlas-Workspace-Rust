@@ -85,3 +85,72 @@ impl TimeModel {
         self.context = TimeContext::default();
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn tick_rate_and_fixed_delta() {
+        let mut m = TimeModel::new();
+        m.set_tick_rate(60);
+        assert_eq!(m.tick_rate(), 60);
+        let dt = m.context().sim.fixed_delta_time;
+        assert!((dt - 1.0 / 60.0).abs() < 1e-5);
+    }
+
+    #[test]
+    fn advance_tick_increments_counter() {
+        let mut m = TimeModel::new();
+        m.set_tick_rate(10);
+        assert_eq!(m.context().sim.tick, 0);
+        m.advance_tick();
+        m.advance_tick();
+        assert_eq!(m.context().sim.tick, 2);
+    }
+
+    #[test]
+    fn world_time_advances() {
+        let mut m = TimeModel::new();
+        m.set_tick_rate(10); // dt = 0.1s
+        m.advance_tick();
+        let elapsed = m.context().world.elapsed;
+        assert!((elapsed - 0.1).abs() < 1e-5, "elapsed={elapsed}");
+    }
+
+    #[test]
+    fn world_paused_stops_elapsed() {
+        let mut m = TimeModel::new();
+        m.set_tick_rate(10);
+        m.set_world_paused(true);
+        m.advance_tick();
+        assert!((m.context().world.elapsed - 0.0).abs() < 1e-10);
+    }
+
+    #[test]
+    fn time_dilation() {
+        let mut m = TimeModel::new();
+        m.set_tick_rate(10); // dt = 0.1s
+        m.set_world_dilation(2.0);
+        m.advance_tick();
+        let elapsed = m.context().world.elapsed;
+        // dilation 2x → 0.2s elapsed per tick
+        assert!((elapsed - 0.2).abs() < 1e-5, "elapsed={elapsed}");
+    }
+
+    #[test]
+    fn sim_elapsed_seconds() {
+        let mut m = TimeModel::new();
+        m.set_tick_rate(20); // dt = 0.05s
+        m.advance_tick(); // tick=1
+        let s = m.context().sim.elapsed_seconds();
+        assert!((s - 0.05).abs() < 1e-6, "elapsed_seconds={s}");
+    }
+
+    #[test]
+    fn presentation_alpha_set() {
+        let mut m = TimeModel::new();
+        m.set_presentation_alpha(0.75);
+        assert!((m.context().presentation.interp_alpha - 0.75).abs() < f32::EPSILON);
+    }
+}

@@ -72,3 +72,36 @@ impl Default for RenderConfig {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn render_config_default_values() {
+        let cfg = RenderConfig::default();
+        assert_eq!(cfg.width, 1280);
+        assert_eq!(cfg.height, 720);
+        assert_eq!(cfg.frames_in_flight, 2);
+        assert!(cfg.vsync);
+        assert!(!cfg.msaa);
+    }
+
+    #[test]
+    fn renderer_error_display_vulkan() {
+        let e = RendererError::Vulkan("VK_ERROR_OUT_OF_MEMORY".into());
+        assert!(e.to_string().contains("Vulkan"));
+    }
+
+    #[test]
+    fn renderer_error_display_no_gpu() {
+        let e = RendererError::NoSuitableGpu;
+        assert!(e.to_string().contains("GPU"));
+    }
+
+    #[test]
+    fn renderer_error_display_shader_load() {
+        let e = RendererError::ShaderLoad("missing.spv".into());
+        assert!(e.to_string().contains("shader"));
+    }
+}

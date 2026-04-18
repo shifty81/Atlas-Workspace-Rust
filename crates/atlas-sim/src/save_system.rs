@@ -342,3 +342,96 @@ impl SaveSystem {
         &self.chunks
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn make_sys() -> SaveSystem { SaveSystem::new() }
+
+    #[test]
+    fn save_and_load_roundtrip() {
+        let mut sys = make_sys();
+        let r = sys.save(
+            "/tmp/test_save.atlas",
+            100, 60, 0xDEAD,
+            b"ecs-payload",
+            b"aux-payload",
+            r#"{"level":"test"}"#,
+        );
+        assert_eq!(r, SaveResult::Success);
+
+        let mut sys2 = make_sys();
+        let r2 = sys2.load("/tmp/test_save.atlas");
+        assert_eq!(r2, SaveResult::Success);
+        assert_eq!(sys2.ecs_data(), b"ecs-payload");
+        assert_eq!(sys2.aux_data(), b"aux-payload");
+        assert_eq!(sys2.metadata(), r#"{"level":"test"}"#);
+        assert_eq!(sys2.header().save_tick, 100);
+        assert_eq!(sys2.header().tick_rate, 60);
+        assert_eq!(sys2.header().seed, 0xDEAD);
+    }
+
+    #[test]
+    fn load_nonexistent_returns_not_found() {
+        let mut sys = make_sys();
+        assert_eq!(sys.load("/tmp/definitely_not_there_12345.atlas"), SaveResult::FileNotFound);
+    }
+
+    #[test]
+    fn load_bad_magic_returns_invalid_format() {
+        std::fs::write("/tmp/bad_save.bin", b"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA").unwrap();
+        let mut sys = make_sys();
+        assert_eq!(sys.load("/tmp/bad_save.bin"), SaveResult::InvalidFormat);
+    }
+
+    #[test]
+    fn validate_valid_file() {
+        let mut sys = make_sys();
+        let _ = sys.save("/tmp/validate_test.atlas", 1, 30, 0, b"", b"", "");
+        assert_eq!(sys.validate("/tmp/validate_test.atlas"), SaveResult::Success);
+    }
+
+    #[test]
+    fn validate_missing_file_returns_not_found() {
+        let sys = make_sys();
+        assert_eq!(sys.validate("/tmp/no_such_save.atlas"), SaveResult::FileNotFound);
+    }
+
+    #[test]
+    fn partial_save_and_load_roundtrip() {
+        let chunks = vec![
+            ChunkSaveEntry { x: 1, y: 0, z: -1, data: vec![10, 20, 30] },
+            ChunkSaveEntry { x: 2, y: 1, z:  0, data: vec![40, 50] },
+        ];
+        let mut sys = make_sys();
+        let r = sys.save_partial("/tmp/test_partial.atlas", 200, 60, 0xBEEF, &chunks);
+        assert_eq!(r, SaveResult::Success);
+
+        let mut sys2 = make_sys();
+        let r2 = sys2.load_partial("/tmp/test_partial.atlas");
+        assert_eq!(r2, SaveResult::Success);
+        assert_eq!(sys2.chunks().len(), 2);
+        assert_eq!(sys2.chunks()[0].x, 1);
+        assert_eq!(sys2.chunks()[0].data, vec![10, 20, 30]);
+        assert_eq!(sys2.chunks()[1].y, 1);
+        assert_eq!(sys2.partial_header().save_tick, 200);
+        assert_eq!(sys2.partial_header().seed, 0xBEEF);
+    }
+
+    #[test]
+    fn partial_load_nonexistent_returns_not_found() {
+        let mut sys = make_sys();
+        assert_eq!(sys.load_partial("/tmp/nope.atlas"), SaveResult::FileNotFound);
+    }
+
+    #[test]
+    fn clear_resets_sys() {
+        let mut sys = make_sys();
+        let _ = sys.save("/tmp/clear_test.atlas", 5, 30, 0, b"x", b"", "");
+        sys.load("/tmp/clear_test.atlas");
+        sys.clear();
+        assert!(sys.ecs_data().is_empty());
+        assert!(sys.metadata().is_empty());
+    }
+}

@@ -199,3 +199,163 @@ impl AnimationGraph {
         self.compiled
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    // ── Minimal concrete node implementations ─────────────────────────────────
+
+    /// A passthrough node: copies its single Float input to its single Float output.
+    struct PassthroughNode;
+    impl AnimNode for PassthroughNode {
+        fn name(&self) -> &str { "Passthrough" }
+        fn category(&self) -> &str { "test" }
+        fn inputs(&self) -> Vec<AnimPort> {
+            vec![AnimPort { name: "in".into(), pin_type: AnimPinType::Float }]
+        }
+        fn outputs(&self) -> Vec<AnimPort> {
+            vec![AnimPort { name: "out".into(), pin_type: AnimPinType::Float }]
+        }
+        fn evaluate(&mut self, _ctx: &AnimContext, inputs: &[AnimValue], outputs: &mut Vec<AnimValue>) {
+            if let Some(v) = inputs.first() {
+                outputs[0] = v.clone();
+            }
+        }
+    }
+
+    /// A constant source node: always emits a fixed float value.
+    struct ConstantNode(f32);
+    impl AnimNode for ConstantNode {
+        fn name(&self) -> &str { "Constant" }
+        fn category(&self) -> &str { "test" }
+        fn inputs(&self) -> Vec<AnimPort> { vec![] }
+        fn outputs(&self) -> Vec<AnimPort> {
+            vec![AnimPort { name: "value".into(), pin_type: AnimPinType::Float }]
+        }
+        fn evaluate(&mut self, _ctx: &AnimContext, _inputs: &[AnimValue], outputs: &mut Vec<AnimValue>) {
+            outputs[0] = AnimValue { pin_type: AnimPinType::Float, data: vec![self.0] };
+        }
+    }
+
+    /// An adder node: sums the first f32 of each input.
+    struct AdderNode;
+    impl AnimNode for AdderNode {
+        fn name(&self) -> &str { "Adder" }
+        fn category(&self) -> &str { "test" }
+        fn inputs(&self) -> Vec<AnimPort> {
+            vec![
+                AnimPort { name: "a".into(), pin_type: AnimPinType::Float },
+                AnimPort { name: "b".into(), pin_type: AnimPinType::Float },
+            ]
+        }
+        fn outputs(&self) -> Vec<AnimPort> {
+            vec![AnimPort { name: "sum".into(), pin_type: AnimPinType::Float }]
+        }
+        fn evaluate(&mut self, _ctx: &AnimContext, inputs: &[AnimValue], outputs: &mut Vec<AnimValue>) {
+            let a = inputs.first().and_then(|v| v.data.first()).copied().unwrap_or(0.0);
+            let b = inputs.get(1).and_then(|v| v.data.first()).copied().unwrap_or(0.0);
+            outputs[0] = AnimValue { pin_type: AnimPinType::Float, data: vec![a + b] };
+        }
+    }
+
+    fn default_ctx() -> AnimContext { AnimContext::default() }
+
+    #[test]
+    fn single_node_compile_execute() {
+        let mut g = AnimationGraph::new();
+        let id = g.add_node(Box::new(ConstantNode(7.0)));
+        assert_eq!(g.node_count(), 1);
+        assert!(!g.is_compiled());
+        assert!(g.compile());
+        assert!(g.is_compiled());
+        assert!(g.execute(&default_ctx()));
+        let out = g.get_output(id, 0).unwrap();
+        assert_eq!(out.data, vec![7.0]);
+    }
+
+    #[test]
+    fn chained_passthrough() {
+        let mut g = AnimationGraph::new();
+        let src = g.add_node(Box::new(ConstantNode(42.0)));
+        let pass = g.add_node(Box::new(PassthroughNode));
+        g.add_edge(AnimEdge { from_node: src, from_port: 0, to_node: pass, to_port: 0 });
+        assert!(g.compile());
+        assert!(g.execute(&default_ctx()));
+        let out = g.get_output(pass, 0).unwrap();
+        assert_eq!(out.data, vec![42.0]);
+    }
+
+    #[test]
+    fn adder_node() {
+        let mut g = AnimationGraph::new();
+        let a = g.add_node(Box::new(ConstantNode(3.0)));
+        let b = g.add_node(Box::new(ConstantNode(4.0)));
+        let adder = g.add_node(Box::new(AdderNode));
+        g.add_edge(AnimEdge { from_node: a, from_port: 0, to_node: adder, to_port: 0 });
+        g.add_edge(AnimEdge { from_node: b, from_port: 0, to_node: adder, to_port: 1 });
+        assert!(g.compile());
+        g.execute(&default_ctx());
+        let out = g.get_output(adder, 0).unwrap();
+        assert_eq!(out.data, vec![7.0]);
+    }
+
+    #[test]
+    fn remove_node_invalidates_compile() {
+        let mut g = AnimationGraph::new();
+        let id = g.add_node(Box::new(ConstantNode(1.0)));
+        g.compile();
+        assert!(g.is_compiled());
+        g.remove_node(id);
+        assert!(!g.is_compiled());
+        assert_eq!(g.node_count(), 0);
+    }
+
+    #[test]
+    fn remove_edge_invalidates_compile() {
+        let mut g = AnimationGraph::new();
+        let src = g.add_node(Box::new(ConstantNode(1.0)));
+        let pass = g.add_node(Box::new(PassthroughNode));
+        let edge = AnimEdge { from_node: src, from_port: 0, to_node: pass, to_port: 0 };
+        g.add_edge(edge.clone());
+        g.compile();
+        assert!(g.is_compiled());
+        g.remove_edge(&edge);
+        assert!(!g.is_compiled());
+    }
+
+    #[test]
+    fn cycle_detection() {
+        // A → B → A creates a cycle; compile should fail
+        let mut g = AnimationGraph::new();
+        let a = g.add_node(Box::new(PassthroughNode));
+        let b = g.add_node(Box::new(PassthroughNode));
+        g.add_edge(AnimEdge { from_node: a, from_port: 0, to_node: b, to_port: 0 });
+        g.add_edge(AnimEdge { from_node: b, from_port: 0, to_node: a, to_port: 0 });
+        assert!(!g.compile());
+    }
+
+    #[test]
+    fn execute_without_compile_returns_false() {
+        let mut g = AnimationGraph::new();
+        g.add_node(Box::new(ConstantNode(1.0)));
+        // Never compiled
+        assert!(!g.execute(&default_ctx()));
+    }
+
+    #[test]
+    fn empty_graph_compiles_and_executes() {
+        let mut g = AnimationGraph::new();
+        assert!(g.compile());
+        assert!(g.execute(&default_ctx()));
+    }
+
+    #[test]
+    fn get_output_before_execute_is_none() {
+        let mut g = AnimationGraph::new();
+        let id = g.add_node(Box::new(ConstantNode(5.0)));
+        g.compile();
+        // Not yet executed
+        assert!(g.get_output(id, 0).is_none());
+    }
+}

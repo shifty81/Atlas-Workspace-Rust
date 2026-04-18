@@ -1,0 +1,25 @@
+[package]
+name        = "atlas-game"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+
+[[bin]]
+name = "atlas-game"
+path = "src/main.rs"
+
+[dependencies]
+atlas-core.workspace    = true
+atlas-math.workspace    = true
+atlas-ecs.workspace     = true
+atlas-world.workspace   = true
+atlas-renderer.workspace = true
+atlas-input.workspace   = true
+atlas-physics.workspace = true
+atlas-sim.workspace     = true
+atlas-sound.workspace   = true
+atlas-ai.workspace      = true
+atlas-animation.workspace = true
+log.workspace           = true
+anyhow.workspace        = true
