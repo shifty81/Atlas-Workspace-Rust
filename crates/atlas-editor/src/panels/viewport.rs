@@ -1,21 +1,26 @@
-//! Scene Viewport panel (M5 / M6).
+//! Scene Viewport panel (M6).
 
 use atlas_ecs::World;
 
 use crate::{scene_renderer::SceneRenderer, selection::SelectionState};
 
 pub struct ViewportPanel {
-    pub open:      bool,
-    /// Drag state for orbit camera.
-    drag_active:   bool,
-    last_mouse:    (f32, f32),
-    alt_held:      bool,
-    middle_held:   bool,
+    pub open:    bool,
+    drag_active: bool,
+    last_mouse:  egui::Pos2,
+    alt_held:    bool,
+    middle_held: bool,
 }
 
 impl ViewportPanel {
     pub fn new() -> Self {
-        Self { open: true, drag_active: false, last_mouse: (0.0, 0.0), alt_held: false, middle_held: false }
+        Self {
+            open:        true,
+            drag_active: false,
+            last_mouse:  egui::Pos2::ZERO,
+            alt_held:    false,
+            middle_held: false,
+        }
     }
 
     /// Draw the panel.  The scene texture (if available) is displayed; otherwise
@@ -38,13 +43,17 @@ impl ViewportPanel {
                 renderer.resize(w, h);
             }
 
+            // Track modifier keys
+            self.alt_held    = ui.input(|i| i.modifiers.alt);
+            self.middle_held = ui.input(|i| i.pointer.button_down(egui::PointerButton::Middle));
+
             match renderer.render(world) {
                 Some(tex_id) => {
                     // Display scene texture
                     ui.image(egui::load::SizedTexture::new(tex_id, available));
                 }
                 None => {
-                    // M5 placeholder
+                    // Placeholder — click-and-drag controls the orbit camera
                     let (rect, response) = ui.allocate_exact_size(
                         available,
                         egui::Sense::click_and_drag(),
@@ -53,23 +62,53 @@ impl ViewportPanel {
                     ui.painter().text(
                         rect.center(),
                         egui::Align2::CENTER_CENTER,
-                        "Scene Viewport\n(GPU rendering initialises in M6)",
+                        "Scene Viewport\n(GPU rendering initialises in M7)",
                         egui::FontId::proportional(14.0),
                         egui::Color32::GRAY,
                     );
 
-                    // Orbit controls (M6 wires these to the GPU camera)
-                    if response.dragged() {
+                    // Orbit (left-drag or alt+drag)
+                    if response.drag_started() {
+                        self.drag_active = true;
+                        if let Some(pos) = response.interact_pointer_pos() {
+                            self.last_mouse = pos;
+                        }
+                    }
+                    if response.drag_stopped() {
+                        self.drag_active = false;
+                    }
+                    if self.drag_active && response.dragged() {
                         let delta = response.drag_delta();
-                        renderer.orbit.orbit(delta.x, delta.y);
+                        if self.middle_held {
+                            renderer.orbit.pan(delta.x, delta.y);
+                        } else if self.alt_held {
+                            renderer.orbit.orbit(delta.x, delta.y);
+                        } else {
+                            renderer.orbit.orbit(delta.x, delta.y);
+                        }
+                        if let Some(pos) = response.interact_pointer_pos() {
+                            self.last_mouse = pos;
+                        }
                     }
-                    if let Some(scroll) = ui.input(|i| {
-                        i.events.iter().find_map(|e| {
-                            if let egui::Event::Scroll(s) = e { Some(s.y) } else { None }
-                        })
-                    }) {
-                        renderer.orbit.zoom(scroll);
+
+                    // Zoom via scroll
+                    let scroll = ui.input(|i| i.raw_scroll_delta.y);
+                    if scroll.abs() > 0.0 {
+                        renderer.orbit.zoom(scroll * 0.1);
                     }
+
+                    // Show camera info
+                    let cam = &renderer.orbit;
+                    ui.painter().text(
+                        egui::Pos2::new(rect.left() + 8.0, rect.bottom() - 24.0),
+                        egui::Align2::LEFT_BOTTOM,
+                        format!(
+                            "Yaw: {:.1}°  Pitch: {:.1}°  Dist: {:.1}",
+                            cam.yaw_deg, cam.pitch_deg, cam.distance
+                        ),
+                        egui::FontId::monospace(11.0),
+                        egui::Color32::from_rgb(180, 180, 180),
+                    );
                 }
             }
         });

@@ -1,4 +1,4 @@
-//! [`EditorApp`] — the editor application (M5).
+//! [`EditorApp`] — the editor application (M6).
 //!
 //! Orchestrates the winit event loop, egui UI, Vulkan renderer, ECS world,
 //! and all five editor panels.  In headless mode (no GPU / no display) the
@@ -10,7 +10,7 @@ use anyhow::Result;
 use atlas_asset::AssetRegistry;
 use atlas_ecs::World;
 use atlas_renderer::{
-    ClearColor, FrameSync, RenderConfig, RenderLoop, Swapchain, SwapchainConfig, VulkanContext,
+    FrameSync, RenderConfig, RenderLoop, Swapchain, SwapchainConfig, VulkanContext,
 };
 use atlas_ui::{log_capture::LogEntry, UiContext, UiLogCapture};
 use winit::{
@@ -20,8 +20,11 @@ use winit::{
 };
 
 use crate::{
+    build_system::GameBuildSystem,
     command::CommandStack,
-    panels::{AssetBrowserPanel, ConsolePanel, OutlinerPanel, PropertiesPanel, ViewportPanel},
+    entity_commands::{DeleteEntityCommand, SpawnEntityCommand},
+    game_project_adapter::{EditorSession, PieState},
+    panels::{AssetBrowserPanel, ConsolePanel, OutlinerEvent, OutlinerPanel, PropertiesPanel, ViewportPanel},
     scene_renderer::SceneRenderer,
     selection::SelectionState,
 };
@@ -41,6 +44,9 @@ pub struct EditorApp {
     selection: SelectionState,
     commands:  CommandStack,
     scene:     SceneRenderer,
+    // Game / PIE
+    session:   EditorSession,
+    build_sys: GameBuildSystem,
     // Panels
     outliner:    OutlinerPanel,
     properties:  PropertiesPanel,
@@ -48,8 +54,8 @@ pub struct EditorApp {
     asset_panel: AssetBrowserPanel,
     console:     ConsolePanel,
     // Misc
-    log_entries: Arc<Mutex<Vec<LogEntry>>>,
-    show_about:  bool,
+    _log_entries: Arc<Mutex<Vec<LogEntry>>>,
+    show_about:   bool,
 }
 
 impl EditorApp {
@@ -112,13 +118,15 @@ impl EditorApp {
             selection:   SelectionState::new(),
             commands:    CommandStack::default(),
             scene:       SceneRenderer::new(),
+            session:     EditorSession::new(),
+            build_sys:   GameBuildSystem::new(),
             outliner:    OutlinerPanel::new(),
             properties:  PropertiesPanel::new(),
             viewport:    ViewportPanel::new(),
             asset_panel: AssetBrowserPanel::new(),
             console:     ConsolePanel::new(log_entries.clone()),
-            log_entries,
-            show_about:  false,
+            _log_entries: log_entries,
+            show_about:   false,
         })
     }
 
@@ -163,6 +171,9 @@ impl EditorApp {
                             WindowEvent::Resized(size) => {
                                 app.render.on_resize(size.width, size.height);
                             }
+                            WindowEvent::RedrawRequested => {
+                                app.draw_frame(&window);
+                            }
                             WindowEvent::KeyboardInput { event, .. } => {
                                 use winit::event::ElementState::Pressed;
                                 if event.state == Pressed {
@@ -176,9 +187,6 @@ impl EditorApp {
                 Event::AboutToWait => {
                     window.request_redraw();
                 }
-                Event::WindowEvent { event: WindowEvent::RedrawRequested, .. } => {
-                    app.draw_frame(&window);
-                }
                 _ => {}
             }
         })?;
@@ -189,6 +197,9 @@ impl EditorApp {
     // ── frame ────────────────────────────────────────────────────────────
 
     fn draw_frame(&mut self, window: &Window) {
+        // Poll PIE session each frame
+        self.session.poll();
+
         // 1. Begin egui frame
         let ctx = self.ui.begin_frame(window).clone();
 
@@ -199,7 +210,6 @@ impl EditorApp {
         let _output = self.ui.end_frame(window);
 
         // 4. Submit GPU frame
-        // TODO M4: pass _output.paint_jobs to Vulkan egui renderer
         if let Err(e) = self.render.draw_frame(None) {
             log::error!("[Editor] draw_frame error: {e}");
         }
@@ -207,8 +217,22 @@ impl EditorApp {
 
     fn draw_ui(&mut self, ctx: &egui::Context) {
         self.menu_bar(ctx);
-        self.outliner.show(ctx, &self.world, &mut self.selection);
-        self.properties.show(ctx, &self.world, &self.selection);
+
+        // Outliner returns events to process after the borrow ends
+        let outliner_events = self.outliner.show(ctx, &self.world, &mut self.selection);
+        for event in outliner_events {
+            match event {
+                OutlinerEvent::SpawnEntity => {
+                    self.commands.execute(Box::new(SpawnEntityCommand::new()), &mut self.world);
+                }
+                OutlinerEvent::DeleteEntity(id) => {
+                    self.commands.execute(Box::new(DeleteEntityCommand::new(id)), &mut self.world);
+                    self.selection.clear();
+                }
+            }
+        }
+
+        self.properties.show(ctx, &mut self.world, &self.selection);
 
         // Asset browser + console share the bottom panel; console takes priority
         // (shown if both open, they stack)
@@ -256,7 +280,6 @@ impl EditorApp {
                     }
                     ui.separator();
                     if ui.button("Exit").clicked() {
-                        // The event loop will handle the actual exit via CloseRequested
                         std::process::exit(0);
                     }
                 });
@@ -282,7 +305,54 @@ impl EditorApp {
                         self.commands.redo(&mut self.world);
                         ui.close_menu();
                     }
+
+                    ui.separator();
+                    if ui.button("Spawn Entity").clicked() {
+                        self.commands.execute(Box::new(SpawnEntityCommand::new()), &mut self.world);
+                        ui.close_menu();
+                    }
                 });
+
+                // ── Play / Build toolbar ─────────────────────────────────────
+                ui.separator();
+                let is_playing = self.session.is_playing();
+                let play_label = if is_playing { "⏹ Stop" } else { "▶ Play (F5)" };
+                let play_color = if is_playing {
+                    egui::Color32::from_rgb(220, 80, 80)
+                } else {
+                    egui::Color32::from_rgb(80, 200, 80)
+                };
+
+                if ui.add(egui::Button::new(
+                    egui::RichText::new(play_label).color(play_color).strong()
+                )).clicked() {
+                    if is_playing {
+                        self.session.stop_pie();
+                    } else {
+                        self.session.start_pie(&self.world);
+                    }
+                }
+
+                let build_label = if self.build_sys.is_building() { "⟳ Building…" } else { "🔨 Build Game" };
+                if ui.add_enabled(
+                    !self.build_sys.is_building(),
+                    egui::Button::new(build_label),
+                ).clicked() {
+                    self.build_sys.start_build(false);
+                }
+
+                // Show PIE state badge
+                let pie_text = match self.session.pie_state() {
+                    PieState::Idle     => String::new(),
+                    PieState::Starting => "PIE: Starting…".into(),
+                    PieState::Running  => "PIE: Running".into(),
+                    PieState::Stopping => "PIE: Stopping…".into(),
+                    PieState::Error(e) => format!("PIE Error: {e}"),
+                };
+                if !pie_text.is_empty() {
+                    ui.separator();
+                    ui.label(egui::RichText::new(&pie_text).small().color(egui::Color32::YELLOW));
+                }
 
                 ui.menu_button("Window", |ui| {
                     ui.checkbox(&mut self.outliner.open,    "Outliner");
@@ -314,8 +384,14 @@ impl EditorApp {
     fn handle_key(&mut self, event: &winit::event::KeyEvent, _window: &Window) {
         use winit::keyboard::{Key, NamedKey};
         match &event.logical_key {
-            Key::Named(NamedKey::F5)  => { log::info!("[Editor] F5 — play (stub)"); }
-            Key::Character(c)         => match c.as_str() {
+            Key::Named(NamedKey::F5) => {
+                if self.session.is_playing() {
+                    self.session.stop_pie();
+                } else {
+                    self.session.start_pie(&self.world);
+                }
+            }
+            Key::Character(c) => match c.as_str() {
                 "z" | "Z" => { self.commands.undo(&mut self.world); }
                 "y" | "Y" => { self.commands.redo(&mut self.world); }
                 _ => {}

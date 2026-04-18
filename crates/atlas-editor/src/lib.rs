@@ -6,19 +6,31 @@
 //!
 //! | Module | Contents |
 //! |--------|----------|
-//! | [`app`]            | [`EditorApp`] — main event loop + panel orchestration |
-//! | [`command`]        | [`EditorCommand`] trait + [`CommandStack`] (Ctrl-Z / Ctrl-Shift-Z) |
-//! | [`selection`]      | [`SelectionState`] — which entities are selected |
-//! | [`scene_renderer`] | [`SceneRenderer`] — renders the ECS world to an offscreen texture |
-//! | [`panels`]         | Five editor panels |
+//! | [`app`]                    | [`EditorApp`] — main event loop + panel orchestration |
+//! | [`build_system`]           | [`GameBuildSystem`] — background cargo build of atlas-game |
+//! | [`command`]                | [`EditorCommand`] trait + [`CommandStack`] (Ctrl-Z / Ctrl-Shift-Z) |
+//! | [`entity_commands`]        | [`SpawnEntityCommand`], [`DeleteEntityCommand`] |
+//! | [`game_project_adapter`]   | [`GameProjectAdapter`] trait + [`EditorSession`] (PIE) |
+//! | [`panels`]                 | Five editor panels |
+//! | [`scene_renderer`]         | [`SceneRenderer`] — renders the ECS world to an offscreen texture |
+//! | [`selection`]              | [`SelectionState`] — which entities are selected |
 
 pub mod app;
+pub mod build_system;
 pub mod command;
+pub mod entity_commands;
+pub mod game_project_adapter;
 pub mod panels;
 pub mod scene_renderer;
 pub mod selection;
 
 pub use app::EditorApp;
+pub use build_system::{GameBuildSystem, BuildStatus};
 pub use command::{EditorCommand, CommandStack};
+pub use entity_commands::{SpawnEntityCommand, DeleteEntityCommand};
+pub use game_project_adapter::{
+    GameProjectAdapter, EditorSession, PieState,
+    StandaloneGameAdapter,
+};
 pub use scene_renderer::SceneRenderer;
 pub use selection::SelectionState;
