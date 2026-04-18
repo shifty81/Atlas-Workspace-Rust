@@ -10,9 +10,14 @@
 //!
 //! ```text
 //! novaforge-game
-//!   module.rs    — NovaForgeGameModule (implements atlas-game::GameModule)
-//!   adapter.rs   — NovaForgeAdapter (implements the editor IGameProjectAdapter boundary)
-//!   systems/     — Game systems (ported from Nova-Forge / Veloren)
+//!   module.rs          — NovaForgeGameModule (implements atlas-game::GameModule)
+//!   adapter.rs         — NovaForgeAdapter (implements atlas-editor::GameProjectAdapter)
+//!   bootstrap.rs       — NovaForgeProjectBootstrap (.atlas manifest validation)
+//!   catalog.rs         — AssetCatalog (filesystem scan of novaforge-assets/)
+//!   data_registry.rs   — DataRegistry (JSON data files from Data/)
+//!   document_registry.rs — DocumentRegistry (open document tracking)
+//!   panels/            — Six gameplay editor panels (M16 stubs)
+//!   systems/           — Game systems (ported from Nova-Forge / Veloren)
 //! ```
 //!
 //! ## License boundary
@@ -20,13 +25,26 @@
 //! Atlas Workspace core crates (`atlas-*`) are **MIT OR Apache-2.0** and must
 //! **never** depend on this crate.  Communication between the editor and NovaForge
 //! game logic flows exclusively through the `atlas-game::GameModule` trait and
-//! the `IGameProjectAdapter` trait in `atlas-editor`.
+//! the `atlas-editor::GameProjectAdapter` trait.
 //!
 //! [`LICENSES/GPL-3.0`]: ../../LICENSES/GPL-3.0
 
-pub mod module;
 pub mod adapter;
+pub mod bootstrap;
+pub mod catalog;
+pub mod data_registry;
+pub mod document_registry;
+pub mod module;
+pub mod panels;
 pub mod systems;
 
-pub use module::{NovaForgeGameModule, NovaForgeConfig};
 pub use adapter::NovaForgeAdapter;
+pub use bootstrap::{NovaForgeProjectBootstrap, BootstrapResult};
+pub use catalog::{AssetCatalog, AssetEntry};
+pub use data_registry::DataRegistry;
+pub use document_registry::{DocumentRegistry, DocumentTypeDescriptor, DocumentHandle};
+pub use module::{NovaForgeGameModule, NovaForgeConfig};
+pub use panels::{
+    CharacterRulesPanel, EconomyPanel, InventoryRulesPanel,
+    MissionRulesPanel, ProgressionPanel, ShopPanel,
+};

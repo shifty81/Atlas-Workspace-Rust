@@ -9,17 +9,17 @@
 
 ## COMPLETED WORK
 
-What exists in Rust today (M15 — 2026-04-18):
+What exists in Rust today (M16 — 2026-04-18):
 
 - **Cargo workspace**: 23 crates (22 atlas-* + novaforge-game), all compile cleanly
 - **atlas-core / atlas-math / atlas-ecs / atlas-pcg / atlas-world / atlas-workspace**: fully implemented
 - **atlas-renderer**: Vulkan surface via `ash-window` wired, full acquire→present pipeline, GBuffer, PBR material, shadow maps, post-process, instanced renderer, spatial hash, `TerrainMesh::from_heightmap()`
-- **atlas-editor**: app shell, 5 panels, CommandStack, SelectionState, entity commands, GameBuildSystem, GameProjectAdapter, ViewportHost, ViewportRegistry, NotificationCenter, LayoutPersistence, PropertyGrid
+- **atlas-editor**: app shell, 5 panels, CommandStack, SelectionState, entity commands, GameBuildSystem, GameProjectAdapter, ViewportHost, ViewportRegistry, NotificationCenter, LayoutPersistence, PropertyGrid, **AtlasManifest, ProjectRegistry, IEditorTool/IEditorPanel/ToolRegistry** (M16)
 - **atlas-game**: GameRunner, NullGameModule, GameModule trait
 - **atlas-asset**: AssetRegistry, AssetMeta, AssetGraph + `NOVAFORGE_ASSETS_DIR` load path
 - **atlas-ui**: ScrollList (virtual scroll), TreeView, UiLogCapture
-- **novaforge-game** (new, GPL v3.0): NovaForgeGameModule stub + NovaForgeAdapter implementing IGameProjectAdapter
-- **560 passing unit tests** across the workspace
+- **novaforge-game** (GPL v3.0): NovaForgeGameModule + **NovaForgeAdapter (implements GameProjectAdapter)** + **NovaForgeProjectBootstrap + AssetCatalog + DataRegistry + DocumentRegistry + 6 gameplay panels** (M16)
+- **698 passing unit tests** across the workspace
 - **C++ Blueprint preserved**: `Source/`, `NovaForge/` are the specification for the Rust port
 
 ---
@@ -99,8 +99,9 @@ What exists in Rust today (M15 — 2026-04-18):
 - [x] `WorkspaceShell` struct owning `ToolRegistry`, `PanelRegistry`, `EventBus`
 - [x] `EditorApp` (top-level egui App)
 - [x] Panel layout persistence (JSON) — `LayoutPersistence`, `PanelLayout`, `DockSide`
-- [ ] `IEditorTool` trait (render, update, title, id)
-- [ ] `IEditorPanel` trait (reusable panel interface)
+- [x] `IEditorTool` trait (update, id, title) — M16
+- [x] `IEditorPanel` trait (panel_id, panel_title) — M16
+- [x] `ToolRegistry` (register, activate, tick_active) — M16
 - [ ] DockSpace layout manager (egui docking)
 
 ### Milestone 1.2 — Shared Panels ✅ LARGELY COMPLETE
@@ -119,10 +120,10 @@ What exists in Rust today (M15 — 2026-04-18):
 - [ ] Command palette (Ctrl+P, fuzzy search)
 - [ ] Keyboard shortcut binding
 
-### Milestone 1.4 — Project Open Flow
+### Milestone 1.4 — Project Open Flow ✅ PARTIALLY COMPLETE (M16)
 
-- [ ] `.atlas` manifest parser (JSON)
-- [ ] `ProjectRegistry`, `ProjectLoadContract`
+- [x] `.atlas` manifest parser (JSON) — `AtlasManifest`, `AtlasManifestRoots`, `AtlasManifestRuntime` (M16)
+- [x] `ProjectRegistry`, `LoadedProject` (M16)
 - [ ] Recent projects + file picker
 - [ ] New project wizard
 
@@ -146,19 +147,20 @@ What exists in Rust today (M15 — 2026-04-18):
 - [x] `novaforge-assets/README.md` — explains local asset store + re-fetch instructions
 - [x] `NOVAFORGE_ASSETS_DIR` environment variable support in `atlas-asset`
 
-### Milestone 2.1 — IGameProjectAdapter (Rust) ✅ PARTIALLY COMPLETE
+### Milestone 2.1 — IGameProjectAdapter (Rust) ✅ COMPLETE (M16)
 
-- [x] `IGameProjectAdapter` trait (`GameProjectAdapter` in `game_project_adapter.rs`)
+- [x] `GameProjectAdapter` trait (`game_project_adapter.rs`) with `initialize_project` + `tool_descriptors`
 - [x] `EditorSession`, `PieState` — Play-In-Editor session management
-- [x] `NovaForgeAdapter` stub implementing `IGameProjectAdapter`
-- [ ] `ProjectSystemsTool` (adapter host with tool panel registration)
+- [x] `NovaForgeAdapter` implementing `GameProjectAdapter` fully (M16)
+- [x] `ToolDescriptor` returned by adapter for tool registration (M16)
+- [ ] `ProjectSystemsTool` (adapter host panel in editor UI)
 
-### Milestone 2.2 — NovaForge Project Bootstrap (Rust)
+### Milestone 2.2 — NovaForge Project Bootstrap (Rust) ✅ COMPLETE (M16)
 
-- [ ] `NovaForgeProjectBootstrap` (validates `.atlas`, loads content roots)
-- [ ] `AssetCatalog` (scans `novaforge-assets/`, registers assets with UUID)
-- [ ] `DataRegistry` (loads JSON from `Data/`)
-- [ ] `DocumentRegistry`
+- [x] `NovaForgeProjectBootstrap` (validates `.atlas`, resolves content roots) (M16)
+- [x] `AssetCatalog` (scans novaforge-assets/, registers assets) (M16)
+- [x] `DataRegistry` (loads JSON files from `Data/`) (M16)
+- [x] `DocumentRegistry` (type registry + open document tracking) (M16)
 
 ### Milestone 2.3 — NovaForge Document Types (Rust)
 
@@ -170,14 +172,15 @@ What exists in Rust today (M15 — 2026-04-18):
 - [ ] `DataTableDocument` (columns, rows, cells, CSV export)
 - [ ] `BuildTaskGraph` (DAG, topological order, build log)
 
-### Milestone 2.4 — NovaForge Gameplay Panels (Rust)
+### Milestone 2.4 — NovaForge Gameplay Panels (Rust) ✅ DATA MODEL COMPLETE (M16)
 
-- [ ] EconomyPanel (currency definitions, pricing rules)
-- [ ] InventoryRulesPanel (slot layout, storage rules)
-- [ ] ShopPanel (store listings, purchase conditions)
-- [ ] MissionRulesPanel (objectives, chains, rewards)
-- [ ] ProgressionPanel (XP curve, skill unlock tree)
-- [ ] CharacterRulesPanel (class presets, stat caps)
+- [x] EconomyPanel — currency definitions, pricing rules, validation (M16)
+- [x] InventoryRulesPanel — slot layout, storage rules, validation (M16)
+- [x] ShopPanel — store listings, purchase conditions, validation (M16)
+- [x] MissionRulesPanel — objectives, chains, rewards, validation (M16)
+- [x] ProgressionPanel — XP curve, skill unlock tree, validation (M16)
+- [x] CharacterRulesPanel — class presets, stat caps, validation (M16)
+- [ ] egui rendering for all 6 panels (M17)
 
 ### Milestone 2.5 — NovaForge ECS Integration (Rust)
 

@@ -1,7 +1,11 @@
-//! [`GameProjectAdapter`] — Play-In-Editor (PIE) integration.
+//! [`GameProjectAdapter`] — Play-In-Editor (PIE) and project integration.
 //!
 //! The adapter trait decouples the editor from any specific game project.
 //! An [`EditorSession`] wraps the active adapter and tracks PIE state.
+//!
+//! Game-specific adapters (e.g. `NovaForgeAdapter` in the `novaforge-game`
+//! crate) implement this trait to participate in project open/close events
+//! and to register their custom tool descriptors with the editor.
 
 use std::{
     process::{Child, Command, Stdio},
@@ -9,6 +13,11 @@ use std::{
 };
 
 use atlas_ecs::World;
+
+use crate::{
+    manifest::AtlasManifest,
+    tool_registry::ToolDescriptor,
+};
 
 // ── PIE state ────────────────────────────────────────────────────────────────
 
@@ -31,12 +40,43 @@ pub enum PieState {
 
 /// Adapter trait between the editor and a game project.
 ///
-/// Implement this to integrate project-specific PIE behavior.
-/// The default implementation (`StandaloneGameAdapter`) launches the
-/// `atlas-game` binary as a subprocess.
+/// Implement this to integrate project-specific PIE behavior and to supply
+/// custom tool descriptors that the editor should register when this project
+/// is opened.
+///
+/// The default implementations for [`initialize_project`] and
+/// [`tool_descriptors`] are no-ops so existing adapters do not need to be
+/// updated.
+///
+/// [`initialize_project`]: GameProjectAdapter::initialize_project
+/// [`tool_descriptors`]: GameProjectAdapter::tool_descriptors
 pub trait GameProjectAdapter: Send + Sync {
     /// Return the display name of the project.
     fn project_name(&self) -> &str;
+
+    /// Called when the user opens a project via the editor.
+    ///
+    /// The adapter may scan assets, load data files, and prepare any
+    /// game-specific state.  Return an error string if initialization fails
+    /// (the editor will show it in the console).
+    ///
+    /// The default implementation is a no-op (always succeeds).
+    fn initialize_project(&mut self, manifest: &AtlasManifest) -> Result<(), String> {
+        let _ = manifest;
+        Ok(())
+    }
+
+    /// Return descriptors for game-specific tools this adapter provides.
+    ///
+    /// Called by the editor once after [`initialize_project`] succeeds.
+    /// The editor's [`ToolRegistry`] will register the corresponding tools.
+    ///
+    /// The default implementation returns an empty list.
+    ///
+    /// [`ToolRegistry`]: crate::tool_registry::ToolRegistry
+    fn tool_descriptors(&self) -> Vec<ToolDescriptor> {
+        vec![]
+    }
 
     /// Called when the user starts PIE (F5).  Receives a snapshot of the
     /// current editor world so the game process can pre-load the scene.
@@ -163,6 +203,16 @@ impl EditorSession {
             pie_state: PieState::Idle,
             build_log: Arc::new(Mutex::new(String::new())),
         }
+    }
+
+    /// Initialise the adapter for a newly opened project.
+    pub fn initialize_project(&mut self, manifest: &AtlasManifest) -> Result<(), String> {
+        self.adapter.initialize_project(manifest)
+    }
+
+    /// Return tool descriptors from the current adapter.
+    pub fn tool_descriptors(&self) -> Vec<ToolDescriptor> {
+        self.adapter.tool_descriptors()
     }
 
     /// Start a PIE session.

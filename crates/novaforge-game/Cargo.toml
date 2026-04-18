@@ -13,8 +13,10 @@ atlas-core.workspace   = true
 atlas-ecs.workspace    = true
 atlas-game             = { path = "../atlas-game" }
 atlas-asset.workspace  = true
+atlas-editor.workspace = true
 log.workspace          = true
 serde.workspace        = true
 serde_json.workspace   = true
+uuid.workspace         = true
 
 [dev-dependencies]
