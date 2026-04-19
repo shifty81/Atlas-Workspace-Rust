@@ -182,6 +182,31 @@ impl NovaForgePreviewWorld {
         self.selected_id = INVALID_ENTITY_ID;
         self.dirty = true;
     }
+
+    /// Returns slice of all entities.
+    pub fn entities(&self) -> &[PreviewEntity] { &self.entities }
+
+    /// Returns selected entity reference, or None.
+    pub fn selected_entity(&self) -> Option<&PreviewEntity> {
+        if self.selected_id == INVALID_ENTITY_ID { return None; }
+        self.find_entity(self.selected_id)
+    }
+
+    /// Returns the selected entity ID (alias for selected_id for naming parity with C++).
+    pub fn selected_entity_id(&self) -> EntityId { self.selected_id }
+
+    /// Remove all entities and reset selection (alias for clear() matching C++ clearEntities()).
+    pub fn clear_entities(&mut self) { self.clear(); }
+
+    /// Set mesh tag (alias for set_mesh_tag matching C++ setMesh()).
+    pub fn set_mesh(&mut self, id: EntityId, tag: impl Into<String>) -> bool {
+        self.set_mesh_tag(id, tag)
+    }
+
+    /// Set material tag (alias for set_material_tag matching C++ setMaterial()).
+    pub fn set_material(&mut self, id: EntityId, tag: impl Into<String>) -> bool {
+        self.set_material_tag(id, tag)
+    }
 }
 
 impl Default for NovaForgePreviewWorld {

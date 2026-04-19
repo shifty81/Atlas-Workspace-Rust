@@ -9,7 +9,7 @@
 
 ## COMPLETED WORK
 
-What exists in Rust today (M17 — 2026-04-19):
+What exists in Rust today (M18 — 2026-04-19):
 
 - **Cargo workspace**: 23 crates (22 atlas-* + novaforge-game), all compile cleanly
 - **atlas-core / atlas-math / atlas-ecs / atlas-pcg / atlas-world / atlas-workspace**: fully implemented
@@ -18,8 +18,8 @@ What exists in Rust today (M17 — 2026-04-19):
 - **atlas-game**: GameRunner, NullGameModule, GameModule trait
 - **atlas-asset**: AssetRegistry, AssetMeta, AssetGraph + `NOVAFORGE_ASSETS_DIR` load path
 - **atlas-ui**: ScrollList (virtual scroll), TreeView, UiLogCapture
-- **novaforge-game** (GPL v3.0): NovaForgeGameModule + NovaForgeAdapter (GameProjectAdapter) + NovaForgeProjectBootstrap + AssetCatalog + DataRegistry + DocumentRegistry + 6 gameplay panels + **NovaForgeDocument (22-type enum, dirty tracking, validate/save/revert)** + **DocumentSavePipeline (validate→write→notify)** + **DocumentPanelValidationSeverity + PanelUndoStack** + **NovaForgePreviewWorld (512 entity cap, select/transform/tag)** + **PCG Core: PcgRuleSet + PcgDeterministicSeedContext + PcgGeneratorService + PcgPreviewService + ProcGenRuleEditorPanel** (M17)
-- **777 passing unit tests** across the workspace
+- **novaforge-game** (GPL v3.0): NovaForgeGameModule + NovaForgeAdapter (GameProjectAdapter) + NovaForgeProjectBootstrap + AssetCatalog + DataRegistry + DocumentRegistry + 6 gameplay panels + NovaForgeDocument (22-type enum) + DocumentSavePipeline + PanelUndoStack + NovaForgePreviewWorld (M17) + PCG Core (PcgRuleSet + PcgDeterministicSeedContext + PcgGeneratorService + PcgPreviewService + ProcGenRuleEditorPanel) (M17) + **NovaForgePreviewRuntime (fly-camera, gizmo, hierarchy)** + **DocumentPropertyGrid + DocumentPropertyGridBuilder** + **NovaForgeAssetPreview (colliders, sockets, anchors, PCG metadata)** + **NovaForgeMaterialPreview (parameters, preview mesh)** + **ScenePreviewBinder + AssetPreviewBinder + MaterialPreviewBinder** (M18)
+- **832 passing unit tests** across the workspace
 - **C++ Blueprint preserved**: `Source/`, `NovaForge/` are the specification for the Rust port
 
 ---
@@ -171,7 +171,7 @@ What exists in Rust today (M17 — 2026-04-19):
 - [x] `PanelUndoEntry`, `PanelUndoStack` (per-panel undo/redo) (M17)
 - [x] `NovaForgePreviewWorld` (512 entity cap, transforms, mesh/material tags, selection, dirty tracking) (M17)
 - [x] Document type name lookup (`document_type_name()`) (M17)
-- [ ] Individual document subclasses (SceneDocument, AssetDocument, MaterialDocument, etc.) — M18
+- [x] `DocumentPropertyGrid` + `DocumentPropertyGridBuilder` (schema-driven property grid) (M18)
 
 ### Milestone 2.4 — NovaForge Gameplay Panels (Rust) ✅ DATA MODEL COMPLETE (M16)
 
@@ -181,7 +181,7 @@ What exists in Rust today (M17 — 2026-04-19):
 - [x] MissionRulesPanel — objectives, chains, rewards, validation (M16)
 - [x] ProgressionPanel — XP curve, skill unlock tree, validation (M16)
 - [x] CharacterRulesPanel — class presets, stat caps, validation (M16)
-- [ ] egui rendering for all 6 panels (M17)
+- [ ] egui rendering for all 6 panels (M19)
 
 ### Milestone 2.5 — NovaForge PCG Core (Rust) ✅ COMPLETE (M17)
 
@@ -192,6 +192,13 @@ What exists in Rust today (M17 — 2026-04-19):
 - [x] `PcgPreviewService` (result caching, auto-regen, seed management) (M17)
 - [x] `ProcGenRuleEditorPanel` (bind/edit/save/revert/preview wiring) (M17)
 
+### Milestone 2.5b — NovaForge Preview Viewport Layer (Rust) ✅ COMPLETE (M18)
+
+- [x] `NovaForgePreviewRuntime` (fly-camera WASD + mouse look, gizmo state, inspector data, hierarchy BFS) (M18)
+- [x] `NovaForgeAssetPreview` (colliders, sockets, anchors, PCG metadata, apply/revert, E.4 notify) (M18)
+- [x] `NovaForgeMaterialPreview` (material parameters, preview mesh switching, apply/revert) (M18)
+- [x] `NovaForgeScenePreviewBinder` + `NovaForgeAssetPreviewBinder` + `NovaForgeMaterialPreviewBinder` (M18)
+
 ### Milestone 2.6 — NovaForge ECS Integration (Rust)
 
 - [ ] Port Veloren/NF component types → atlas-ecs `ComponentStore`
@@ -199,7 +206,7 @@ What exists in Rust today (M17 — 2026-04-19):
 - [ ] Physics bridging → atlas-physics
 - [ ] World generation mapping: NF `world/` heightmap → atlas-pcg `TerrainGenerator`
 
-**Success Criteria**: `NovaForge.atlas` opens in `atlas-editor`, 6 gameplay panels show schema-driven data, NovaForge assets load from `novaforge-assets/`, 800+ tests
+**Success Criteria**: `NovaForge.atlas` opens in `atlas-editor`, 6 gameplay panels show schema-driven data, NovaForge assets load from `novaforge-assets/`, 850+ tests
 
 ---
 
