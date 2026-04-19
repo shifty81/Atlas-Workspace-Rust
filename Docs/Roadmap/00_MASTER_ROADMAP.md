@@ -9,7 +9,7 @@
 
 ## COMPLETED WORK
 
-What exists in Rust today (M16 — 2026-04-18):
+What exists in Rust today (M17 — 2026-04-19):
 
 - **Cargo workspace**: 23 crates (22 atlas-* + novaforge-game), all compile cleanly
 - **atlas-core / atlas-math / atlas-ecs / atlas-pcg / atlas-world / atlas-workspace**: fully implemented
@@ -18,8 +18,8 @@ What exists in Rust today (M16 — 2026-04-18):
 - **atlas-game**: GameRunner, NullGameModule, GameModule trait
 - **atlas-asset**: AssetRegistry, AssetMeta, AssetGraph + `NOVAFORGE_ASSETS_DIR` load path
 - **atlas-ui**: ScrollList (virtual scroll), TreeView, UiLogCapture
-- **novaforge-game** (GPL v3.0): NovaForgeGameModule + **NovaForgeAdapter (implements GameProjectAdapter)** + **NovaForgeProjectBootstrap + AssetCatalog + DataRegistry + DocumentRegistry + 6 gameplay panels** (M16)
-- **698 passing unit tests** across the workspace
+- **novaforge-game** (GPL v3.0): NovaForgeGameModule + NovaForgeAdapter (GameProjectAdapter) + NovaForgeProjectBootstrap + AssetCatalog + DataRegistry + DocumentRegistry + 6 gameplay panels + **NovaForgeDocument (22-type enum, dirty tracking, validate/save/revert)** + **DocumentSavePipeline (validate→write→notify)** + **DocumentPanelValidationSeverity + PanelUndoStack** + **NovaForgePreviewWorld (512 entity cap, select/transform/tag)** + **PCG Core: PcgRuleSet + PcgDeterministicSeedContext + PcgGeneratorService + PcgPreviewService + ProcGenRuleEditorPanel** (M17)
+- **777 passing unit tests** across the workspace
 - **C++ Blueprint preserved**: `Source/`, `NovaForge/` are the specification for the Rust port
 
 ---
@@ -162,15 +162,16 @@ What exists in Rust today (M16 — 2026-04-18):
 - [x] `DataRegistry` (loads JSON files from `Data/`) (M16)
 - [x] `DocumentRegistry` (type registry + open document tracking) (M16)
 
-### Milestone 2.3 — NovaForge Document Types (Rust)
+### Milestone 2.3 — NovaForge Document Types (Rust) ✅ COMPLETE (M17)
 
-- [ ] `SceneDocument` (entity hierarchy, transforms, components)
-- [ ] `AssetDocument` (LOD variants, dependencies, reimport settings)
-- [ ] `MaterialDocument` (shader graph nodes, pins, connections, params)
-- [ ] `AnimationDocument` (channels, keyframes, clip metadata)
-- [ ] `GraphDocument` (visual logic, compile + validate)
-- [ ] `DataTableDocument` (columns, rows, cells, CSV export)
-- [ ] `BuildTaskGraph` (DAG, topological order, build log)
+- [x] `NovaForgeDocumentType` enum (22 variants — all C++ types ported) (M17)
+- [x] `NovaForgeDocument` base (dirty tracking, validate/save/revert lifecycle) (M17)
+- [x] `DocumentSavePipeline` (validate → write → clear dirty, notification callback) (M17)
+- [x] `DocumentPanelValidationSeverity`, `DocumentPanelValidationMessage` (M17)
+- [x] `PanelUndoEntry`, `PanelUndoStack` (per-panel undo/redo) (M17)
+- [x] `NovaForgePreviewWorld` (512 entity cap, transforms, mesh/material tags, selection, dirty tracking) (M17)
+- [x] Document type name lookup (`document_type_name()`) (M17)
+- [ ] Individual document subclasses (SceneDocument, AssetDocument, MaterialDocument, etc.) — M18
 
 ### Milestone 2.4 — NovaForge Gameplay Panels (Rust) ✅ DATA MODEL COMPLETE (M16)
 
@@ -182,14 +183,23 @@ What exists in Rust today (M16 — 2026-04-18):
 - [x] CharacterRulesPanel — class presets, stat caps, validation (M16)
 - [ ] egui rendering for all 6 panels (M17)
 
-### Milestone 2.5 — NovaForge ECS Integration (Rust)
+### Milestone 2.5 — NovaForge PCG Core (Rust) ✅ COMPLETE (M17)
+
+- [x] `PcgRuleValueType` enum (Float/Int/Bool/String/Vec2/Vec3/Range/Tag) (M17)
+- [x] `PcgRule` + `PcgRuleSet` (512 rule cap, dirty tracking, add/set/remove/reset) (M17)
+- [x] `PcgDeterministicSeedContext` (FNV-1a domain seed derivation, child contexts, pinned seeds) (M17)
+- [x] `PcgGeneratorService` (stateless xorshift PRNG, density×count placements, validation) (M17)
+- [x] `PcgPreviewService` (result caching, auto-regen, seed management) (M17)
+- [x] `ProcGenRuleEditorPanel` (bind/edit/save/revert/preview wiring) (M17)
+
+### Milestone 2.6 — NovaForge ECS Integration (Rust)
 
 - [ ] Port Veloren/NF component types → atlas-ecs `ComponentStore`
 - [ ] Port Veloren/NF system traits → atlas-ecs `SystemRegistry`
 - [ ] Physics bridging → atlas-physics
 - [ ] World generation mapping: NF `world/` heightmap → atlas-pcg `TerrainGenerator`
 
-**Success Criteria**: `NovaForge.atlas` opens in `atlas-editor`, 6 gameplay panels show schema-driven data, NovaForge assets load from `novaforge-assets/`, 80+ tests
+**Success Criteria**: `NovaForge.atlas` opens in `atlas-editor`, 6 gameplay panels show schema-driven data, NovaForge assets load from `novaforge-assets/`, 800+ tests
 
 ---
 
